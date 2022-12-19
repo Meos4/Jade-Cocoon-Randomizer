@@ -1,0 +1,17 @@
+#pragma once
+
+#include "Common/Types.hpp"
+
+using Chapter_t = s16;
+
+enum : Chapter_t
+{
+	CHAPTER_ETERNAL_CORRIDOR = -1,
+	CHAPTER_TUTORIAL = 1,
+	CHAPTER_BEETLE,
+	CHAPTER_DRAGONFLY,
+	CHAPTER_SPIDER,
+	CHAPTER_SPIDER_2,
+	CHAPTER_MOTH,
+	CHAPTER_NETHERWORLD,
+};

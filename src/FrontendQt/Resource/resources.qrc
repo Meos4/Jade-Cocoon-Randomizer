@@ -1,0 +1,20 @@
+<RCC>
+  <qresource>
+    <file>Img/JcRandomizerLogo.png</file>
+    <file>Img/Levant16.png</file>
+    <file>Img/Ocarina16.png</file>
+    <file>Img/DreamMan16.png</file>
+    <file>Img/Garb16.png</file>
+    <file>Img/BeetleKey16.png</file>
+    <file>Img/Bag16.png</file>
+    <file>Img/TwoSword16.png</file>
+    <file>Img/BlueCursor16.png</file>
+    <file>Img/Addons16.png</file>
+    <file>Img/BetaLoading16.png</file>
+    <file>Img/None13.png</file>
+    <file>Img/Fire13.png</file>
+    <file>Img/Air13.png</file>
+    <file>Img/Earth13.png</file>
+    <file>Img/Water13.png</file>
+  </qresource>
+</RCC>

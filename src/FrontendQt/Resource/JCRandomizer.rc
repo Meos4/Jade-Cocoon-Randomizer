@@ -1,0 +1,4 @@
+#pragma once
+
+// Main Icon
+IDI_ICON1 ICON "Icon\\icon29x29.ico"

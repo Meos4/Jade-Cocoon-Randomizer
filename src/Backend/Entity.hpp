@@ -1,0 +1,567 @@
+#pragma once
+
+#include "Common/Types.hpp"
+
+#include <array>
+#include <type_traits>
+
+using Id_Entity_t = s32;
+
+enum : Id_Entity_t
+{
+	ID_MARRDREG = 0,
+	ID_RADDREG,
+	ID_PATDREG,
+	ID_RUGDOGLE,
+	ID_DOGLE,
+	ID_BERBANSA,
+	ID_MUKHAMBU,
+	ID_DOGHAMBU,
+	ID_TERHAMBU,
+	ID_HIRALCO,
+	ID_MASKHIRA,
+	ID_HIRASAG,
+	ID_PATAIMEL,
+	ID_SKWIMEL,
+	ID_RADOIMEL,
+	ID_PATALCHU,
+	ID_RADDLCHU,
+	ID_DOGLCHU,
+	ID_NUSHAB,
+	ID_RASHAB,
+	ID_MUKSHAB,
+	ID_ASHA,
+	ID_GEENWEE,
+	ID_MARYEN,
+	ID_MUGOO,
+	ID_NOOBWEE,
+	ID_OJIAE,
+	ID_RIGGU,
+	ID_SRIKARTA,
+	ID_UGLAM,
+	ID_YOALK,
+	ID_JIRAHL,
+	ID_EHSP,
+	ID_RASHABA,
+	ID_TWEENGO,
+	ID_SHERICK,
+	ID_ARPATRON,
+	ID_VATOLKA_F,
+	ID_VATOLKA_A,
+	ID_VATOLKA_E,
+	ID_VATOLKA_W = 40,
+	ID_DREAM_MAN = 41,
+	ID_MINION,
+	ID_DELFANEL,
+	ID_EARTH_BOSS,
+	ID_TUTURIS,
+	ID_FIRE_BOSS,
+	ID_SETERIAN,
+	ID_WIND_BOSS,
+	ID_KIKINAK,
+	ID_MASKED_BOY,
+	ID_POACHER,
+	ID_GOAT,
+	ID_LAGOAT,
+	ID_GIGOAT,
+	ID_CHOSEN_ONE,
+	ID_CUSHIDRA = 56,
+	ID_PATARAID = 57,
+	ID_MAFRAYD,
+	ID_TERFRAYD,
+	ID_RAGIFRAYD,
+	ID_PATBARAN,
+	ID_SKBARAN,
+	ID_TERBARAN,
+	ID_LADBARAN,
+	ID_JITAMBLE,
+	ID_HACKAROO,
+	ID_CLAYBLE,
+	ID_GEIBLE,
+	ID_PATAGORE,
+	ID_SKGORE,
+	ID_TERGORE,
+	ID_RADGORE,
+	ID_DRUNGA,
+	ID_SKARUNGA,
+	ID_TERUNGA,
+	ID_RADUNGA,
+	ID_PATGARON,
+	ID_SKAGARON,
+	ID_TRAGARON,
+	ID_DOGGARON,
+	ID_PATASH,
+	ID_SKASH,
+	ID_TERASH,
+	ID_RADRASH,
+	ID_PATAGRIP,
+	ID_SKAGRIP,
+	ID_TERGRIP,
+	ID_DOGGRIP,
+	ID_PATAPARA,
+	ID_SKAPARA,
+	ID_TERPARA,
+	ID_DOGPARA,
+	ID_PATALCO,
+	ID_SKALCO,
+	ID_TERALCO,
+	ID_RADDLCO,
+	ID_PATBECKER,
+	ID_SKBEKER,
+	ID_TERBEKER,
+	ID_RADBEKER,
+	ID_HIKISAG,
+	ID_TAGOSAG,
+	ID_MORISAG,
+	ID_AMASAG,
+	ID_PATAWASP,
+	ID_SKAWASP,
+	ID_TERWASP,
+	ID_RADWASP,
+	ID_PATMANTY,
+	ID_SKAMANTY,
+	ID_TERMANTY,
+	ID_RADMANTY,
+	ID_PATAMOLE,
+	ID_SKUMOLE,
+	ID_TERMOLE,
+	ID_RADMOLE,
+	ID_PATEEB,
+	ID_SKAEEB,
+	ID_TEREEB,
+	ID_RADEEB,
+	ID_PATODON,
+	ID_SKATODON,
+	ID_TERTODON,
+	ID_RADTODON,
+	ID_PATAKUGA,
+	ID_SKWOOGA,
+	ID_TERKOOGA,
+	ID_RADKOOGA,
+	ID_PATAOOT,
+	ID_SKWOOT,
+	ID_TERAOOT,
+	ID_RADOOT,
+	ID_PATAMOAJ,
+	ID_SKWMOAJ,
+	ID_TERAMOAJ,
+	ID_RADMOAJ,
+	ID_CARMINE,
+	ID_SKWMAINE,
+	ID_TERAMINE,
+	ID_RADMINE,
+	ID_ANASH,
+	ID_SHULIA,
+	ID_SHEE,
+	ID_FAL,
+	ID_KARN,
+	ID_TELMA,
+	ID_SCUL,
+	ID_ULD,
+	ID_USK,
+	ID_OAJIN,
+	ID_EAVUN,
+	ID_EMBLA,
+	ID_GABEE,
+	ID_TULOON,
+	ID_PEDINGO,
+	ID_ZULMOO,
+	ID_FRIGG,
+	ID_SHOWVEN,
+	ID_ELU,
+	ID_ROBUN,
+	ID_FREY,
+	ID_SOWL,
+	ID_SGAJ,
+	ID_TIOOTZ,
+	ID_WARDON,
+	ID_ANKOO,
+	ID_GALIA,
+	ID_OHMA,
+	ID_SWAV,
+	ID_CARLIDGE,
+	ID_FUGGER,
+	ID_ID,
+	ID_BAWNI,
+	ID_FINTAN,
+	ID_TUREN,
+	ID_RAINSTER,
+	ID_YATES,
+	ID_NEVAN,
+	ID_AIONA,
+	ID_OHZAY,
+	ID_SPIRAL,
+	ID_ARVALZAK,
+	ID_FEDELCO,
+	ID_KAMRA,
+	ID_BAUBACK,
+	ID_ARMIJAR,
+	ID_GREYDON,
+	ID_AGGHAI,
+	ID_NUPANDRA,
+	ID_SARAMOON,
+	ID_KARRO,
+	ID_NARADE,
+	ID_COLONIUS,
+	ID_SHAKURES,
+	ID_IBDAMIA,
+	ID_KETOW,
+	ID_LAKSHEL,
+	ID_SETOLKA,
+	ID_SBARSE,
+	ID_TYTON = 200,
+	ID_PALOOJA = 201,
+	ID_TICKER,
+	ID_JEECHWO,
+	ID_KOLNA,
+	ID_SICANJAL,
+	ID_TIMAIOS,
+	ID_YOLGA,
+	ID_KLARRGAS,
+	ID_TX08,
+	ID_TX09 = 210,
+	ID_COUNT
+};
+
+using Model_t = s16;
+
+enum : Model_t
+{
+	MODEL_ALPA,
+	MODEL_ASHA,
+	MODEL_BSFE,
+	MODEL_BSFS,
+	MODEL_BSGE,
+	MODEL_BSGS,
+	MODEL_BSWE,
+	MODEL_BSWS,
+	MODEL_BSZZ,
+	MODEL_DA,
+	MODEL_DB,
+	MODEL_DC,
+	MODEL_DLEG,
+	MODEL_DLEG_B,
+	MODEL_DLEG_C,
+	MODEL_DMA,
+	MODEL_DMYA,
+	MODEL_DMYB,
+	MODEL_DONG,
+	MODEL_DONG_B,
+	MODEL_DONG_C,
+	MODEL_FKEL,
+	MODEL_GAR,
+	MODEL_GINU,
+	MODEL_HANB_A,
+	MODEL_HANB_B,
+	MODEL_HANB_C,
+	MODEL_HIRA,
+	MODEL_HIRA_B,
+	MODEL_HIRA_C,
+	MODEL_HJI,
+	MODEL_IMEL,
+	MODEL_IMEL_B,
+	MODEL_IMEL_C,
+	MODEL_KAMERE,
+	MODEL_KANI,
+	MODEL_KEL,
+	MODEL_KIKI,
+	MODEL_KORI,
+	MODEL_LEB2,
+	MODEL_LEBANT,
+	MODEL_LUCH,
+	MODEL_LUCHB,
+	MODEL_LUCHC,
+	MODEL_LUI,
+	MODEL_LUI_A,
+	MODEL_MABA,
+	MODEL_MABB,
+	MODEL_MABC,
+	MODEL_MABD,
+	MODEL_MABE,
+	MODEL_MABF,
+	MODEL_MAIE,
+	MODEL_MCHO,
+	MODEL_MDOG,
+	MODEL_MKEL,
+	MODEL_MLEB,
+	MODEL_MNBN,
+	MODEL_MOBA,
+	MODEL_MOBB,
+	MODEL_MOBC,
+	MODEL_MUGU,
+	MODEL_NAGK,
+	MODEL_NCHO,
+	MODEL_NEBUI,
+	MODEL_NMUU,
+	MODEL_NRAA,
+	MODEL_OJE,
+	MODEL_OUMG,
+	MODEL_PDA,
+	MODEL_RIG,
+	MODEL_RIKE,
+	MODEL_ROUBA,
+	MODEL_ROUBB,
+	MODEL_ROUBC,
+	MODEL_SDOG,
+	MODEL_SHABU,
+	MODEL_SHABU_B,
+	MODEL_SHABU_C,
+	MODEL_SOUJ,
+	MODEL_SOUJB,
+	MODEL_THRE,
+	MODEL_TORI,
+	MODEL_TX00,
+	MODEL_TX01,
+	MODEL_TX02,
+	MODEL_TX03,
+	MODEL_TX04,
+	MODEL_TX05,
+	MODEL_TX06,
+	MODEL_TX07,
+	MODEL_TX08,
+	MODEL_TX09,
+	MODEL_UGURAM,
+	MODEL_YM,
+	MODEL_YMI,
+	MODEL_YMKK,
+	MODEL_YMTT,
+	MODEL_YOLK,
+	MODEL_YUME,
+	MODEL_ZIB,
+	MODEL_ZIRA,
+	MODEL_ZOK
+};
+
+using Element_t = s8;
+
+enum : Element_t
+{
+	ELEMENT_NONE = -1,
+	ELEMENT_FIRE = 0,
+	ELEMENT_AIR = 1,
+	ELEMENT_EARTH = 2,
+	ELEMENT_WATER = 3,
+	ELEMENT_COUNT
+};
+
+using BodyPart_t = s8;
+
+enum : BodyPart_t
+{
+	BODYPART_HORN = 0,
+	BODYPART_FANG = 1,
+	BODYPART_CLAW = 2,
+	BODYPART_TAIL = 3,
+	BODYPART_FOOT = 4,
+	BODYPART_COUNT
+};
+
+using EnhancementBodyPart_t = u8;
+
+enum : EnhancementBodyPart_t
+{
+	ENHANCEMENT_BODYPART_NONE = 0,
+	ENHANCEMENT_BODYPART_NONE2 = 1,
+	ENHANCEMENT_BODYPART_POWER = 2,
+	ENHANCEMENT_BODYPART_ACCURACY = 3,
+	ENHANCEMENT_BODYPART_CRITICAL = 4,
+	ENHANCEMENT_BODYPART_COUNT
+};
+
+using Special_t = u8;
+
+enum : Special_t
+{
+	SPECIAL_NEUTRAL0 = 0,
+	SPECIAL_NEUTRAL = 1,
+	SPECIAL_EARTH_ATTACK = 2,
+	SPECIAL_WATER_ATTACK = 3,
+	SPECIAL_FIRE_ATTACK = 4,
+	SPECIAL_WIND_ATTACK = 5,
+	SPECIAL_POISON = 6,
+	SPECIAL_SLEEP = 7,
+	SPECIAL_FLESH_TO_STONE = 8,
+	SPECIAL_DESTROY_MANA = 9,
+	SPECIAL_ABSORB_HP = 10,
+	SPECIAL_ABSORB_MANA = 11,
+	SPECIAL_ALL_ENEMIES = 12,
+	SPECIAL_CRITICAL = 13,
+	SPECIAL_BREAK_LEGS = 14,
+	SPECIAL_REND_WINGS = 15,
+	// Boss
+	SPECIAL_DELFANEL_FLESH_TO_STONE = 16,
+	SPECIAL_DELFANEL_ALL_ENEMIES = 17,
+	SPECIAL_DELFANEL_WAITING = 18,
+	SPECIAL_TUTURIS_ABSORB_MANA = 19,
+	SPECIAL_TUTURIS_POISON = 20,
+	SPECIAL_TUTURIS_ALL_ENEMIES = 21,
+	SPECIAL_SETERIAN_SLEEP = 22,
+	SPECIAL_SETERIAN_WIND_ATTACK = 23,
+	SPECIAL_SETERIAN_HEAL = 24,
+	SPECIAL_SETERIAN_WIND_ATTACK2 = 25,
+	SPECIAL_MASKED_BOY_NEUTRAL = 26,
+	SPECIAL_MASKED_BOY_NEUTRAL2 = 27,
+	SPECIAL_MASKED_BOY_TAUNT = 28,
+	SPECIAL_KIKINAK_WIND_ATTACK_NOT_ELEMENTAL = 29,
+	SPECIAL_KIKINAK_NEUTRAL = 30,
+	SPECIAL_KIKINAK_NEUTRAL2 = 31,
+	SPECIAL_CUSHIDRA_NEUTRAL = 32,
+	SPECIAL_CUSHIDRA_HEAL = 33,
+	SPECIAL_CUSHIDRA_DEVA_AGNI = 34,
+	SPECIAL_CUSHIDRA_DEVA_MALTI = 35,
+	SPECIAL_CUSHIDRA_DEVA_ULVI = 36,
+	SPECIAL_CUSHIDRA_DEVA_VALI = 37,
+	SPECIAL_CUSHIDRA_WATER_BOSS = 38,
+	SPECIAL_COUNT
+};
+
+using Magic_t = u32;
+
+enum : Magic_t
+{
+	MAGIC_AGNI = 1 << 0,
+	MAGIC_AGNIS = 1 << 1,
+	MAGIC_AGNIA = 1 << 2,
+	MAGIC_VAHLI = 1 << 3,
+	MAGIC_VAHLIS = 1 << 4,
+	MAGIC_VAHLIA = 1 << 5,
+	MAGIC_ULVI = 1 << 6,
+	MAGIC_ULVIS = 1 << 7,
+	MAGIC_ULVIA = 1 << 8,
+	MAGIC_MALTI = 1 << 9,
+	MAGIC_MALTIS = 1 << 10,
+	MAGIC_MALTIA = 1 << 11,
+	MAGIC_SELAHM_VENON = 1 << 12,
+	MAGIC_MEDINA = 1 << 13,
+	MAGIC_MEDINIA = 1 << 14,
+	MAGIC_SELAHM = 1 << 15,
+	MAGIC_SEL_SELAHM = 1 << 16,
+	MAGIC_AD_VENON = 1 << 17,
+	MAGIC_AD_SLAHM = 1 << 18,
+	MAGIC_AD_ROQUA = 1 << 19,
+	MAGIC_AD_MUMULS = 1 << 20,
+	MAGIC_DEVA_AGNI = 1 << 21,
+	MAGIC_DEVA_VALI = 1 << 22,
+	MAGIC_DEVA_ULVI = 1 << 23,
+	MAGIC_DEVA_MALTI = 1 << 24,
+	MAGIC_FIRE_BOSS = 1 << 25,
+	MAGIC_WATER_BOSS = 1 << 26,
+	MAGIC_EARTH_BOSS = 1 << 27,
+	MAGIC_AIR_BOSS = 1 << 28,
+	MAGIC_CUSHIDRA_HEAL = 1 << 29,
+	MAGIC_COUNT = 1 << 30
+};
+
+using EnhancementBody_t = u8;
+
+enum : EnhancementBody_t
+{
+	ENHANCEMENT_BODY_SPECIAL = 1 << 0,
+	ENHANCEMENT_BODY_MAGIC = 1 << 1
+};
+
+struct StatsStruct
+{
+	u8 attack;
+	u8 magicAttack;
+	u8 defense;
+	u8 magicDefense;
+	u8 speed;
+	u8 critical;
+	Element_t element;
+	EnhancementBody_t enhancementBody;
+
+	constexpr u32 statsTotal() const
+	{
+		return attack + magicAttack + defense + magicDefense + speed + critical;
+	}
+};
+
+struct SpecialStruct
+{
+	u8 isEnabled; // 0 false, 1 true
+	Special_t specialAttackId;
+	EnhancementBodyPart_t enhancement;
+	u8 isEnhancement; // 0 false, 1 true
+};
+
+using SpecialsArray = std::array<SpecialStruct, BODYPART_COUNT>;
+
+struct ModelBehavior
+{
+	Model_t id;
+	u8 colorRotation;
+	u8 unk;
+};
+
+namespace Entity
+{
+	inline constexpr s32
+		totalStoryMinions{ 41 },
+		totalECMinions{ 144 },
+		totalStoryBosses{ 16 },
+		totalECBosses{ 10 },
+		totalEntity{ totalStoryMinions + totalECMinions + totalStoryBosses + totalECBosses };
+
+	inline constexpr std::array<const char*, Entity::totalEntity> names
+	{
+		// Story Minions
+		"Marrdreg", "Raddreg", "Patdreg", "Rugdogle",
+		"Dogle", "Berbansa", "Mukhambu", "Doghambu",
+		"Terhambu", "Hiralco", "Maskhira", "Hirasag",
+		"Pataimel", "Skwimel", "Radoimel", "Patalchu",
+		"Raddlchu", "Doglchu", "Nushab", "Rashab",
+		"Mukshab", "Asha", "Geenwee", "Maryen",
+		"Mugoo", "Noobwee", "Ojiae", "Riggu",
+		"Srikarta", "Uglam", "Yoalk", "Jirahl",
+		"Ehsp", "Rashaba", "Tweengo", "Sherick",
+		"Arpatron", "Vatolka (Fire)", "Vatolka (Air)", "Vatolka (Earth)",
+		"Vatolka (Water)",
+		// Boss
+		"Dream Man", "Minion", "Delfanel", "Earth Boss",
+		"Tuturis", "Fire Boss", "Seterian", "Wind Boss",
+		"Kikinak", "Masked Boy", "Poacher", "Goat",
+		"Lagoat", "Gigoat", "Chosen One", "Cushidra",
+		// EC Minions
+		"Pataraid", "Mafrayd", "Terfrayd", "Ragifrayd",
+		"Patbaran", "Skbaran", "Terbaran", "Ladbaran",
+		"Jitamble", "Hackaroo", "Clayble", "Geible",
+		"Patagore", "Skgore", "Tergore", "Radgore",
+		"Drunga", "Skarunga", "Terunga", "Radunga",
+		"Patgaron", "Skagaron", "Tragaron", "Doggaron",
+		"Patash", "Skash", "Terash", "Radrash",
+		"Patagrip", "Skagrip", "Tergrip", "Doggrip",
+		"Patapara", "Skapara", "Terpara", "Dogpara",
+		"Patalco", "Skalco", "Teralco", "Raddlco",
+		"Patbecker", "Skbeker", "Terbeker", "Radbeker",
+		"Hikisag", "Tagosag", "Morisag", "Amasag",
+		"Patawasp", "Skawasp", "Terwasp","Radwasp",
+		"Patmanty", "Skamanty", "Termanty", "Radmanty",
+		"Patamole", "Skumole", "Termole", "Radmole",
+		"Pateeb", "Skaeeb", "Tereeb", "Radeeb",
+		"Patodon", "Skatodon", "Tertodon", "Radtodon",
+		"Patakuga", "Skwooga", "Terkooga", "Radkooga",
+		"Pataoot", "Skwoot", "Teraoot", "Radoot",
+		"Patamoaj", "Skwmoaj", "Teramoaj", "Radmoaj",
+		"Carmine", "Skwmaine", "Teramine", "Radmine",
+		"Anash", "Shulia", "Shee", "Fal",
+		"Karn", "Telma", "Scul", "Uld",
+		"Usk", "Oajin", "Eavun", "Embla",
+		"Gabee", "Tuloon", "Pedingo", "Zulmoo",
+		"Frigg", "Showven", "Elu", "Robun",
+		"Frey", "Sowl", "Sgaj", "Tiootz",
+		"Wardon", "Ankoo", "Galia", "Ohma",
+		"Swav", "Carlidge", "Fugger", "Id",
+		"Bawni", "Fintan", "Turen", "Rainster",
+		"Yates", "Nevan", "Aiona", "Ohzay",
+		"Spiral", "Arvalzak", "Fedelco", "Kamra",
+		"Bauback", "Armijar", "Greydon", "Agghai",
+		"Nupandra", "Saramoon", "Karro", "Narade",
+		"Colonius", "Shakures", "Ibdamia", "Ketow",
+		"Lakshel", "Setolka", "Sbarse", "Tyton",
+		// EC Boss
+		"Palooja", "Ticker", "Jeechwo", "Kolna",
+		"Sicanjal", "Timaios", "Yolga", "Klarrgas",
+		"TX 08", "TX 09"
+	};
+}
