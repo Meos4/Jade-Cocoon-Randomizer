@@ -1,0 +1,3 @@
+[submodule "dep/mkpsxiso"]
+	path = dep/mkpsxiso
+	url = https://github.com/Meos4/mkpsxiso.git
