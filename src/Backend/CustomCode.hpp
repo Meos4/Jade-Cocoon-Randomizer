@@ -7,10 +7,10 @@
 class CustomCode final
 {
 public:
-    CustomCode(std::shared_ptr<Game> game);
+	CustomCode(std::shared_ptr<Game> game);
 
-    void write() const;
-    bool isVanilla() const;
+	void write() const;
+	bool isVanilla() const;
 private:
-    std::shared_ptr<Game> m_game;
+	std::shared_ptr<Game> m_game;
 };

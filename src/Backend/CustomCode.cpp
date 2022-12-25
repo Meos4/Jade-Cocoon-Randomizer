@@ -41,7 +41,7 @@ void CustomCode::write() const
 }
 
 bool CustomCode::isVanilla() const
-{	
+{
 	return m_game->executable().size() == (m_game->isVersion(Version::NtscJ1) ?
 		m_game->offset().file.executable.cc_begin - NtscJ1::customCodeShift :
 		m_game->offset().file.executable.cc_begin);

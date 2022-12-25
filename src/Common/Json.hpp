@@ -8,8 +8,8 @@ namespace Json
 	void set(const nlohmann::json& json, const TKey& key, TFn&& callback)
 	{
 		if (json.contains(key))
-		{		
+		{
 			callback(json.at(key).get<TVal>());
-		}	
+		}
 	}
 }

@@ -16,7 +16,7 @@ public:
 	struct CustomCodeOffset
 	{
 		u32 file;
-		u32	game;
+		u32 game;
 	};
 
 	static constexpr auto sectorSize{ 2048u };

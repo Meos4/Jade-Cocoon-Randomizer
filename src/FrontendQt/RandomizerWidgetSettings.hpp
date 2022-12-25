@@ -18,7 +18,7 @@ class RandomizerWidgetSettings
 public:
 	RandomizerWidgetSettings(const char* name)
 		: m_name(name)
-	{	
+	{
 	}
 
 	virtual ~RandomizerWidgetSettings() = default;

@@ -92,7 +92,7 @@ static void setDamageModifiers(DamageModifiers* damageModifiers, Element_t eleme
 
 static void setDamageModifiersNone(DamageModifiers* damageModifiers, Element_t element)
 {
-	const auto 
+	const auto
 		max{ std::max({ damageModifiers->fire, damageModifiers->air, damageModifiers->earth, damageModifiers->water }) },
 		mid{ static_cast<s8>(max / 2) };
 
@@ -165,13 +165,13 @@ void Boss::setElement(Boss::Element state, bool allowNoneElement) const
 
 				elements[i] = rngElement;
 			}
-		}		
+		}
 	}
 
 	for (std::size_t i{}; i < elements.size(); ++i)
 	{
 		executable.write(statsOffset + i * sizeof(StatsStruct) + 6, elements[i]);
-	} 
+	}
 
 	executable.write(damageModifiersOffset, damageModifiers);
 
@@ -218,10 +218,10 @@ void Boss::setSpecialMagic() const
 			return allowStatus;
 		}
 		else
-		{			
+		{
 			special->specialAttackId = availableSpecialStatus[Random::get().generate(availableSpecialStatus.size() - 1)];
 			return false;
-		}		
+		}
 	};
 
 	auto generateMagic = [](Mips::Register rgt, Element_t element)
@@ -297,7 +297,7 @@ void Boss::setSpecialMagic() const
 
 	// Kikinak
 	// Special:	Fang (Air), Claw (Neutral), Tail (Neutral)
-	// Magic: 
+	// Magic:
 
 	static constexpr auto kikinakId{ ID_KIKINAK - ID_DREAM_MAN };
 	bool kikinakAllowStatus{ true };
@@ -319,7 +319,7 @@ void Boss::setSpecialMagic() const
 
 	// Goat
 	// Special: Claw (Fire)
-	// Magic: 
+	// Magic:
 	// Note: Specials use priority
 
 	static constexpr auto goatId{ ID_GOAT - ID_DREAM_MAN };
@@ -329,7 +329,7 @@ void Boss::setSpecialMagic() const
 
 	// Lagoat
 	// Special: Horn (Rend Wings)
-	// Magic: 
+	// Magic:
 	// Note: Specials use priority
 
 	static constexpr auto lagoatId{ ID_LAGOAT - ID_DREAM_MAN };
@@ -339,7 +339,7 @@ void Boss::setSpecialMagic() const
 
 	// Gigoat
 	// Special: Fang (Neutral)
-	// Magic: 
+	// Magic:
 	// Note: Specials use priority 
 
 	static constexpr auto gigoatId{ ID_GIGOAT - ID_DREAM_MAN };
@@ -376,7 +376,7 @@ void Boss::setSpecialMagic() const
 		over_encom_bin->write(m_game->offset().file.over_encom_bin.cushidraFireBossId + 0xD0, cushidraEarthBossId);
 
 		// Minion in NTSCJ1 use Agni instead of Agnia
-		static constexpr auto 
+		static constexpr auto
 			sw_a0_4_v0{ Mips_t(0xAC440004) },
 			li_v0_1{ Mips_t(0x24020001) };
 
@@ -418,7 +418,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 	};
 
 	static constexpr std::array<ModelFileOffset, 11> mfo
-	{ 
+	{
 		MODEL_YUME, { File::MODEL_YUME_MDL, 0x2248 },
 		MODEL_DMYB, { File::MODEL_DMYB_MDL, 0x840 },
 		MODEL_BSGS, { File::MODEL_BSGS_MDL, 0x820 },
@@ -462,7 +462,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 			{
 				const auto rotation{ static_cast<s32>(modelsRotation.at(mfo[i].model).rotation.at(elements[i])) * 2 };
 				rotate(m_game->file(mfo[i].fileOffset.first).get(), mfo[i].fileOffset.second, rotation);
-			}			
+			}
 		}
 
 		// Goat
@@ -540,7 +540,7 @@ void Boss::setElementEC(bool allowNoneElement) const
 				const auto& rotation{ m_sharedData->rotation(MODEL_TX00 + i) };
 				modelsBehavior[i].colorRotation = rotation.rotation[rngElement];
 			}
-		}		
+		}
 	}
 
 	scene_other_hunting_sce00_sbh->write(damageModifiersOffset, damageModifiers);
@@ -561,7 +561,7 @@ void Boss::setSpecialMagicEC() const
 	auto generateSpecial = [&availableSpecial](SpecialStruct* special, Element_t element, bool allowStrong = true)
 	{
 		static constexpr std::array<Special_t, 5> availableSpecialStrong
-		{ 
+		{
 			SPECIAL_POISON, SPECIAL_SLEEP, SPECIAL_FLESH_TO_STONE, SPECIAL_ABSORB_HP,
 			SPECIAL_CRITICAL
 		};
@@ -640,14 +640,14 @@ void Boss::setSpecialMagicEC() const
 
 	// Jeechwo
 	// Special: Horn (Rend Wings), Fang (Break Legs), Claw (Neutral)
-	// Magic: 
+	// Magic:
 	// Note: Unused Horn & Fang
 
 	static constexpr auto jeechwoId{ ID_JEECHWO - ID_PALOOJA };
 	generateSpecial(&specials[jeechwoId][BODYPART_CLAW], stats[jeechwoId].element, false);
 
 	// Kolna
-	// Special: 
+	// Special:
 	// Magic: Ad Mumuls (a2)
 
 	static constexpr auto kolnaId{ ID_KOLNA - ID_PALOOJA };
@@ -655,14 +655,14 @@ void Boss::setSpecialMagicEC() const
 
 	// Sicanjal
 	// Special: Tail (Neutral)
-	// Magic: 
+	// Magic:
 
 	static constexpr auto sicanjalId{ ID_SICANJAL - ID_PALOOJA };
 	generateSpecial(&specials[sicanjalId][BODYPART_TAIL], stats[sicanjalId].element, false);
 
 	// Timaios
 	// Special: Fang (Absorb Mana) + Claw (Absorb HP)
-	// Magic: 
+	// Magic:
 
 	static constexpr auto timaiosId{ ID_TIMAIOS - ID_PALOOJA };
 	bool timaiosAllowStrong{ true };
@@ -673,7 +673,7 @@ void Boss::setSpecialMagicEC() const
 
 	// Klarrgas
 	// Special: Horn (Flesh To Stone), Fang (Sleep), Claw (Poison)
-	// Magic: 
+	// Magic:
 
 	scene_other_hunting_sce00_sbh->write(specialsOffset, specials);
 
@@ -761,7 +761,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		const u32 modelsBehaviorOffset
 		{
 			m_game->offset().file.executable.entityModelsBehavior +
-			(Entity::totalEntity - Entity::totalECBosses) * sizeof(ModelBehavior)		
+			(Entity::totalEntity - Entity::totalECBosses) * sizeof(ModelBehavior)
 		};
 		auto modelsBehavior{ executable.read<std::array<ModelBehavior, bossCounter>>(modelsBehaviorOffset)};
 

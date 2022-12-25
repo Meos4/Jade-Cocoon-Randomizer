@@ -35,7 +35,7 @@ static constexpr Forest::OstArray vanillaOstId
 };
 
 Forest::Forest(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-    : m_game(std::move(game)), m_sharedData(std::move(sharedData))
+	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
 {
 }
 
@@ -365,7 +365,7 @@ void Forest::setBattleMaps() const
 
 	mapsId.insert(1); // Dream 2
 	mapsId.insert(0x0065); // Koris Minion Map
-	mapsId.insert(0x0071); // Masked Boy Map	
+	mapsId.insert(0x0071); // Masked Boy Map
 	mapsId.erase(0xFFFF); // Delimitator
 	mapsId.erase(0x00D9); // Tuturis
 	mapsId.erase(0x00E4); // Seterian
@@ -386,7 +386,7 @@ void Forest::setBattleMaps() const
 	}
 
 	std::array<u32, nbBattleMaps> battleMapsPtr{};
-	over_game_bin->read(m_game->offset().file.over_game_bin.battleMaps + sizeof(mapsIdRaw), &battleMapsPtr[0]);;
+	over_game_bin->read(m_game->offset().file.over_game_bin.battleMaps + sizeof(mapsIdRaw), &battleMapsPtr[0]);
 	mapsIdRaw = {};
 
 	u32 pos{};
@@ -438,7 +438,7 @@ void Forest::setOst(Forest::Ost state) const
 }
 
 void Forest::setOst(const Forest::OstArray& ostsId) const
-{	
+{
 	Forest::OstArray forestOsts;
 	auto availableOsts{ ::Ost::id() };
 

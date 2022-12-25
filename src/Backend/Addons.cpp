@@ -102,7 +102,7 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 		
 		const auto nuzlockeValidMapsOffset{ m_game->customCodeOffset(sizeof(MipsFn::WriteUsedMapEOBData)) };
 
-		const auto 
+		const auto
 			li32_idOpponent1{ Mips::li32(Mips::Register::t0, m_game->offset().game.idOpponent1) },
 			li32_mapId{ Mips::li32(Mips::Register::t0, m_game->offset().game.mapId) },
 			li32_validMaps{ Mips::li32(Mips::Register::t0, nuzlockeValidMapsOffset.game) },
@@ -320,13 +320,13 @@ void Addons::setSkipTutorial(bool skipKoris) const
 {
 	const auto afterTutorialStateOffset{ m_game->customCodeOffset(sizeof(MipsFn::AfterTutorialStateData)) };
 
-	const auto 
+	const auto
 		li32_afterTutorialState{ Mips::li32(Mips::Register::a0, afterTutorialStateOffset.game) },
 		li32_gameStateStruct{ Mips::li32(Mips::Register::a1, m_game->offset().game.gameStateStruct) };
 
 	const MipsFn::WriteAfterTutorialState writeAfterTutorialStateFn
 	{
-		0x27BDFFE0,	// addiu sp, -0x20
+		0x27BDFFE0, // addiu sp, -0x20
 		0xAFA20010, // sw v0, 0x10(sp)
 		0xAFA3000C, // sw v1, 0xC(sp)
 		0xAFA40008, // sw a0, 8(sp)
@@ -349,7 +349,7 @@ void Addons::setSkipTutorial(bool skipKoris) const
 		0x24A50004, // addiu a1, 4
 
 		// Give Dagger
-		0x24A5007C, // addiu a1, 0x7C 
+		0x24A5007C, // addiu a1, 0x7C
 		0x3C0900FF, // lui t1, 0x00FF
 		0x35290101, // ori t1, 0x0101
 		0xACA90000, // sw t1, 0(a1)
@@ -365,13 +365,13 @@ void Addons::setSkipTutorial(bool skipKoris) const
 		0x1500FFFA, // bnez t0, -0x18
 		0x24A50004, // addiu a1, 4
 
-		0x8FA20010,	// lw v0, 0x10(sp)
-		0x8FA3000C,	// lw v1, 0xC(sp)
-		0x8FA40008,	// lw a0, 8(sp)
-		0x8FA50004,	// lw a1, 4(sp)
-		0x8FBF0000,	// lw ra, 0(sp)
-		0x03E00008,	// jr ra
-		0x27BD0020	// addiu sp, 0x20
+		0x8FA20010, // lw v0, 0x10(sp)
+		0x8FA3000C, // lw v1, 0xC(sp)
+		0x8FA40008, // lw a0, 8(sp)
+		0x8FA50004, // lw a1, 4(sp)
+		0x8FBF0000, // lw ra, 0(sp)
+		0x03E00008, // jr ra
+		0x27BD0020  // addiu sp, 0x20
 	};
 
 	auto executable{ m_game->executable() };
@@ -402,7 +402,7 @@ void Addons::setSkipTutorial(bool skipKoris) const
 
 void Addons::setX2Framerate() const
 {
-	const auto 
+	const auto
 		li32_controllerTemp{ Mips::li32(Mips::Register::t0, m_game->offset().game.controllerTemp) },
 		li32_frameLimiter{ Mips::li32(Mips::Register::t3, m_game->offset().game.frameLimiter) };
 
@@ -440,7 +440,7 @@ void Addons::setX2Framerate() const
 
 void Addons::setItemQuantityLimit(u8 limit) const
 {
-	const auto 
+	const auto
 		over_game_bin{ m_game->file(File::OVER_GAME_BIN) },
 		over_wpnshop_bin{ m_game->file(File::OVER_WPNSHOP_BIN) };
 
@@ -471,8 +471,8 @@ void Addons::setLevelCapEC(u8 levelCap) const
 {
 	if (levelCap != 26 && levelCap >= 19 && levelCap < 64)
 	{
-		const auto 
-			slti_v0_v1{ Mips_t(0x28620000 + levelCap - 18) }, 
+		const auto
+			slti_v0_v1{ Mips_t(0x28620000 + levelCap - 18) },
 			li_v1{ Mips_t(0x24030000 + levelCap - 19) };
 
 		const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
@@ -580,7 +580,7 @@ void Addons::setShowHiddenStats() const
 	const auto
 		li_criticalText2{ Mips::li(Mips::Register::v1, arrayTextToInteger.operator()<u16>(critical.data() + 8)) },
 		li_bipedalText2{ Mips::li(Mips::Register::v1, arrayTextToInteger.operator()<u16>(bipedal.data() + 8)) },
-		li_wingedText2{ Mips::li(Mips::Register::v1, arrayTextToInteger.operator()<u16>(winged.data() + 8)) };	
+		li_wingedText2{ Mips::li(Mips::Register::v1, arrayTextToInteger.operator()<u16>(winged.data() + 8)) };
 
 	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
 
@@ -613,7 +613,7 @@ void Addons::setShowHiddenStats() const
 		0x12800001, // beqz s4, 1
 		0x02802021, // move a0, s4 
 		0x02402021, // move a0, s2 
-		isNtscJ ? 0x9084FF96 : 0x9084FF7E, // lbu a0, -0x6A/-0x82(a0) 
+		isNtscJ ? 0x9084FF96 : 0x9084FF7E, // lbu a0, -0x6A/-0x82(a0)
 		0x00000000, // nop
 		Mips::jal(m_game->offset().game.getEntityEnhancement),
 		0x00000000, // nop
@@ -623,7 +623,7 @@ void Addons::setShowHiddenStats() const
 
 		// Bipedal
 		0x24050001, // li a1, 1
-		0x14450008, // bne v0, a1, 8		
+		0x14450008, // bne v0, a1, 8
 		li32_bipedalText0[0], // lui v1, 0xXXXX
 		li32_bipedalText0[1], // ori v1, 0xXXXX
 		0xAFA30004, // sw v1, 4(sp)
@@ -727,7 +727,7 @@ void Addons::setShowHiddenStats() const
 		drawCriticalRateOffset{ m_game->customCodeOffset(sizeof(MipsFn::DrawCriticalRate)) },
 		drawCriticalRateMergeOffset{ m_game->customCodeOffset(sizeof(MipsFn::DrawCriticalRateMerge)) };
 
-	const std::array<Mips_t, 2> 
+	const std::array<Mips_t, 2>
 		jal_drawCriticalAndBodyText_nop{ Mips::jal(drawHiddenStatsOffset.game), 0x00000000 },
 		jal_drawCriticalRate_nop{ Mips::jal(drawCriticalRateOffset.game), 0x00000000 };
 

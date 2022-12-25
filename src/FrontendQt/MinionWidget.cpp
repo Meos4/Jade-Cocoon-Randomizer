@@ -365,7 +365,7 @@ void MinionWidget::saveSettings(nlohmann::ordered_json* json)
 }
 
 void MinionWidget::updateSpawnStoryRandomRealtime()
-{	
+{
 	if (m_isSpawnStoryRandomRealtimeBanned)
 	{
 		m_ui.spawnStoryRandomRealtime->setChecked(false);

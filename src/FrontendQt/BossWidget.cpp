@@ -177,7 +177,7 @@ void BossWidget::updateStoryElement()
 {
 	const bool
 		isAllChecked{ m_ui.storyElementRandomAll->isChecked() },
-		isElementalChecked{ m_ui.storyElementRandomElemental->isChecked() };	
+		isElementalChecked{ m_ui.storyElementRandomElemental->isChecked() };
 
 	if (isAllChecked && isElementalChecked)
 	{

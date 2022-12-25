@@ -17,7 +17,7 @@ Fixes::Fixes(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
 
 void Fixes::setBodyEnhancement() const
 {
-	const auto 
+	const auto
 		li32_minionStats{ Mips::li32(Mips::Register::v0, m_game->offset().game.minionStats) },
 		li32_bossStatsEC{ Mips::li32(Mips::Register::v0, m_game->offset().game.bossStatsEC) };
 

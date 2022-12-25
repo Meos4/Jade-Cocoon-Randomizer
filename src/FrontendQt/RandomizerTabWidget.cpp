@@ -131,9 +131,9 @@ void RandomizerTabWidget::loadSettings(const std::filesystem::path& path)
 	catch (nlohmann::json::exception& e)
 	{
 		QString errorMessage
-		{ 
+		{
 			#ifdef _WIN32
-				QString::fromStdWString(std::format(L"\"{}\" is not a valid json file, ", path.wstring())) 
+				QString::fromStdWString(std::format(L"\"{}\" is not a valid json file, ", path.wstring()))
 			#else
 				QString::fromStdString(std::format("\"{}\" is not a valid json file, ", path.string()))
 			#endif

@@ -95,7 +95,7 @@ const char* FixesWidget::name() const
 }
 
 void FixesWidget::loadSettings(const nlohmann::json& json)
-{	
+{
 	for (auto& checkBox : m_qCheckBox)
 	{
 		checkBox.load(json);

@@ -1,6 +1,6 @@
 #include "RandomizerWidget.hpp"
 
-RandomizerWidget::RandomizerWidget(QWidget* parent) 
-	: QWidget(parent) 
+RandomizerWidget::RandomizerWidget(QWidget* parent)
+	: QWidget(parent)
 {
 };

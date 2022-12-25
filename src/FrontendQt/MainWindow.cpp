@@ -25,7 +25,7 @@
 #include <stdexcept>
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent)
+	: QMainWindow(parent)
 {
 	m_ui.setupUi(this);
 
@@ -39,11 +39,11 @@ MainWindow::MainWindow(QWidget* parent)
 
 	connect(m_topInfoWidget, &TopInfoWidget::buttonLoadSettingsClicked, this, &MainWindow::loadRandomizerSettings);
 	connect(m_topInfoWidget, &TopInfoWidget::buttonSaveSettingsClicked, this, &MainWindow::saveRandomizerSettings);
-    connect(m_ui.actionFileOpen, &QAction::triggered, this, &MainWindow::onFileOpen);
-    connect(m_ui.actionFileClose, &QAction::triggered, this, &MainWindow::disableUI);
-    connect(m_ui.actionFileSaveAs, &QAction::triggered, this, &MainWindow::onFileSaveAs);
-    connect(m_ui.actionFileExit, &QAction::triggered, this, &QWidget::close);
-    connect(m_ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::onHelpAbout);
+	connect(m_ui.actionFileOpen, &QAction::triggered, this, &MainWindow::onFileOpen);
+	connect(m_ui.actionFileClose, &QAction::triggered, this, &MainWindow::disableUI);
+	connect(m_ui.actionFileSaveAs, &QAction::triggered, this, &MainWindow::onFileSaveAs);
+	connect(m_ui.actionFileExit, &QAction::triggered, this, &QWidget::close);
+	connect(m_ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::onHelpAbout);
 
 	disableUI();
 }
@@ -71,7 +71,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 						throw QString{ QString::fromStdWString(std::format(L"\"{}\" is a directory", isoPath->filename().wstring())) };
 					#else
 						throw std::runtime_error{ std::format("\"{}\" is a directory", isoPath->filename().string()) };
-					#endif			
+					#endif
 				}
 				else
 				{
@@ -79,7 +79,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 						throw QString{ QString::fromStdWString(std::format(L"\"{}\" file does not exist", isoPath->filename().wstring())) };
 					#else
 						throw std::runtime_error{ std::format("\"{}\" file does not exist", isoPath->filename().string()) };
-					#endif				
+					#endif
 				}
 			}
 
@@ -89,7 +89,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 					throw QString{ QString::fromStdWString(std::format(L"\"{}\" is not a Jade Cocoon binary file", isoPath->filename().wstring())) };
 				#else
 					throw std::runtime_error{ std::format("\"{}\" is not a Jade Cocoon binary file", isoPath->filename().string()) };
-				#endif			
+				#endif
 			}
 
 			if (std::filesystem::is_directory(Path::jcrTempDirectory))
@@ -132,7 +132,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 		}
 		catch (const std::exception& e)
 		{
-			emit extractGameDialog.onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));			
+			emit extractGameDialog.onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
 		}
 		catch (const QString& e)
 		{
@@ -231,12 +231,12 @@ void MainWindow::saveRandomizerSettings()
 
 void MainWindow::onFileOpen()
 {
-    const auto filePathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Binary File", QString{}, "*.bin *.cue", nullptr)};
-    if (!filePathQStr.isEmpty())
-    {
+	const auto filePathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Binary File", QString{}, "*.bin *.cue", nullptr)};
+	if (!filePathQStr.isEmpty())
+	{
 		std::filesystem::path filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
 		enableUI(&filePath);
-    }
+	}
 }
 
 void MainWindow::onFileSaveAs()
@@ -272,7 +272,7 @@ void MainWindow::onFileSaveAs()
 			emit saveGameDialog.progressBarChanged(33);
 			emit saveGameDialog.onStateChanged("Repack game files...");
 
-			const std::filesystem::path filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };		
+			const std::filesystem::path filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };
 			JCTools::repacker(filesPath, Path::jcrTempDirectory, filesPath, std::format("{}/{}", filesPath.string(), Path::dataDirectory));
 
 			emit saveGameDialog.progressBarChanged(66);
@@ -347,8 +347,8 @@ void MainWindow::onFileSaveAs()
 
 void MainWindow::onHelpAbout()
 {
-    AboutDialog about(this);
-    about.exec();
+	AboutDialog about(this);
+	about.exec();
 }
 
 void MainWindow::dragEnterEvent(QDragEnterEvent* event)
@@ -361,7 +361,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 	const auto* mimeData{ event->mimeData() };
 
 	if (mimeData->hasUrls())
-	{	
+	{
 		std::filesystem::path path
 		{ 
 			mimeData->urls().front().toLocalFile().

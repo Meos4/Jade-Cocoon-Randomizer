@@ -42,10 +42,10 @@ struct EquipmentStatsPoint
 static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentStatsPoint& pattern)
 {
 	const s32 totalStats
-	{ 
+	{
 		pattern.hasNegativePoint() ? 
 		stats->totalStatsPoint() : 
-		stats->totalStatsPoint() - stats->totalNegativePoint()  
+		stats->totalStatsPoint() - stats->totalNegativePoint()
 	};
 
 	if (totalStats < 0)
@@ -253,7 +253,7 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game)
 	auto function
 	{ 
 		over_battle_bin->read<SetDamageEffectFromWeaponId>
-		(game.offset().file.over_battle_bin.setBattleWeaponsEffectFn) 
+		(game.offset().file.over_battle_bin.setBattleWeaponsEffectFn)
 	};
 
 	const std::array<Mips_t, 2> laPtrTable{ function[5], function[6] };
@@ -291,7 +291,7 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game)
 		{
 			animationsId[i] = WEAPON_ANIMATION_CRITICAL;
 		}
-		else if (weaponsCharacteristic[i].bonus == WEAPON_BONUS_DAMAGE_DESTROY_MP || 
+		else if (weaponsCharacteristic[i].bonus == WEAPON_BONUS_DAMAGE_DESTROY_MP ||
 			weaponsCharacteristic[i].bonus == WEAPON_BONUS_DRAIN_MP ||
 			weaponsCharacteristic[i].element == WEAPON_ELEMENT_CRITICAL)
 		{

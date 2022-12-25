@@ -82,7 +82,7 @@ void MiscWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData
 		colorToUI(m_previousThemeIndex);
 		m_isFirstEnableUI = false;
 	}
-	
+
 	setEnabled(true);
 }
 
@@ -238,9 +238,9 @@ void MiscWidget::updateHudThemes()
 void MiscWidget::updateHudColorRGBColor()
 {
 	const auto colorRGB
-	{ 
+	{
 		std::format("background-color:rgb({},{},{});", 
-			m_ui.hudColorR->value(), m_ui.hudColorG->value(), m_ui.hudColorB->value()) 
+			m_ui.hudColorR->value(), m_ui.hudColorG->value(), m_ui.hudColorB->value())
 	};
 	m_ui.hudColorLabelResult->setStyleSheet(QString::fromStdString(colorRGB));
 }
@@ -248,9 +248,9 @@ void MiscWidget::updateHudColorRGBColor()
 void MiscWidget::updateHudColorRGBSelected()
 {
 	const auto selectedRGB
-	{ 
+	{
 		std::format("background-color:rgb({},{},{});", 
-			m_ui.hudSelectedR->value(), m_ui.hudSelectedG->value(), m_ui.hudSelectedB->value()) 
+			m_ui.hudSelectedR->value(), m_ui.hudSelectedG->value(), m_ui.hudSelectedB->value())
 	};
 	m_ui.hudSelectedLabelResult->setStyleSheet(QString::fromStdString(selectedRGB));
 }
@@ -258,9 +258,9 @@ void MiscWidget::updateHudColorRGBSelected()
 void MiscWidget::updateHudColorRGBHighlight()
 {
 	const auto highlightRGB
-	{ 
+	{
 		std::format("background-color:rgb({},{},{});", 
-			m_ui.hudHighlightR->value(), m_ui.hudHighlightG->value(), m_ui.hudHighlightB->value()) 
+			m_ui.hudHighlightR->value(), m_ui.hudHighlightG->value(), m_ui.hudHighlightB->value())
 	};
 	m_ui.hudHighlightLabelResult->setStyleSheet(QString::fromStdString(highlightRGB));
 }

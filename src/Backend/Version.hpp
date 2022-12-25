@@ -14,7 +14,7 @@ enum class Version
 
 namespace NtscJ1
 {
-	// Necessary otherwise during battle PLCOM.BIN will exceed 
+	// Necessary otherwise during battle PLCOM.BIN will exceed
 	// the size of executable and overwrite the custom code
 	inline constexpr auto customCodeShift{ 0x3C78u };
 }

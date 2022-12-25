@@ -5,11 +5,11 @@
 
 int main(int argc, char** argv)
 {
-    const QApplication app{ argc, argv };
-    qApp->setStyle(QStyleFactory::create("Fusion"));
+	const QApplication app{ argc, argv };
+	qApp->setStyle(QStyleFactory::create("Fusion"));
 
-    MainWindow window;
-    window.show();
+	MainWindow window;
+	window.show();
 
-    return app.exec();
+	return app.exec();
 }

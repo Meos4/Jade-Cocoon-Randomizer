@@ -96,7 +96,7 @@ public:
 						file->write(offset, CategoryItem<u16>{ category, item });
 					}
 				}
-			}			
+			}
 		}
 	}
 private:
@@ -254,7 +254,7 @@ void Treasure::setItems(Treasure::Items state, bool randomSkeletonKeys) const
 }
 
 void Treasure::setValuables(Treasure::Valuables state, bool randomUsableValuables) const
-{	
+{
 	TreasureRandomizer treasureR{ m_game };
 
 	const auto& offsetF{ m_game->offset().file };
@@ -299,7 +299,7 @@ void Treasure::setValuables(Treasure::Valuables state, bool randomUsableValuable
 	treasureR.append({ knowledge3 }, CHAPTER_BEETLE);
 	treasureR.append({ kickleberry }, CHAPTER_DRAGONFLY);
 	treasureR.append({ knowledge4 }, CHAPTER_DRAGONFLY);
-	treasureR.append({ magicUsage1 }, CHAPTER_DRAGONFLY);	
+	treasureR.append({ magicUsage1 }, CHAPTER_DRAGONFLY);
 	treasureR.append({ magicUsage2, magicUsage2P }, CHAPTER_DRAGONFLY);
 	treasureR.append({ secretOfKilling }, CHAPTER_DRAGONFLY);
 	treasureR.append({ divineTablet, divineTabletP }, CHAPTER_SPIDER);
@@ -360,12 +360,12 @@ void Treasure::setEquipments(Treasure::Equipments state) const
 		whistler{ File::SCENE_FIELD1_FOREST4_SCE04_SBH, offsetF.scene_field1_forest4_sce04_sbh.whistler },
 		thunderBolt{ File::SCENE_FIELD2_FOREST2_SCE13_SBH, offsetF.scene_field2_forest2_sce13_sbh.thunderbolt },
 		ironHeadband{ File::SCENE_FIELD1_FOREST1_SCE02_SBH, offsetF.scene_field1_forest1_sce02_sbh.chest_metaMugwort + 0x10 },
-		silverCrown{ File::SCENE_FIELD1_FOREST2_SCE12_SBH, offsetF.scene_field1_forest2_sce12_sbh.chest_agnisSeal1 + 0x10 },	
+		silverCrown{ File::SCENE_FIELD1_FOREST2_SCE12_SBH, offsetF.scene_field1_forest2_sce12_sbh.chest_agnisSeal1 + 0x10 },
 		stoneChoker{ File::SCENE_FIELD1_FOREST3_SCE05_SBH, offsetF.scene_field1_forest3_sce05_sbh.chest_stoneChoker },
 		stoneChokerP{ File::SCENE_FIELD1_FOREST3_SCE26_SBH, offsetF.scene_field1_forest3_sce26_sbh.chest_stoneChoker },
 		yellowBead{ File::SCENE_FIELD1_FOREST3_SCE17_SBH, offsetF.scene_field1_forest3_sce17_sbh.chest_yellowBead },
 		yellowBeadP{ File::SCENE_FIELD1_FOREST3_SCE38_SBH, offsetF.scene_field1_forest3_sce38_sbh.chest_yellowBead },
-		sparrowRuff{ File::SCENE_FIELD1_FOREST4_SCE08_SBH, offsetF.scene_field1_forest4_sce08_sbh.chest_urvysBlessing + 8 },	
+		sparrowRuff{ File::SCENE_FIELD1_FOREST4_SCE08_SBH, offsetF.scene_field1_forest4_sce08_sbh.chest_urvysBlessing + 8 },
 		hawkRuff{ File::SCENE_FIELD2_FOREST1_SCE02_SBH, offsetF.scene_field2_forest1_sce02_sbh.chest_varysBlessing + 0x10 },
 		nagiBelt{ File::SCENE_PSYRUS1_LOOKOUT_SCE01_SBH, offsetF.scene_psyrus1_lookout_sce01_sbh.gift_nagiBelt },
 		lifeStealer{ File::SCENE_PSYRUS1_KAJIYA_SCE00B_SBH, offsetF.scene_psyrus1_kajiya_sce00b_sbh.gift_lifeStealer },

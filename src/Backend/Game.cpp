@@ -15,7 +15,7 @@
 #include <stdexcept>
 #include <type_traits>
 #include <utility>
-	
+
 const std::unordered_map<Version, Game::VersionSerialText> Game::s_versionSerial
 {
 	{ Version::NtscJ1,	{ "NTSC-J v1", "SLPS-01729" } },
@@ -41,7 +41,7 @@ std::unique_ptr<RawFile> Game::file(s32 file) const
 	if (!std::filesystem::is_regular_file(filePath))
 	{
 		throw std::runtime_error
-		{ 
+		{
 			std::format("\"{}\" file doesn't exist in \"{}\"", filePath.filename().string(), filePath.parent_path().string())
 		};
 	}
@@ -80,11 +80,11 @@ void Game::expandExecutable(u32 toAdd) const
 	executable.write(0x1C, newExecutableSize - Game::sectorSize);
 	std::filesystem::resize_file(m_exePath, newExecutableSize);
 
-	auto 
+	auto
 		luiBeginHeap{ executable.read<Mips_t>(offset().file.executable.mainFn + 0x34) },
 		addiuBeginHeap{ executable.read<Mips_t>(offset().file.executable.mainFn + 0x38) };
 
-	const u32 
+	const u32
 		heapShift{ isVersion(Version::NtscJ1) ? toAdd - NtscJ1::customCodeShift : toAdd },
 		newBeginHeap{ (luiBeginHeap << 16) + static_cast<s16>(addiuBeginHeap) + heapShift };
 
@@ -101,7 +101,7 @@ void Game::expandExecutable(u32 toAdd) const
 Game::CustomCodeOffset Game::customCodeOffset(u32 size)
 {
 	const Game::CustomCodeOffset ccOffset
-	{ 
+	{
 		.file = offset().file.executable.cc_begin + m_ccShift,
 		.game = offset().game.cc_begin + m_ccShift
 	};
@@ -166,7 +166,7 @@ bool Game::generateCue(const std::filesystem::path& isoPath)
 		return true;
 	}
 	catch ([[maybe_unused]] const std::exception&) // Using some chars catches an exception
-	{	
+	{
 		if (std::filesystem::exists(cue))
 		{
 			std::filesystem::remove(cue);

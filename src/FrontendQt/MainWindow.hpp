@@ -16,26 +16,26 @@ class QDropEvent;
 
 class MainWindow final : public QMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 public:
-    MainWindow(QWidget* parent = nullptr);
+	MainWindow(QWidget* parent = nullptr);
 
-    void enableUI(std::filesystem::path* isoPath);
-    void disableUI();
+	void enableUI(std::filesystem::path* isoPath);
+	void disableUI();
 public Q_SLOTS:
-    void loadRandomizerSettings();
-    void saveRandomizerSettings();
-    void onFileOpen();
-    void onFileSaveAs();
-    void onHelpAbout();
+	void loadRandomizerSettings();
+	void saveRandomizerSettings();
+	void onFileOpen();
+	void onFileSaveAs();
+	void onHelpAbout();
 protected:
-    void dragEnterEvent(QDragEnterEvent* event) override;
-    void dropEvent(QDropEvent* event) override;
+	void dragEnterEvent(QDragEnterEvent* event) override;
+	void dropEvent(QDropEvent* event) override;
 private:
-    Ui::MainWindow m_ui;
+	Ui::MainWindow m_ui;
 
-    TopInfoWidget* m_topInfoWidget;
-    RandomizerTabWidget* m_randomizerTabWidget;
+	TopInfoWidget* m_topInfoWidget;
+	RandomizerTabWidget* m_randomizerTabWidget;
 
-    std::shared_ptr<Game> m_game;
+	std::shared_ptr<Game> m_game;
 };
