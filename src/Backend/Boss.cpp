@@ -297,7 +297,7 @@ void Boss::setSpecialMagic() const
 	// Wind Boss
 
 	// Kikinak
-	// Special:	Fang (Air), Claw (Neutral), Tail (Neutral)
+	// Special: Fang (Air), Claw (Neutral), Tail (Neutral)
 	// Magic:
 
 	static constexpr auto kikinakId{ ID_KIKINAK - ID_DREAM_MAN };
@@ -308,7 +308,7 @@ void Boss::setSpecialMagic() const
 
 	// Masked Boy
 	// Special: Fang (Neutral), Claw (Taunt), Tail (Neutral)
-	// Magic: 
+	// Magic:
 	// Note:
 
 	static constexpr auto maskedBoyId{ ID_MASKED_BOY - ID_DREAM_MAN };
