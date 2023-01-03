@@ -16,6 +16,7 @@
 #include <cstring>
 #include <type_traits>
 #include <ranges>
+#include <unordered_set>
 #include <utility>
 
 struct DamageModifiers
@@ -432,6 +433,12 @@ void Boss::setAppearance(Boss::Appearance state) const
 		MODEL_NAGK, { File::MODEL_NAGK_MDL, 0x2248 }
 	};
 
+	const std::unordered_set<Model_t> portraits
+	{
+		MODEL_YUME, MODEL_BSGE, MODEL_BSFE, MODEL_BSWE,
+		MODEL_KIKI, MODEL_LUI_A, MODEL_NAGK
+	};
+
 	static constexpr ModelFileOffset mfoCushidra{ MODEL_BSZZ, { File::MODEL_BSZZ_MDL, 0x1024 } };
 
 	auto executable{ m_game->executable() };
@@ -460,8 +467,15 @@ void Boss::setAppearance(Boss::Appearance state) const
 		{
 			if (elements[i] != ELEMENT_NONE)
 			{
+				const auto file{ m_game->file(mfo[i].fileOffset.first) };
 				const auto rotation{ static_cast<s32>(modelsRotation.at(mfo[i].model).rotation.at(elements[i])) * 2 };
-				rotate(m_game->file(mfo[i].fileOffset.first).get(), mfo[i].fileOffset.second, rotation);
+
+				rotate(file.get(), mfo[i].fileOffset.second, rotation);
+
+				if (portraits.contains(mfo[i].model))
+				{
+					rotate(file.get(), mfo[i].fileOffset.second - 0x1220, rotation);
+				}
 			}
 		}
 
@@ -489,7 +503,15 @@ void Boss::setAppearance(Boss::Appearance state) const
 		// Boss
 		for (const auto& [model, fileoffset] : mfo)
 		{
-			rotate(m_game->file(fileoffset.first).get(), fileoffset.second, Random::get().generate(JCUtility::clutRotationLimit));
+			const auto file{ m_game->file(fileoffset.first) };
+			const auto rng{ Random::get().generate(JCUtility::clutRotationLimit) };
+
+			rotate(file.get(), fileoffset.second, rng);
+
+			if (portraits.contains(model))
+			{
+				rotate(file.get(), fileoffset.second - 0x1220, rng);
+			}
 		}
 
 		// Goat
