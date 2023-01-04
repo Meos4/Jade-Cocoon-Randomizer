@@ -74,23 +74,18 @@ void Forest::setPaletteColor() const
 		(mono(offsets), ...);
 	};
 
-	auto rotateBPP16 = [](RawFile* file, s32 rotation, auto... offsets)
+	auto rotateBPP16 = [](RawFile* file, s32 rotation, u32 offset)
 	{
-		auto mono = [&file, &rotation](auto offset)
-		{
-			static constexpr auto sizeTimHeader{ 0x14u };
-			const u32 clutOffset{ offset + sizeTimHeader };
+		static constexpr auto sizeTimHeader{ 0x14u };
+		const u32 clutOffset{ offset + sizeTimHeader };
 
-			const auto clutSize{ file->read<u32>(offset + 8) - 0xC };
-			std::vector<u16> clut(clutSize / sizeof(u16));
-			auto* clutPtr{ clut.data() };
+		const auto clutSize{ file->read<u32>(offset + 8) - 0xC };
+		std::vector<u16> clut(clutSize / sizeof(u16));
+		auto* clutPtr{ clut.data() };
 
-			file->read(clutOffset, clutPtr, clutSize);
-			JCUtility::rotateCLUT(clut, rotation);
-			file->write(clutOffset, *clutPtr, clutSize);
-		};
-
-		(mono(offsets), ...);
+		file->read(clutOffset, clutPtr, clutSize);
+		JCUtility::rotateCLUT(clut, rotation);
+		file->write(clutOffset, *clutPtr, clutSize);
 	};
 
 	auto rng{ Random::get().generate(JCUtility::clutRotationLimit) };
