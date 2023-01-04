@@ -63,11 +63,11 @@ void Forest::setPaletteColor() const
 			for (u16 i{}; i < nbClut; ++i)
 			{
 				static constexpr auto clutSize{ 0x100u }, sizeTimHeader{ 0x14u };
-				const u32 newOffset{ offset + sizeTimHeader + clutSize * sizeof(u16) * i };
+				const u32 clutOffset{ offset + sizeTimHeader + clutSize * sizeof(u16) * i };
 
-				auto clut{ file->read<std::array<u16, clutSize>>(newOffset) };
+				auto clut{ file->read<std::array<u16, clutSize>>(clutOffset) };
 				JCUtility::rotateCLUT(clut, rotation);
-				file->write(newOffset, clut);
+				file->write(clutOffset, clut);
 			}
 		};
 
@@ -79,15 +79,15 @@ void Forest::setPaletteColor() const
 		auto mono = [&file, &rotation](auto offset)
 		{
 			static constexpr auto sizeTimHeader{ 0x14u };
-			const u32 newOffset{ offset + sizeTimHeader };
+			const u32 clutOffset{ offset + sizeTimHeader };
 
 			const auto clutSize{ file->read<u32>(offset + 8) - 0xC };
 			std::vector<u16> clut(clutSize / sizeof(u16));
 			auto* clutPtr{ clut.data() };
 
-			file->read(newOffset, clutPtr, clutSize);
+			file->read(clutOffset, clutPtr, clutSize);
 			JCUtility::rotateCLUT(clut, rotation);
-			file->write(newOffset, *clutPtr, clutSize);
+			file->write(clutOffset, *clutPtr, clutSize);
 		};
 
 		(mono(offsets), ...);
