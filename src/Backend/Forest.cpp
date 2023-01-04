@@ -74,11 +74,37 @@ void Forest::setPaletteColor() const
 		(mono(offsets), ...);
 	};
 
+	auto rotateBPP16 = [](RawFile* file, s32 rotation, auto... offsets)
+	{
+		auto mono = [&file, &rotation](auto offset)
+		{
+			static constexpr auto sizeTimHeader{ 0x14u };
+			const u32 newOffset{ offset + sizeTimHeader };
+
+			const auto clutSize{ file->read<u32>(offset + 8) - 0xC };
+			std::vector<u16> clut(clutSize / sizeof(u16));
+			auto* clutPtr{ clut.data() };
+
+			file->read(newOffset, clutPtr, clutSize);
+			JCUtility::rotateCLUT(clut, rotation);
+			file->write(newOffset, *clutPtr, clutSize);
+		};
+
+		(mono(offsets), ...);
+	};
+
 	auto rng{ Random::get().generate(JCUtility::clutRotationLimit) };
 
 	// Gate
-	const auto scene_field1_gate_sce00_sce{ m_game->file(File::SCENE_FIELD1_GATE_SCE00_SCE) };
-	const auto scene_field1_gate_sce06_sce{ m_game->file(File::SCENE_FIELD1_GATE_SCE06_SCE) };
+	const auto 
+		scene_field1_gate_sce00_sce{ m_game->file(File::SCENE_FIELD1_GATE_SCE00_SCE) },
+		scene_field1_gate_sce06_sce{ m_game->file(File::SCENE_FIELD1_GATE_SCE06_SCE) };
+
+	// Preview
+	const auto 
+		whole_parell_reduct2_tiy{ m_game->file(File::WHOLE_PARELL_REDUCT2_TIY) },
+		whole_parell_reduct3_tiy{ m_game->file(File::WHOLE_PARELL_REDUCT3_TIY) },
+		whole_parell_reduct4_tiy{ m_game->file(File::WHOLE_PARELL_REDUCT4_TIY) };
 
 	// Forest 1
 	rotate(m_game->file(File::SCENE_FIELD1_FOREST1_SCE00_SCE).get(), rng, 0x130, 0x3191C, 0x4D124);
@@ -103,6 +129,12 @@ void Forest::setPaletteColor() const
 
 	rotate(m_game->file(File::SCENE_OTHER_DREAM_SCE00_SCE).get(), rng, 0x11C, 0x1D11C, 0x3A11C, 0x5711C, 0x7411C, 0x9111C);
 	rotate(m_game->file(File::SCENE_OTHER_DREAM_SCE01_SCE).get(), rng, 0x11C, 0x1D11C, 0x3A11C);
+
+	rotateBPP16(m_game->file(File::WHOLE_PARELL_TAMAMUSI_TIY).get(), rng, 8);
+	rotateBPP16(m_game->file(File::WHOLE_PARELL_REDUCT1_TIY).get(), rng, 0x1858);
+	rotateBPP16(whole_parell_reduct2_tiy.get(), rng, 0x3008);
+	rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x5FF4);
+	rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xEFA8);
 
 	// Forest 2
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
@@ -133,6 +165,11 @@ void Forest::setPaletteColor() const
 
 	rotate(scene_field1_gate_sce00_sce.get(), rng, 0xB011C);
 	rotate(scene_field1_gate_sce06_sce.get(), rng, 0xB011C);
+
+	rotateBPP16(m_game->file(File::WHOLE_PARELL_TOMBO_TIY).get(), rng, 8);
+	rotateBPP16(whole_parell_reduct2_tiy.get(), rng, 0x24);
+	rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x2C);
+	rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0x5FFC);
 
 	// Forest 3
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
@@ -194,6 +231,10 @@ void Forest::setPaletteColor() const
 	rotate(scene_field1_gate_sce00_sce.get(), rng, 0x9591C);
 	rotate(scene_field1_gate_sce06_sce.get(), rng, 0x9591C);
 
+	rotateBPP16(m_game->file(File::WHOLE_PARELL_KUMO_TIY).get(), rng, 8);
+	rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x3010);
+	rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0x8FE0);
+
 	// Forest 4
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
 
@@ -217,6 +258,9 @@ void Forest::setPaletteColor() const
 
 	rotate(scene_field1_gate_sce00_sce.get(), rng, 0xC911C);
 	rotate(scene_field1_gate_sce06_sce.get(), rng, 0xC911C);
+
+	rotateBPP16(m_game->file(File::WHOLE_PARELL_GA_TIY).get(), rng, 8);
+	rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xBFC4);
 
 	// Forest 1-2
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
