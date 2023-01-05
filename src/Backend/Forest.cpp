@@ -254,6 +254,8 @@ void Forest::setPaletteColor() const
 	rotate(scene_field1_gate_sce00_sce.get(), rng, 0xC911C);
 	rotate(scene_field1_gate_sce06_sce.get(), rng, 0xC911C);
 
+	rotate(m_game->file(File::SCENE_FIELD1_FOREST4_SCE12_SBH).get(), rng, 0x25498, 0x2B0B8, 0x2D2D8, 0x300F8, 0x30718);
+
 	rotateBPP16(m_game->file(File::WHOLE_PARELL_GA_TIY).get(), rng, 8);
 	rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xBFC4);
 
