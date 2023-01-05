@@ -9,7 +9,8 @@ enum class Version
 	PalFr,
 	PalDe,
 	PalEs,
-	PalIt
+	PalIt,
+	Count
 };
 
 namespace NtscJ1
