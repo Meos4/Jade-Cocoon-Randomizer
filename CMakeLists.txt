@@ -86,6 +86,8 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/SharedData.hpp
     ${BACKEND_DIR}/Shop.cpp
     ${BACKEND_DIR}/Shop.hpp
+    ${BACKEND_DIR}/Tim.cpp
+    ${BACKEND_DIR}/Tim.hpp
     ${BACKEND_DIR}/Treasure.cpp
     ${BACKEND_DIR}/Treasure.hpp
     ${BACKEND_DIR}/Utility.cpp
