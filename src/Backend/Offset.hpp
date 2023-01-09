@@ -499,7 +499,8 @@ public:
 
 		struct
 		{
-			u32 tableOfVoices;
+			u32 tableOfVoices,
+				kemuelTempleGate;
 		} scene_field1_forest4_sce12_sbh;
 
 		struct

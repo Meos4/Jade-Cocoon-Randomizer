@@ -436,19 +436,7 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(scene_field1_gate_sce00_sce.get(), rng, 0xC911C);
 	Tim::rotateBPP8(scene_field1_gate_sce06_sce.get(), rng, 0xC911C);
 
-	static constexpr std::array<u32, static_cast<std::size_t>(Version::Count)> kemuelTempleGateVersionOffset
-	{
-		0x25334, // NtscJ1
-		0x25350, // NtscJ2
-		0x25498, // NtscU
-		0x25498, // PalEn
-		0x254F4, // PalFr
-		0x25504, // PalDe
-		0x25498, // PalEs
-		0x254B8  // PalIt
-	};
-
-	const auto ktGateOffset{ kemuelTempleGateVersionOffset[static_cast<std::size_t>(m_game->version())] };
+	const auto ktGateOffset{ m_game->offset().file.scene_field1_forest4_sce12_sbh.kemuelTempleGate };
 
 	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD1_FOREST4_SCE12_SBH).get(), rng,
 		ktGateOffset,

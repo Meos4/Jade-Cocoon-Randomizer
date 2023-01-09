@@ -409,6 +409,7 @@ fileNtscJ1
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B60,
+		.kemuelTempleGate = 0x00025334
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -1122,6 +1123,7 @@ fileNtscJ2
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B7C,
+		.kemuelTempleGate = 0x00025350
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -1835,6 +1837,7 @@ fileNtscU
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B80,
+		.kemuelTempleGate = 0x00025498
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -2548,6 +2551,7 @@ filePalEn
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B80,
+		.kemuelTempleGate = 0x00025498
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -3261,6 +3265,7 @@ filePalFr
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B80,
+		.kemuelTempleGate = 0x000254F4
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -3974,6 +3979,7 @@ filePalDe
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B80,
+		.kemuelTempleGate = 0x00025504
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -4687,6 +4693,7 @@ filePalEs
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B80,
+		.kemuelTempleGate = 0x00025498
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
@@ -5401,6 +5408,7 @@ filePalIt
 	.scene_field1_forest4_sce12_sbh
 	{
 		.tableOfVoices = 0x00001B80,
+		.kemuelTempleGate = 0x000254B8
 	},
 	.scene_field1_forest4_sce14_sbh
 	{
