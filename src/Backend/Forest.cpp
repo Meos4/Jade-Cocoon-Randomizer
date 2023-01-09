@@ -103,6 +103,8 @@ void Forest::setPaletteColor() const
 
 	auto rng{ Random::get().generate(JCUtility::clutRotationLimit) };
 
+	static constexpr auto sizeLimitBPP16{ 0x25800u };
+
 	// Gate
 	const auto 
 		scene_field1_gate_sce00_sce{ m_game->file(File::SCENE_FIELD1_GATE_SCE00_SCE) },
@@ -140,11 +142,11 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(m_game->file(File::SCENE_OTHER_DREAM_SCE00_SCE).get(), rng, 0x11C, 0x1D11C, 0x3A11C, 0x5711C, 0x7411C, 0x9111C);
 	Tim::rotateBPP8(m_game->file(File::SCENE_OTHER_DREAM_SCE01_SCE).get(), rng, 0x11C, 0x1D11C, 0x3A11C);
 
-	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_TAMAMUSI_TIY).get(), rng, 8);
-	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_REDUCT1_TIY).get(), rng, 0x1858);
-	Tim::rotateBPP16(whole_parell_reduct2_tiy.get(), rng, 0x3008);
-	Tim::rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x5FF4);
-	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xEFA8);
+	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_TAMAMUSI_TIY).get(), rng, 8, sizeLimitBPP16);
+	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_REDUCT1_TIY).get(), rng, 0x1858, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct2_tiy.get(), rng, 0x3008, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x5FF4, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xEFA8, sizeLimitBPP16);
 
 	rotateRGBShade(scene_field1_forest1_sce02_sce.get(), (rng + 180) % JCUtility::clutRotationLimit, 0x30, 0x2A030, 0x4C830, 0x6F030);
 
@@ -196,10 +198,10 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(scene_field1_gate_sce00_sce.get(), rng, 0xB011C);
 	Tim::rotateBPP8(scene_field1_gate_sce06_sce.get(), rng, 0xB011C);
 
-	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_TOMBO_TIY).get(), rng, 8);
-	Tim::rotateBPP16(whole_parell_reduct2_tiy.get(), rng, 0x24);
-	Tim::rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x2C);
-	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0x5FFC);
+	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_TOMBO_TIY).get(), rng, 8, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct2_tiy.get(), rng, 0x24, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x2C, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0x5FFC, sizeLimitBPP16);
 
 	const auto rotationShadeForest2{ (rng + 300) % JCUtility::clutRotationLimit };
 
@@ -329,9 +331,9 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(scene_field1_gate_sce00_sce.get(), rng, 0x9591C);
 	Tim::rotateBPP8(scene_field1_gate_sce06_sce.get(), rng, 0x9591C);
 
-	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_KUMO_TIY).get(), rng, 8);
-	Tim::rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x3010);
-	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0x8FE0);
+	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_KUMO_TIY).get(), rng, 8, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct3_tiy.get(), rng, 0x3010, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0x8FE0, sizeLimitBPP16);
 
 	static constexpr std::array<u8, 3> rgbAddForest3_2{ 28, 0, 0 };
 
@@ -445,8 +447,8 @@ void Forest::setPaletteColor() const
 		ktGateOffset + 0xAC60,
 		ktGateOffset + 0xB280);
 
-	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_GA_TIY).get(), rng, 8);
-	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xBFC4);
+	Tim::rotateBPP16(m_game->file(File::WHOLE_PARELL_GA_TIY).get(), rng, 8, sizeLimitBPP16);
+	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xBFC4, sizeLimitBPP16);
 
 	// Forest 1-2
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
