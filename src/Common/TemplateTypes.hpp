@@ -31,3 +31,6 @@ concept Arithmetic = std::is_arithmetic_v<T>;
 
 template <typename T>
 concept Pointer = std::is_pointer_v<T>;
+
+template <typename T>
+concept LValueRef = std::is_lvalue_reference_v<T>;
