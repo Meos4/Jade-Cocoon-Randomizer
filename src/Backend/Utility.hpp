@@ -6,6 +6,7 @@
 #include "JCExe.hpp"
 
 #include <limits>
+#include <span>
 #include <stdexcept>
 
 namespace Utility
@@ -54,4 +55,23 @@ namespace Utility
 		}
 		return 0;
 	};
+
+	template <typename T>
+	constexpr bool areSame(std::span<const T> sequence)
+	{
+		if (sequence.empty())
+		{
+			return false;
+		}
+
+		for (std::size_t i{ 1 }; i < sequence.size(); ++i)
+		{
+			if (sequence[0] != sequence[i])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
 }
