@@ -478,8 +478,7 @@ void Forest::setPaletteColor() const
 		scene_field1_forest4_sce08_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE08_SCE) },
 		scene_field1_forest4_sce09_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE09_SCE) },
 		scene_field1_forest4_sce10_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE10_SCE) },
-		scene_field1_forest4_sce11_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE11_SCE) },
-		scene_field1_forest4_sce12_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE12_SCE) };
+		scene_field1_forest4_sce11_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE11_SCE) };
 
 	Tim::rotateBPP8(scene_field1_forest4_sce00_sce.get(), rng, 0x128, 0x2791C);
 	Tim::rotateBPP8(scene_field1_forest4_sce01_sce.get(), rng, 0x128, 0x22920, 0x46124, 0x60928);
@@ -493,7 +492,7 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(scene_field1_forest4_sce09_sce.get(), rng, 0x11C, 0x1B124, 0x32920, 0x5612C, 0x8B128, 0xB9120, 0xDB128, 0xFC118);
 	Tim::rotateBPP8(scene_field1_forest4_sce10_sce.get(), rng, 0x124, 0x1E11C, 0x38920, 0x55124);
 	Tim::rotateBPP8(scene_field1_forest4_sce11_sce.get(), rng, 0x124, 0x2B124);
-	Tim::rotateBPP8(scene_field1_forest4_sce12_sce.get(), rng, 0x11C, 0x1491C, 0x2811C, 0x35120, 0x4491C, 0x5911C, 0x6111C, 0x7591C, 0x89120, 0x98918, 0x9F11C, 0xA6918, 0xB291C, 0xBF920);
+	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD1_FOREST4_SCE12_SCE).get(), rng, 0x11C, 0x1491C, 0x2811C, 0x35120, 0x4491C, 0x5911C, 0x6111C, 0x7591C, 0x89120, 0x98918, 0x9F11C, 0xA6918, 0xB291C, 0xBF920);
 
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFLD20_EFD).get(), rng, 0x3EBC, 0x98DC, 0xDAFC, 0xF51C, 0x10F3C, 0x1395C, 0x15F7C);
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFLD21_EFD).get(), rng, 0x3D6C, 0x7F8C, 0xC1AC, 0xD3CC, 0xEDEC, 0x1080C, 0x13A2C, 0x1604C);
@@ -533,22 +532,47 @@ void Forest::setPaletteColor() const
 	// Forest 1-2
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
 
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE00_SCE).get(), rng, 0x130, 0x3111C, 0x4C124);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE01_SCE).get(), rng, 0x12C, 0x1CFCC, 0x24924, 0x4E924, 0x72928, 0x92920);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE02_SCE).get(), rng, 0x12C, 0x2A128, 0x4C928, 0x6F11C);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE03_SCE).get(), rng, 0x128, 0x20920, 0x3C920, 0x5A924, 0x7811C, 0x8D924);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE04_SCE).get(), rng, 0x12C, 0x2F130, 0x67124);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE05_SCE).get(), rng, 0x128, 0x2612C, 0x55128);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE06_SCE).get(), rng, 0x124, 0x26120, 0x49928, 0x6A91C);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE07_SCE).get(), rng, 0x134, 0x39120, 0x56124);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE08_SCE).get(), rng, 0x124, 0x18924);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE09_SCE).get(), rng, 0x124, 0x2412C, 0x52930);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD2_FOREST1_SCE10_SCE).get(), rng, 0x128);
+	const auto
+		scene_field2_forest1_sce00_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE00_SCE) },
+		scene_field2_forest1_sce01_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE01_SCE) },
+		scene_field2_forest1_sce02_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE02_SCE) },
+		scene_field2_forest1_sce03_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE03_SCE) },
+		scene_field2_forest1_sce04_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE04_SCE) },
+		scene_field2_forest1_sce05_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE05_SCE) },
+		scene_field2_forest1_sce06_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE06_SCE) },
+		scene_field2_forest1_sce07_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE07_SCE) },
+		scene_field2_forest1_sce08_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE08_SCE) },
+		scene_field2_forest1_sce09_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE09_SCE) },
+		scene_field2_forest1_sce10_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE10_SCE) };
+
+	Tim::rotateBPP8(scene_field2_forest1_sce00_sce.get(), rng, 0x130, 0x3111C, 0x4C124);
+	Tim::rotateBPP8(scene_field2_forest1_sce01_sce.get(), rng, 0x12C, 0x1CFCC, 0x24924, 0x4E924, 0x72928, 0x92920);
+	Tim::rotateBPP8(scene_field2_forest1_sce02_sce.get(), rng, 0x12C, 0x2A128, 0x4C928, 0x6F11C);
+	Tim::rotateBPP8(scene_field2_forest1_sce03_sce.get(), rng, 0x128, 0x20920, 0x3C920, 0x5A924, 0x7811C, 0x8D924);
+	Tim::rotateBPP8(scene_field2_forest1_sce04_sce.get(), rng, 0x12C, 0x2F130, 0x67124);
+	Tim::rotateBPP8(scene_field2_forest1_sce05_sce.get(), rng, 0x128, 0x2612C, 0x55128);
+	Tim::rotateBPP8(scene_field2_forest1_sce06_sce.get(), rng, 0x124, 0x26120, 0x49928, 0x6A91C);
+	Tim::rotateBPP8(scene_field2_forest1_sce07_sce.get(), rng, 0x134, 0x39120, 0x56124);
+	Tim::rotateBPP8(scene_field2_forest1_sce08_sce.get(), rng, 0x124, 0x18924);
+	Tim::rotateBPP8(scene_field2_forest1_sce09_sce.get(), rng, 0x124, 0x2412C, 0x52930);
+	Tim::rotateBPP8(scene_field2_forest1_sce10_sce.get(), rng, 0x128);
 
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFIELDZ_EFD).get(), rng, 0x4054, 0x8274, 0xA494, 0xB8B4, 0xE2D4, 0x10CF4, 0x12F14, 0x13D34, 0x15F54);
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFLD2AZ_EFD).get(), rng, 0x3C9C, 0x7EBC, 0x90DC, 0xB0FC, 0xD11C, 0xE53C, 0x1075C, 0x11B7C, 0x13D9C, 0x15FBC);
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFLD2BZ_EFD).get(), rng, 0x3F74, 0x8194, 0x93B4, 0xB3D4, 0xD3F4, 0xE814, 0x10A34, 0x11E54, 0x14074, 0x16294);
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFLD15_EFD).get(), rng, 0x415C, 0x837C, 0x101A4, 0x115C4, 0x129E4, 0x13804, 0x16224);
+
+	rotateRGBLight(scene_field2_forest1_sce00_sce.get(), rng, 0x3C, 0x3103C, 0x4C03C);
+	rotateRGBLight(scene_field2_forest1_sce01_sce.get(), rng, 0x3C, 0x2483C, 0x4E83C, 0x7283C, 0x9283C);
+	rotateRGBLight(scene_field2_forest1_sce02_sce.get(), rng, 0x3C, 0x2A03C, 0x4C83C, 0x6F03C);
+	rotateRGBLight(scene_field2_forest1_sce03_sce.get(), rng, 0x3C, 0x2083C, 0x3C83C, 0x5A83C, 0x7803C, 0x8D83C);
+	rotateRGBLight(scene_field2_forest1_sce04_sce.get(), rng, 0x3C, 0x2F03C, 0x6703C);
+	rotateRGBLight(scene_field2_forest1_sce05_sce.get(), rng, 0x3C, 0x2603C, 0x5503C);
+	rotateRGBLight(scene_field2_forest1_sce06_sce.get(), rng, 0x3C, 0x2603C, 0x4983C, 0x6A83C);
+	rotateRGBLight(scene_field2_forest1_sce07_sce.get(), rng, 0x3C, 0x3903C, 0x5603C);
+	rotateRGBLight(scene_field2_forest1_sce08_sce.get(), rng, 0x3C, 0x1883C);
+	rotateRGBLight(scene_field2_forest1_sce09_sce.get(), rng, 0x3C, 0x2403C, 0x5283C);
+	rotateRGBLight(scene_field2_forest1_sce10_sce.get(), rng, 0x3C);
 
 	// Forest 2-2
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
