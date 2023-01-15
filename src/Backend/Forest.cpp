@@ -233,8 +233,6 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(scene_field1_forest2_sce12_sce.get(), rng, 0x120, 0x24924, 0x3E124, 0x57924);
 	Tim::rotateBPP8(scene_field1_forest2_sce13_sce.get(), rng, 0x128, 0x20920, 0x4292C, 0x71920);
 	Tim::rotateBPP8(scene_field1_forest2_sce14_sce.get(), rng, 0x134);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD1_FOREST2_SCE15_SCE).get(), rng, 0x120, 0x1D124, 0x40924);
-	Tim::rotateBPP8(m_game->file(File::SCENE_FIELD1_FOREST2_SCE16_SCE).get(), rng, 0x120, 0x1D124, 0x40924);
 	Tim::rotateBPP8(scene_field1_forest2_sce17_sce.get(), rng, 0x130);
 
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFIELD3_EFD).get(), rng, 0x3E7C, 0x809C, 0xC31C, 0xD73C, 0xEB5C, 0x10B7C, 0x1359C, 0x15FBC);
@@ -593,8 +591,6 @@ void Forest::setPaletteColor() const
 		scene_field2_forest2_sce12_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE12_SCE) },
 		scene_field2_forest2_sce13_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE13_SCE) },
 		scene_field2_forest2_sce14_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE14_SCE) },
-		scene_field2_forest2_sce15_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE15_SCE) },
-		scene_field2_forest2_sce16_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE16_SCE) },
 		scene_field2_forest2_sce17_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE17_SCE) };
 
 	Tim::rotateBPP8(scene_field2_forest2_sce00_sce.get(), rng, 0x120, 0x1D924, 0x41924);
@@ -612,8 +608,6 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP8(scene_field2_forest2_sce12_sce.get(), rng, 0x120, 0x24924, 0x3E124, 0x57924);
 	Tim::rotateBPP8(scene_field2_forest2_sce13_sce.get(), rng, 0x128, 0x21920, 0x3E12C, 0x6E120);
 	Tim::rotateBPP8(scene_field2_forest2_sce14_sce.get(), rng, 0x12C);
-	Tim::rotateBPP8(scene_field2_forest2_sce15_sce.get(), rng, 0x120, 0x1D124, 0x40924);
-	Tim::rotateBPP8(scene_field2_forest2_sce16_sce.get(), rng, 0x120, 0x1D124, 0x40924);
 	Tim::rotateBPP8(scene_field2_forest2_sce17_sce.get(), rng, 0x130);
 
 	Tim::rotateBPP8(m_game->file(File::EFFECT_BTFLD03Z_EFD).get(), rng, 0x3E7C, 0x809C, 0xC31C, 0xD73C, 0xEB5C, 0x10B7C, 0x1359C, 0x15FBC);
