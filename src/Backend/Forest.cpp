@@ -550,15 +550,15 @@ void Forest::setPaletteColor() const
 	Tim::rotateBPP16(whole_parell_reduct4_tiy.get(), rng, 0xBFC4, sizeLimitBPP16);
 
 	rotateLight(scene_field1_forest4_sce00_sce.get(), rng, 0x3C, 0x2783C);
-	rotateLight(scene_field1_forest4_sce01_sce.get(), rng, 0x3C, 0x2283C, 0x4603C, 0x6083C);
+	rotateLight.operator()<0, 0, 0>(scene_field1_forest4_sce01_sce.get(), rng, 0x3C, 0x2283C, 0x4603C, 0x6083C);
 	rotateLight(scene_field1_forest4_sce02_sce.get(), rng, 0x3C, 0x3783C);
-	rotateLight(scene_field1_forest4_sce03_sce.get(), rng, 0x3C, 0x2A03C, 0x4B03C, 0x6583C);
-	rotateLight(scene_field1_forest4_sce04_sce.get(), rng, 0x3C, 0x1B03C);
+	rotateLight.operator()<0>(scene_field1_forest4_sce03_sce.get(), rng, 0x3C, 0x2A03C, 0x4B03C, 0x6583C);
+	rotateLight.operator()<0>(scene_field1_forest4_sce04_sce.get(), rng, 0x3C, 0x1B03C);
 	rotateLight(scene_field1_forest4_sce05_sce.get(), rng, 0x3C);
-	rotateLight(scene_field1_forest4_sce06_sce.get(), rng, 0x3C, 0x3583C);
+	rotateLight.operator()<330>(scene_field1_forest4_sce06_sce.get(), rng, 0x3C, 0x3583C);
 	rotateLight(scene_field1_forest4_sce07_sce.get(), rng, 0x3C, 0x3683C, 0x5783C);
 	rotateLight(scene_field1_forest4_sce08_sce.get(), rng, 0x3C, 0x3883C, 0x6C03C);
-	rotateLight(scene_field1_forest4_sce09_sce.get(), rng, 0x3C, 0x1B03C, 0x3283C, 0x5603C, 0x8B03C, 0xB903C, 0xDB03C, 0xFC03C);
+	rotateLight.operator()<180>(scene_field1_forest4_sce09_sce.get(), rng, 0x3C, 0x1B03C, 0x3283C, 0x5603C, 0x8B03C, 0xB903C, 0xDB03C, 0xFC03C);
 	rotateLight(scene_field1_forest4_sce10_sce.get(), rng, 0x3C, 0x1E03C, 0x3883C, 0x5503C);
 	rotateLight(scene_field1_forest4_sce11_sce.get(), rng, 0x3C, 0x2B03C);
 
