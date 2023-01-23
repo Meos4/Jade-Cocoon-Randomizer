@@ -602,7 +602,7 @@ void Forest::setPaletteColor() const
 	rotateLight(scene_field2_forest1_sce01_sce.get(), rng, 0x3C, 0x2483C, 0x4E83C, 0x7283C, 0x9283C);
 	rotateLight(scene_field2_forest1_sce02_sce.get(), rng, 0x3C, 0x2A03C, 0x4C83C, 0x6F03C);
 	rotateLight(scene_field2_forest1_sce03_sce.get(), rng, 0x3C, 0x2083C, 0x3C83C, 0x5A83C, 0x7803C, 0x8D83C);
-	rotateLight(scene_field2_forest1_sce04_sce.get(), rng, 0x3C, 0x2F03C, 0x6703C);
+	rotateLight.operator()<0>(scene_field2_forest1_sce04_sce.get(), rng, 0x3C, 0x2F03C, 0x6703C);
 	rotateLight(scene_field2_forest1_sce05_sce.get(), rng, 0x3C, 0x2603C, 0x5503C);
 	rotateLight(scene_field2_forest1_sce06_sce.get(), rng, 0x3C, 0x2603C, 0x4983C, 0x6A83C);
 	rotateLight(scene_field2_forest1_sce07_sce.get(), rng, 0x3C, 0x3903C, 0x5603C);
@@ -686,13 +686,13 @@ void Forest::setPaletteColor() const
 	rotateLight(scene_field2_forest2_sce06_sce.get(), rng, 0x3C, 0x2203C, 0x4003C);
 	rotateLight(scene_field2_forest2_sce07_sce.get(), rng, 0x3C, 0x1903C, 0x3783C, 0x4C03C);
 	rotateLight(scene_field2_forest2_sce08_sce.get(), rng, 0x3C);
-	rotateLight(scene_field2_forest2_sce09_sce.get(), rng, 0x3C);
+	rotateLight.operator()<0>(scene_field2_forest2_sce09_sce.get(), rng, 0x3C);
 	rotateLight(scene_field2_forest2_sce10_sce.get(), rng, 0x3C, 0x3483C, 0x6583C, 0x9583C, 0xCD03C);
 	rotateLight(scene_field2_forest2_sce11_sce.get(), rng, 0x3C);
-	rotateLight(scene_field2_forest2_sce12_sce.get(), rng, 0x3C, 0x2483C, 0x3E03C, 0x5783C);
+	rotateLight.operator()<0, 0>(scene_field2_forest2_sce12_sce.get(), rng, 0x3C, 0x2483C, 0x3E03C, 0x5783C);
 	rotateLight(scene_field2_forest2_sce13_sce.get(), rng, 0x3C, 0x2183C, 0x3E03C, 0x6E03C);
 	rotateLight(scene_field2_forest2_sce14_sce.get(), rng, 0x3C);
-	rotateLight(scene_field2_forest2_sce17_sce.get(), rng, 0x3C);
+	rotateLight.operator()<0>(scene_field2_forest2_sce17_sce.get(), rng, 0x3C);
 
 	// Forest 3-2
 	rng = Random::get().generate(JCUtility::clutRotationLimit);
