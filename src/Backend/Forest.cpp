@@ -756,29 +756,29 @@ void Forest::setPaletteColor() const
 
 	const auto rotationLightNForest3{ (rng + 120) % JCUtility::clutRotationLimit };
 
-	rotateLight(scene_field2_forest3_sce00_sce.get(), rotationLightNForest3, 0x3C, 0x2783C);
-	rotateLight(scene_field2_forest3_sce01_sce.get(), rotationLightNForest3, 0x3C, 0x1D03C, 0x3503C);
-	rotateLight(scene_field2_forest3_sce02_sce.get(), rotationLightNForest3, 0x3C, 0x1903C, 0x4383C);
-	rotateLight(scene_field2_forest3_sce03_sce.get(), rotationLightNForest3, 0x3C, 0x3383C);
-	rotateLight(scene_field2_forest3_sce04_sce.get(), rotationLightNForest3, 0x3C, 0x2D03C);
-	rotateLight(scene_field2_forest3_sce05_sce.get(), rotationLightNForest3, 0x3C, 0x1F83C);
-	rotateLight(scene_field2_forest3_sce06_sce.get(), rotationLightNForest3, 0x3C, 0x2883C, 0x4B03C);
-	rotateLight(scene_field2_forest3_sce07_sce.get(), rotationLightNForest3, 0x3C, 0x2B03C);
-	rotateLight(scene_field2_forest3_sce08_sce.get(), rotationLightNForest3, 0x3C);
-	rotateLight(scene_field2_forest3_sce09_sce.get(), rotationLightNForest3, 0x3C, 0x2403C, 0x4903C);
-	rotateLight(scene_field2_forest3_sce10_sce.get(), rotationLightNForest3, 0x3C);
-	rotateLight(scene_field2_forest3_sce11_sce.get(), rotationLightNForest3, 0x3C, 0x3483C, 0x5F83C);
-	rotateLight(scene_field2_forest3_sce12_sce.get(), rotationLightNForest3, 0x3C, 0x2A03C);
-	rotateLight(scene_field2_forest3_sce13_sce.get(), rotationLightNForest3, 0x3C, 0x2F03C);
-	rotateLight(scene_field2_forest3_sce14_sce.get(), rotationLightNForest3, 0x3C, 0x3183C);
-	rotateLight(scene_field2_forest3_sce15_sce.get(), rotationLightNForest3, 0x3C, 0x3703C);
-	rotateLight(scene_field2_forest3_sce16_sce.get(), rotationLightNForest3, 0x3C, 0x1883C, 0x4C03C);
-	rotateLight(scene_field2_forest3_sce17_sce.get(), rotationLightNForest3, 0x3C, 0x1D83C, 0x3B83C, 0x6403C);
-	rotateLight(scene_field2_forest3_sce18_sce.get(), rotationLightNForest3, 0x3C, 0x1B83C, 0x4483C);
-	rotateLight(scene_field2_forest3_sce19_sce.get(), rotationLightNForest3, 0x3C, 0x3903C, 0x7083C);
-	rotateLight(scene_field2_forest3_sce20_sce.get(), rotationLightNForest3, 0x3C, 0xD83C, 0x1B03C, 0x2883C, 0x3603C, 0x4603C, 0x5383C, 0x6103C, 0x6E83C, 0x7C03C, 0x8983C);
-	rotateLight(scene_field2_forest3_sce21_sce.get(), rotationLightNForest3, 0x3C);
-	rotateLight(scene_field2_forest3_sce22_sce.get(), rotationLightNForest3, 0x3C, 0xD03C, 0x1A03C, 0x2703C, 0x3683C, 0x4383C, 0x5083C, 0x5D83C, 0x6A83C, 0x7783C, 0x8483C, 0x9183C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce00_sce.get(), rotationLightNForest3, 0x3C, 0x2783C);
+	rotateLight.operator()<240, 240>(scene_field2_forest3_sce01_sce.get(), rotationLightNForest3, 0x3C, 0x1D03C, 0x3503C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce02_sce.get(), rotationLightNForest3, 0x3C, 0x1903C, 0x4383C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce03_sce.get(), rotationLightNForest3, 0x3C, 0x3383C);
+	rotateLight.operator()<240, 240>(scene_field2_forest3_sce04_sce.get(), rotationLightNForest3, 0x3C, 0x2D03C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce05_sce.get(), rotationLightNForest3, 0x3C, 0x1F83C);
+	rotateLight.operator()<240, 240>(scene_field2_forest3_sce06_sce.get(), rotationLightNForest3, 0x3C, 0x2883C, 0x4B03C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce07_sce.get(), rotationLightNForest3, 0x3C, 0x2B03C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce08_sce.get(), rotationLightNForest3, 0x3C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce09_sce.get(), rotationLightNForest3, 0x3C, 0x2403C, 0x4903C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce10_sce.get(), rotationLightNForest3, 0x3C);
+	rotateLight.operator()<290>(scene_field2_forest3_sce11_sce.get(), rotationLightNForest3, 0x3C, 0x3483C, 0x5F83C);
+	rotateLight.operator()<0, 0>(scene_field2_forest3_sce12_sce.get(), rotationLightNForest3, 0x3C, 0x2A03C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce13_sce.get(), rotationLightNForest3, 0x3C, 0x2F03C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce14_sce.get(), rotationLightNForest3, 0x3C, 0x3183C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce15_sce.get(), rotationLightNForest3, 0x3C, 0x3703C);
+	rotateLight.operator()<120, 120>(scene_field2_forest3_sce16_sce.get(), rotationLightNForest3, 0x3C, 0x1883C, 0x4C03C);
+	rotateLight.operator()<120>(scene_field2_forest3_sce17_sce.get(), rotationLightNForest3, 0x3C, 0x1D83C, 0x3B83C, 0x6403C);
+	rotateLight.operator()<120>(scene_field2_forest3_sce18_sce.get(), rotationLightNForest3, 0x3C, 0x1B83C, 0x4483C);
+	rotateLight.operator()<120>(scene_field2_forest3_sce19_sce.get(), rotationLightNForest3, 0x3C, 0x3903C, 0x7083C);
+	rotateLight.operator()<290>(scene_field2_forest3_sce20_sce.get(), rotationLightNForest3, 0x3C, 0xD83C, 0x1B03C, 0x2883C, 0x3603C, 0x4603C, 0x5383C, 0x6103C, 0x6E83C, 0x7C03C, 0x8983C);
+	rotateLight.operator()<240>(scene_field2_forest3_sce21_sce.get(), rotationLightNForest3, 0x3C);
+	rotateLight.operator()<290>(scene_field2_forest3_sce22_sce.get(), rotationLightNForest3, 0x3C, 0xD03C, 0x1A03C, 0x2703C, 0x3683C, 0x4383C, 0x5083C, 0x5D83C, 0x6A83C, 0x7783C, 0x8483C, 0x9183C);
 
 	// Eternal Corridor
 	struct FileOffsets
