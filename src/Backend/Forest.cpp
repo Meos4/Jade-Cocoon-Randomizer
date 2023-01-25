@@ -107,7 +107,7 @@ void Forest::setPaletteColor() const
 		}
 	};
 
-	auto rotateLightSpot = [&rotate4096]<s32 One = -1, s32 Two = -1, s32 Three = -1, s32 Four = -1, Integral... Args>
+	auto rotateLightSpot = [&rotate4096]<s32 One = -1, s32 Two = -1, s32 Three = -1, Integral... Args>
 		(RawFile* file, s32 rotation, Args... offsets)
 	{
 		auto mono = [&]<s32 ShiftRotation, u32 ShiftOffset>()
@@ -122,24 +122,23 @@ void Forest::setPaletteColor() const
 		mono.operator()<One, 0>();
 		mono.operator()<Two, 0x18>();
 		mono.operator()<Three, 0x30>();
-		mono.operator()<Four, 0x48>();
 	};
 
 	auto rotateLight = [&rotate4096, &rotateLightSpot]
-		<s32 Spot1 = -1, s32 Spot2 = -1, s32 Spot3 = -1, s32 Spot4 = -1, Integral... Args>
+		<s32 Spot1 = -1, s32 Spot2 = -1, s32 Spot3 = -1, Integral... Args>
 		(RawFile* file, s32 rotation, Args... offsets)
 	{
 		(rotate4096(file, rotation, static_cast<u32>(offsets)), ...);
 
-		if constexpr (Spot1 != -1 || Spot2 != -1 || Spot3 != -1 || Spot4 != -1)
+		if constexpr (Spot1 != -1 || Spot2 != -1 || Spot3 != -1)
 		{
 			((offsets += 0x14), ...);
-			rotateLightSpot.operator()<Spot1, Spot2, Spot3, Spot4>(file, rotation, offsets...);
+			rotateLightSpot.operator()<Spot1, Spot2, Spot3>(file, rotation, offsets...);
 		}	
 	};
 
 	auto rotateShade = [&rotate255, &rotateLight, &rotateLightSpot]
-		<s32 Light = -1, s32 Spot1 = -1, s32 Spot2 = -1, s32 Spot3 = -1, s32 Spot4 = -1, Integral... Args>
+		<s32 Light = -1, s32 Spot1 = -1, s32 Spot2 = -1, s32 Spot3 = -1, Integral... Args>
 		(RawFile* file, s32 rotation, Args... offsets)
 	{
 		(rotate255(file, rotation, static_cast<u32>(offsets)), ...);
@@ -148,12 +147,12 @@ void Forest::setPaletteColor() const
 		{
 			((offsets += 0xC), ...);
 			const auto lightRotation{ (rotation + Light) % JCUtility::clutRotationLimit };
-			rotateLight.operator()<Spot1, Spot2, Spot3, Spot4>(file, lightRotation, offsets...);
+			rotateLight.operator()<Spot1, Spot2, Spot3>(file, lightRotation, offsets...);
 		}
-		else if constexpr (Spot1 != -1 || Spot2 != -1 || Spot3 != -1 || Spot4 != -1)
+		else if constexpr (Spot1 != -1 || Spot2 != -1 || Spot3 != -1)
 		{
 			((offsets += 0x20), ...);
-			rotateLightSpot.operator()<Spot1, Spot2, Spot3, Spot4>(file, rotation, offsets...);
+			rotateLightSpot.operator()<Spot1, Spot2, Spot3>(file, rotation, offsets...);
 		}
 	};
 
