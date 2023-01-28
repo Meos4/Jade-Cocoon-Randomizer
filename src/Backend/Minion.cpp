@@ -280,16 +280,7 @@ void Minion::setStats(Minion::Stats_t state) const
 	if (state & Minion::STATS_SHUFFLE_BETWEEN_MINIONS)
 	{
 		const auto statsConst{ stats };
-
-		std::vector<Id_Entity_t> minionsId(stats.size());
-		std::iota(minionsId.begin(), minionsId.end(), 0);
-
-		for (auto& id : stats)
-		{
-			const auto rngStats{ Random::get().generate(minionsId.size() - 1) };
-			id = statsConst[minionsId[rngStats]];
-			minionsId.erase(minionsId.begin() + rngStats);
-		}
+		Random::get().shuffle(&stats);
 
 		for (std::size_t i{}; i < stats.size(); ++i)
 		{
@@ -301,26 +292,20 @@ void Minion::setStats(Minion::Stats_t state) const
 	{
 		for (auto& id : stats)
 		{
-			std::vector<u8> availableStats 
+			std::array<u8, 6> availableStats 
 			{ 
 				id.attack, id.magicAttack, id.defense,
 				id.magicDefense, id.speed, id.critical 
 			};
 
-			auto randomStatAndErase = [&availableStats]()
-			{
-				const auto rngStat{ Random::get().generate(availableStats.size() - 1) };
-				const auto randomStat{ availableStats[rngStat] };
-				availableStats.erase(availableStats.begin() + rngStat);
-				return randomStat;
-			};
+			Random::get().shuffle(&availableStats);
 
-			id.attack = randomStatAndErase();
-			id.magicAttack = randomStatAndErase();
-			id.defense = randomStatAndErase();
-			id.magicDefense = randomStatAndErase();
-			id.speed = randomStatAndErase();
-			id.critical = availableStats[0];
+			id.attack = availableStats[0];
+			id.magicAttack = availableStats[1];
+			id.defense = availableStats[2];
+			id.magicDefense = availableStats[3];
+			id.speed = availableStats[4];
+			id.critical = availableStats[5];
 		}
 	}
 
