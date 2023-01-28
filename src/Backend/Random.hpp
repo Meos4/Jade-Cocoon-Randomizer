@@ -4,6 +4,7 @@
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
 
+#include <algorithm>
 #include <limits>
 #include <random>
 #include <type_traits>
@@ -81,6 +82,20 @@ public:
 			*bits &= ~rngBit;
 		}
 		return rngBit;
+	}
+
+	template <std::ranges::random_access_range T>
+	void shuffle(T* container)
+	{
+		std::ranges::shuffle(*container, m_mte);
+	}
+
+	template <std::ranges::random_access_range T>
+	[[nodiscard]] T shuffle(const T& container)
+	{
+		T newContainer{ container };
+		std::ranges::shuffle(newContainer, m_mte);
+		return newContainer;
 	}
 
 	[[nodiscard]] bool generateProba(float percent);
