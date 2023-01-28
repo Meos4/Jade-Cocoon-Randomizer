@@ -902,21 +902,11 @@ void Forest::setOst(Forest::Ost state) const
 
 	if (state == Forest::Ost::Random)
 	{
-		for (auto& ostId : ostsId)
-		{
-			ostId = -1;
-		}
+		ostsId.fill(-1);
 	}
 	else // Shuffle
 	{
-		std::vector<s16> ostsList{ vanillaOstId.begin(), vanillaOstId.end() };
-
-		for (auto& ostId : ostsId)
-		{
-			const auto rngOst{ Random::get().generate(ostsList.size() - 1) };
-			ostId = ostsList[rngOst];
-			ostsList.erase(ostsList.begin() + rngOst);
-		}
+		ostsId = Random::get().shuffle(vanillaOstId);
 	}
 
 	setOst(ostsId);
