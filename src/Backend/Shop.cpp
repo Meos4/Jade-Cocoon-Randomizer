@@ -48,13 +48,20 @@ static void monoShopRandomizer(std::array<Shop_t, Size>* items, Shop_t shop, s32
 			ITEM_MOONLIGHT_SILK, ITEM_SKELETON_KEY
 		};
 
-		availableItems.erase(std::remove_if(availableItems.begin(), availableItems.end(),
-			[](const auto& item)
+		auto isAnInvalidItem = [](auto item)
+		{
+			for (const auto& invalidItem : invalidItems)
 			{
-				for (const auto& invalidItem : invalidItems)
-					if (item == invalidItem) return true;
-				return false;
-			}), availableItems.end());
+				if (item == invalidItem)
+				{
+					return true;
+				}
+			}
+			return false;
+		};
+
+		const auto [begin, end] { std::ranges::remove_if(availableItems, isAnInvalidItem) };
+		availableItems.erase(begin, end);
 	}
 
 	for (s32 i{}; i < size; ++i)

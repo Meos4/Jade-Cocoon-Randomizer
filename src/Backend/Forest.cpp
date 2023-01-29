@@ -9,6 +9,7 @@
 #include "Backend/Utility.hpp"
 #include "Common/TemplateTypes.hpp"
 
+#include <algorithm>
 #include <array>
 #include <set>
 #include <unordered_set>
@@ -917,15 +918,22 @@ void Forest::setOst(const Forest::OstArray& ostsId) const
 	Forest::OstArray forestOsts;
 	auto availableOsts{ ::Ost::id() };
 
-	static constexpr std::array<s16, 3> duplicateOsts{ 30, 126, 144 }; // Legend of Arcana ~ Clandestine Meeting duplicate
-
-	availableOsts.erase(std::remove_if(availableOsts.begin(), availableOsts.end(),
-		[](const auto& ost)
+	auto isADuplicateOst = [](auto ost)
+	{
+		// Legend of Arcana ~ Clandestine Meeting duplicate
+		static constexpr std::array<s16, 3> duplicateOsts{ 30, 126, 144 };
+		for (const auto& duplicateOst : duplicateOsts)
 		{
-			for (const auto& duplicateOst : duplicateOsts)
-				if (ost == duplicateOst) return true;
-			return false;
-		}), availableOsts.end());
+			if (ost == duplicateOst)
+			{
+				return true;
+			}
+		}
+		return false;
+	};
+
+	const auto [begin, end] { std::ranges::remove_if(availableOsts, isADuplicateOst) };
+	availableOsts.erase(begin, end);
 
 	for (u32 i{}; i < Forest::nbForest; ++i)
 	{
