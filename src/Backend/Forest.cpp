@@ -903,7 +903,7 @@ void Forest::setOst(Forest::Ost state) const
 
 	if (state == Forest::Ost::Random)
 	{
-		ostsId.fill(-1);
+		ostsId.fill(Forest::randomOstVal);
 	}
 	else // Shuffle
 	{
@@ -937,7 +937,7 @@ void Forest::setOst(const Forest::OstArray& ostsId) const
 
 	for (u32 i{}; i < Forest::nbForest; ++i)
 	{
-		if (ostsId[i] == -1)
+		if (ostsId[i] == Forest::randomOstVal)
 		{
 			forestOsts[i] = availableOsts[Random::get().generate(availableOsts.size() - 1)];
 		}

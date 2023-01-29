@@ -18,7 +18,7 @@ static s16 textToId(const char* text)
 			return id;
 		}
 	}
-	return -1;
+	return Forest::randomOstVal;
 }
 
 ForestWidget::ForestWidget(QWidget* parent)

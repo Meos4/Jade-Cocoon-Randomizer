@@ -12,6 +12,8 @@ public:
 	static constexpr auto nbForest{ 8u };
 	using OstArray = std::array<s16, Forest::nbForest>;
 
+	static constexpr s16 randomOstVal{ -1 };
+
 	enum class Ost
 	{
 		Random,
