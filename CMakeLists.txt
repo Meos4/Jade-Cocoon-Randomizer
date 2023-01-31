@@ -26,6 +26,7 @@ set(FRONTENDQT_DIR ${PROJECT_SOURCE_DIR}/src/FrontendQt)
 
 set(SOURCES_COMMON
     ${COMMON_DIR}/Buffer.hpp
+    ${COMMON_DIR}/JcrException.hpp
     ${COMMON_DIR}/Json.hpp
     ${COMMON_DIR}/RawFile.cpp
     ${COMMON_DIR}/RawFile.hpp
@@ -182,6 +183,9 @@ target_include_directories(jade_cocoon_randomizer PRIVATE
     ${PROJECT_SOURCE_DIR}/dep/Jade-Cocoon-Unpacker-Repacker/src
     ${PROJECT_SOURCE_DIR}/dep/json/include
     ${PROJECT_SOURCE_DIR}/dep/mkpsxiso/src)
+
+target_compile_definitions(jade_cocoon_randomizer PRIVATE
+    $<$<CONFIG:Debug>:JCR_DEBUG>)
        
 target_link_libraries(jade_cocoon_randomizer 
     Qt6::Widgets 
