@@ -241,10 +241,19 @@ void MainWindow::onFileOpen()
 
 void MainWindow::onFileSaveAs()
 {
-	if (!m_randomizerTabWidget->isVanilla())
+	try
 	{
-		QMessageBox::critical(this, "Error", 
-			"This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");
+		if (!m_randomizerTabWidget->isVanilla())
+		{
+			QMessageBox::critical(this, "Error",
+				"This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");
+			return;
+		}
+	}
+	catch (const std::exception& e)
+	{
+		QMessageBox::critical(this, "Error", QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+		disableUI();
 		return;
 	}
 
