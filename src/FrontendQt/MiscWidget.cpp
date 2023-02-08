@@ -1,5 +1,7 @@
 #include "MiscWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 #include <format>
 
 MiscWidget::MiscWidget(QWidget* parent)
@@ -99,7 +101,7 @@ void MiscWidget::write() const
 {
 	if (!m_misc)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.hudRandom->isChecked())

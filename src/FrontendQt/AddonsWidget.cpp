@@ -1,5 +1,7 @@
 ﻿#include "AddonsWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 AddonsWidget::AddonsWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -114,7 +116,7 @@ void AddonsWidget::write() const
 {
 	if (!m_addons)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	Addons::Nuzlocke_t nuzlocke{};

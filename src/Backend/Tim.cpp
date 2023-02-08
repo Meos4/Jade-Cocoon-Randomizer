@@ -1,9 +1,9 @@
 #include "Tim.hpp"
 
 #include "Backend/JCUtility.hpp"
+#include "Common/JcrException.hpp"
 #include "Common/RawFile.hpp"
 
-#include <exception>
 #include <format>
 
 namespace Tim
@@ -32,10 +32,7 @@ namespace Tim
 
 		if (clutSizeLimit.has_value() && clutSize > clutSizeLimit.value())
 		{
-			throw std::runtime_error
-			{ 
-				std::format("Clut size exceeded max: {} size: {}", clutSizeLimit.value(), clutSize)
-			};
+			throw JcrException{ "Clut size exceeded max: {} size: {}", clutSizeLimit.value(), clutSize };
 		}
 
 		std::vector<u16> clut(clutSize / sizeof(u16));

@@ -1,6 +1,8 @@
 #include "Offset.hpp"
 
-#include <stdexcept>
+#include "Common/JcrException.hpp"
+
+#include <type_traits>
 
 const static Offset::File
 fileNtscJ1
@@ -5945,7 +5947,7 @@ const Offset::File& Offset::setFile(Version version)
 	case Version::PalDe: return filePalDe;
 	case Version::PalEs: return filePalEs;
 	case Version::PalIt: return filePalIt;
-	default: throw std::runtime_error{ "Invalid game version" };;
+	default: throw JcrException{ "Invalid game version : {}", static_cast<std::underlying_type_t<Version>>(version) };
 	}
 }
 
@@ -5961,6 +5963,6 @@ const Offset::Game& Offset::setGame(Version version)
 	case Version::PalDe: return gamePalDe;
 	case Version::PalEs: return gamePalEs;
 	case Version::PalIt: return gamePalIt;
-	default: throw std::runtime_error{ "Invalid game version" };
+	default: throw JcrException{ "Invalid game version : {}", static_cast<std::underlying_type_t<Version>>(version) };
 	}
 }

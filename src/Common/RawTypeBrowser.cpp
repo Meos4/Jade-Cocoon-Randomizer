@@ -1,6 +1,6 @@
 #include "RawTypeBrowser.hpp"
 
-#include <stdexcept>
+#include "Common/JcrException.hpp"
 
 RawTypeBrowser::RawTypeBrowser(void* ptr, std::size_t size)
 	: m_begin(ptr), m_ptr(ptr), m_size(size)
@@ -16,6 +16,6 @@ void RawTypeBrowser::ptrThrowIfInvalid(void* ptr) const
 {
 	if (static_cast<std::uintptr_t>((char*)ptr - (char*)m_begin) >= m_size)
 	{
-		throw std::runtime_error{ "Type overflow" };
+		throw JcrException{ "Type overflow" };
 	}
 }

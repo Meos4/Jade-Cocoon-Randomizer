@@ -3,6 +3,7 @@
 #include "Backend/Path.hpp"
 #include "Backend/Random.hpp"
 #include "Backend/Utility.hpp"
+#include "Common/JcrException.hpp"
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
 #include "FrontendQt/RandomizerTabWidget.hpp"
@@ -22,7 +23,6 @@
 
 #include <format>
 #include <future>
-#include <stdexcept>
 
 MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
@@ -70,7 +70,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 					#ifdef _WIN32 
 						throw QString{ QString::fromStdWString(std::format(L"\"{}\" is a directory", isoPath->filename().wstring())) };
 					#else
-						throw std::runtime_error{ std::format("\"{}\" is a directory", isoPath->filename().string()) };
+						throw JcrException{ "\"{}\" is a directory", isoPath->filename().string() };
 					#endif
 				}
 				else
@@ -78,7 +78,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 					#ifdef _WIN32 
 						throw QString{ QString::fromStdWString(std::format(L"\"{}\" file does not exist", isoPath->filename().wstring())) };
 					#else
-						throw std::runtime_error{ std::format("\"{}\" file does not exist", isoPath->filename().string()) };
+						throw JcrException{ "\"{}\" file does not exist", isoPath->filename().string() };
 					#endif
 				}
 			}
@@ -88,7 +88,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 				#ifdef _WIN32 
 					throw QString{ QString::fromStdWString(std::format(L"\"{}\" is not a Jade Cocoon binary file", isoPath->filename().wstring())) };
 				#else
-					throw std::runtime_error{ std::format("\"{}\" is not a Jade Cocoon binary file", isoPath->filename().string()) };
+					throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath->filename().string() };
 				#endif
 			}
 
@@ -98,7 +98,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 				const auto nbRemoved{ std::filesystem::remove_all(Path::jcrTempDirectory, err) };
 				if (nbRemoved == -1)
 				{
-					throw std::runtime_error{ std::format("\"{}\" directory cannot be removed", Path::jcrTempDirectory) };
+					throw JcrException{ "\"{}\" directory cannot be removed", Path::jcrTempDirectory };
 				}
 			}
 
@@ -117,11 +117,11 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 
 			if (!exeInfo.has_value())
 			{
-				throw std::runtime_error{ std::format("Can't find compatible playstation executable in \"{}\"", filesPath.string()) };
+				throw JcrException{ "Can't find compatible playstation executable in \"{}\"", filesPath.string() };
 			}
 			else if (exeInfo.value().version == JCExe::Version::Prototype_D05_M08_Y1999_15H48)
 			{
-				throw std::runtime_error{ "This version is not supported" };
+				throw JcrException{ "This version is not supported" };
 			}
 
 			m_game = std::make_shared<Game>(*isoPath, exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version));
@@ -294,8 +294,8 @@ void MainWindow::onFileSaveAs()
 			const auto makeArgs{ Path::makeIsoArgs(filePath, configPath) };
 			if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
 			{
-				throw std::runtime_error{ "Unable to repack iso" };
-			}			
+				throw JcrException{ "Unable to repack iso" };
+			}
 
 			emit saveGameDialog.progressBarChanged(100);
 			emit saveGameDialog.onStateChanged("Done");

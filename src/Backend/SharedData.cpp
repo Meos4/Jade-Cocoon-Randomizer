@@ -2,8 +2,7 @@
 
 #include "Backend/File.hpp"
 #include "Backend/Model.hpp"
-
-#include <stdexcept>
+#include "Common/JcrException.hpp"
 
 SharedData::SharedData(std::shared_ptr<Game> game)
 	: m_game(std::move(game))
@@ -76,18 +75,18 @@ void SharedData::read()
 		m_rotations[MODEL_ASHA] = { { 155, 20, 65, 110 }, 0, ELEMENT_FIRE };
 	}
 
-	auto throwIfInvalidModel = [this](Model_t model)
+	auto throwIfInvalidModelId = [this](Model_t id)
 	{
-		if (!m_rotations.contains(model))
+		if (!m_rotations.contains(id))
 		{
-			throw std::runtime_error{ "Invalid model id" };
+			throw JcrException{ "Rotations doesn't contain model id : {}", id };
 		}
 	};
 
 	// -4 No Vatolka
 	for (s32 i{}; i < Entity::totalStoryMinions - 4; ++i)
 	{
-		throwIfInvalidModel(modelsBehavior[i].id);
+		throwIfInvalidModelId(modelsBehavior[i].id);
 		m_rotations.at(modelsBehavior[i].id).storyRotation = modelsBehavior[i].colorRotation;
 		m_rotations.at(modelsBehavior[i].id).element = statsStory[i].element;
 	}
@@ -95,16 +94,17 @@ void SharedData::read()
 	// Vatolka
 	for (s32 i{}; i < 4; ++i)
 	{
-		const auto vatolkaModelId{ modelsBehavior[ID_VATOLKA_F + i].id };
-		throwIfInvalidModel(vatolkaModelId);
-		m_rotations.at(vatolkaModelId).rotation[i] = modelsBehavior[ID_VATOLKA_F + i].colorRotation;
+		const auto vatolkaId{ ID_VATOLKA_F + i };
+		const auto vatolkaModelId{ modelsBehavior[vatolkaId].id };
+		throwIfInvalidModelId(vatolkaModelId);
+		m_rotations.at(vatolkaModelId).rotation[i] = modelsBehavior[vatolkaId].colorRotation;
 	}
 
 	for (s32 i{}; i < Entity::totalECMinions; ++i)
 	{
 		const auto minionId{ ID_PATARAID + i };
 		const auto minionModelId{ modelsBehavior[minionId].id };
-		throwIfInvalidModel(minionModelId);
+		throwIfInvalidModelId(minionModelId);
 		m_rotations.at(minionModelId).rotation[i % 4] = modelsBehavior[minionId].colorRotation;
 	}
 }
@@ -113,7 +113,7 @@ const Buffer& SharedData::model(Model_t id) const
 {
 	if (!m_models.contains(id))
 	{
-		throw std::runtime_error{ "Missing model" };
+		throw JcrException{ "Models doesn't contain model id : {}", id };
 	}
 	return m_models.at(id);
 }
@@ -127,17 +127,17 @@ const RotationElement& SharedData::rotation(Model_t id) const
 {
 	if (!m_rotations.contains(id))
 	{
-		throw std::runtime_error{ "Missing model" };
+		throw JcrException{ "Rotations doesn't contain model id : {}", id };
 	}
 	return m_rotations.at(id);
 }
 
-Model_t SharedData::goatTextureModel() const
+Model_t SharedData::goatTextureModelId() const
 {
-	return m_goatTextureModel;
+	return m_goatTextureModelId;
 }
 
-void SharedData::setGoatTextureModel(Model_t model)
+void SharedData::setGoatTextureModelId(Model_t id)
 {
-	m_goatTextureModel = model;
+	m_goatTextureModelId = id;
 }

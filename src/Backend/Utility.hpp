@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Backend/Version.hpp"
+#include "Common/JcrException.hpp"
 #include "Common/TemplateTypes.hpp"
 
 #include "JCExe.hpp"
 
 #include <limits>
 #include <span>
-#include <stdexcept>
+#include <type_traits>
 
 namespace Utility
 {
@@ -23,7 +24,7 @@ namespace Utility
 			case Version::PalDe: return JCExe::Version::PalDe;
 			case Version::PalEs: return JCExe::Version::PalEs;
 			case Version::PalIt: return JCExe::Version::PalIt;
-			default: throw std::runtime_error{ "Invalid Version" };
+			default: throw JcrException{ "Invalid game version : {}", static_cast<std::underlying_type_t<Version>>(version) };
 		}
 	}
 
@@ -39,7 +40,7 @@ namespace Utility
 			case JCExe::Version::PalDe: return Version::PalDe;
 			case JCExe::Version::PalEs: return Version::PalEs;
 			case JCExe::Version::PalIt: return Version::PalIt;
-			default: throw std::runtime_error{ "Invalid Version" };
+			default: throw JcrException{ "Invalid game version : {}", static_cast<std::underlying_type_t<Version>>(version) };
 		}
 	}
 

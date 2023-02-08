@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Common/JcrException.hpp"
 #include "Common/Singleton.hpp"
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
@@ -34,7 +35,7 @@ public:
 		{
 			std::uniform_int_distribution<T> distribute{ min, max };
 			return distribute(m_mte);
-		}		
+		}
 	}
 
 	template <Arithmetic T>
@@ -45,11 +46,11 @@ public:
 
 	template <typename T>
 	T generate(std::initializer_list<T> list)
-	{		
+	{
 		const auto size{ list.size() };
 		if (!size)
 		{
-			throw std::runtime_error{ "Attempt to generate in an empty list" };
+			throw JcrException{ "Attempt to generate in an empty list" };
 		}
 		return *(list.begin() + generate(size - 1));
 	}

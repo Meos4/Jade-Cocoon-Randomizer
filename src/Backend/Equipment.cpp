@@ -5,12 +5,12 @@
 #include "Backend/MipsFunctionTypes.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Random.hpp"
+#include "Common/JcrException.hpp"
 
 #include <array>
 #include <cstdlib>
 #include <filesystem>
 #include <format>
-#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -50,7 +50,7 @@ static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentSta
 
 	if (totalStats < 0)
 	{
-		throw std::runtime_error{ "Equipment stats are less than 0" };
+		throw JcrException{ "Equipment stats are less than 0" };
 	}
 
 	const s32

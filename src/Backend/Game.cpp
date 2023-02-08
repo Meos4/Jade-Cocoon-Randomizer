@@ -5,6 +5,7 @@
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/Buffer.hpp"
+#include "Common/JcrException.hpp"
 
 #include "JCExe.hpp"
 
@@ -12,7 +13,6 @@
 #include <array>
 #include <format>
 #include <fstream>
-#include <stdexcept>
 #include <type_traits>
 #include <utility>
 
@@ -40,10 +40,7 @@ std::unique_ptr<RawFile> Game::file(s32 file) const
 
 	if (!std::filesystem::is_regular_file(filePath))
 	{
-		throw std::runtime_error
-		{
-			std::format("\"{}\" file doesn't exist in \"{}\"", filePath.filename().string(), filePath.parent_path().string())
-		};
+		throw JcrException{ "\"{}\" file doesn't exist in \"{}\"", filePath.filename().string(), filePath.parent_path().string() };
 	}
 	return std::make_unique<RawFile>(filePath);
 }
@@ -52,10 +49,7 @@ RawFile Game::executable() const
 {
 	if (!std::filesystem::is_regular_file(m_exePath))
 	{
-		throw std::runtime_error
-		{
-			std::format("\"{}\" file doesn't exist in \"{}\"", m_exePath.filename().string(), m_exePath.parent_path().string())
-		};
+		throw JcrException{ "\"{}\" file doesn't exist in \"{}\"", m_exePath.filename().string(), m_exePath.parent_path().string() };
 	}
 	return RawFile{ m_exePath };
 }

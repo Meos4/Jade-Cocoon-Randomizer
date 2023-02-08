@@ -8,6 +8,7 @@
 #include "Backend/Model.hpp"
 #include "Backend/Random.hpp"
 #include "Backend/Utility.hpp"
+#include "Common/JcrException.hpp"
 #include "Common/TemplateTypes.hpp"
 
 #include <array>
@@ -480,15 +481,15 @@ void Boss::setAppearance(Boss::Appearance state) const
 		}
 
 		// Goat
-		const auto goatTextureModel{ m_sharedData->goatTextureModel() };
+		const auto goatTextureModelId{ m_sharedData->goatTextureModelId() };
 		for (std::size_t i{}; i < goatModelsBehavior.size(); ++i)
 		{
 			const auto element{ elements[11 + i] };
 			const auto rotation
 			{
 				element == ELEMENT_NONE ?
-				modelsRotation.at(goatTextureModel).storyRotation :
-				modelsRotation.at(goatTextureModel).rotation.at(element)
+				modelsRotation.at(goatTextureModelId).storyRotation :
+				modelsRotation.at(goatTextureModelId).rotation.at(element)
 			};
 			goatModelsBehavior[i].colorRotation = rotation;
 		}
@@ -829,7 +830,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 				{
 					const auto& modelRotation{ modelsRotation.at(rngModel) };
 					const auto rotation 
-					{ 
+					{
 						statsEC[i].element == ELEMENT_NONE ? 
 						modelRotation.storyRotation : 
 						modelRotation.rotation.at(statsEC[i].element)
@@ -837,7 +838,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 
 					if (rotation == 0xFF)
 					{
-						throw std::runtime_error{ "Uninitialized rotate color" };
+						throw JcrException{ "Model {} rotate color is uninitialized", model };
 					};
 
 					modelsBehavior[i].colorRotation = rotation;

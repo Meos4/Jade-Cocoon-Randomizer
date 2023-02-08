@@ -1,11 +1,11 @@
 #include "Merge.hpp"
 
 #include "Backend/libgte.hpp"
+#include "Common/JcrException.hpp"
 #include "Common/RawTypeBrowser.hpp"
 
 #include <array>
 #include <numeric>
-#include <stdexcept>
 
 static const std::array<s16, 4096> tableOfRates
 {
@@ -554,7 +554,7 @@ namespace Merge
 	{
 		if (models.empty() || !mainModel)
 		{
-			throw std::runtime_error{ "Invalid models number" };
+			throw JcrException{ "Invalid models number" };
 		}
 
 		const auto nbModels{ models.size() + 1 };
@@ -635,7 +635,7 @@ namespace Merge
 						break;
 					}
 					default: 
-						throw std::runtime_error{ "Invalid Model Type" };
+						throw JcrException{ "Invalid Model Type" };
 					}
 				}
 			}
@@ -653,7 +653,7 @@ namespace Merge
 					body[0].decompressed[j].seven.size() != body[i].decompressed[j].seven.size() ||
 					body[0].decompressed[j].nine.size() != body[i].decompressed[j].nine.size())
 				{
-					throw std::runtime_error{ "Incompatible models" };
+					throw JcrException{ "Incompatible models" };
 				}
 
 				auto vec3Interpolation = [interpolation](u16* a, u16* b, s32 iteration)
@@ -697,7 +697,7 @@ namespace Merge
 					{
 						if (body[0].decompressed[j].nine[k].size() != body[i].decompressed[j].nine[k].size())
 						{
-							throw std::runtime_error{ "Incompatible models" };
+							throw JcrException{ "Incompatible models" };
 						}
 
 						auto packedInterpolation = [interpolation](u16* a, u16* b)
@@ -806,7 +806,7 @@ namespace Merge
 					break;
 				}
 				default: 
-					throw std::runtime_error{ "Invalid Model Type" };
+					throw JcrException{ "Invalid Model Type" };
 				}
 			}
 		}

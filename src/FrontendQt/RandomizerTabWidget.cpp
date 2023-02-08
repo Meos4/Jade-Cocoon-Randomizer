@@ -1,5 +1,6 @@
 #include "RandomizerTabWidget.hpp"
 
+#include "Common/JcrException.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/LevantWidget.hpp"
 #include "FrontendQt/MinionWidget.hpp"
@@ -95,7 +96,7 @@ void RandomizerTabWidget::write() const
 {
 	if (!m_sharedData || !m_customCode)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	m_sharedData->read();
@@ -110,7 +111,7 @@ bool RandomizerTabWidget::isVanilla() const
 {
 	if (!m_customCode)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 	return m_customCode->isVanilla();
 }

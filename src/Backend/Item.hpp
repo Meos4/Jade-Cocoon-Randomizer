@@ -3,11 +3,11 @@
 #include "Backend/Behavior.hpp"
 #include "Backend/Entity.hpp"
 #include "Backend/Random.hpp"
+#include "Common/JcrException.hpp"
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
 
 #include <array>
-#include <stdexcept>
 #include <type_traits>
 #include <vector>
 
@@ -372,11 +372,11 @@ namespace Item
 	{
 		if (category >= Item::CATEGORY_COUNT)
 		{
-			throw std::runtime_error{ "Invalid item category" };
+			throw JcrException{ "Invalid item category : {}", category };
 		}
 		else if (pool[category].empty())
 		{
-			throw std::runtime_error{ "Attempt to generate an item on an empty pool" };
+			throw JcrException{ "Attempt to generate an item on an empty pool category : {}", category };
 		}
 
 		return pool[category][Random::get().generate(pool[category].size() - 1)];
@@ -395,7 +395,7 @@ namespace Item
 
 		if (step6 == 0)
 		{
-			throw std::runtime_error{ "Attempt to generate an item on empty pools" };
+			throw JcrException{ "Attempt to generate an item on empty pools" };
 		}
 
 		const auto rng{ Random::get().generate(step6 - 1) };

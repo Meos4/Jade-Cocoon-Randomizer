@@ -1,5 +1,7 @@
 #include "FixesWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 FixesWidget::FixesWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -67,7 +69,7 @@ void FixesWidget::write() const
 {
 	if (!m_fixes)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.bodyEnhancementFix->isChecked())

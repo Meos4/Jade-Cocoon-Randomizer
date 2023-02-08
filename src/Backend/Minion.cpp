@@ -7,6 +7,7 @@
 #include "Backend/Model.hpp"
 #include "Backend/Random.hpp"
 #include "Common/Buffer.hpp"
+#include "Common/JcrException.hpp"
 
 #include <array>
 #include <limits>
@@ -249,7 +250,7 @@ void Minion::setDreamMinion(Id_Entity_t id) const
 {
 	if (!isValidMinionForStory(id))
 	{
-		throw std::runtime_error{ "Attempt to use an invalid minion (Dream)" };
+		throw JcrException{ "Attempt to use an invalid dream minion : {}", id };
 	}
 	const auto scene_other_dream_sce00a_sbh{ m_game->file(File::SCENE_OTHER_DREAM_SCE00A_SBH) };
 	scene_other_dream_sce00a_sbh->write(m_game->offset().file.scene_other_dream_sce00a_sbh.dreamMinionId, id);
@@ -266,7 +267,7 @@ void Minion::setKorisMinion(Id_Entity_t id) const
 {
 	if (!isValidMinionForStory(id))
 	{
-		throw std::runtime_error{ "Attempt to use an invalid minion (Koris)" };
+		throw JcrException{ "Attempt to use an invalid koris minion : {}", id };
 	}
 	const auto scene_field1_gate_sce00a_sbh{ m_game->file(File::SCENE_FIELD1_GATE_SCE00A_SBH) };
 	scene_field1_gate_sce00a_sbh->write(m_game->offset().file.scene_field1_gate_sce00a_sbh.korisMinionId, id);
@@ -679,11 +680,11 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			(m_game->offset().file.executable.entityModelsBehavior)
 		};
 
-		auto throwIfUninitialized = [](u8 rotation)
+		auto throwIfUninitialized = [](Model_t model, u8 rotation)
 		{
 			if (rotation == 0xFF)
 			{
-				throw std::runtime_error{ "Uninitialized rotate color" };
+				throw JcrException{ "Model {} rotate color is uninitialized", model };
 			}
 		};
 
@@ -692,7 +693,6 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			for (s32 i{}; i < Entity::totalStoryMinions; ++i)
 			{
 				const auto rngModel{ Model::Minion::models[Random::get().generate(Model::Minion::models.size() - 1)] };
-				modelsBehavior[i].id = rngModel;
 				const auto& modelRotation{ modelsRotation.at(rngModel) };
 				const auto rotation
 				{
@@ -700,26 +700,29 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 					modelRotation.storyRotation : 
 					modelRotation.rotation.at(statsStory[i].element)
 				};
-				throwIfUninitialized(rotation);
+				throwIfUninitialized(rngModel, rotation);
+
+				modelsBehavior[i].id = rngModel;
 				modelsBehavior[i].colorRotation = rotation;
 			}
 
 			for (s32 i{}; i < Entity::totalECMinions; ++i)
 			{
-				const auto minionId{ ID_PATARAID + i };
 				const auto rngModel{ Model::Minion::models[Random::get().generate(Model::Minion::models.size() - 1)] };
-				modelsBehavior[minionId].id = rngModel;
 				const auto rotation{ modelsRotation.at(rngModel).rotation[i % 4] };
-				throwIfUninitialized(rotation);
+				throwIfUninitialized(rngModel, rotation);
+
+				const auto minionId{ ID_PATARAID + i };
+				modelsBehavior[minionId].id = rngModel;
 				modelsBehavior[minionId].colorRotation = rotation;
-			}			
-		}	
+			}
+		}
 
 		if (state & Minion::APPEARANCE_TEXTURE_RANDOM)
 		{
 			const auto includeCompatible{ state & Minion::APPEARANCE_TEXTURE_INCLUDE_COMPATIBLE };
 			const auto totalTextures
-			{ 
+			{
 				includeCompatible ?
 				Model::Minion::models.size() + Model::Minion::modelsEC.size() + 1 :
 				Model::Minion::models.size()
@@ -734,7 +737,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			}
 
 			if (includeCompatible)
-			{	
+			{
 				for (const auto& model : Model::Minion::modelsEC)
 				{
 					texturesModels.emplace_back(model);
@@ -755,7 +758,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 				if (model == MODEL_ZIRA)
 				{
-					m_sharedData->setGoatTextureModel(rngModel);
+					m_sharedData->setGoatTextureModelId(rngModel);
 				}
 
 				for (s32 i{}; i < Entity::totalStoryMinions; ++i)
@@ -769,7 +772,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 							modelRotation.storyRotation : 
 							modelRotation.rotation.at(statsStory[i].element)
 						};
-						throwIfUninitialized(rotation);
+						throwIfUninitialized(modelsBehavior[i].id, rotation);
 						modelsBehavior[i].colorRotation = rotation;
 					}
 				}
@@ -780,7 +783,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 					if (modelsBehavior[minionId].id == model)
 					{
 						const auto rotation{ modelsRotation.at(rngModel).rotation[i % 4] };
-						throwIfUninitialized(rotation);
+						throwIfUninitialized(modelsBehavior[minionId].id, rotation);
 						modelsBehavior[minionId].colorRotation = rotation;
 					}
 				}
@@ -788,7 +791,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		}
 
 		executable.write(m_game->offset().file.executable.entityModelsBehavior, modelsBehavior);	
-	}	
+	}
 
 	if (state & Minion::APPEARANCE_TEXTURE_RANDOM_COLOR)
 	{

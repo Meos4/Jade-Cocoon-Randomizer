@@ -1,5 +1,7 @@
 #include "BossWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 BossWidget::BossWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -92,7 +94,7 @@ void BossWidget::write() const
 {
 	if (!m_boss)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.storyElementRandomAll->isChecked())

@@ -1,5 +1,7 @@
 #include "TreasureWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 TreasureWidget::TreasureWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -87,7 +89,7 @@ void TreasureWidget::write() const
 {
 	if (!m_treasure)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.itemsRandom->isChecked())

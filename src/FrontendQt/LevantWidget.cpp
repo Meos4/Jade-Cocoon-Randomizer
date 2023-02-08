@@ -1,5 +1,7 @@
 #include "LevantWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 LevantWidget::LevantWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -46,7 +48,7 @@ void LevantWidget::write() const
 {
 	if (!m_levant)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.baseStatsRandom->isChecked())

@@ -1,5 +1,7 @@
 #include "EquipmentWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 EquipmentWidget::EquipmentWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -54,7 +56,7 @@ void EquipmentWidget::write() const
 {
 	if (!m_equipment)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	Equipment::Weapons_t weapons{};

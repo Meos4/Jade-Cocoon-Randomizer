@@ -1,5 +1,7 @@
 #include "ShopWidget.hpp"
 
+#include "Common/JcrException.hpp"
+
 ShopWidget::ShopWidget(QWidget* parent)
 	: RandomizerWidget(parent)
 {
@@ -51,7 +53,7 @@ void ShopWidget::write() const
 {
 	if (!m_shop)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.weaponRandom->isChecked())

@@ -1,11 +1,10 @@
 #include "MinionWidget.hpp"
 
 #include "Backend/Entity.hpp"
+#include "Common/JcrException.hpp"
 #include "FrontendQt/SpecialMagicDialog.hpp"
 
 #include <QAbstractItemView>
-
-#include <stdexcept>
 
 MinionWidget::MinionWidget(QWidget* parent)
 	: RandomizerWidget(parent)
@@ -131,15 +130,15 @@ void MinionWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedDa
 		{
 			if (isNtscJ)
 			{
-				throw std::runtime_error{ "Attempt to assign an invalid minion in a Japanese version" };
+				throw JcrException{ "Attempt to assign an invalid minion in a Japanese version : {}", id };
 			}
 			else if (id <= ID_CUSHIDRA)
 			{
-				throw std::runtime_error{ "Attempt to assign a boss to a minion" };
+				throw JcrException{ "Attempt to assign a boss to a minion : {}", id };
 			}
 			else if (id >= ID_PALOOJA)
 			{
-				throw std::runtime_error{ "Minion id overflow" };
+				throw JcrException{ "Minion id overflow : {}", id };
 			}
 			return id - Entity::totalStoryBosses;
 		}
@@ -237,7 +236,7 @@ void MinionWidget::write() const
 
 	if (!m_minion)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.spawnStoryRandomRealtime->isChecked())

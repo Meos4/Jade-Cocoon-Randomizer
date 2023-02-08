@@ -24,14 +24,14 @@ public:
 	const Buffer& model(Model_t id) const;
 	const std::unordered_map<Model_t, RotationElement>& rotations() const;
 	const RotationElement& rotation(Model_t id) const;
-	Model_t goatTextureModel() const;
+	Model_t goatTextureModelId() const;
 
-	void setGoatTextureModel(Model_t model);
+	void setGoatTextureModelId(Model_t model);
 private:
 	std::shared_ptr<Game> m_game;
 
 	std::unordered_map<Model_t, Buffer> m_models;
 	std::unordered_map<Model_t, RotationElement> m_rotations;
 
-	Model_t m_goatTextureModel{ MODEL_ZIRA };
+	Model_t m_goatTextureModelId{ MODEL_ZIRA };
 };

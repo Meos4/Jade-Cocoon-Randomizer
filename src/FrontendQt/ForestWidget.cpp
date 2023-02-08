@@ -1,6 +1,7 @@
 #include "ForestWidget.hpp"
 
 #include "Backend/Ost.hpp"
+#include "Common/JcrException.hpp"
 
 #include <QAbstractItemView>
 #include <QStringList>
@@ -136,7 +137,7 @@ void ForestWidget::write() const
 {
 	if (!m_forest)
 	{
-		throw std::runtime_error{ "Game is uninitialized" };
+		throw JcrException{ "Game is uninitialized" };
 	}
 
 	if (m_ui.paletteColorRandom->isChecked())
