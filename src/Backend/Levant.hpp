@@ -21,6 +21,7 @@ public:
 
 	void setBaseStats() const;
 	void setAnimation(Levant::Animation_t state) const;
+	void setFluteStyling() const;
 private:
 	std::shared_ptr<Game> m_game;
 	std::shared_ptr<SharedData> m_sharedData;

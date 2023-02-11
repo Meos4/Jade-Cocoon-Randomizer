@@ -57,3 +57,23 @@ void Levant::setAnimation(Levant::Animation_t state) const
 		over_game_bin->write(m_game->offset().file.over_game_bin.tableOfWeaponAnimationsId, weaponAnimationsId);
 	}
 }
+
+void Levant::setFluteStyling() const
+{
+	std::array<u16, 10> stylings;
+	auto* const stylingsPtr{ stylings.data() };
+
+	auto executable{ m_game->executable() };
+
+	const auto 
+		offsetSummon{ m_game->offset().file.executable.tableOfLevantFluteStylingsId },
+		offsetCapture{ static_cast<u32>(offsetSummon + sizeof(u16) * 6) };
+
+	executable.read(offsetSummon, stylingsPtr, sizeof(u16) * 5);
+	executable.read(offsetCapture, stylingsPtr + 5, sizeof(u16) * 5);
+
+	Random::get().shuffle(&stylings);
+
+	executable.write(offsetSummon, *stylingsPtr, sizeof(u16) * 5);
+	executable.write(offsetCapture, *(stylingsPtr + 5), sizeof(u16) * 5);
+}

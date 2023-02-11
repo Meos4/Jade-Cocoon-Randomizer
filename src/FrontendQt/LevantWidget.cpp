@@ -13,7 +13,8 @@ LevantWidget::LevantWidget(QWidget* parent)
 	{
 		{ SETTINGS(m_ui.baseStatsRandom) },
 		{ SETTINGS(m_ui.animationBetaUsingItem) },
-		{ SETTINGS(m_ui.animationRandomWeaponsPosture) }
+		{ SETTINGS(m_ui.animationRandomWeaponsPosture) },
+		{ SETTINGS(m_ui.fluteStylingShuffle) }
 	};
 
 	m_ui.baseStatsRandom->setToolTip
@@ -26,6 +27,11 @@ LevantWidget::LevantWidget(QWidget* parent)
 	(
 		"Random battle weapons postures."
 		"\n\nEx: a dagger can be held like a sword."
+	);
+	m_ui.fluteStylingShuffle->setToolTip
+	(
+		"Shuffle the sound effects played when Levant summon / capture a minion."
+		"\n\n*A summon sound effect can be remplaced by a capture effect and vice versa."
 	);
 }
 
@@ -68,6 +74,11 @@ void LevantWidget::write() const
 	if (animation)
 	{
 		m_levant->setAnimation(animation);
+	}
+
+	if (m_ui.fluteStylingShuffle->isChecked())
+	{
+		m_levant->setFluteStyling();
 	}
 }
 

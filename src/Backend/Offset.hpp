@@ -36,6 +36,7 @@ public:
 				actorBehaviorFn,
 				mainFn,
 				branchSetVatolkaSpecials,
+				tableOfLevantFluteStylingsId,
 				cc_begin;
 		} executable;
 
