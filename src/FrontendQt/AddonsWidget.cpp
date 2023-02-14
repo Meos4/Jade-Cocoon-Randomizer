@@ -13,6 +13,7 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 	{
 		{ SETTINGS(m_ui.nuzlockeOneCapturePerArea) },
 		{ SETTINGS(m_ui.nuzlockeDefinitiveMinionDeath) },
+		{ SETTINGS(m_ui.nuzlockeDefinitiveLevantDeath) },
 		{ SETTINGS(m_ui.difficultyHard) },
 		{ SETTINGS(m_ui.difficultyExtreme) },
 		{ SETTINGS(m_ui.skipTutorialEnable) },
@@ -44,6 +45,7 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 	);
 	m_ui.nuzlockeDefinitiveMinionDeath->setToolTip
 		("The death of one of your minions is definitive and will be automatically released.");
+	m_ui.nuzlockeDefinitiveLevantDeath->setToolTip("When Levant dies, the game will automatically restart.");
 	m_ui.difficultyHard->setToolTip
 	(
 		"Increase boss stats by:"
@@ -127,6 +129,10 @@ void AddonsWidget::write() const
 	if (m_ui.nuzlockeDefinitiveMinionDeath->isChecked())
 	{
 		nuzlocke |= Addons::NUZLOCKE_DEFINITIVE_DEATH;
+	}
+	if (m_ui.nuzlockeDefinitiveLevantDeath->isChecked())
+	{
+		nuzlocke |= Addons::NUZLOCKE_DEFINITIVE_LEVANT_DEATH;
 	}
 	if (nuzlocke)
 	{

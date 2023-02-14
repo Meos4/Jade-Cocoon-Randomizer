@@ -19,6 +19,7 @@ void CustomCode::write() const
 		sizeof(MipsFn::WriteUsedMapEOB) +
 		sizeof(MipsFn::WriteUsedMapCapture) +
 		sizeof(MipsFn::ReadUsedMap) +
+		sizeof(MipsFn::ResetFromNowhere) +
 
 		sizeof(MipsFn::DifficultyModeStats) +
 

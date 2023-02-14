@@ -16,6 +16,7 @@ namespace MipsFn
 	using WriteUsedMapEOB = std::array<Mips_t, 44>;
 	using WriteUsedMapCapture = std::array<Mips_t, 8>;
 	using ReadUsedMap = std::array<Mips_t, 52>;
+	using ResetFromNowhere = std::array<Mips_t, 3>;
 
 	using DifficultyModeStats = std::array<Mips_t, 33>;
 

@@ -137,6 +137,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QCheckBox" name="nuzlockeDefinitiveLevantDeath">
+          <property name="text">
+           <string>Definitive Levant Death</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
      </item>

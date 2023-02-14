@@ -44,7 +44,8 @@ public:
 		{
 			u32 endOfBattle,
 				tableOfBattleWeaponsEffectPtr,
-				setBattleWeaponsEffectFn;
+				setBattleWeaponsEffectFn,
+				endOfBattleSetSceneFn;
 
 			// not in NTSCJ1
 			u32 storyMinionAI,

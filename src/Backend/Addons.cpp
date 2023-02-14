@@ -42,6 +42,9 @@ Addons::Addons(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedDat
 
 void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 {
+	auto executable{ m_game->executable() };
+	const auto over_battle_bin{ m_game->file(File::OVER_BATTLE_BIN) };
+
 	if (state & Addons::NUZLOCKE_DEFINITIVE_DEATH)
 	{
 		const auto li32_minion1State{ Mips::li32(Mips::Register::t0, m_game->offset().game.minion1State) };
@@ -80,7 +83,7 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 
 		const auto nuzlockeDefinitiveDeathOffset{ m_game->customCodeOffset(sizeof(MipsFn::NuzlockeDefinitiveDeath)) };
 
-		m_game->executable().write(nuzlockeDefinitiveDeathOffset.file, nuzlockeDefinitiveDeathFn);
+		executable.write(nuzlockeDefinitiveDeathOffset.file, nuzlockeDefinitiveDeathFn);
 		m_game->file(File::OVER_GAME_BIN)->write(m_game->offset().file.over_game_bin.levantAnimArgs, Mips::j(nuzlockeDefinitiveDeathOffset.game));
 	}
 
@@ -242,8 +245,6 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 			jal_writeUsedMapCapture{ Mips::jal(writeUsedMapCaptureOffset.game) },
 			jal_readUsedMap{ Mips::jal(readUsedMap.game) };
 
-		const auto over_battle_bin{ m_game->file(File::OVER_BATTLE_BIN) };
-
 		over_battle_bin->write(m_game->offset().file.over_battle_bin.endOfBattle, Mips::j(writeUsedMapEOBOffset.game));
 
 		if (m_game->isVersion(Version::NtscJ1))
@@ -257,12 +258,25 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 			over_battle_bin->write(m_game->offset().file.over_battle_bin.getFireflyCounterBattle, jal_readUsedMap);
 		}
 
-		auto executable{ m_game->executable() };
-
 		executable.write(nuzlockeValidMapsOffset.file, nuzlockeMaps);
 		executable.write(writeUsedMapEOBOffset.file, writeUsedMapEOBFn);
 		executable.write(writeUsedMapCaptureOffset.file, writeUsedMapCaptureFn);
 		executable.write(readUsedMap.file, readUsedMapFn);
+	}
+
+	if (state & Addons::NUZLOCKE_DEFINITIVE_LEVANT_DEATH)
+	{
+		static constexpr MipsFn::ResetFromNowhere resetFromNowhereFn
+		{
+			0x3C1D801F, // lui sp, 0x801F
+			Mips::j(0x800100C0),
+			0x37BDFFE0  // ori sp, 0xFFE0
+		};
+
+		const auto resetFromNowhereOffset{ m_game->customCodeOffset(sizeof(MipsFn::ResetFromNowhere)) };
+
+		executable.write(resetFromNowhereOffset.file, resetFromNowhereFn);
+		over_battle_bin->write(m_game->offset().file.over_battle_bin.endOfBattleSetSceneFn + 0xE4, Mips::j(resetFromNowhereOffset.game));
 	}
 }
 

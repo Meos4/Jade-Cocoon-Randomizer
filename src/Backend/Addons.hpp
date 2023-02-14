@@ -14,7 +14,8 @@ public:
 	enum : Nuzlocke_t
 	{
 		NUZLOCKE_ONE_CAPTURE = 1 << 0,
-		NUZLOCKE_DEFINITIVE_DEATH = 1 << 1
+		NUZLOCKE_DEFINITIVE_DEATH = 1 << 1,
+		NUZLOCKE_DEFINITIVE_LEVANT_DEATH = 1 << 2
 	};
 
 	enum class Difficulty
