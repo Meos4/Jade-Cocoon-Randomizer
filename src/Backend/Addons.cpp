@@ -266,10 +266,10 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 
 	if (state & Addons::NUZLOCKE_DEFINITIVE_LEVANT_DEATH)
 	{
-		static constexpr MipsFn::ResetFromNowhere resetFromNowhereFn
+		const MipsFn::ResetFromNowhere resetFromNowhereFn
 		{
 			0x3C1D801F, // lui sp, 0x801F
-			Mips::j(0x800100C0),
+			Mips::j(m_game->isVersion(Version::NtscJ2) ? 0x800180C0 : 0x800100C0),
 			0x37BDFFE0  // ori sp, 0xFFE0
 		};
 
