@@ -28,6 +28,7 @@ public:
 	void setBattleMaps() const;
 	void setOst(Forest::Ost state) const;
 	void setOst(const Forest::OstArray& ostsId) const;
+	void setRandomEternalCorridorOstPerCorridor() const;
 private:
 	std::shared_ptr<Game> m_game;
 	std::shared_ptr<SharedData> m_sharedData;

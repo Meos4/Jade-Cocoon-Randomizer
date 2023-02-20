@@ -57,4 +57,5 @@ namespace Ost
 	};
 
 	std::vector<s16> id();
+	std::vector<s16> idWithoutDuplicate();
 };

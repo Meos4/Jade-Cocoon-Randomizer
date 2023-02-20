@@ -14,6 +14,8 @@ void CustomCode::write() const
 		sizeof(MipsFn::GenerateValidMinion) + // Story
 		sizeof(MipsFn::GenerateValidMinion) + // EC
 
+		sizeof(MipsFn::RandomEternalCorridorOst) +
+
 		sizeof(MipsFn::NuzlockeDefinitiveDeath) +
 		sizeof(MipsFn::WriteUsedMapEOBData) +
 		sizeof(MipsFn::WriteUsedMapEOB) +

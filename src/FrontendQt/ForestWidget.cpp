@@ -35,7 +35,8 @@ ForestWidget::ForestWidget(QWidget* parent)
 		{ SETTINGS(m_ui.battleMapsRandom) },
 		{ SETTINGS(m_ui.ostRandom) },
 		{ SETTINGS(m_ui.ostShuffle) },
-		{ SETTINGS(m_ui.ostCustom) }
+		{ SETTINGS(m_ui.ostCustom) },
+		{ SETTINGS(m_ui.ostRandomEternalCorridorOstPerCorridor) }
 	};
 
 	m_ui.paletteColorRandom->setToolTip("Randomize the colors of the forest palettes.");
@@ -50,6 +51,8 @@ ForestWidget::ForestWidget(QWidget* parent)
 	m_ui.ostCustom->setToolTip(customOst);
 	m_ui.ostCustomForestCombo->setToolTip(customOst);
 	m_ui.ostCustomChoiceCombo->setToolTip(customOst);
+	m_ui.ostRandomEternalCorridorOstPerCorridor->setToolTip
+	("Randomly change the ost in real time during Eternal Corridor with each new corridor.");
 
 	m_ui.ostCustomForestCombo->setStyleSheet("font-weight: normal;");
 	m_ui.ostCustomChoiceCombo->setStyleSheet("font-weight: normal;");
@@ -161,6 +164,11 @@ void ForestWidget::write() const
 	else if (m_ui.ostCustom->isChecked())
 	{
 		m_forest->setOst(ostArray());
+	}
+
+	if (m_ui.ostRandomEternalCorridorOstPerCorridor->isChecked())
+	{
+		m_forest->setRandomEternalCorridorOstPerCorridor();
 	}
 }
 

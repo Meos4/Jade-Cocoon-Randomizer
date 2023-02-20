@@ -10,6 +10,24 @@ namespace MipsFn
 	// Minion
 	using GenerateValidMinion = std::array<Mips_t, 19>;
 
+	// Forest
+#pragma pack(push, 1)
+	struct RandomEternalCorridorOst
+	{
+		s32 corridor;
+		s16 currentOst;
+		std::array<s16, 43> osts;
+		std::array<Mips_t, 35> function;
+
+		static constexpr u32 corridorOffset(u32 begin) { return begin; };
+		static constexpr u32 currentOstOffset(u32 begin) { return corridorOffset(begin) + sizeof(corridor); };
+		static constexpr u32 ostsOffset(u32 begin) { return currentOstOffset(begin) + sizeof(currentOst); };
+		static constexpr u32 functionOffset(u32 begin) { return ostsOffset(begin) + sizeof(osts); };
+	};
+
+	static_assert(sizeof(RandomEternalCorridorOst) % 4 == 0, "Bad Padding");
+#pragma pack(pop)
+
 	// Addons
 	using NuzlockeDefinitiveDeath = std::array<Mips_t, 23>;
 	using WriteUsedMapEOBData = std::array<u8, 20>;

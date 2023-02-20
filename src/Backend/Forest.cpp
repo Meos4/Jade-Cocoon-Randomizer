@@ -3,6 +3,7 @@
 #include "Backend/File.hpp"
 #include "Backend/JCUtility.hpp"
 #include "Backend/Mips.hpp"
+#include "Backend/MipsFunctionTypes.hpp"
 #include "Backend/Ost.hpp"
 #include "Backend/Random.hpp"
 #include "Backend/Tim.hpp"
@@ -916,24 +917,7 @@ void Forest::setOst(Forest::Ost state) const
 void Forest::setOst(const Forest::OstArray& ostsId) const
 {
 	Forest::OstArray forestOsts;
-	auto availableOsts{ ::Ost::id() };
-
-	auto isADuplicateOst = [](auto ost)
-	{
-		// Legend of Arcana ~ Clandestine Meeting duplicate
-		static constexpr std::array<s16, 3> duplicateOsts{ 30, 126, 144 };
-		for (const auto& duplicateOst : duplicateOsts)
-		{
-			if (ost == duplicateOst)
-			{
-				return true;
-			}
-		}
-		return false;
-	};
-
-	const auto [begin, end] { std::ranges::remove_if(availableOsts, isADuplicateOst) };
-	availableOsts.erase(begin, end);
+	auto availableOsts{ ::Ost::idWithoutDuplicate() };
 
 	for (u32 i{}; i < Forest::nbForest; ++i)
 	{
@@ -1047,4 +1031,99 @@ void Forest::setOst(const Forest::OstArray& ostsId) const
 		scene_field1_forest4_sce07_sbh->write(m_game->offset().file.scene_field1_forest4_sce07_sbh.pupaKeyBehaviorFn + 0xA8, Mips_t(0));
 		scene_field1_forest4_sce07_sbh->write(m_game->offset().file.scene_field1_forest4_sce07_sbh.doorBehaviorFn + 0x138, Mips_t(0));
 	}
+}
+
+void Forest::setRandomEternalCorridorOstPerCorridor() const
+{
+	const auto ostsIdWithoutDuplicate{ ::Ost::idWithoutDuplicate() };
+
+	using ArrayType = decltype(MipsFn::RandomEternalCorridorOst::osts);
+	using OstType = decltype(ostsIdWithoutDuplicate)::value_type;
+	const auto ostsSize{ ostsIdWithoutDuplicate.size() };
+
+	if (ostsSize * sizeof(OstType) > sizeof(ArrayType))
+	{
+		throw JcrException{ "Invalid number of osts: {}, max: {}", ostsSize, sizeof(ArrayType) / sizeof(OstType) };
+	}
+
+	ArrayType availableOsts{};
+
+	for (std::size_t i{}; i < ostsSize; ++i)
+	{
+		availableOsts[i] = ostsIdWithoutDuplicate[i];
+	}
+
+	const auto randomEternalCorridorOstOffset{ m_game->customCodeOffset(sizeof(MipsFn::RandomEternalCorridorOst)) };
+
+	const auto 
+		li32_mapId{ Mips::li32(Mips::Register::t0, m_game->offset().game.mapId) },
+		li32_currentOst{ Mips::li32(Mips::Register::t2, MipsFn::RandomEternalCorridorOst::currentOstOffset(randomEternalCorridorOstOffset.game)) },
+		li32_eternalCorridorCurrentCorridor{ Mips::li32(Mips::Register::t0, m_game->offset().game.eternalCorridorCurrentCorridor) },
+		li32_corridor{ Mips::li32(Mips::Register::t0, MipsFn::RandomEternalCorridorOst::corridorOffset(randomEternalCorridorOstOffset.game)) },
+		li32_osts{ Mips::li32(Mips::Register::t0, MipsFn::RandomEternalCorridorOst::ostsOffset(randomEternalCorridorOstOffset.game)) };
+
+	MipsFn::RandomEternalCorridorOst randomEternalCorridorOst
+	{
+		.corridor = 0,
+		.currentOst = availableOsts[Random::get().generate(availableOsts.size() - 2)], // -2 Last element is only for 4 bytes padding
+		.osts = availableOsts,
+		.function =
+		{
+			0x27BDFFF0, // addiu sp, -0x10
+
+			// If the map is from eternal corridor
+			li32_mapId[0],
+			li32_mapId[1],
+			0x85020000, // lh v0, 0(t0)
+			0xAFBF0000, // sw ra, 0(sp)
+			0x1440001B, // bnez v0, 0x1B
+			0x85020004, // lh v0, 4(t0)
+			0x24080003, // li t0, 3
+			0x14480018, // bne v0, t0, 0x18
+
+			// Load current ost
+			li32_currentOst[0],
+			li32_currentOst[1],
+			0x85500000, // lh s0, 0(t0)
+
+			// If the current corridor is different than the corridor
+			li32_eternalCorridorCurrentCorridor[0],
+			li32_eternalCorridorCurrentCorridor[1],
+			0x8D020000, // lw v0, 0(t0)
+			li32_corridor[0],
+			li32_corridor[1],
+			0x8D090000, // lw t1, 0(t0)
+			0x00000000, // nop
+			0x1049000D, // beq v0, t1, 0xD
+			0x00000000, // nop
+
+			// Generate random ost
+			Mips::jal(m_game->offset().game.randFn),
+			0xAD020000, // sw v0, 0(t0)
+			0x2409002A, // li t1, 0x2A
+			0x0049001A, // div v0, t1
+			0x00001010, // mfhi v0
+			li32_osts[0],
+			li32_osts[1],
+			0x00021040, // sll v0, 1
+			0x01024020, // add t0, v0
+			0x85100000, // lh s0, 0(t0)
+			0x8FBF0000, // lw ra, 0(sp)
+			0xA5500000, // sh s0, 0(t2)
+
+			0x03E00008, // jr ra
+			0x27BD0010  // addiu sp, 0x10
+		}
+	};
+
+	const std::array<Mips_t, 2> jal_lh
+	{
+		Mips::jal(MipsFn::RandomEternalCorridorOst::functionOffset(randomEternalCorridorOstOffset.game)),
+		0x84500008 // lh s0, 8(v0)
+	};
+
+	auto executable{ m_game->executable() };
+
+	executable.write(m_game->offset().file.executable.mainSceneBehaviorFn + 0x3D4, jal_lh);
+	executable.write(randomEternalCorridorOstOffset.file, randomEternalCorridorOst);
 }

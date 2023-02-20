@@ -37,6 +37,7 @@ public:
 				mainFn,
 				branchSetVatolkaSpecials,
 				tableOfLevantFluteStylingsId,
+				mainSceneBehaviorFn,
 				cc_begin;
 		} executable;
 
@@ -905,6 +906,8 @@ public:
 			setBattleWeaponsEffectFn,
 			drawLargeTextOnScreenFn,
 			criticalRateTransformFn,
+			randFn,
+			eternalCorridorCurrentCorridor,
 			cc_begin;
 	};
 
