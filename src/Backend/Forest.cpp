@@ -917,7 +917,7 @@ void Forest::setOst(Forest::Ost state) const
 void Forest::setOst(const Forest::OstArray& ostsId) const
 {
 	Forest::OstArray forestOsts;
-	auto availableOsts{ ::Ost::idWithoutDuplicate() };
+	const auto availableOsts{ ::Ost::idWithoutDuplicate() };
 
 	for (u32 i{}; i < Forest::nbForest; ++i)
 	{
@@ -1062,7 +1062,7 @@ void Forest::setRandomEternalCorridorOstPerCorridor() const
 		li32_corridor{ Mips::li32(Mips::Register::t0, MipsFn::RandomEternalCorridorOst::corridorOffset(randomEternalCorridorOstOffset.game)) },
 		li32_osts{ Mips::li32(Mips::Register::t0, MipsFn::RandomEternalCorridorOst::ostsOffset(randomEternalCorridorOstOffset.game)) };
 
-	MipsFn::RandomEternalCorridorOst randomEternalCorridorOst
+	const MipsFn::RandomEternalCorridorOst randomEternalCorridorOst
 	{
 		.corridor = 0,
 		.currentOst = availableOsts[Random::get().generate(availableOsts.size() - 2)], // -2 Last element is only for 4 bytes padding
