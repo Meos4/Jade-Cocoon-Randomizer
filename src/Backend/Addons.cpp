@@ -627,7 +627,7 @@ void Addons::setShowHiddenStats() const
 		0x12800001, // beqz s4, 1
 		0x02802021, // move a0, s4 
 		0x02402021, // move a0, s2 
-		isNtscJ ? 0x9084FF96 : 0x9084FF7E, // lbu a0, -0x6A/-0x82(a0)
+		isNtscJ ? Mips_t(0x9084FF96) : Mips_t(0x9084FF7E), // lbu a0, -0x6A/-0x82(a0)
 		0x00000000, // nop
 		Mips::jal(m_game->offset().game.getEntityEnhancement),
 		0x00000000, // nop
