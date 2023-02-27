@@ -7,7 +7,7 @@
 #include <array>
 #include <numeric>
 
-static const std::array<s16, 4096> tableOfRates
+static constexpr std::array<s16, 4096> tableOfRates
 {
 	0, 6, 13, 19, 25, 31, 38, 44,
 	50, 57, 63, 69, 75, 82, 88, 94,
@@ -523,7 +523,7 @@ static const std::array<s16, 4096> tableOfRates
 	-50, -44, -38, -31, -25, -19, -13, -6
 };
 
-static const std::array<u8, 208> tableOfBodyParts
+static constexpr std::array<u8, 208> tableOfBodyParts
 {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00,
 	0x02, 0x00, 0x02, 0x01, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x03, 0x02, 0x03, 0x00, 0x00, 0x00,

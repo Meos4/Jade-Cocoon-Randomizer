@@ -4,7 +4,7 @@
 
 #include <type_traits>
 
-const static Offset::File
+static constexpr Offset::File
 fileNtscJ1
 {
 	.executable
@@ -5744,7 +5744,7 @@ filePalIt
 	}
 };
 
-const static Offset::Game
+static constexpr Offset::Game
 gameNtscJ1
 {
 	.levantStats = 0x80089A14,
