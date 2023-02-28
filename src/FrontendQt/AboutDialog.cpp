@@ -11,9 +11,6 @@ AboutDialog::AboutDialog(QWidget* parent)
 {
 	m_ui.setupUi(this);
 
-	const QPixmap jcrLogo{":Img/JcRandomizerLogo"};
-	m_ui.logoLabel->setPixmap(jcrLogo);
-
 	m_ui.nameLabel->setText(QString::fromStdString(
 		std::format("<b><font size=\"+2\">Jade Cocoon Randomizer v{} by Meos</b></font>", Software::version)));
 

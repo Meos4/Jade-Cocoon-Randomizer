@@ -24,25 +24,6 @@ RandomizerTabWidget::RandomizerTabWidget(QWidget* parent)
 {
 	m_ui.setupUi(this);
 
-	static constexpr std::array<const char*, TAB_COUNT> imgPath
-	{
-		":Img/Levant16.png",
-		":Img/Ocarina16.png",
-		":Img/DreamMan16.png",
-		":Img/BeetleKey16.png",
-		":Img/Garb16.png",
-		":Img/Bag16.png",
-		":Img/TwoSword16.png",
-		":Img/BlueCursor16.png",
-		":Img/Addons16.png",
-		":Img/BetaLoading16.png"
-	};
-
-	for (s32 i{}; i < TAB_COUNT; ++i)
-	{
-		setTabIcon(i, QIcon{ imgPath[i] });
-	}
-
 	m_randomizerWidgets[TAB_LEVANT] = new LevantWidget(this);
 	m_randomizerWidgets[TAB_MINION] = new MinionWidget(this);
 	m_randomizerWidgets[TAB_BOSS] = new BossWidget(this);

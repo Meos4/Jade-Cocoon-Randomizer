@@ -13,24 +13,6 @@ SpecialMagicDialog::SpecialMagicDialog(QWidget *parent)
 	m_ui.sSpecialLabel->setStyleSheet("font-weight: bold;");
 	m_ui.mMagicLabel->setStyleSheet("font-weight: bold;");
 
-	const QPixmap
-		noneIcon{ ":Img/None13.png" },
-		fireIcon{ ":Img/Fire13.png" },
-		airIcon{ ":Img/Air13.png" },
-		earthIcon{ ":Img/Earth13.png" },
-		waterIcon{ ":Img/Water13.png" };
-
-	m_ui.sNoneLabel->setPixmap(noneIcon);
-	m_ui.sFireLabel->setPixmap(fireIcon);
-	m_ui.sAirLabel->setPixmap(airIcon);
-	m_ui.sEarthLabel->setPixmap(earthIcon);
-	m_ui.sWaterLabel->setPixmap(waterIcon);
-
-	m_ui.mFireLabel->setPixmap(fireIcon);
-	m_ui.mAirLabel->setPixmap(airIcon);
-	m_ui.mEarthLabel->setPixmap(earthIcon);
-	m_ui.mWaterLabel->setPixmap(waterIcon);
-
 	m_specialsBox =
 	{
 		{ SPECIAL_NEUTRAL, m_ui.sNeutral },
