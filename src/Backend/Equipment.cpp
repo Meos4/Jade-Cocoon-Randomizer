@@ -183,7 +183,7 @@ void Equipment::setWeapons(Equipment::Weapons_t state) const
 	}
 
 	executable.write(statsOffset, stats);
-	setDamageEffectFromWeaponIdFn(*m_game);
+	setDamageEffectFromWeaponIdFn(*m_game, false);
 }
 
 void Equipment::setArmors(Equipment::Armors_t state) const
@@ -245,7 +245,7 @@ void Equipment::setOthers() const
 	executable.write(statsOffset, stats);
 }
 
-void Equipment::setDamageEffectFromWeaponIdFn(const Game& game)
+void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect)
 {
 	const auto over_battle_bin{ game.file(File::OVER_BATTLE_BIN) };
 
@@ -287,7 +287,7 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game)
 
 	for (Item_t i{}; i < WEAPON_COUNT; ++i)
 	{
-		if (weaponsCharacteristic[i].critical == 90)
+		if (setAutumnMoonEffect && weaponsCharacteristic[i].critical == 90)
 		{
 			animationsId[i] = WEAPON_ANIMATION_CRITICAL;
 		}

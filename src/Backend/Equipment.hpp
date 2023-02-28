@@ -31,7 +31,7 @@ public:
 	void setArmors(Equipment::Armors_t state) const;
 	void setOthers() const;
 
-	static void setDamageEffectFromWeaponIdFn(const Game& game);
+	static void setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect);
 private:
 	std::shared_ptr<Game> m_game;
 	std::shared_ptr<SharedData> m_sharedData;

@@ -68,7 +68,7 @@ void Fixes::setBodyEnhancement() const
 
 void Fixes::setAutumnMoonEffect() const
 {
-	Equipment::setDamageEffectFromWeaponIdFn(*m_game);
+	Equipment::setDamageEffectFromWeaponIdFn(*m_game, true);
 }
 
 void Fixes::setHpMpBarsSize(u16 value) const
