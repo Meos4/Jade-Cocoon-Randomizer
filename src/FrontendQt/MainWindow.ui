@@ -60,6 +60,9 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionHelpGitHub"/>
+    <addaction name="actionHelpDiscord"/>
+    <addaction name="actionHelpJadeCocoonWiki"/>
     <addaction name="actionHelpAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -102,12 +105,41 @@
     <string/>
    </property>
   </action>
+  <action name="actionHelpGitHub">
+   <property name="icon">
+    <iconset resource="Resource/resources.qrc">
+     <normaloff>:/Img/GitHub.png</normaloff>:/Img/GitHub.png</iconset>
+   </property>
+   <property name="text">
+    <string>GitHub</string>
+   </property>
+  </action>
+  <action name="actionHelpDiscord">
+   <property name="icon">
+    <iconset resource="Resource/resources.qrc">
+     <normaloff>:/Img/Discord.png</normaloff>:/Img/Discord.png</iconset>
+   </property>
+   <property name="text">
+    <string>Discord</string>
+   </property>
+  </action>
+  <action name="actionHelpJadeCocoonWiki">
+   <property name="icon">
+    <iconset resource="Resource/resources.qrc">
+     <normaloff>:/Img/JcWiki.png</normaloff>:/Img/JcWiki.png</iconset>
+   </property>
+   <property name="text">
+    <string>Jade Cocoon Wiki</string>
+   </property>
+  </action>
   <action name="actionHelpAbout">
    <property name="text">
     <string>About</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="Resource/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -15,6 +15,7 @@
 #include "dumpsxiso/dumpsxiso.h"
 #include "mkpsxiso/mkpsxiso.h"
 
+#include <QDesktopServices>
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
@@ -43,6 +44,16 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(m_ui.actionFileClose, &QAction::triggered, this, &MainWindow::disableUI);
 	connect(m_ui.actionFileSaveAs, &QAction::triggered, this, &MainWindow::onFileSaveAs);
 	connect(m_ui.actionFileExit, &QAction::triggered, this, &QWidget::close);
+
+	connect(m_ui.actionHelpGitHub, &QAction::triggered, this,
+		[]() { QDesktopServices::openUrl(QUrl{ "https://github.com/Meos4/Jade-Cocoon-Randomizer" }); });
+
+	connect(m_ui.actionHelpDiscord, &QAction::triggered, this,
+		[]() { QDesktopServices::openUrl(QUrl{ "https://discord.com/invite/ErwKG2v" }); });
+
+	connect(m_ui.actionHelpJadeCocoonWiki, &QAction::triggered, this,
+		[]() { QDesktopServices::openUrl(QUrl{ "https://thejadecocoonproject.fandom.com/wiki/Jade_Cocoon_Wiki" }); });
+
 	connect(m_ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::onHelpAbout);
 
 	disableUI();
