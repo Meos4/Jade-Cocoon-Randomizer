@@ -36,8 +36,6 @@ MainWindow::MainWindow(QWidget* parent)
 	m_randomizerTabWidget = new RandomizerTabWidget(this);
 	m_ui.mainLayout->addWidget(m_randomizerTabWidget);
 
-	setAcceptDrops(true);
-
 	connect(m_topInfoWidget, &TopInfoWidget::buttonLoadSettingsClicked, this, &MainWindow::loadRandomizerSettings);
 	connect(m_topInfoWidget, &TopInfoWidget::buttonSaveSettingsClicked, this, &MainWindow::saveRandomizerSettings);
 	connect(m_ui.actionFileOpen, &QAction::triggered, this, &MainWindow::onFileOpen);
