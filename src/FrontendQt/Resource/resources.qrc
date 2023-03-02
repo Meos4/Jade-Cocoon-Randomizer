@@ -19,5 +19,10 @@
     <file>Img/GitHub.png</file>
     <file>Img/Discord.png</file>
     <file>Img/JcWiki.png</file>
+    <file>Img/Open.png</file>
+    <file>Img/Close.png</file>
+    <file>Img/SaveAs.png</file>
+    <file>Img/Exit.png</file>
+    <file>Img/About.png</file>
   </qresource>
 </RCC>
