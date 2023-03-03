@@ -807,9 +807,21 @@ void Forest::setPaletteColor() const
 
 		auto rotateBPP8ShadeAndLight = [&]<Integral... Args>(RawFile* file, Args... offsets)
 		{
+			static constexpr std::array<s32, nbElementsEC>
+				shiftShadeRotations{ 0, 90, 0, 0, 0 }, shiftLightRotations{ 0, 0, 30, 0, 0 };
+
 			Tim::rotateBPP8(file, rng, offsets...);
 			((offsets = offsets - (offsets % Game::sectorSize) + 0x30), ...);
-			rotateShade.operator()<0>(file, rng, offsets...);
+			if (i == 2)
+			{
+				addRGBShadeAndLight(file, { 0, 35, 0 }, { 0, 0, 1740 }, offsets...);
+			}
+			else
+			{
+				rotateShade(file, rng + shiftShadeRotations[i], offsets...);
+			}
+			((offsets += 0xC), ...);
+			rotateLight(file, rng + shiftLightRotations[i], offsets...);
 		};
 
 		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE00_SCE + elementFileId).get(), 0x124);
