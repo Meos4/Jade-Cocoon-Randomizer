@@ -99,7 +99,8 @@ public:
 				tableOfWeaponAnimationsId,
 				isQuantityLimitReachedFn,
 				itemShopBuyFn,
-				tableOfMapsBehavior;
+				tableOfMapsBehavior,
+				setItemQuantityFromChestFn;
 
 			// not in NTSCJ
 			u32 readFlagRotateSpawn;

@@ -479,6 +479,25 @@ void Addons::setItemQuantityLimit(u8 limit) const
 	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0x9C, slti_v0_v0);
 	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0xA8, li_v0);
 	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0xF4, li_v1);
+
+	const MipsFn::SetChestNewItemQuantityLimit setChestNewItemQuantityLimitFn
+	{
+		// If quantity is > than the limit
+		0x2C620000 + limit + 1u, // sltiu v0, v1, limit + 1
+		0x14400002, // bnez v0, +2
+		0x00000000, // nop
+
+		// Set quantity to limit
+		Mips::li(Mips::Register::v1, limit),
+
+		0x03E00008, // jr ra
+		0xA0900000  // sb s0, 0(a0)
+	};
+
+	const auto setChestNewItemQuantityLimitOffset{ m_game->customCodeOffset(sizeof(MipsFn::SetChestNewItemQuantityLimit)) };
+
+	m_game->executable().write(setChestNewItemQuantityLimitOffset.file, setChestNewItemQuantityLimitFn);
+	over_game_bin->write(m_game->offset().file.over_game_bin.setItemQuantityFromChestFn + 0x34, Mips::jal(setChestNewItemQuantityLimitOffset.game));
 }
 
 void Addons::setLevelCapEC(u8 levelCap) const

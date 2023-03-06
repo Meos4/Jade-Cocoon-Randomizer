@@ -48,6 +48,8 @@ namespace MipsFn
 
 	using ToggleX2Framerate = std::array<Mips_t, 20>;
 
+	using SetChestNewItemQuantityLimit = std::array<Mips_t, 6>;
+
 	// Fixes
 	using FixEntityEnhancement = std::array<Mips_t, 20>;
 

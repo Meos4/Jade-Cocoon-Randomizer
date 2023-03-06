@@ -89,6 +89,7 @@ fileNtscJ1
 		.isQuantityLimitReachedFn = 0x0000CF1C,
 		.itemShopBuyFn = 0x0000CD84,
 		.tableOfMapsBehavior = 0x0000E4F0,
+		.setItemQuantityFromChestFn = 0x0000CA30,
 		.readFlagRotateSpawn = 0,
 	},
 	.over_menu_bin
@@ -806,6 +807,7 @@ fileNtscJ2
 		.isQuantityLimitReachedFn = 0x0000D1E0,
 		.itemShopBuyFn = 0x0000D048,
 		.tableOfMapsBehavior = 0x0000E7B4,
+		.setItemQuantityFromChestFn = 0x0000CCF4,
 		.readFlagRotateSpawn = 0,
 	},
 	.over_menu_bin
@@ -1523,6 +1525,7 @@ fileNtscU
 		.isQuantityLimitReachedFn = 0x0000D0D0,
 		.itemShopBuyFn = 0x0000CF38,
 		.tableOfMapsBehavior = 0x0000E6A4,
+		.setItemQuantityFromChestFn = 0x0000CBE4,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -2240,6 +2243,7 @@ filePalEn
 		.isQuantityLimitReachedFn = 0x0000D310,
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
+		.setItemQuantityFromChestFn = 0x0000CE24,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -2957,6 +2961,7 @@ filePalFr
 		.isQuantityLimitReachedFn = 0x0000D310,
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
+		.setItemQuantityFromChestFn = 0x0000CE24,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -3674,6 +3679,7 @@ filePalDe
 		.isQuantityLimitReachedFn = 0x0000D310,
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
+		.setItemQuantityFromChestFn = 0x0000CE24,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -4391,6 +4397,7 @@ filePalEs
 		.isQuantityLimitReachedFn = 0x0000D310,
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
+		.setItemQuantityFromChestFn = 0x0000CE24,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -5109,6 +5116,7 @@ filePalIt
 		.isQuantityLimitReachedFn = 0x0000D310,
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
+		.setItemQuantityFromChestFn = 0x0000CE24,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin

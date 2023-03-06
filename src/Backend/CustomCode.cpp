@@ -35,6 +35,8 @@ void CustomCode::write() const
 
 		sizeof(MipsFn::ToggleX2Framerate) +
 
+		sizeof(MipsFn::SetChestNewItemQuantityLimit) +
+
 		sizeof(MipsFn::FixEntityEnhancement) +
 		
 		sizeof(MipsFn::PreviewHeal)
