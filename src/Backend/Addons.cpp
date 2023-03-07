@@ -266,17 +266,39 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 
 	if (state & Addons::NUZLOCKE_DEFINITIVE_LEVANT_DEATH)
 	{
+		const auto jal_setDefeatScene{ over_battle_bin->read<Mips_t>(m_game->offset().file.over_battle_bin.endOfBattleSetSceneFn + 0xE4) };
+		const auto li32_idOpponent1{ Mips::li32(Mips::Register::t0, m_game->offset().game.idOpponent1) };
+
 		const MipsFn::ResetFromNowhere resetFromNowhereFn
 		{
+			0x27BDFFF0, // addiu sp, -0x10
+
+			// If opponent 1 is not "Dream Man"
+			li32_idOpponent1[0],
+			li32_idOpponent1[1],
+			0x8D080000, // lw t0, 0(t0)
+			Mips::li(Mips::Register::t1, ID_DREAM_MAN),
+			0x11090004, // beq t0, t1, 4
+			0xAFBF0000, // sw ra, 0(sp)
+
+			// Reset the game
 			0x3C1D801F, // lui sp, 0x801F
 			Mips::j(m_game->isVersion(Version::NtscJ2) ? 0x800180C0 : 0x800100C0),
-			0x37BDFFE0  // ori sp, 0xFFE0
+			0x37BDFFE0, // ori sp, 0xFFE0
+
+			// Else set the defeat scene
+			jal_setDefeatScene,
+			0x00000000, // nop
+			0x8FBF0000, // lw ra, 0(sp)
+			0x00000000, // nop
+			0x03E00008, // jr ra
+			0x27BD0010  // addiu sp, 0x10
 		};
 
 		const auto resetFromNowhereOffset{ m_game->customCodeOffset(sizeof(MipsFn::ResetFromNowhere)) };
 
 		executable.write(resetFromNowhereOffset.file, resetFromNowhereFn);
-		over_battle_bin->write(m_game->offset().file.over_battle_bin.endOfBattleSetSceneFn + 0xE4, Mips::j(resetFromNowhereOffset.game));
+		over_battle_bin->write(m_game->offset().file.over_battle_bin.endOfBattleSetSceneFn + 0xE4, Mips::jal(resetFromNowhereOffset.game));
 	}
 }
 
