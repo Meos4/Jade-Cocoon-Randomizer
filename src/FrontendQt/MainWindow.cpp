@@ -357,7 +357,11 @@ void MainWindow::onFileSaveAs()
 			m_topInfoWidget->setSeed(firstSeed);
 		}
 
-		if (QMessageBox::question(this, "Save", "Generate the associated .cue file?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
+		auto filePathCue{ filePath };
+		filePathCue.replace_extension(".cue");
+
+		if (!std::filesystem::is_regular_file(filePathCue) &&
+			QMessageBox::question(this, "Save", "Generate the associated .cue file?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		{
 			Game::generateCue(filePath);
 		}
