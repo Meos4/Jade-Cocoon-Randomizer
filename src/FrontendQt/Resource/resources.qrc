@@ -24,5 +24,6 @@
     <file>Img/SaveAs.png</file>
     <file>Img/Exit.png</file>
     <file>Img/About.png</file>
+    <file>Img/Changelog.png</file>
   </qresource>
 </RCC>

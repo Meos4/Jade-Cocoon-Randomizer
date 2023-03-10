@@ -52,6 +52,9 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(m_ui.actionHelpJadeCocoonWiki, &QAction::triggered, this,
 		[]() { QDesktopServices::openUrl(QUrl{ "https://thejadecocoonproject.fandom.com/wiki/Jade_Cocoon_Wiki" }); });
 
+	connect(m_ui.actionHelpChangelog, &QAction::triggered, this,
+		[]() { QDesktopServices::openUrl(QUrl{ "https://github.com/Meos4/Jade-Cocoon-Randomizer/blob/main/CHANGELOG.md" }); });
+
 	connect(m_ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::onHelpAbout);
 
 	disableUI();

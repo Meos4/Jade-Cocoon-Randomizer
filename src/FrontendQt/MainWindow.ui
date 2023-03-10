@@ -63,6 +63,8 @@
     <addaction name="actionHelpGitHub"/>
     <addaction name="actionHelpDiscord"/>
     <addaction name="actionHelpJadeCocoonWiki"/>
+    <addaction name="actionHelpChangelog"/>
+    <addaction name="separator"/>
     <addaction name="actionHelpAbout"/>
    </widget>
    <addaction name="menuFile"/>
@@ -146,6 +148,15 @@
    </property>
    <property name="text">
     <string>Jade Cocoon Wiki</string>
+   </property>
+  </action>
+  <action name="actionHelpChangelog">
+   <property name="icon">
+    <iconset resource="Resource/resources.qrc">
+     <normaloff>:/Img/Changelog.png</normaloff>:/Img/Changelog.png</iconset>
+   </property>
+   <property name="text">
+    <string>Changelog</string>
    </property>
   </action>
   <action name="actionHelpAbout">
