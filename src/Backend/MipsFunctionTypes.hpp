@@ -39,7 +39,7 @@ namespace MipsFn
 	using DifficultyModeStats = std::array<Mips_t, 33>;
 
 	using AfterTutorialStateData = std::array<u8, 360>;
-	using WriteAfterTutorialState = std::array<Mips_t, 38>;
+	using WriteAfterTutorialState = std::array<Mips_t, 36>;
 
 	using DrawHiddenStats = std::array<Mips_t, 62>;
 	using CriticalRateFromStats = std::array<Mips_t, 13>;

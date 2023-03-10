@@ -362,12 +362,11 @@ void Addons::setSkipTutorial(bool skipKoris) const
 
 	const MipsFn::WriteAfterTutorialState writeAfterTutorialStateFn
 	{
-		0x27BDFFE0, // addiu sp, -0x20
-		0xAFA20010, // sw v0, 0x10(sp)
-		0xAFA3000C, // sw v1, 0xC(sp)
-		0xAFA40008, // sw a0, 8(sp)
-		0xAFA50004, // sw a1, 4(sp)
-		0xAFBF0000, // sw ra, 0(sp)
+		0x27BDFFF0, // addiu sp, -0x10
+		0xAFA2000C, // sw v0, 0xC(sp)
+		0xAFA30008, // sw v1, 8(sp)
+		0xAFA40004, // sw a0, 4(sp)
+		0xAFA50000, // sw a1, 0(sp)
 
 		li32_afterTutorialState[0], // lui a0, 0xXXXX
 		li32_gameStateStruct[0], // lui a1, 0xXXXX
@@ -381,7 +380,7 @@ void Addons::setSkipTutorial(bool skipKoris) const
 		0xACAB0000, // sw t3, 0(a1)
 		0x24840004, // addiu a0, 4
 		0x2C680002, // sltiu t0, v1, 2
-		0x1500FFFA, // bnez t0, -0x18
+		0x1500FFFA, // bnez t0, -6
 		0x24A50004, // addiu a1, 4
 
 		// Give Dagger
@@ -398,16 +397,15 @@ void Addons::setSkipTutorial(bool skipKoris) const
 		0xACAB0000, // sw t3, 0(a1)
 		0x24840004, // addiu a0, 4
 		0x2C680058, // sltiu t0, v1, 58
-		0x1500FFFA, // bnez t0, -0x18
+		0x1500FFFA, // bnez t0, -6
 		0x24A50004, // addiu a1, 4
 
-		0x8FA20010, // lw v0, 0x10(sp)
-		0x8FA3000C, // lw v1, 0xC(sp)
-		0x8FA40008, // lw a0, 8(sp)
-		0x8FA50004, // lw a1, 4(sp)
-		0x8FBF0000, // lw ra, 0(sp)
+		0x8FA2000C, // lw v0, 0xC(sp)
+		0x8FA30008, // lw v1, 8(sp)
+		0x8FA40004, // lw a0, 4(sp)
+		0x8FA50000, // lw a1, 0(sp)
 		0x03E00008, // jr ra
-		0x27BD0020  // addiu sp, 0x20
+		0x27BD0010  // addiu sp, 0x10
 	};
 
 	auto executable{ m_game->executable() };
