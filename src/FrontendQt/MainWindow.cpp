@@ -15,6 +15,7 @@
 #include "dumpsxiso/dumpsxiso.h"
 #include "mkpsxiso/mkpsxiso.h"
 
+#include <QActionGroup>
 #include <QDesktopServices>
 #include <QDragEnterEvent>
 #include <QDropEvent>
@@ -24,6 +25,8 @@
 
 #include <format>
 #include <future>
+
+static constexpr auto jcrGuiSettingsFilename{ "JCR_GuiSettings.json" };
 
 MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
@@ -36,12 +39,25 @@ MainWindow::MainWindow(QWidget* parent)
 	m_randomizerTabWidget = new RandomizerTabWidget(this);
 	m_ui.mainLayout->addWidget(m_randomizerTabWidget);
 
+	m_themeActionsGroup = new QActionGroup(this);
+	m_themeActionsGroup->addAction(m_ui.actionSettingsThemeDark);
+	m_themeActionsGroup->addAction(m_ui.actionSettingsThemeLight);
+
+	m_themeActions = 
+	{
+		m_ui.actionSettingsThemeDark,
+		m_ui.actionSettingsThemeLight
+	};
+
 	connect(m_topInfoWidget, &TopInfoWidget::buttonLoadSettingsClicked, this, &MainWindow::loadRandomizerSettings);
 	connect(m_topInfoWidget, &TopInfoWidget::buttonSaveSettingsClicked, this, &MainWindow::saveRandomizerSettings);
 	connect(m_ui.actionFileOpen, &QAction::triggered, this, &MainWindow::onFileOpen);
 	connect(m_ui.actionFileClose, &QAction::triggered, this, &MainWindow::disableUI);
 	connect(m_ui.actionFileSaveAs, &QAction::triggered, this, &MainWindow::onFileSaveAs);
 	connect(m_ui.actionFileExit, &QAction::triggered, this, &QWidget::close);
+
+	connect(m_ui.actionSettingsThemeDark, &QAction::toggled, this, &MainWindow::onThemeChanged);
+	connect(m_ui.actionSettingsThemeLight, &QAction::toggled, this, &MainWindow::onThemeChanged);
 
 	connect(m_ui.actionHelpGitHub, &QAction::triggered, this,
 		[]() { QDesktopServices::openUrl(QUrl{ "https://github.com/Meos4/Jade-Cocoon-Randomizer" }); });
@@ -58,6 +74,35 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(m_ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::onHelpAbout);
 
 	disableUI();
+
+	m_guiSettings.setOsTheme();
+
+	std::filesystem::path guiSettingsPath{ jcrGuiSettingsFilename };
+	if (std::filesystem::is_regular_file(guiSettingsPath))
+	{
+		try
+		{
+			std::ifstream jsonFile(guiSettingsPath);
+			nlohmann::json json;
+			jsonFile >> json;
+			m_guiSettings.loadSettings(json);
+		}
+		catch (nlohmann::json::exception& e)
+		{
+			QString errorMessage
+			{
+				#ifdef _WIN32
+					QString::fromStdWString(std::format(L"\"{}\" is not a valid json file, ", guiSettingsPath.wstring()))
+				#else
+					QString::fromStdString(std::format("\"{}\" is not a valid json file, ", guiSettingsPath.string()))
+				#endif
+			};
+			errorMessage += QString::fromStdString(std::format("Reason:\n{}", e.what()));
+			QMessageBox::critical(this, "Error", errorMessage);
+		}
+	}
+
+	m_themeActions[static_cast<std::size_t>(m_guiSettings.theme())]->setChecked(true);
 }
 
 void MainWindow::enableUI(std::filesystem::path* isoPath)
@@ -221,6 +266,14 @@ void MainWindow::disableUI()
 	}
 }
 
+void MainWindow::saveSettings()
+{
+	nlohmann::ordered_json json;
+	std::ofstream jsonFile(jcrGuiSettingsFilename);
+	m_guiSettings.saveSettings(&json);
+	jsonFile << std::setw(4) << json;
+}
+
 void MainWindow::loadRandomizerSettings()
 {
 	const auto settingsPathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Randomizer Settings File", QString{}, "*.json", nullptr) };
@@ -367,6 +420,18 @@ void MainWindow::onFileSaveAs()
 			QMessageBox::question(this, "Save", "Generate the associated .cue file?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		{
 			Game::generateCue(filePath);
+		}
+	}
+}
+
+void MainWindow::onThemeChanged()
+{
+	for (std::size_t i{}; i < m_themeActions.size(); ++i)
+	{
+		if (m_themeActions[i]->isChecked())
+		{
+			m_guiSettings.updateTheme(static_cast<Theme>(i));
+			break;
 		}
 	}
 }

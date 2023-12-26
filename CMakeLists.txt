@@ -118,6 +118,8 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/ForestWidget.cpp
     ${FRONTENDQT_DIR}/ForestWidget.hpp
     ${FRONTENDQT_DIR}/ForestWidget.ui
+    ${FRONTENDQT_DIR}/GuiSettings.cpp
+    ${FRONTENDQT_DIR}/GuiSettings.hpp
     ${FRONTENDQT_DIR}/LevantWidget.cpp
     ${FRONTENDQT_DIR}/LevantWidget.hpp
     ${FRONTENDQT_DIR}/LevantWidget.ui
@@ -157,11 +159,11 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/TreasureWidget.ui)
 
 set(SOURCES_RESOURCEQT
-    ${PROJECT_SOURCE_DIR}/src/FrontendQt/Resource/resources.qrc)
+    ${PROJECT_SOURCE_DIR}/src/FrontendQt/resources/resources.qrc)
 
 if (WIN32)
     enable_language("RC")
-    set(WIN32_RESOURCE ${FRONTENDQT_DIR}/Resource/JCRandomizer.rc)
+    set(WIN32_RESOURCE ${FRONTENDQT_DIR}/resources/JCRandomizer.rc)
     add_executable(jade_cocoon_randomizer WIN32 ${WIN32_RESOURCE})
 else()
     add_executable(jade_cocoon_randomizer)
@@ -176,7 +178,7 @@ target_sources(jade_cocoon_randomizer PRIVATE
 source_group(Common FILES ${SOURCES_COMMON})
 source_group(Backend FILES ${SOURCES_BACKEND})
 source_group(FrontendQt FILES ${SOURCES_FRONTENDQT})
-source_group(FrontendQt/Resource FILES ${SOURCES_RESOURCEQT})
+source_group(FrontendQt/resources FILES ${SOURCES_RESOURCEQT})
 
 target_include_directories(jade_cocoon_randomizer PRIVATE 
     ${PROJECT_SOURCE_DIR}/src

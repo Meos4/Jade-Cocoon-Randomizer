@@ -1,0 +1,4 @@
+#pragma once
+
+// Main Icon
+IDI_ICON1 ICON "icons\\SwIcon.ico"

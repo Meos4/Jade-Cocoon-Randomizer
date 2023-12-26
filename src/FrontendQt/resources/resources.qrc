@@ -1,0 +1,37 @@
+<RCC>
+  <qresource>
+    <file>icons/Addons16.png</file>
+    <file>icons/Air13.png</file>
+    <file>icons/Bag16.png</file>
+    <file>icons/BeetleKey16.png</file>
+    <file>icons/BetaLoading16.png</file>
+    <file>icons/BlueCursor16.png</file>
+    <file>icons/Discord.png</file>
+    <file>icons/DreamMan16.png</file>
+    <file>icons/Earth13.png</file>
+    <file>icons/Fire13.png</file>
+    <file>icons/Garb16.png</file>
+    <file>icons/JcRandomizerLogo.png</file>
+    <file>icons/JcWiki.png</file>
+    <file>icons/Levant16.png</file>
+    <file>icons/None13.png</file>
+    <file>icons/Ocarina16.png</file>
+    <file>icons/SwIcon.png</file>
+    <file>icons/TwoSword16.png</file>
+    <file>icons/Water13.png</file>
+    <file>icons/Black/index.theme</file>
+    <file>icons/Black/Actions/Changelog.png</file>
+    <file>icons/Black/Actions/Close.png</file>
+    <file>icons/Black/Actions/Exit.png</file>
+    <file>icons/Black/Actions/GitHub.png</file>
+    <file>icons/Black/Actions/Open.png</file>
+    <file>icons/Black/Actions/SaveAs.png</file>
+    <file>icons/White/index.theme</file>
+    <file>icons/White/Actions/Changelog.png</file>
+    <file>icons/White/Actions/Close.png</file>
+    <file>icons/White/Actions/Exit.png</file>
+    <file>icons/White/Actions/GitHub.png</file>
+    <file>icons/White/Actions/Open.png</file>
+    <file>icons/White/Actions/SaveAs.png</file>
+  </qresource>
+</RCC>

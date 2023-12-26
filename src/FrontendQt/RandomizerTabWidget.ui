@@ -14,7 +14,7 @@
    <string>RandomizerTabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>9</number>
   </property>
   <property name="iconSize">
    <size>
@@ -27,8 +27,8 @@
   </property>
   <widget class="QWidget" name="levantTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/Levant16.png</normaloff>:/Img/Levant16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/Levant16.png</normaloff>:/icons/Levant16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Levant</string>
@@ -73,8 +73,8 @@
   </widget>
   <widget class="QWidget" name="minionTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/Ocarina16.png</normaloff>:/Img/Ocarina16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/Ocarina16.png</normaloff>:/icons/Ocarina16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Minion</string>
@@ -116,8 +116,8 @@
   </widget>
   <widget class="QWidget" name="bossTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/DreamMan16.png</normaloff>:/Img/DreamMan16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/DreamMan16.png</normaloff>:/icons/DreamMan16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Boss</string>
@@ -162,8 +162,8 @@
   </widget>
   <widget class="QWidget" name="forestTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/BeetleKey16.png</normaloff>:/Img/BeetleKey16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/BeetleKey16.png</normaloff>:/icons/BeetleKey16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Forest</string>
@@ -205,8 +205,8 @@
   </widget>
   <widget class="QWidget" name="equipmentTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/Garb16.png</normaloff>:/Img/Garb16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/Garb16.png</normaloff>:/icons/Garb16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Equipment</string>
@@ -248,8 +248,8 @@
   </widget>
   <widget class="QWidget" name="treasureTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/Bag16.png</normaloff>:/Img/Bag16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/Bag16.png</normaloff>:/icons/Bag16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Treasure</string>
@@ -291,8 +291,8 @@
   </widget>
   <widget class="QWidget" name="shopTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/TwoSword16.png</normaloff>:/Img/TwoSword16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/TwoSword16.png</normaloff>:/icons/TwoSword16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Shop</string>
@@ -334,8 +334,8 @@
   </widget>
   <widget class="QWidget" name="miscTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/BlueCursor16.png</normaloff>:/Img/BlueCursor16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/BlueCursor16.png</normaloff>:/icons/BlueCursor16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Misc</string>
@@ -377,8 +377,8 @@
   </widget>
   <widget class="QWidget" name="addonsTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/Addons16.png</normaloff>:/Img/Addons16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/Addons16.png</normaloff>:/icons/Addons16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Addons</string>
@@ -420,8 +420,8 @@
   </widget>
   <widget class="QWidget" name="fixesTab">
    <attribute name="icon">
-    <iconset resource="Resource/resources.qrc">
-     <normaloff>:/Img/BetaLoading16.png</normaloff>:/Img/BetaLoading16.png</iconset>
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/BetaLoading16.png</normaloff>:/icons/BetaLoading16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Fixes</string>
@@ -464,7 +464,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="Resource/resources.qrc"/>
+  <include location="resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -47,7 +47,7 @@
       <enum>Qt::AutoText</enum>
      </property>
      <property name="pixmap">
-      <pixmap resource="Resource/resources.qrc">:/Img/JcRandomizerLogo.png</pixmap>
+      <pixmap resource="resources/resources.qrc">:/icons/JcRandomizerLogo.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>false</bool>
@@ -98,7 +98,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="Resource/resources.qrc"/>
+  <include location="resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

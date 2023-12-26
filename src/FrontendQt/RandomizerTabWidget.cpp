@@ -35,12 +35,6 @@ RandomizerTabWidget::RandomizerTabWidget(QWidget* parent)
 	m_randomizerWidgets[TAB_ADDONS] = new AddonsWidget(this);
 	m_randomizerWidgets[TAB_FIXES] = new FixesWidget(this);
 
-	static constexpr QColor tabFontColor{ 255, 255, 255 };
-	for (const auto& widget : m_randomizerWidgets)
-	{
-		widget->setPalette(tabFontColor);
-	}
-
 	m_ui.levantScroll->setWidget(m_randomizerWidgets[TAB_LEVANT]);
 	m_ui.minionScroll->setWidget(m_randomizerWidgets[TAB_MINION]);
 	m_ui.bossScroll->setWidget(m_randomizerWidgets[TAB_BOSS]);
