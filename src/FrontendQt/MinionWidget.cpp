@@ -2,6 +2,7 @@
 
 #include "Backend/Entity.hpp"
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 #include "FrontendQt/SpecialMagicDialog.hpp"
 
 #include <QAbstractItemView>
@@ -40,40 +41,39 @@ MinionWidget::MinionWidget(QWidget* parent)
 		{ SETTINGS(m_ui.spawnKorisCombo) }
 	};
 
-	m_ui.spawnStoryRandomRealtime->setToolTip("Randomize minion spawns during the story in real time.");
-	m_ui.spawnStoryRandomPremade->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.spawnStoryRandomRealtime, "Randomize minion spawns during the story in real time.");
+	GuiSettings::setToolTip(m_ui.spawnStoryRandomPremade,
 		"Randomize minion spawns during the story in a premade way."
 		"\n\nEx: Once randomized Pataimel is an Arpatron, it will be an Arpatron each time."
 	);
-	m_ui.spawnEternalCorridorRandom->setToolTip("Randomize minion spawns in the Eternal Corridor.");
-	m_ui.spawnDreamRandom->setToolTip("Randomize the minion from Levant's second dream.");
+
+	GuiSettings::setToolTip(m_ui.spawnEternalCorridorRandom, "Randomize minion spawns in the Eternal Corridor.");
+	GuiSettings::setToolTip(m_ui.spawnDreamRandom, "Randomize the minion from Levant's second dream.");
 	static constexpr auto customDream{ "Allows to choose the minion of Levant's second dream." };
-	m_ui.spawnDreamCustom->setToolTip(customDream);
-	m_ui.spawnDreamCombo->setToolTip(customDream);
-	m_ui.spawnKorisRandom->setToolTip("Randomize Arpatron from the Koris tutorial.");
+	GuiSettings::setToolTip(m_ui.spawnDreamCustom, customDream);
+	GuiSettings::setToolTip(m_ui.spawnDreamCombo, customDream);
+	GuiSettings::setToolTip(m_ui.spawnKorisRandom, "Randomize Arpatron from the Koris tutorial.");
 	static constexpr auto customKoris{ "Allows to choose the minion from the Koris tutorial." };
-	m_ui.spawnKorisCustom->setToolTip(customKoris);
-	m_ui.spawnKorisCombo->setToolTip(customKoris);
-	m_ui.statsShuffleBetweenMinions->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.spawnKorisCustom, customKoris);
+	GuiSettings::setToolTip(m_ui.spawnKorisCombo, customKoris);
+	GuiSettings::setToolTip(m_ui.statsShuffleBetweenMinions,
 		"Shuffle stats between minions."
 		"\n\nEx: Pataimel can get Arpatron stats, Arpatron get Marrdreg stats..."
 		"\n\n*Body Enhancements are also shuffled."
 		"\nBipedal = +10 Special Attack Damage."
 		"\nWinged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack."
 	);
-	m_ui.statsShuffleStats->setToolTip("Shuffle stats randomly.\n\nEx: Attack = Speed, Speed = Magic Attack...");
-	m_ui.specialMagicRandom->setToolTip("Randomize special attacks and magics according on the element.");
-	m_ui.specialMagicPool->setToolTip("Pool of specials and magic.\n\nChecked = Enabled, Unchecked = Disabled.");
-	m_ui.appearanceRandomNewMinion->setToolTip("Create new randomly generated minions appearance.");
-	m_ui.appearanceModelRandom->setToolTip("Randomize minions model.");
-	m_ui.appearanceTextureRandom->setToolTip("Randomize minions texture.");
-	m_ui.appearanceTextureIncludeCompatible->setToolTip
-		("Include Eternal Corridor Bosses + Minion (Dark Arpatron) textures in the pool.");
-	m_ui.appearanceTextureRandomColor->setToolTip("Randomize minion texture colors.");
-	m_ui.appearanceGrowthSizeShuffle->setToolTip("Shuffle growth level size.");
-	m_ui.appearanceGrowthSizeInvert->setToolTip("Invert growth level size.");
+
+	GuiSettings::setToolTip(m_ui.statsShuffleStats, "Shuffle stats randomly.\n\nEx: Attack = Speed, Speed = Magic Attack...");
+	GuiSettings::setToolTip(m_ui.specialMagicRandom, "Randomize special attacks and magics according on the element.");
+	GuiSettings::setToolTip(m_ui.specialMagicPool, "Pool of specials and magic.\n\nChecked = Enabled, Unchecked = Disabled.");
+	GuiSettings::setToolTip(m_ui.appearanceRandomNewMinion, "Create new randomly generated minions appearance.");
+	GuiSettings::setToolTip(m_ui.appearanceModelRandom, "Randomize minions model.");
+	GuiSettings::setToolTip(m_ui.appearanceTextureRandom, "Randomize minions texture.");
+	GuiSettings::setToolTip(m_ui.appearanceTextureIncludeCompatible, "Include Eternal Corridor Bosses + Minion (Dark Arpatron) textures in the pool.");
+	GuiSettings::setToolTip(m_ui.appearanceTextureRandomColor, "Randomize minion texture colors.");
+	GuiSettings::setToolTip(m_ui.appearanceGrowthSizeShuffle, "Shuffle growth level size.");
+	GuiSettings::setToolTip(m_ui.appearanceGrowthSizeInvert, "Invert growth level size.");
 
 	m_ui.specialMagicPool->setStyleSheet("font-weight: normal;");
 	m_ui.spawnDreamCombo->setStyleSheet("font-weight: normal; combobox-popup: 0;");

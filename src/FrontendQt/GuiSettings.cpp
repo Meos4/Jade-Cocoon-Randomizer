@@ -1,8 +1,18 @@
 #include "GuiSettings.hpp"
 
+#include <limits>
+
 #include <QApplication>
 #include <QIcon>
 #include <QPalette>
+#include <QString>
+#include <QWidget>
+
+void GuiSettings::setToolTip(QWidget* widget, const QString& str)
+{
+	widget->setToolTip(str);
+	widget->setToolTipDuration(std::numeric_limits<int>::max());
+}
 
 void GuiSettings::setOsTheme()
 {

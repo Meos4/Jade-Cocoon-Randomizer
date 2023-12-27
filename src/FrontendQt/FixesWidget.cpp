@@ -1,6 +1,7 @@
 #include "FixesWidget.hpp"
 
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 
 FixesWidget::FixesWidget(QWidget* parent)
 	: RandomizerWidget(parent)
@@ -23,25 +24,24 @@ FixesWidget::FixesWidget(QWidget* parent)
 
 	m_ui.hpMpBarsSizeValue->setStyleSheet("font-weight: normal;");
 
-	m_ui.bodyEnhancementFix->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.bodyEnhancementFix,
 		"Due to a programming error, body enhancements on Eternal Corridor minions and Eternal Corridor"
 		"\nbosses do not work, this solves the issue."
 		"\n\n*When fixed, Eternal Corridor minions will use body enhancements from story minions,"
 		"\nand Eternal Corridor bosses will use their supposed body enhancements."
 	);
-	m_ui.autumnMoonEffectFix->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.autumnMoonEffectFix,
 		"Autumn Moon was supposed to have a unique attack effect, unfortunately due to an oversight"
 		"\nfrom the developers, the weapon file does not include the effect and use none, this solves this issue."
 	);
-	m_ui.hpMpBarsSizeSlider->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.hpMpBarsSizeSlider,
 		"Bug may occur on hp / mp bars when playing on unofficial hardware, this will reduce its size."
 		"\n\n*Most of the time, reducing the size to 24 or 23 is fine, but it can differ and needs to be gauged."
 	);
-	m_ui.specialAttackModifiersDisplayFix->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.specialAttackModifiersDisplayFix,
 		"Due to a programming error, on the French version the special attack modifiers"
 		"\n(+Power, +Accuracy and +Critical) are not displayed, this solves the issue."
 	);

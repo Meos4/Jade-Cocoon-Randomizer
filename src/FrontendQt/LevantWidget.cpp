@@ -1,6 +1,7 @@
 #include "LevantWidget.hpp"
 
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 
 LevantWidget::LevantWidget(QWidget* parent)
 	: RandomizerWidget(parent)
@@ -17,19 +18,18 @@ LevantWidget::LevantWidget(QWidget* parent)
 		{ SETTINGS(m_ui.fluteStylingShuffle) }
 	};
 
-	m_ui.baseStatsRandom->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.baseStatsRandom,
 		"Randomly shuffle the total of Levant stats at the new game."
 		"\n\n*A stat cannot be lower than 18 for balancing reasons."
 	);
-	m_ui.animationBetaUsingItem->setToolTip("Replaces the item use animation with a beta/unused magic animation.");
-	m_ui.animationRandomWeaponsPosture->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.animationBetaUsingItem, "Replaces the item use animation with a beta/unused magic animation.");
+	GuiSettings::setToolTip(m_ui.animationRandomWeaponsPosture,
 		"Random battle weapons postures."
 		"\n\nEx: a dagger can be held like a sword."
 	);
-	m_ui.fluteStylingShuffle->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.fluteStylingShuffle,
 		"Shuffle the sound effects played when Levant summon / capture a minion."
 		"\n\n*A summon sound effect can be remplaced by a capture effect and vice versa."
 	);

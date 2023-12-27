@@ -1,6 +1,7 @@
 #include "EquipmentWidget.hpp"
 
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 
 EquipmentWidget::EquipmentWidget(QWidget* parent)
 	: RandomizerWidget(parent)
@@ -18,20 +19,19 @@ EquipmentWidget::EquipmentWidget(QWidget* parent)
 		{ SETTINGS(m_ui.othersRandomStats) }
 	};
 
-	m_ui.weaponsRandomStatsAndElement->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.weaponsRandomStatsAndElement,
 		"Randomize weapons stats and element."
 		"\n\n*Stats and element are generated based on the pattern of other weapons and are based on the weapon's total stats."
 	);
-	m_ui.weaponsRandomAppearance->setToolTip("Randomize the appearance of weapons.\n\nEx: a dagger can look like an axe, a sword a spear...");
-	m_ui.armorsRandomStats->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.weaponsRandomAppearance, "Randomize the appearance of weapons.\n\nEx: a dagger can look like an axe, a sword a spear...");
+	GuiSettings::setToolTip(m_ui.armorsRandomStats,
 		"Randomize armors stats."
 		"\n\n*Stats are generated based on the pattern of other armors and are based on the armor's total stats."
 	);
-	m_ui.armorsRandomAppearance->setToolTip("Randomize the appearance of armors.");
-	m_ui.othersRandomStats->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.armorsRandomAppearance, "Randomize the appearance of armors.");
+	GuiSettings::setToolTip(m_ui.othersRandomStats,
 		"Randomize \"others\" stats."
 		"\n\n*Stats are generated based on the pattern of other \"others\" and are based on the \"other\"'s total stats."
 	);

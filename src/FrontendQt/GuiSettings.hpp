@@ -2,6 +2,9 @@
 
 #include "nlohmann/json.hpp"
 
+class QString;
+class QWidget;
+
 enum class Theme
 {
 	Dark,
@@ -12,6 +15,8 @@ enum class Theme
 class GuiSettings final
 {
 public:
+	static void setToolTip(QWidget* widget, const QString& str);
+
 	void setOsTheme();
 	void updateTheme(Theme theme);
 	void loadSettings(const nlohmann::json& json);

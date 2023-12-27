@@ -1,6 +1,7 @@
 ﻿#include "AddonsWidget.hpp"
 
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 
 AddonsWidget::AddonsWidget(QWidget* parent)
 	: RandomizerWidget(parent)
@@ -29,8 +30,7 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorLevelCapSlider) }
 	};
 
-	m_ui.nuzlockeOneCapturePerArea->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.nuzlockeOneCapturePerArea,
 		"Allows the capture of only one minion from the first encounter per area."
 		"\n\nAreas:"
 		"\nKoris Minion"
@@ -43,11 +43,10 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 		"\nNetherworld Spider Forest"
 		"\nEternal Corridor"
 	);
-	m_ui.nuzlockeDefinitiveMinionDeath->setToolTip
-		("The death of one of your minions is definitive and will be automatically released.");
-	m_ui.nuzlockeDefinitiveLevantDeath->setToolTip("When Levant dies, the game will automatically restart.");
-	m_ui.difficultyHard->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.nuzlockeDefinitiveMinionDeath, "The death of one of your minions is definitive and will be automatically released.");
+	GuiSettings::setToolTip(m_ui.nuzlockeDefinitiveLevantDeath, "When Levant dies, the game will automatically restart.");
+	GuiSettings::setToolTip(m_ui.difficultyHard,
 		"Increase boss stats by:"
 		"\nAttack +33.33%"
 		"\nDefense +33.33%"
@@ -57,8 +56,8 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 		"\nCritical +20%"
 		"\n\n*Does not apply to Eternal Corridor bosses."
 	);
-	m_ui.difficultyExtreme->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.difficultyExtreme,
 		"Increase boss stats by:"
 		"\nAttack +50%"
 		"\nDefense +50%"
@@ -68,23 +67,24 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 		"\nCritical +33.33%"
 		"\n\n*Does not apply to Eternal Corridor bosses."
 	);
-	m_ui.skipTutorialEnable->setToolTip("Skip new game tutorial.");
-	m_ui.skipTutorialSkipKoris->setToolTip("Skip Koris tutorial in the Beetle Forest.");
-	m_ui.x2FramerateEnable->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.skipTutorialEnable, "Skip new game tutorial.");
+	GuiSettings::setToolTip(m_ui.skipTutorialSkipKoris, "Skip Koris tutorial in the Beetle Forest.");
+	GuiSettings::setToolTip(m_ui.x2FramerateEnable,
 		"By pressing Select you can switch to a x2 framerate speed, if press again, switch back to x1."
 		"\n\n*It is recommended to use this feature using emulator that supports CPU overclocking, otherwise"
 		"\nif there are too many 3D models on the screen, the game will not fully support the x2."
 	);
-	m_ui.showHiddenStatsEnable->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.showHiddenStatsEnable,
 		"Show Critical and Body Enhancement of minions in the stats frame."
 		"\n\nBipedal = +10 Special Attack Damage."
 		"\nWinged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack."
 	);
-	m_ui.itemQuantityLimitSlider->setToolTip("Changes item quantity limit.\n\nDefault = 20");
-	m_ui.eternalCorridorLevelCapSlider->setToolTip("Change the level cap of the Eternal Corridor.\n\nDefault = 26");
-	m_ui.palToNtscEnable->setToolTip("Turn pal versions in ntsc.\n\n*Does not work on some emulators.");
+
+	GuiSettings::setToolTip(m_ui.itemQuantityLimitSlider, "Changes item quantity limit.\n\nDefault = 20");
+	GuiSettings::setToolTip(m_ui.eternalCorridorLevelCapSlider, "Change the level cap of the Eternal Corridor.\n\nDefault = 26");
+	GuiSettings::setToolTip(m_ui.palToNtscEnable, "Turn pal versions in ntsc.\n\n*Does not work on some emulators.");
 
 	m_ui.itemQuantityLimitValue->setStyleSheet("font-weight: normal;");
 	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: normal;");

@@ -1,6 +1,7 @@
 #include "TreasureWidget.hpp"
 
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 
 TreasureWidget::TreasureWidget(QWidget* parent)
 	: RandomizerWidget(parent)
@@ -23,39 +24,36 @@ TreasureWidget::TreasureWidget(QWidget* parent)
 		{ SETTINGS(m_ui.battleShuffleSkeletonKeys) }
 	};
 
-	m_ui.itemsRandom->setToolTip
-	(
+	GuiSettings::setToolTip(m_ui.itemsRandom,
 		"Randomize items to any treasure."
 		"\n\n*Mugwort from the Koris tutorial is not random."
 		"\n*Treasures are randomized by chapter pool."
 	);
-	m_ui.itemsRandomByCategory->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.itemsRandomByCategory,
 		"Randomize items to other items."
 		"\n\n*Mugwort from the Koris tutorial is not random."
 		"\n*Treasures are randomized by chapter pool."
 	);
-	m_ui.itemsRandomSkeletonKeys->setToolTip("Randomize skeleton keys.");
-	m_ui.valuablesRandom->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.itemsRandomSkeletonKeys, "Randomize skeleton keys.");
+	GuiSettings::setToolTip(m_ui.valuablesRandom,
 		"Randomize valuables to any treasures."
 		"\n\n*Valuables needed to progress the game are not randomized."
 		"\n*Treasures are randomized by chapter pool."
 	);
-	m_ui.valuablesRandomByCategory->setToolTip
-	(
+
+	GuiSettings::setToolTip(m_ui.valuablesRandomByCategory,
 		"Randomize valuables to other valuables."
 		"\n\n*Valuables needed to progress the game are not randomized."
 		"\n*Treasures are randomized by chapter pool."
 	);
-	m_ui.valuablesRandomUsableValuables->setToolTip
-	(
-		"Include forest warp keys and Kikinak ocarina in the pool."
-	);
-	m_ui.equipmentsRandom->setToolTip("Randomize equipments to any treasure.\n\n*Treasures are randomized by chapter pool.");
-	m_ui.equipmentsRandomByCategory->setToolTip("Randomize equipments to other equipments.\n\n*Treasures are randomized by chapter pool.");
-	m_ui.battleShuffle->setToolTip("Shuffle battle treasures.");
-	m_ui.battleShuffleSkeletonKeys->setToolTip("Include battle skeleton keys.");
+
+	GuiSettings::setToolTip(m_ui.valuablesRandomUsableValuables, "Include forest warp keys and Kikinak ocarina in the pool.");
+	GuiSettings::setToolTip(m_ui.equipmentsRandom, "Randomize equipments to any treasure.\n\n*Treasures are randomized by chapter pool.");
+	GuiSettings::setToolTip(m_ui.equipmentsRandomByCategory, "Randomize equipments to other equipments.\n\n*Treasures are randomized by chapter pool.");
+	GuiSettings::setToolTip(m_ui.battleShuffle, "Shuffle battle treasures.");
+	GuiSettings::setToolTip(m_ui.battleShuffleSkeletonKeys, "Include battle skeleton keys.");
 
 	m_ui.itemsRandomSkeletonKeys->setEnabled(false);
 	m_ui.valuablesRandomUsableValuables->setEnabled(false);

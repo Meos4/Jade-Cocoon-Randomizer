@@ -1,6 +1,7 @@
 #include "MiscWidget.hpp"
 
 #include "Common/JcrException.hpp"
+#include "FrontendQt/GuiSettings.hpp"
 
 #include <format>
 
@@ -18,11 +19,11 @@ MiscWidget::MiscWidget(QWidget* parent)
 		{ SETTINGS(m_ui.npcsVoiceRandom) }
 	};
 
-	m_ui.hudRandom->setToolTip("Randomize the colors of the 5 huds.");
+	GuiSettings::setToolTip(m_ui.hudRandom, "Randomize the colors of the 5 huds.");
 	static constexpr auto hudCustom{ "Allows to change the colors of the huds." };
-	m_ui.hudColorCustom->setToolTip(hudCustom);
-	m_ui.hudColorCombo->setToolTip(hudCustom);
-	m_ui.npcsVoiceRandom->setToolTip("Randomize NPCs voices.");
+	GuiSettings::setToolTip(m_ui.hudColorCustom, hudCustom);
+	GuiSettings::setToolTip(m_ui.hudColorCombo, hudCustom);
+	GuiSettings::setToolTip(m_ui.npcsVoiceRandom, "Randomize NPCs voices.");
 
 	m_ui.hudColorCombo->setStyleSheet("font-weight: normal;");
 	m_ui.hudColorLabel->setStyleSheet("font-weight: normal;");
