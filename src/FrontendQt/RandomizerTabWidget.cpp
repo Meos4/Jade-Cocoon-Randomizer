@@ -51,7 +51,7 @@ void RandomizerTabWidget::enableUI(std::shared_ptr<Game> game)
 {
 	m_sharedData = std::make_shared<SharedData>(game);
 	m_customCode = std::make_unique<CustomCode>(game);
-	for (auto widget : m_randomizerWidgets)
+	for (const auto widget : m_randomizerWidgets)
 	{
 		widget->enableUI(game, m_sharedData);
 	}
@@ -59,7 +59,7 @@ void RandomizerTabWidget::enableUI(std::shared_ptr<Game> game)
 
 void RandomizerTabWidget::disableUI()
 {
-	for (auto widget : m_randomizerWidgets)
+	for (const auto widget : m_randomizerWidgets)
 	{
 		widget->disableUI();
 	}
