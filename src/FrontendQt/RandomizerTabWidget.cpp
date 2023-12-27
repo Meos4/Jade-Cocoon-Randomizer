@@ -51,7 +51,7 @@ void RandomizerTabWidget::enableUI(std::shared_ptr<Game> game)
 {
 	m_sharedData = std::make_shared<SharedData>(game);
 	m_customCode = std::make_unique<CustomCode>(game);
-	for (const auto& widget : m_randomizerWidgets)
+	for (auto widget : m_randomizerWidgets)
 	{
 		widget->enableUI(game, m_sharedData);
 	}
@@ -59,7 +59,7 @@ void RandomizerTabWidget::enableUI(std::shared_ptr<Game> game)
 
 void RandomizerTabWidget::disableUI()
 {
-	for (const auto& widget : m_randomizerWidgets)
+	for (auto widget : m_randomizerWidgets)
 	{
 		widget->disableUI();
 	}
@@ -76,7 +76,7 @@ void RandomizerTabWidget::write() const
 
 	m_sharedData->read();
 	m_customCode->write();
-	for (const auto& widget : m_randomizerWidgets)
+	for (const auto widget : m_randomizerWidgets)
 	{
 		widget->write();
 	}
@@ -99,7 +99,7 @@ void RandomizerTabWidget::loadSettings(const std::filesystem::path& path)
 		nlohmann::json json;
 		jsonFile >> json;
 
-		for (const auto& widget : m_randomizerWidgets)
+		for (const auto widget : m_randomizerWidgets)
 		{
 			widget->loadSettings(json[widget->name()]);
 		}
@@ -123,7 +123,7 @@ void RandomizerTabWidget::saveSettings(const std::filesystem::path& path) const
 {
 	nlohmann::ordered_json json;
 
-	for (const auto& widget : m_randomizerWidgets)
+	for (const auto widget : m_randomizerWidgets)
 	{
 		widget->saveSettings(&json[widget->name()]);
 	}

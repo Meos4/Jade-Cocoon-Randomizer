@@ -55,7 +55,7 @@ MiscWidget::MiscWidget(QWidget* parent)
 		"Hud 1", "Hud 2", "Hud 3" , "Hud 4", "Title"
 	};
 
-	for (const auto& name : hudNames)
+	for (const auto name : hudNames)
 	{
 		m_ui.hudColorCombo->addItem(name);
 	}

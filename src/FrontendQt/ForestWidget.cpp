@@ -67,7 +67,7 @@ ForestWidget::ForestWidget(QWidget* parent)
 		"Netherworld Beetle Forest", "Netherworld Dragonfly Forest", "Netherworld Spider Forest" , "Eternal Corridor"
 	};
 
-	for (const auto& name : forestNames)
+	for (const auto name : forestNames)
 	{
 		m_ui.ostCustomForestCombo->addItem(name);
 	}
