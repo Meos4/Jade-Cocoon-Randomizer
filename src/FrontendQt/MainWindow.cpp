@@ -165,7 +165,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 				configPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::configXmlFilename) },
 				filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };
 
-			const auto dumpArgs{ Path::dumpIsoArgs(*isoPath, configPath, filesPath) };
+			const auto dumpArgs{ Path::dumpIsoArgs(isoPath, &configPath, &filesPath) };
 
 			dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
 			JCTools::unpacker(filesPath, std::format("{}/{}", filesPath.string(), Path::dataDirectory), Path::jcrTempDirectory);
@@ -357,7 +357,7 @@ void MainWindow::onFileSaveAs()
 				configPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::configXmlFilename) },
 				filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
 
-			const auto makeArgs{ Path::makeIsoArgs(filePath, configPath) };
+			const auto makeArgs{ Path::makeIsoArgs(&filePath, &configPath) };
 			if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
 			{
 				throw JcrException{ "Unable to repack iso" };
