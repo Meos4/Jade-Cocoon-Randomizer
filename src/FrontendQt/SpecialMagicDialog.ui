@@ -100,7 +100,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Water13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Water13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -152,7 +152,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Fire13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Fire13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -169,7 +169,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Earth13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Earth13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -179,7 +179,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/None13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/None13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -210,7 +210,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Air13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Air13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -262,7 +262,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Earth13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Earth13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -314,7 +314,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Water13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Water13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -359,7 +359,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Air13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Air13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -425,7 +425,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="Resource/resources.qrc">:/Img/Fire13.png</pixmap>
+        <pixmap resource="resources/resources.qrc">:/icons/Fire13.png</pixmap>
        </property>
       </widget>
      </item>
@@ -478,6 +478,7 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
+  <include location="resources/resources.qrc"/>
   <include location="Resource/resources.qrc"/>
  </resources>
  <connections/>
