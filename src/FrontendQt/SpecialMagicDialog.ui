@@ -479,7 +479,6 @@
  <layoutdefault spacing="6" margin="11"/>
  <resources>
   <include location="resources/resources.qrc"/>
-  <include location="Resource/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
