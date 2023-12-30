@@ -3,10 +3,8 @@
 #include "Types.hpp"
 
 #include <filesystem>
-#include <vector>
 #include <optional>
-#include <array>
-#include <unordered_map>
+#include <vector>
 
 class JCExe final
 {
@@ -21,7 +19,8 @@ public:
 		PalDe,
 		PalEs,
 		PalIt,
-		Prototype_D05_M08_Y1999_15H48
+		Prototype_D05_M08_Y1999_15H48,
+		Count
 	};
 
 	struct Offset
@@ -42,23 +41,13 @@ public:
 
 	JCExe(JCExe::Version version);
 
+	static std::optional<FilenamePathVersion> findFilenamePathAndVersion(const std::filesystem::path& path);
+
 	u32 nbData001Files() const;
 	u32 nbMovieStrFiles() const;
 	const JCExe::Offset& offset() const;
 	const char* toString() const;
 	std::vector<const char*> data001FilesPath() const;
-
-	static std::optional<FilenamePathVersion> findFilenamePathAndVersion(const std::filesystem::path& path);
 private:
-	struct VersionInfo
-	{
-		const char* text;
-		std::array<u8, 11> pattern;
-		JCExe::Offset offset;
-	};
-
 	JCExe::Version m_version;
-
-	static const std::array<const char*, 1079> s_data001FilesPath;
-	static const std::unordered_map<JCExe::Version, JCExe::VersionInfo> s_versionInfo;
 };

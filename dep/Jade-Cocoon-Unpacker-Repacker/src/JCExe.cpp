@@ -1,8 +1,17 @@
 #include "JCExe.hpp"
 
+#include <array>
 #include <fstream>
+#include <type_traits>
 
-const std::array<const char*, 1079> JCExe::s_data001FilesPath
+struct VersionInfo
+{
+	const char* text;
+	std::array<u8, 11> pattern;
+	JCExe::Offset offset;
+};
+
+static constexpr std::array<const char*, 1079> data001FilesPath
 {
 	"DATA/DATA.001",
 	"DATA/PUBLIC/EFT.FTG",
@@ -1085,14 +1094,12 @@ const std::array<const char*, 1079> JCExe::s_data001FilesPath
 	"DATA/EFFECT/BTLFD27.EFD"
 };
 
-const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInfo
-{
-	{
-		JCExe::Version::NtscJ1,
+static constexpr std::array<VersionInfo, static_cast<std::size_t>(JCExe::Version::Count)> versionsInfo
+{{
 	{
 		.text = "NTSC-J v1",
 		.pattern = { 0x53, 0x4C, 0x50, 0x53, 0x5F, 0x30, 0x31, 0x37, 0x2E, 0x32, 0x39 },
-		.offset = 
+		.offset =
 		{
 			.pattern = 0x00061F3B,
 			.data001FileInfoBegin = 0x00064AA0,
@@ -1101,10 +1108,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x00067D28,
 			.movieStrFileInfoEnd = 0x00067E48
 		}
-	}
 	},
-	{
-		JCExe::Version::NtscJ2,
 	{
 		.text = "NTSC-J v2",
 		.pattern = { 0x53, 0x4C, 0x50, 0x53, 0x5F, 0x39, 0x31, 0x31, 0x2E, 0x35, 0x34 },
@@ -1117,10 +1121,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x000672EC,
 			.movieStrFileInfoEnd = 0x0006740C
 		}
-	}
 	},
-	{
-		JCExe::Version::NtscU,
 	{
 		.text = "NTSC-U",
 		.pattern = { 0x53, 0x4C, 0x55, 0x53, 0x5F, 0x30, 0x30, 0x38, 0x2E, 0x35, 0x34 },
@@ -1132,11 +1133,8 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.voiceXaFileInfoBegin = 0x0006954C,
 			.movieStrFileInfoBegin = 0x00069558,
 			.movieStrFileInfoEnd = 0x00069684
-		}	
-	}
+		}
 	},
-	{
-		JCExe::Version::PalEn,
 	{
 		.text = "PAL-EN",
 		.pattern = { 0x53, 0x4C, 0x45, 0x53, 0x5F, 0x30, 0x32, 0x32, 0x2E, 0x30, 0x31 },
@@ -1149,10 +1147,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x0006947C,
 			.movieStrFileInfoEnd = 0x000695A8
 		}
-	}
 	},
-	{
-		JCExe::Version::PalFr,
 	{
 		.text = "PAL-FR",
 		.pattern = { 0x53, 0x4C, 0x45, 0x53, 0x5F, 0x30, 0x32, 0x32, 0x2E, 0x30, 0x32 },
@@ -1165,10 +1160,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x000696F0,
 			.movieStrFileInfoEnd = 0x0006981C
 		}
-	}
 	},
-	{
-		JCExe::Version::PalDe,
 	{
 		.text = "PAL-DE",
 		.pattern = { 0x53, 0x4C, 0x45, 0x53, 0x5F, 0x30, 0x32, 0x32, 0x2E, 0x30, 0x33 },
@@ -1181,10 +1173,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x000695AC,
 			.movieStrFileInfoEnd = 0x000696D8
 		}
-	}
 	},
-	{
-		JCExe::Version::PalEs,
 	{
 		.text = "PAL-ES",
 		.pattern = { 0x53, 0x4C, 0x45, 0x53, 0x5F, 0x30, 0x32, 0x32, 0x2E, 0x30, 0x35 },
@@ -1197,10 +1186,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x00069810,
 			.movieStrFileInfoEnd = 0x0006993C
 		}
-	}
 	},
-	{
-		JCExe::Version::PalIt,
 	{
 		.text = "PAL-IT",
 		.pattern = { 0x53, 0x4C, 0x45, 0x53, 0x5F, 0x30, 0x32, 0x32, 0x2E, 0x30, 0x36 },
@@ -1213,10 +1199,7 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoBegin = 0x000697F4,
 			.movieStrFileInfoEnd = 0x00069920
 		}
-	}
 	},
-	{
-		JCExe::Version::Prototype_D05_M08_Y1999_15H48,
 	{
 		.text = "Prototype 05/08/1999 15H48",
 		.pattern = { 0x53, 0x4C, 0x55, 0x53, 0x5F, 0x30, 0x30, 0x38, 0x2E, 0x35, 0x34 },
@@ -1230,39 +1213,67 @@ const std::unordered_map<JCExe::Version, JCExe::VersionInfo> JCExe::s_versionInf
 			.movieStrFileInfoEnd = 0x00077FD8
 		}
 	}
-	}
-};
+}};
 
 JCExe::JCExe(JCExe::Version version)
 	: m_version(version)
 {
 }
 
+std::optional<JCExe::FilenamePathVersion> JCExe::findFilenamePathAndVersion(const std::filesystem::path& path)
+{
+	for (const auto& directoryContent : std::filesystem::directory_iterator{ path })
+	{
+		const auto directoryContentPath{ directoryContent.path() };
+		if (std::filesystem::is_regular_file(directoryContentPath))
+		{
+			static constexpr std::array<char, 8> psxExeHeader{ 0x50, 0x53, 0x2D, 0x58, 0x20, 0x45, 0x58, 0x45 }; // PS-X EXE
+			std::remove_const_t<decltype(psxExeHeader)> bufferPsxExe{};
+			std::ifstream file{ directoryContentPath, std::ifstream::binary };
+			file.read(bufferPsxExe.data(), bufferPsxExe.size());
+			if (bufferPsxExe == psxExeHeader)
+			{
+				decltype(VersionInfo::pattern) bufferPattern;
+				for (std::size_t i{}; i < versionsInfo.size(); ++i)
+				{
+					file.seekg(versionsInfo[i].offset.pattern);
+					file.read((char*)bufferPattern.data(), bufferPattern.size());
+					if (bufferPattern == versionsInfo[i].pattern)
+					{
+						return JCExe::FilenamePathVersion{ directoryContent.path(), static_cast<JCExe::Version>(i) };
+					}
+				}
+			}
+		}
+	}
+	return std::nullopt;
+}
+
 u32 JCExe::nbData001Files() const
 {
-	return ((s_versionInfo.at(m_version).offset.data001FileInfoEnd - 
-		s_versionInfo.at(m_version).offset.data001FileInfoBegin) / 0xC) + 1;
+	return ((versionsInfo[static_cast<std::size_t>(m_version)].offset.data001FileInfoEnd -
+		versionsInfo[static_cast<std::size_t>(m_version)].offset.data001FileInfoBegin) / 0xC) + 1;
 }
 
 u32 JCExe::nbMovieStrFiles() const
 {
-	return ((s_versionInfo.at(m_version).offset.movieStrFileInfoEnd - 
-		s_versionInfo.at(m_version).offset.movieStrFileInfoBegin) / 0xC) + 1;
+	return ((versionsInfo[static_cast<std::size_t>(m_version)].offset.movieStrFileInfoEnd -
+		versionsInfo[static_cast<std::size_t>(m_version)].offset.movieStrFileInfoBegin) / 0xC) + 1;
 }
 
 const JCExe::Offset& JCExe::offset() const
 {
-	return s_versionInfo.at(m_version).offset;
+	return versionsInfo[static_cast<std::size_t>(m_version)].offset;
 }
 
 const char* JCExe::toString() const
 {
-	return s_versionInfo.at(m_version).text;
+	return versionsInfo[static_cast<std::size_t>(m_version)].text;
 }
 
 std::vector<const char*> JCExe::data001FilesPath() const
 {
-	std::vector<const char*> vData001FilesPath{ s_data001FilesPath.begin(), s_data001FilesPath.end() };
+	std::vector<const char*> vData001FilesPath{ ::data001FilesPath.begin(), ::data001FilesPath.end() };
 
 	if (m_version == JCExe::Version::NtscJ1 || m_version == JCExe::Version::NtscJ2)
 	{
@@ -1274,31 +1285,4 @@ std::vector<const char*> JCExe::data001FilesPath() const
 	}
 
 	return vData001FilesPath;
-}
-
-std::optional<JCExe::FilenamePathVersion> JCExe::findFilenamePathAndVersion(const std::filesystem::path& path)
-{
-	for (const auto& file : std::filesystem::directory_iterator{ path })
-	{
-		if (std::filesystem::is_regular_file(file.path()))
-		{
-			std::ifstream fileStream{ file.path(), std::ifstream::binary };
-			std::array<char, 8> bufferPsxExe;
-			fileStream.read(bufferPsxExe.data(), bufferPsxExe.size());
-			if (bufferPsxExe == decltype(bufferPsxExe){ 0x50, 0x53, 0x2D, 0x58, 0x20, 0x45, 0x58, 0x45 }) // PS-X EXE Header
-			{
-				decltype(VersionInfo::pattern) bufferPattern;
-				for (const auto& [ver, info] : s_versionInfo)
-				{
-					fileStream.seekg(info.offset.pattern);
-					fileStream.read((char*)&bufferPattern, bufferPattern.size());
-					if (bufferPattern == info.pattern)
-					{
-						return JCExe::FilenamePathVersion{ file.path(), ver };
-					}
-				}
-			}
-		}
-	}
-	return std::nullopt;
 }

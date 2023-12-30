@@ -2,17 +2,17 @@
 
 #include "fmt/format.h"
 
-#include <stdexcept>
-#include <iostream>
-#include <filesystem>
-#include <limits>
 #include <cstring>
+#include <filesystem>
+#include <iostream>
+#include <limits>
+#include <stdexcept>
 
 int main(int argc, char** argv)
 {
 	try
 	{
-		fmt::print("Jade Cocoon Unpacker / Repacker v1.2.0 by Meos\n\n");
+		fmt::print("Jade Cocoon Unpacker / Repacker v1.3.0 by Meos\n\n");
 
 		if (argc < 2)
 		{
