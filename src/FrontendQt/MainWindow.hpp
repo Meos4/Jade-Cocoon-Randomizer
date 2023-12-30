@@ -34,10 +34,10 @@ public Q_SLOTS:
 	void onFileSaveAs();
 	void onThemeChanged();
 	void onHelpAbout();
-protected:
+private:
 	void dragEnterEvent(QDragEnterEvent* event) override;
 	void dropEvent(QDropEvent* event) override;
-private:
+
 	Ui::MainWindow m_ui;
 
 	TopInfoWidget* m_topInfoWidget;
