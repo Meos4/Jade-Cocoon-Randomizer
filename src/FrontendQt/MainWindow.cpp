@@ -6,6 +6,7 @@
 #include "Common/JcrException.hpp"
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
+#include "FrontendQt/GuiPath.hpp"
 #include "FrontendQt/RandomizerTabWidget.hpp"
 #include "FrontendQt/SaveGameDialog.hpp"
 #include "FrontendQt/TopInfoWidget.hpp"
@@ -25,8 +26,6 @@
 
 #include <format>
 #include <future>
-
-static constexpr auto jcrGuiSettingsFilename{ "JCR_GuiSettings.json" };
 
 MainWindow::MainWindow(QWidget* parent)
 	: QMainWindow(parent)
@@ -77,7 +76,7 @@ MainWindow::MainWindow(QWidget* parent)
 
 	m_guiSettings.setOsTheme();
 
-	std::filesystem::path guiSettingsPath{ jcrGuiSettingsFilename };
+	std::filesystem::path guiSettingsPath{ GuiPath::jcrGuiSettingsFilename };
 	if (std::filesystem::is_regular_file(guiSettingsPath))
 	{
 		try
@@ -269,7 +268,7 @@ void MainWindow::disableUI()
 void MainWindow::saveSettings()
 {
 	nlohmann::ordered_json json;
-	std::ofstream jsonFile(jcrGuiSettingsFilename);
+	std::ofstream jsonFile(GuiPath::jcrGuiSettingsFilename);
 	m_guiSettings.saveSettings(&json);
 	jsonFile << std::setw(4) << json;
 }

@@ -118,6 +118,7 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/ForestWidget.cpp
     ${FRONTENDQT_DIR}/ForestWidget.hpp
     ${FRONTENDQT_DIR}/ForestWidget.ui
+    ${FRONTENDQT_DIR}/GuiPath.hpp
     ${FRONTENDQT_DIR}/GuiSettings.cpp
     ${FRONTENDQT_DIR}/GuiSettings.hpp
     ${FRONTENDQT_DIR}/LevantWidget.cpp
