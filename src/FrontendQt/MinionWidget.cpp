@@ -331,7 +331,7 @@ const char* MinionWidget::name() const
 	return "Minion";
 }
 
-void MinionWidget::loadSettings(const nlohmann::json& json)
+void MinionWidget::loadPresets(const nlohmann::json& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -347,7 +347,7 @@ void MinionWidget::loadSettings(const nlohmann::json& json)
 	Json::set<Magic_t>(json, "magics", [this](auto v) { m_specialMagicDialog->setMagics(v); });
 }
 
-void MinionWidget::saveSettings(nlohmann::ordered_json* json)
+void MinionWidget::savePresets(nlohmann::ordered_json* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

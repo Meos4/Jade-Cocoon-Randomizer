@@ -91,7 +91,7 @@ bool RandomizerTabWidget::isVanilla() const
 	return m_customCode->isVanilla();
 }
 
-void RandomizerTabWidget::loadSettings(const std::filesystem::path& path)
+void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 {
 	try
 	{
@@ -101,7 +101,7 @@ void RandomizerTabWidget::loadSettings(const std::filesystem::path& path)
 
 		for (const auto widget : m_randomizerWidgets)
 		{
-			widget->loadSettings(json[widget->name()]);
+			widget->loadPresets(json[widget->name()]);
 		}
 	}
 	catch (nlohmann::json::exception& e)
@@ -119,13 +119,13 @@ void RandomizerTabWidget::loadSettings(const std::filesystem::path& path)
 	}
 }
 
-void RandomizerTabWidget::saveSettings(const std::filesystem::path& path) const
+void RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
 {
 	nlohmann::ordered_json json;
 
 	for (const auto widget : m_randomizerWidgets)
 	{
-		widget->saveSettings(&json[widget->name()]);
+		widget->savePresets(&json[widget->name()]);
 	}
 
 	std::ofstream jsonFile(path);

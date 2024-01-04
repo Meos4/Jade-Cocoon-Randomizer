@@ -20,6 +20,6 @@ public:
 	virtual void disableUI() = 0;
 	virtual void write() const = 0;
 	virtual const char* name() const = 0;
-	virtual void loadSettings(const nlohmann::json& json) = 0;
-	virtual void saveSettings(nlohmann::ordered_json* json) = 0;
+	virtual void loadPresets(const nlohmann::json& json) = 0;
+	virtual void savePresets(nlohmann::ordered_json* json) = 0;
 };

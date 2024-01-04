@@ -12,8 +12,8 @@ TopInfoWidget::TopInfoWidget(QWidget* parent)
 
 	disableUI();
 
-	connect(m_ui.loadSettings, &QAbstractButton::clicked, this, &TopInfoWidget::buttonLoadSettingsClicked);
-	connect(m_ui.saveSettings, &QAbstractButton::clicked, this, &TopInfoWidget::buttonSaveSettingsClicked);
+	connect(m_ui.loadPresets, &QAbstractButton::clicked, this, &TopInfoWidget::buttonLoadPresetsClicked);
+	connect(m_ui.savePresets, &QAbstractButton::clicked, this, &TopInfoWidget::buttonSavePresetsClicked);
 	connect(m_ui.seedCheckBox, &QAbstractButton::toggled, m_ui.seedLineEdit, &QWidget::setEnabled);
 	connect(m_ui.seedLineEdit, &QLineEdit::textChanged, this, &TopInfoWidget::setSeedLineEditText);
 }
@@ -24,8 +24,8 @@ void TopInfoWidget::enableUI(const QString& version, const QString& filename, To
 	setFilename(filename);
 	setState(state);
 
-	m_ui.loadSettings->setEnabled(true);
-	m_ui.saveSettings->setEnabled(true);
+	m_ui.loadPresets->setEnabled(true);
+	m_ui.savePresets->setEnabled(true);
 	m_ui.seedCheckBox->setEnabled(true);
 	if (m_ui.seedCheckBox->isChecked())
 	{
@@ -39,8 +39,8 @@ void TopInfoWidget::disableUI()
 	setFilename("");
 	setState(TopInfoWidget::State::Disabled);
 
-	m_ui.loadSettings->setEnabled(false);
-	m_ui.saveSettings->setEnabled(false);
+	m_ui.loadPresets->setEnabled(false);
+	m_ui.savePresets->setEnabled(false);
 	m_ui.seedCheckBox->setEnabled(false);
 	m_ui.seedLineEdit->setEnabled(false);
 }

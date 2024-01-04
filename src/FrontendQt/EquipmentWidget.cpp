@@ -98,7 +98,7 @@ const char* EquipmentWidget::name() const
 	return "Equipment";
 }
 
-void EquipmentWidget::loadSettings(const nlohmann::json& json)
+void EquipmentWidget::loadPresets(const nlohmann::json& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -106,7 +106,7 @@ void EquipmentWidget::loadSettings(const nlohmann::json& json)
 	}
 }
 
-void EquipmentWidget::saveSettings(nlohmann::ordered_json* json)
+void EquipmentWidget::savePresets(nlohmann::ordered_json* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

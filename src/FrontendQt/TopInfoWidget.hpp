@@ -32,8 +32,8 @@ public:
 	void setState(TopInfoWidget::State state);
 	void setSeed(u64 value);
 Q_SIGNALS:
-	void buttonLoadSettingsClicked();
-	void buttonSaveSettingsClicked();
+	void buttonLoadPresetsClicked();
+	void buttonSavePresetsClicked();
 private Q_SLOTS:
 	void setSeedLineEditText(const QString& text);
 private:

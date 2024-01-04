@@ -39,8 +39,8 @@ public:
 	void disableUI();
 	void write() const;
 	bool isVanilla() const;
-	void loadSettings(const std::filesystem::path& path);
-	void saveSettings(const std::filesystem::path& path) const;
+	void loadPresets(const std::filesystem::path& path);
+	void savePresets(const std::filesystem::path& path) const;
 private:
 	Ui::RandomizerTabWidget m_ui;
 

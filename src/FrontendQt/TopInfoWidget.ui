@@ -188,7 +188,7 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QPushButton" name="loadSettings">
+      <widget class="QPushButton" name="loadPresets">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -205,12 +205,12 @@
         </size>
        </property>
        <property name="text">
-        <string>Load Settings</string>
+        <string>Load Presets</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="saveSettings">
+      <widget class="QPushButton" name="savePresets">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -227,7 +227,7 @@
         </size>
        </property>
        <property name="text">
-        <string>Save Settings</string>
+        <string>Save Presets</string>
        </property>
       </widget>
      </item>

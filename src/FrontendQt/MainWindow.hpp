@@ -28,8 +28,8 @@ public:
 	void disableUI();
 	void saveSettings();
 public Q_SLOTS:
-	void loadRandomizerSettings();
-	void saveRandomizerSettings();
+	void loadPresets();
+	void savePresets();
 	void onFileOpen();
 	void onFileSaveAs();
 	void onThemeChanged();

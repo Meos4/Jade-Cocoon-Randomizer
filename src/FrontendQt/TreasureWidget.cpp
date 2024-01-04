@@ -128,7 +128,7 @@ const char* TreasureWidget::name() const
 	return "Treasure";
 }
 
-void TreasureWidget::loadSettings(const nlohmann::json& json)
+void TreasureWidget::loadPresets(const nlohmann::json& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -136,7 +136,7 @@ void TreasureWidget::loadSettings(const nlohmann::json& json)
 	}
 }
 
-void TreasureWidget::saveSettings(nlohmann::ordered_json* json)
+void TreasureWidget::savePresets(nlohmann::ordered_json* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

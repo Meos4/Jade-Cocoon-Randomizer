@@ -48,8 +48,8 @@ MainWindow::MainWindow(QWidget* parent)
 		m_ui.actionSettingsThemeLight
 	};
 
-	connect(m_topInfoWidget, &TopInfoWidget::buttonLoadSettingsClicked, this, &MainWindow::loadRandomizerSettings);
-	connect(m_topInfoWidget, &TopInfoWidget::buttonSaveSettingsClicked, this, &MainWindow::saveRandomizerSettings);
+	connect(m_topInfoWidget, &TopInfoWidget::buttonLoadPresetsClicked, this, &MainWindow::loadPresets);
+	connect(m_topInfoWidget, &TopInfoWidget::buttonSavePresetsClicked, this, &MainWindow::savePresets);
 	connect(m_ui.actionFileOpen, &QAction::triggered, this, &MainWindow::onFileOpen);
 	connect(m_ui.actionFileClose, &QAction::triggered, this, &MainWindow::disableUI);
 	connect(m_ui.actionFileSaveAs, &QAction::triggered, this, &MainWindow::onFileSaveAs);
@@ -273,23 +273,23 @@ void MainWindow::saveSettings()
 	jsonFile << std::setw(4) << json;
 }
 
-void MainWindow::loadRandomizerSettings()
+void MainWindow::loadPresets()
 {
-	const auto settingsPathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Randomizer Settings File", QString{}, "*.json", nullptr) };
-	if (!settingsPathQStr.isEmpty())
+	const auto presetsPathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Randomizer Presets File", QString{}, "*.json", nullptr) };
+	if (!presetsPathQStr.isEmpty())
 	{
-		const std::filesystem::path settingsPath{ QtUtility::qStrToPlatformStr(settingsPathQStr) };
-		m_randomizerTabWidget->loadSettings(settingsPath);
+		const std::filesystem::path presetsPath{ QtUtility::qStrToPlatformStr(presetsPathQStr) };
+		m_randomizerTabWidget->loadPresets(presetsPath);
 	}	
 }
 
-void MainWindow::saveRandomizerSettings()
+void MainWindow::savePresets()
 {
-	const auto settingsPathQStr{ QFileDialog::getSaveFileName(this, "Save Jade Cocoon Randomizer Settings File", QString{}, "*.json", nullptr)};
-	if (!settingsPathQStr.isEmpty())
+	const auto presetsPathQStr{ QFileDialog::getSaveFileName(this, "Save Jade Cocoon Randomizer Presets File", QString{}, "*.json", nullptr)};
+	if (!presetsPathQStr.isEmpty())
 	{
-		const std::filesystem::path settingsPath{ QtUtility::qStrToPlatformStr(settingsPathQStr) };
-		m_randomizerTabWidget->saveSettings(settingsPath);
+		const std::filesystem::path presetsPath{ QtUtility::qStrToPlatformStr(presetsPathQStr) };
+		m_randomizerTabWidget->savePresets(presetsPath);
 	}
 }
 
@@ -464,7 +464,7 @@ void MainWindow::dropEvent(QDropEvent* event)
 		
 		if (m_game && path.extension() == ".json")
 		{
-			m_randomizerTabWidget->loadSettings(path);
+			m_randomizerTabWidget->loadPresets(path);
 		}
 		else
 		{

@@ -125,7 +125,7 @@ const char* MiscWidget::name() const
 	return "Misc";
 }
 
-void MiscWidget::loadSettings(const nlohmann::json& json)
+void MiscWidget::loadPresets(const nlohmann::json& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -141,7 +141,7 @@ void MiscWidget::loadSettings(const nlohmann::json& json)
 	colorToUI(m_ui.hudColorCombo->currentIndex());
 }
 
-void MiscWidget::saveSettings(nlohmann::ordered_json* json)
+void MiscWidget::savePresets(nlohmann::ordered_json* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{
