@@ -1,5 +1,6 @@
 #include "TopInfoWidget.hpp"
 
+#include "FrontendQt/GuiSettings.hpp"
 #include "FrontendQt/MainWindow.hpp"
 #include "FrontendQt/QtUtility.hpp"
 
@@ -91,7 +92,7 @@ void TopInfoWidget::setState(TopInfoWidget::State state)
 	{
 		m_ui.stateLabel2->setText("Randomized");
 		m_ui.stateLabel2->setStyleSheet("QLabel{color: rgb(200, 0, 0);}");
-		m_ui.stateLabel2->setToolTip("Randomized iso can't be re-randomized.");
+		GuiSettings::setToolTip(m_ui.stateLabel2, "Randomized iso can't be re-randomized.");
 	}
 	else
 	{
