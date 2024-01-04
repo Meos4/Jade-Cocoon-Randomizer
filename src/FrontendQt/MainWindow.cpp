@@ -275,7 +275,7 @@ void MainWindow::saveSettings()
 
 void MainWindow::loadPresets()
 {
-	const auto presetsPathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Randomizer Presets File", QString{}, "*.json", nullptr) };
+	const auto presetsPathQStr{ QFileDialog::getOpenFileName(this, "Open Presets File", QString{}, "*.json", nullptr) };
 	if (!presetsPathQStr.isEmpty())
 	{
 		const std::filesystem::path presetsPath{ QtUtility::qStrToPlatformStr(presetsPathQStr) };
@@ -285,7 +285,7 @@ void MainWindow::loadPresets()
 
 void MainWindow::savePresets()
 {
-	const auto presetsPathQStr{ QFileDialog::getSaveFileName(this, "Save Jade Cocoon Randomizer Presets File", QString{}, "*.json", nullptr)};
+	const auto presetsPathQStr{ QFileDialog::getSaveFileName(this, "Save Presets File", QString{}, "*.json", nullptr)};
 	if (!presetsPathQStr.isEmpty())
 	{
 		const std::filesystem::path presetsPath{ QtUtility::qStrToPlatformStr(presetsPathQStr) };
