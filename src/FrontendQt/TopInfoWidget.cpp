@@ -67,7 +67,7 @@ void TopInfoWidget::setFilename(const QString& filename)
 	{
 		auto filenameReduced{ filename };
 		filenameReduced.resize(maxSize);
-		for (std::size_t i{}; i < 3; ++i)
+		for (s32 i{}; i < 3; ++i)
 		{
 			filenameReduced[maxSize - 1 - i] = '.';
 		}
