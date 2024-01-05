@@ -17,7 +17,7 @@ And more
 
 Download
 --------
-[Romhacking](https://www.romhacking.net/utilities/1655)
+[GitHub](https://github.com/Meos4/Jade-Cocoon-Randomizer/releases)
 
 How to Use
 ----------
