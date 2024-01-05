@@ -1,5 +1,10 @@
-## [2.1.0] - 11-03-2023
+## [2.2.0]
+- Added a dark / light theme choice
+- Unpack / repack game files faster
+- ToolTips are displayed infinitely
+- Renamed settings to presets
 
+## [2.1.0]
 - Errors are more explicit
 - Fixed crash when saving without PSX.EXE
 - Added GitHub - Discord - Jade Cocoon Wiki - Changelog links in menubar
