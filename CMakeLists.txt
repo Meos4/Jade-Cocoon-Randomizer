@@ -189,9 +189,18 @@ target_include_directories(jade_cocoon_randomizer PRIVATE
 
 target_compile_definitions(jade_cocoon_randomizer PRIVATE
     $<$<CONFIG:Debug>:JCR_DEBUG>)
-       
+
 target_link_libraries(jade_cocoon_randomizer 
     Qt6::Widgets 
     jade_cocoon_unpacker_repacker
     mkpsxiso
-    dumpsxiso)
+    dumpsxiso
+)
+
+if (MSVC)
+    set(TARGETS iso_shared tinyxml2 mkpsxiso dumpsxiso)
+    foreach(TARGET ${TARGETS})
+        target_compile_options(${TARGET} PRIVATE $<$<CONFIG:Release>:/MD>)
+        target_compile_options(${TARGET} PRIVATE $<$<CONFIG:Debug>:/MDd>)
+    endforeach()
+endif()
