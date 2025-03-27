@@ -2,6 +2,7 @@
 
 #include "Backend/File.hpp"
 #include "Backend/Mips.hpp"
+#include "Backend/MipsFunctionTypes.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/Buffer.hpp"
@@ -59,49 +60,97 @@ const char* Game::filePathByIndex(s32 file) const
 	return m_data001FilesPath.at(fileByVersion(file));
 }
 
-void Game::expandExecutable(u32 toAdd) const
+void Game::expandExecutable() const
 {
 	auto executable{ this->executable() };
-	const auto executableSize{ executable.size() };
+	const auto offsetGHvb{ m_offset.game.heapVanillaBegin };
 
-	const u32 rest{ (executableSize + toAdd) % Game::sectorSize };
-	if (rest)
+	const auto heapShift{ heapRandomizerBegin() - offsetGHvb };
+	auto newExecutableSize{ (offsetGHvb + heapShift - gameToFileTextSectionShift()) & ~0x80000000 };
+	const auto sectorRemainer{ newExecutableSize % Game::sectorSize };
+	if (sectorRemainer)
 	{
-		toAdd += Game::sectorSize - rest;
+		newExecutableSize += Game::sectorSize - sectorRemainer;
 	}
-	const auto newExecutableSize{ executableSize + toAdd };
 
 	executable.write(0x1C, newExecutableSize - Game::sectorSize);
 	std::filesystem::resize_file(m_exePath, newExecutableSize);
 
-	auto
-		luiBeginHeap{ executable.read<Mips_t>(offset().file.executable.mainFn + 0x34) },
-		addiuBeginHeap{ executable.read<Mips_t>(offset().file.executable.mainFn + 0x38) };
+	const auto offsetFMFn{ m_offset.file.executable.mainFn };
+	auto instructions{ executable.read<std::array<Mips_t, 2>>(offsetFMFn + 0x34) };
+	auto& [luiHeap, addiuHeap]{ instructions };
 
-	const u32
-		heapShift{ isVersion(Version::NtscJ1) ? toAdd - NtscJ1::customCodeShift : toAdd },
-		newBeginHeap{ (luiBeginHeap << 16) + static_cast<s16>(addiuBeginHeap) + heapShift };
+	const u32 newBeginHeap{ (luiHeap << 16) + static_cast<s16>(addiuHeap) + heapShift };
+	const bool isLower16Positive{ static_cast<s16>(newBeginHeap) >= 0 };
 
-	const bool isRightPartPositive{ static_cast<s16>(newBeginHeap) >= 0 };
+	luiHeap = ((luiHeap >> 16) << 16);
+	luiHeap += isLower16Positive ? (newBeginHeap >> 16) : (newBeginHeap >> 16) + 1;
+	addiuHeap = ((addiuHeap >> 16) << 16) + static_cast<u16>(newBeginHeap);
 
-	luiBeginHeap = ((luiBeginHeap >> 16) << 16);
-	luiBeginHeap += isRightPartPositive ? (newBeginHeap >> 16) : (newBeginHeap >> 16) + 1;
-	addiuBeginHeap = ((addiuBeginHeap >> 16) << 16) + static_cast<u16>(newBeginHeap);
-
-	executable.write(offset().file.executable.mainFn + 0x34, luiBeginHeap);
-	executable.write(offset().file.executable.mainFn + 0x38, addiuBeginHeap);
+	executable.write(offsetFMFn + 0x34, instructions);
 }
 
 Game::CustomCodeOffset Game::customCodeOffset(u32 size)
 {
+	const auto fileHeapVanillaBegin{ (m_offset.game.heapVanillaBegin - gameToFileTextSectionShift()) & ~0x80000000 };
 	const Game::CustomCodeOffset ccOffset
 	{
-		.file = offset().file.executable.cc_begin + m_ccShift,
-		.game = offset().game.cc_begin + m_ccShift
+		.file = fileHeapVanillaBegin + m_ccShift,
+		.game = m_offset.game.heapVanillaBegin + m_ccShift
 	};
 	m_ccShift += size;
 
 	return ccOffset;
+}
+
+u32 Game::heapRandomizerBegin() const
+{
+	static constexpr u32 customCodeSize
+	{
+		sizeof(MipsFn::GenerateValidMinion) + // Story
+		sizeof(MipsFn::GenerateValidMinion) + // EC
+
+		sizeof(MipsFn::RandomEternalCorridorOst) +
+
+		sizeof(MipsFn::NuzlockeDefinitiveDeath) +
+		sizeof(MipsFn::WriteUsedMapEOBData) +
+		sizeof(MipsFn::WriteUsedMapEOB) +
+		sizeof(MipsFn::WriteUsedMapCapture) +
+		sizeof(MipsFn::ReadUsedMap) +
+		sizeof(MipsFn::ResetFromNowhere) +
+
+		sizeof(MipsFn::DifficultyModeStats) +
+
+		sizeof(MipsFn::AfterTutorialStateData) +
+		sizeof(MipsFn::WriteAfterTutorialState) +
+
+		sizeof(MipsFn::DrawHiddenStats) +
+		sizeof(MipsFn::CriticalRateFromStats) +
+		sizeof(MipsFn::DrawCriticalRate) +
+		sizeof(MipsFn::DrawCriticalRateMerge) +
+
+		sizeof(MipsFn::ToggleX2Framerate) +
+
+		sizeof(MipsFn::SetChestNewItemQuantityLimit) +
+
+		sizeof(MipsFn::FixEntityEnhancement) +
+		
+		sizeof(MipsFn::PreviewHeal)
+	};
+
+	return m_offset.game.heapVanillaBegin + customCodeSize;
+}
+
+u32 Game::gameToFileTextSectionShift() const
+{
+	// Text section in NTSC-J 2 starts at 0x80018000
+	return m_version == Version::NtscJ2 ? 0x17800 : 0xF800;
+}
+
+bool Game::isVanilla() const
+{
+	const auto [lui, addiu]{ executable().read<std::array<Mips_t, 2>>(m_offset.file.executable.mainFn + 0x34) };
+	return (lui << 16) + static_cast<s16>(addiu) == m_offset.game.heapVanillaBegin;
 }
 
 bool Game::isNtsc() const

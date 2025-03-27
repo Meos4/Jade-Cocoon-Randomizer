@@ -55,8 +55,6 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Forest.hpp
     ${BACKEND_DIR}/Game.cpp
     ${BACKEND_DIR}/Game.hpp
-    ${BACKEND_DIR}/CustomCode.cpp
-    ${BACKEND_DIR}/CustomCode.hpp
     ${BACKEND_DIR}/Item.cpp
     ${BACKEND_DIR}/Item.hpp
     ${BACKEND_DIR}/JCUtility.cpp

@@ -3,7 +3,6 @@
 #include "ui_RandomizerTabWidget.h"
 
 #include "Backend/Game.hpp"
-#include "Backend/CustomCode.hpp"
 #include "Backend/SharedData.hpp"
 
 #include <QTabWidget>
@@ -45,6 +44,6 @@ private:
 	Ui::RandomizerTabWidget m_ui;
 
 	std::array<RandomizerWidget*, TAB_COUNT> m_randomizerWidgets;
+	std::shared_ptr<Game> m_game;
 	std::shared_ptr<SharedData> m_sharedData;
-	std::unique_ptr<CustomCode> m_customCode;
 };

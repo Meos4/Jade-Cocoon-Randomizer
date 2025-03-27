@@ -27,8 +27,11 @@ public:
 	RawFile executable() const;
 	const char* filePathByIndex(s32 file) const;
 
-	void expandExecutable(u32 toAdd) const;
+	void expandExecutable() const;
 	Game::CustomCodeOffset customCodeOffset(u32 size);
+	u32 heapRandomizerBegin() const;
+	u32 gameToFileTextSectionShift() const;
+	bool isVanilla() const;
 
 	template <SameAs<Version>... Args>
 	bool isVersion(Args... versions) const

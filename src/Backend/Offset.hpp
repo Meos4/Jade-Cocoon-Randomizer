@@ -37,8 +37,7 @@ public:
 				mainFn,
 				branchSetVatolkaSpecials,
 				tableOfLevantFluteStylingsId,
-				mainSceneBehaviorFn,
-				cc_begin;
+				mainSceneBehaviorFn;
 		} executable;
 
 		struct
@@ -909,7 +908,7 @@ public:
 			criticalRateTransformFn,
 			randFn,
 			eternalCorridorCurrentCorridor,
-			cc_begin;
+			heapVanillaBegin;
 	};
 
 	Offset(Version version);

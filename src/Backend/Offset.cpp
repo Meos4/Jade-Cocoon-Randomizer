@@ -36,8 +36,7 @@ fileNtscJ1
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00014004,
 		.tableOfLevantFluteStylingsId = 0x0006A774,
-		.mainSceneBehaviorFn = 0x000228C8,
-		.cc_begin = 0x000AD800 + NtscJ1::customCodeShift
+		.mainSceneBehaviorFn = 0x000228C8
 	},
 	.over_battle_bin
 	{
@@ -754,8 +753,7 @@ fileNtscJ2
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00014064,
 		.tableOfLevantFluteStylingsId = 0x00069D50,
-		.mainSceneBehaviorFn = 0x00022CF0,
-		.cc_begin = 0x000B6000,
+		.mainSceneBehaviorFn = 0x00022CF0
 	},
 	.over_battle_bin
 	{
@@ -1472,8 +1470,7 @@ fileNtscU
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D2C0,
-		.mainSceneBehaviorFn = 0x000184F8,
-		.cc_begin = 0x000BA800,
+		.mainSceneBehaviorFn = 0x000184F8
 	},
 	.over_battle_bin
 	{
@@ -2191,7 +2188,6 @@ filePalEn
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D1E4,
 		.mainSceneBehaviorFn = 0x00018560,
-		.cc_begin = 0x000BB000,
 	},
 	.over_battle_bin
 	{
@@ -2909,7 +2905,6 @@ filePalFr
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D458,
 		.mainSceneBehaviorFn = 0x00018560,
-		.cc_begin = 0x000BB000,
 	},
 	.over_battle_bin
 	{
@@ -3627,7 +3622,6 @@ filePalDe
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D314,
 		.mainSceneBehaviorFn = 0x00018560,
-		.cc_begin = 0x000BB000,
 	},
 	.over_battle_bin
 	{
@@ -4345,7 +4339,6 @@ filePalEs
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D578,
 		.mainSceneBehaviorFn = 0x00018560,
-		.cc_begin = 0x000BB800,
 	},
 	.over_battle_bin
 	{
@@ -5063,8 +5056,7 @@ filePalIt
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D55C,
-		.mainSceneBehaviorFn = 0x00018560,
-		.cc_begin = 0x000BB800,
+		.mainSceneBehaviorFn = 0x00018560
 	},
 	.over_battle_bin
 	{
@@ -5779,7 +5771,7 @@ gameNtscJ1
 	.criticalRateTransformFn = 0x800140F8,
 	.randFn = 0x8004D694,
 	.eternalCorridorCurrentCorridor = 0x800B2A04,
-	.cc_begin = 0x800BD000 + NtscJ1::customCodeShift
+	.heapVanillaBegin = 0x800C0C78
 },
 gameNtscJ2
 {
@@ -5807,7 +5799,7 @@ gameNtscJ2
 	.criticalRateTransformFn = 0x8001C15C,
 	.randFn = 0x80055640,
 	.eternalCorridorCurrentCorridor = 0x800BA6DC,
-	.cc_begin = 0x800CD800
+	.heapVanillaBegin = 0x800D0164
 },
 gameNtscU
 {
@@ -5835,7 +5827,7 @@ gameNtscU
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E298,
 	.eternalCorridorCurrentCorridor = 0x800B54CC,
-	.cc_begin = 0x800CA000
+	.heapVanillaBegin = 0x800CD858
 },
 gamePalEn
 {
@@ -5863,7 +5855,7 @@ gamePalEn
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E2BC,
 	.eternalCorridorCurrentCorridor = 0x800B569C,
-	.cc_begin = 0x800CA800
+	.heapVanillaBegin = 0x800CDA28
 },
 gamePalFr
 {
@@ -5891,7 +5883,7 @@ gamePalFr
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E370,
 	.eternalCorridorCurrentCorridor = 0x800B592C,
-	.cc_begin = 0x800CA800
+	.heapVanillaBegin = 0x800CE2D0
 },
 gamePalDe
 {
@@ -5919,7 +5911,7 @@ gamePalDe
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E314,
 	.eternalCorridorCurrentCorridor = 0x800B57E4,
-	.cc_begin = 0x800CA800
+	.heapVanillaBegin = 0x800CE330
 },
 gamePalEs
 {
@@ -5947,7 +5939,7 @@ gamePalEs
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E32C,
 	.eternalCorridorCurrentCorridor = 0x800B5A4C,
-	.cc_begin = 0x800CB000
+	.heapVanillaBegin = 0x800CE878
 },
 gamePalIt
 {
@@ -5975,7 +5967,7 @@ gamePalIt
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E324,
 	.eternalCorridorCurrentCorridor = 0x800B5A34,
-	.cc_begin = 0x800CB000
+	.heapVanillaBegin = 0x800CE6E0
 };
 
 Offset::Offset(Version version)

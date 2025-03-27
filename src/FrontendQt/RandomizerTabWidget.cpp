@@ -49,8 +49,8 @@ RandomizerTabWidget::RandomizerTabWidget(QWidget* parent)
 
 void RandomizerTabWidget::enableUI(std::shared_ptr<Game> game)
 {
+	m_game = game;
 	m_sharedData = std::make_shared<SharedData>(game);
-	m_customCode = std::make_unique<CustomCode>(game);
 	for (const auto widget : m_randomizerWidgets)
 	{
 		widget->enableUI(game, m_sharedData);
@@ -63,19 +63,19 @@ void RandomizerTabWidget::disableUI()
 	{
 		widget->disableUI();
 	}
-	m_customCode.reset();
+	m_game.reset();
 	m_sharedData.reset();
 }
 
 void RandomizerTabWidget::write() const
 {
-	if (!m_sharedData || !m_customCode)
+	if (!m_game || !m_sharedData)
 	{
 		throw JcrException{ "Game is uninitialized" };
 	}
 
 	m_sharedData->read();
-	m_customCode->write();
+	m_game->expandExecutable();
 	for (const auto widget : m_randomizerWidgets)
 	{
 		widget->write();
@@ -84,11 +84,11 @@ void RandomizerTabWidget::write() const
 
 bool RandomizerTabWidget::isVanilla() const
 {
-	if (!m_customCode)
+	if (!m_game)
 	{
 		throw JcrException{ "Game is uninitialized" };
 	}
-	return m_customCode->isVanilla();
+	return m_game->isVanilla();
 }
 
 void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
