@@ -1,3 +1,6 @@
+## [2.2.1]
+- Fixed an issue that caused the game to freeze during a multiplayer battle
+
 ## [2.2.0]
 - Added a dark / light theme choice
 - Unpack / repack game files faster
