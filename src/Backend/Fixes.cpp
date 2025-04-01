@@ -102,8 +102,6 @@ void Fixes::setSpecialsModifiers() const
 {
 	if (m_game->isVersion(Version::PalFr))
 	{
-		static constexpr u32 puissancePtr{ 0x800746D2 };
-
 		static constexpr std::array<u8, 19> puissance
 		{
 			0x7D, 0x00, 0x75, 0x00, 0x52, 0x00, 0x15, 0x00, 0x2A, 0x00, 0x2A, 0x00, 0x4A, 0x00, 0x4F, 0x00,
@@ -124,7 +122,7 @@ void Fixes::setSpecialsModifiers() const
 
 		auto executable{ m_game->executable() };
 
-		executable.write(0x00073F20, puissancePtr);
+		executable.write(0x00073F20, u32(0x800746D2));
 		executable.write(0x00064ED2, puissance);
 		executable.write(0x00064EB8, precision);
 		executable.write(0x00064EA0, critique);
