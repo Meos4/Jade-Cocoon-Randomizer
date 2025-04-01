@@ -147,24 +147,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 		{
 			m_randomizerTabWidget->enableUI(m_game);
 			const QString verSerial{ QString::fromStdString(std::format("{} [{}]", m_game->versionText(), m_game->serialText())) };
-			const QString filename
-			{
-				#ifdef _WIN32 
-					QString::fromStdWString(m_game->isoFilename().wstring())
-				#else
-					QString::fromStdString(m_game->isoFilename().string())
-				#endif
-			};
-
-			const auto state
-			{
-				m_randomizerTabWidget->isVanilla() ?
-				TopInfoWidget::State::Vanilla :
-				TopInfoWidget::State::Randomized
-			};
-
-			m_topInfoWidget->enableUI(verSerial, filename, state);
-
+			m_topInfoWidget->enableUI(verSerial);
 			m_ui.actionFileClose->setEnabled(true);
 			m_ui.actionFileSaveAs->setEnabled(true);
 		}
@@ -251,12 +234,6 @@ void MainWindow::onFileSaveAs()
 	{
 		return;
 	}
-	else if (const auto isoPath{ m_game->isoPath() };
-		QtUtility::qStrToPlatformStr(filePathQStr) == isoPath && std::filesystem::is_regular_file(isoPath))
-	{
-		QMessageBox::critical(this, "Error", "You can't save on your vanilla iso.");
-		return;
-	}
 
 	SaveGameDialog saveGameDialog(this);
 
@@ -319,19 +296,7 @@ void MainWindow::onFileSaveAs()
 	else
 	{
 		const std::filesystem::path filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
-		m_game->setIsoPath(filePath);
-		
-		const QString filename
-		{
-			#ifdef _WIN32
-				QString::fromStdWString(m_game->isoFilename().wstring())
-			#else
-				QString::fromStdString(m_game->isoFilename().string())
-			#endif
-		};
 
-		m_topInfoWidget->setFilename(filename);
-		m_topInfoWidget->setState(TopInfoWidget::State::Randomized);
 		if (!isSeedEnabled)
 		{
 			m_topInfoWidget->setSeed(firstSeed);

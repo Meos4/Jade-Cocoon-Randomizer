@@ -21,7 +21,7 @@ public:
 
 	static constexpr auto sectorSize{ 2048u };
 
-	Game(const std::filesystem::path& isoPath, const std::filesystem::path& exePath, Version version);
+	Game(const std::filesystem::path& exePath, Version version);
 	
 	std::unique_ptr<RawFile> file(s32 file) const;
 	RawFile executable() const;
@@ -42,12 +42,8 @@ public:
 
 	const char* versionText() const;
 	const char* serialText() const;
-	std::filesystem::path isoPath() const;
-	std::filesystem::path isoFilename() const;
 	Version version() const;
 	const Offset& offset() const;
-
-	void setIsoPath(const std::filesystem::path& isoPath);
 
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
@@ -61,7 +57,7 @@ private:
 
 	s32 fileByVersion(s32 file) const;
 
-	std::filesystem::path m_isoPath, m_exePath;
+	std::filesystem::path m_exePath;
 	std::vector<const char*> m_data001FilesPath;
 	Version m_version;
 	Offset m_offset;

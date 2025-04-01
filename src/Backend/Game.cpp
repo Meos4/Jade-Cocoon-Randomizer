@@ -19,8 +19,8 @@
 #include <type_traits>
 #include <utility>
 
-Game::Game(const std::filesystem::path& isoPath, const std::filesystem::path& exePath, Version version)
-	: m_isoPath(isoPath), m_exePath(exePath), m_version(version), m_offset(version),
+Game::Game(const std::filesystem::path& exePath, Version version)
+	: m_exePath(exePath), m_version(version), m_offset(version),
 	m_data001FilesPath(std::move(JCExe{ Utility::gameToJcExeVersion(version) }.data001FilesPath()))
 {
 }
@@ -170,16 +170,6 @@ const char* Game::serialText() const
 	return serials[static_cast<std::size_t>(m_version)];
 }
 
-std::filesystem::path Game::isoPath() const
-{
-	return m_isoPath;
-}
-
-std::filesystem::path Game::isoFilename() const
-{
-	return m_isoPath.filename();
-}
-
 Version Game::version() const
 {
 	return m_version;
@@ -188,11 +178,6 @@ Version Game::version() const
 const Offset& Game::offset() const
 {
 	return m_offset;
-}
-
-void Game::setIsoPath(const std::filesystem::path& isoPath)
-{
-	m_isoPath = isoPath;
 }
 
 s32 Game::fileByVersion(s32 file) const
@@ -313,5 +298,5 @@ Game Game::createGame(std::filesystem::path& isoPath)
 		throw JcrException{ "This version is not supported" };
 	}
 
-	return { isoPath, exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version) };
+	return { exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version) };
 }

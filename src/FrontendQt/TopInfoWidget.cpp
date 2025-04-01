@@ -19,11 +19,9 @@ TopInfoWidget::TopInfoWidget(QWidget* parent)
 	connect(m_ui.seedLineEdit, &QLineEdit::textChanged, this, &TopInfoWidget::setSeedLineEditText);
 }
 
-void TopInfoWidget::enableUI(const QString& version, const QString& filename, TopInfoWidget::State state)
+void TopInfoWidget::enableUI(const QString& version)
 {
 	setVersion(version);
-	setFilename(filename);
-	setState(state);
 
 	m_ui.loadPresets->setEnabled(true);
 	m_ui.savePresets->setEnabled(true);
@@ -37,8 +35,6 @@ void TopInfoWidget::enableUI(const QString& version, const QString& filename, To
 void TopInfoWidget::disableUI()
 {
 	setVersion("");
-	setFilename("");
-	setState(TopInfoWidget::State::Disabled);
 
 	m_ui.loadPresets->setEnabled(false);
 	m_ui.savePresets->setEnabled(false);
@@ -59,46 +55,6 @@ bool TopInfoWidget::isSeedEnabled() const
 void TopInfoWidget::setVersion(const QString& version)
 {
 	m_ui.versionLabel2->setText(version);
-}
-
-void TopInfoWidget::setFilename(const QString& filename)
-{
-	static constexpr auto maxSize{ 50 };
-	if (filename.size() > maxSize)
-	{
-		auto filenameReduced{ filename };
-		filenameReduced.resize(maxSize);
-		for (s32 i{}; i < 3; ++i)
-		{
-			filenameReduced[maxSize - 1 - i] = '.';
-		}
-		m_ui.fileLabel2->setText(filenameReduced);
-	}
-	else
-	{
-		m_ui.fileLabel2->setText(filename);
-	}
-}
-
-void TopInfoWidget::setState(TopInfoWidget::State state)
-{
-	if (state == TopInfoWidget::State::Vanilla)
-	{
-		m_ui.stateLabel2->setText("Vanilla");
-		m_ui.stateLabel2->setStyleSheet("");
-		m_ui.stateLabel2->setToolTip("");
-	}
-	else if (state == TopInfoWidget::State::Randomized)
-	{
-		m_ui.stateLabel2->setText("Randomized");
-		m_ui.stateLabel2->setStyleSheet("QLabel{color: rgb(200, 0, 0);}");
-		GuiSettings::setToolTip(m_ui.stateLabel2, "Randomized iso can't be re-randomized.");
-	}
-	else
-	{
-		m_ui.stateLabel2->setText("");
-		m_ui.stateLabel2->setToolTip("");
-	}
 }
 
 void TopInfoWidget::setSeed(u64 value)
