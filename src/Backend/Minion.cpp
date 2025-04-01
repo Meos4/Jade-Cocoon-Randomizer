@@ -434,7 +434,7 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 			static constexpr auto enhancementRate{ 65.f / 221.f * 100.f };
 			if (Random::get().generateProba(enhancementRate))
 			{
-				specialBody.isEnhancement = 1;
+				specialBody.isEnhanced = 1;
 				specialBody.enhancement = Random::get().generate<EnhancementBodyPart_t>(ENHANCEMENT_BODYPART_POWER, ENHANCEMENT_BODYPART_CRITICAL);
 			}
 

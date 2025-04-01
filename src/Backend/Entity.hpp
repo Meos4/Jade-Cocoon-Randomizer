@@ -482,7 +482,7 @@ struct SpecialStruct
 	u8 isEnabled; // 0 false, 1 true
 	Special_t specialAttackId;
 	EnhancementBodyPart_t enhancement;
-	u8 isEnhancement; // 0 false, 1 true
+	u8 isEnhanced; // 0 false, 1 true
 };
 
 using SpecialsArray = std::array<SpecialStruct, BODYPART_COUNT>;
