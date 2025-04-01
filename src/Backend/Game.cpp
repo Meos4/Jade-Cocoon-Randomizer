@@ -266,32 +266,34 @@ Game Game::createGame(std::filesystem::path& isoPath)
 		throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath.filename().string() };
 	}
 
-	if (std::filesystem::is_directory(Path::jcrTempDirectory))
+	const auto jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } };
+
+	if (std::filesystem::is_directory(jcr_tempDirectoryPath))
 	{
 		std::error_code err;
-		const auto nbRemoved{ std::filesystem::remove_all(Path::jcrTempDirectory, err) };
+		const auto nbRemoved{ std::filesystem::remove_all(jcr_tempDirectoryPath, err) };
 		if (nbRemoved == -1)
 		{
-			throw JcrException{ "\"{}\" directory cannot be removed", Path::jcrTempDirectory };
+			throw JcrException{ "\"{}\" directory cannot be removed", jcr_tempDirectoryPath.string()};
 		}
 	}
 
 	std::filesystem::create_directory(Path::jcrTempDirectory);
 
 	const std::filesystem::path
-		configPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::configXmlFilename) },
-		filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };
+		configXmlPath{ Path::configXmlPath(jcr_tempDirectoryPath) },
+		filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
 
-	const auto dumpArgs{ Path::dumpIsoArgs(&isoPath, &configPath, &filesPath) };
+	const auto dumpArgs{ Path::dumpIsoArgs(&isoPath, &configXmlPath, &filesDirectoryPath) };
 
 	dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
-	JCTools::unpacker(filesPath, std::format("{}/{}", filesPath.string(), Path::dataDirectory), Path::jcrTempDirectory);
+	JCTools::unpacker(filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath), Path::jcrTempDirectory);
 
-	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesPath) };
+	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesDirectoryPath) };
 
 	if (!exeInfo.has_value())
 	{
-		throw JcrException{ "Can't find compatible playstation executable in \"{}\"", filesPath.string() };
+		throw JcrException{ "Can't find compatible playstation executable in \"{}\"", filesDirectoryPath.string() };
 	}
 	else if (exeInfo.value().version == JCExe::Version::Prototype_D05_M08_Y1999_15H48)
 	{

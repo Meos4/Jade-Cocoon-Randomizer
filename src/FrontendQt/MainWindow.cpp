@@ -248,17 +248,19 @@ void MainWindow::onFileSaveAs()
 			emit saveGameDialog.progressBarChanged(33);
 			emit saveGameDialog.onStateChanged("Repack game files...");
 
-			const std::filesystem::path filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };
-			JCTools::repacker(filesPath, Path::jcrTempDirectory, filesPath, std::format("{}/{}", filesPath.string(), Path::dataDirectory));
+			const auto jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } };
+
+			const std::filesystem::path filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
+			JCTools::repacker(filesDirectoryPath, Path::jcrTempDirectory, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
 
 			emit saveGameDialog.progressBarChanged(66);
 			emit saveGameDialog.onStateChanged("Repack iso...");
 
 			const std::filesystem::path 
-				configPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::configXmlFilename) },
+				configXmlPath{ Path::configXmlPath(jcr_tempDirectoryPath) },
 				filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
 
-			const auto makeArgs{ Path::makeIsoArgs(&filePath, &configPath) };
+			const auto makeArgs{ Path::makeIsoArgs(&filePath, &configXmlPath) };
 			if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
 			{
 				throw JcrException{ "Unable to repack iso" };
