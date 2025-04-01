@@ -280,7 +280,7 @@ void MainWindow::onFileSaveAs()
 	Random::get().setSeed(firstSeed);
 
 	SaveGameDialog saveGameDialog(this);
-	std::future<bool> future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog) };
+	auto future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog) };
 	saveGameDialog.exec();
 
 	future.wait();
