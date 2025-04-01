@@ -248,7 +248,7 @@ std::optional<Version> Game::versionFromIso(const std::filesystem::path& isoPath
 	return std::nullopt;
 }
 
-Game Game::createGame(std::filesystem::path& isoPath)
+Game Game::createGame(const std::filesystem::path& isoPath)
 {
 	if (!std::filesystem::is_regular_file(isoPath))
 	{
