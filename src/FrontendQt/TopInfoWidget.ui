@@ -159,7 +159,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>128</width>
            <height>0</height>
           </size>
          </property>
@@ -181,7 +181,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>0</width>
+           <width>128</width>
            <height>0</height>
           </size>
          </property>
@@ -199,7 +199,16 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="seedLayout">
+      <layout class="QHBoxLayout" name="seedLayout" stretch="0,0">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
        <item>
         <widget class="QCheckBox" name="seedCheckBox">
          <property name="enabled">
@@ -234,13 +243,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>125</width>
+           <width>0</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>155</width>
+           <width>16777215</width>
            <height>16777215</height>
           </size>
          </property>
