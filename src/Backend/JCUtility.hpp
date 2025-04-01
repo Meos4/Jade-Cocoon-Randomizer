@@ -2,6 +2,7 @@
 
 #include "Common/Types.hpp"
 
+#include <algorithm>
 #include <span>
 
 namespace JCUtility
