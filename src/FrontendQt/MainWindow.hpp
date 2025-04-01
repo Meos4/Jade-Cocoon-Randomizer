@@ -13,6 +13,7 @@
 
 class ExtractGameDialog;
 class RandomizerTabWidget;
+class SaveGameDialog;
 class TopInfoWidget;
 class QAction;
 class QActionGroup;
@@ -26,6 +27,7 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 
 	bool extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
+	bool saveGame(const QString& filePath, SaveGameDialog* saveGameDialog);
 	void enableUI(std::filesystem::path* isoPath);
 	void disableUI();
 	void saveSettings();

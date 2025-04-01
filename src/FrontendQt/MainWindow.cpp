@@ -12,9 +12,6 @@
 #include "FrontendQt/TopInfoWidget.hpp"
 #include "FrontendQt/QtUtility.hpp"
 
-#include "JCTools.hpp"
-#include "mkpsxiso/mkpsxiso.h"
-
 #include <QActionGroup>
 #include <QDesktopServices>
 #include <QDragEnterEvent>
@@ -130,6 +127,38 @@ bool MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* 
 	return false;
 }
 
+bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialog)
+{
+	try
+	{
+		emit saveGameDialog->onStateChanged("Randomizing game...");
+
+		m_randomizerTabWidget->write();
+
+		emit saveGameDialog->progressBarChanged(33);
+		emit saveGameDialog->onStateChanged("Repack game files...");
+
+		Game::repackFilesToDATA001();
+
+		emit saveGameDialog->progressBarChanged(66);
+		emit saveGameDialog->onStateChanged("Repack iso...");
+
+		const auto destPath{ std::filesystem::path{ QtUtility::qStrToPlatformStr(filePath) } };
+		Game::createIsoFromFiles(&destPath);
+
+		emit saveGameDialog->progressBarChanged(100);
+		emit saveGameDialog->onStateChanged("Done");
+		emit saveGameDialog->taskCompleted();
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		emit saveGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+		emit saveGameDialog->taskCompleted();
+		return false;
+	}
+}
+
 void MainWindow::enableUI(std::filesystem::path* isoPath)
 {
 	ExtractGameDialog extractGameDialog(this);
@@ -234,50 +263,6 @@ void MainWindow::onFileSaveAs()
 	{
 		return;
 	}
-
-	SaveGameDialog saveGameDialog(this);
-
-	auto saveGame = [&]()
-	{
-		try
-		{
-			emit saveGameDialog.onStateChanged("Randomizing game...");
-
-			m_randomizerTabWidget->write();
-
-			emit saveGameDialog.progressBarChanged(33);
-			emit saveGameDialog.onStateChanged("Repack game files...");
-
-			const auto jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } };
-
-			const std::filesystem::path filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
-			JCTools::repacker(filesDirectoryPath, jcr_tempDirectoryPath, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
-
-			emit saveGameDialog.progressBarChanged(66);
-			emit saveGameDialog.onStateChanged("Repack iso...");
-
-			const std::filesystem::path 
-				configXmlPath{ Path::configXmlPath(jcr_tempDirectoryPath) },
-				filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
-
-			const auto makeArgs{ Path::makeIsoArgs(&filePath, &configXmlPath) };
-			if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
-			{
-				throw JcrException{ "Unable to repack iso" };
-			}
-
-			emit saveGameDialog.progressBarChanged(100);
-			emit saveGameDialog.onStateChanged("Done");
-			emit saveGameDialog.taskCompleted();
-			return true;
-		}
-		catch (const std::exception& e)
-		{
-			emit saveGameDialog.onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
-			emit saveGameDialog.taskCompleted();
-			return false;
-		}
-	};
 	
 	const bool isSeedEnabled{ m_topInfoWidget->isSeedEnabled() };
 	const auto firstSeed
@@ -287,7 +272,8 @@ void MainWindow::onFileSaveAs()
 
 	Random::get().setSeed(firstSeed);
 
-	std::future<bool> future{ std::async(std::launch::async, saveGame) };
+	SaveGameDialog saveGameDialog(this);
+	std::future<bool> future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog) };
 	saveGameDialog.exec();
 
 	future.wait();

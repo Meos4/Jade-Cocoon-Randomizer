@@ -11,6 +11,7 @@
 #include "JCExe.hpp"
 #include "JCTools.hpp"
 #include "dumpsxiso/dumpsxiso.h"
+#include "mkpsxiso/mkpsxiso.h"
 
 #include <algorithm>
 #include <array>
@@ -301,4 +302,26 @@ Game Game::createGame(std::filesystem::path& isoPath)
 	}
 
 	return { exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version) };
+}
+
+void Game::repackFilesToDATA001()
+{
+	const auto 
+		jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } }, 
+		filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
+
+	JCTools::repacker(filesDirectoryPath, jcr_tempDirectoryPath, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
+}
+
+void Game::createIsoFromFiles(const std::filesystem::path* destPath)
+{
+	const auto
+		jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } },
+		configXmlPath{ Path::configXmlPath(jcr_tempDirectoryPath) };
+
+	const auto makeArgs{ Path::makeIsoArgs(destPath, &configXmlPath) };
+	if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
+	{
+		throw JcrException{ "Unable to repack iso" };
+	}
 }

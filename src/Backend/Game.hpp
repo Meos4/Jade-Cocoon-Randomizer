@@ -48,6 +48,8 @@ public:
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
 	static Game createGame(std::filesystem::path& isoPath);
+	static void repackFilesToDATA001();
+	static void createIsoFromFiles(const std::filesystem::path* destPath);
 private:
 	s32 fileByVersion(s32 file) const;
 
