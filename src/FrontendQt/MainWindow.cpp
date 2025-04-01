@@ -139,7 +139,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 				}
 			}
 
-			if (!Game::isAJCIso(*isoPath))
+			if (Game::versionFromIso(*isoPath) == std::nullopt)
 			{
 				#ifdef _WIN32 
 					throw QString{ QString::fromStdWString(std::format(L"\"{}\" is not a Jade Cocoon binary file", isoPath->filename().wstring())) };

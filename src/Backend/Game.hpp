@@ -8,6 +8,7 @@
 
 #include <filesystem>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 
 class Game final
@@ -50,7 +51,7 @@ public:
 	void setIsoPath(const std::filesystem::path& isoPath);
 
 	static bool generateCue(const std::filesystem::path& isoPath);
-	static [[nodiscard]] bool isAJCIso(const std::filesystem::path& isoPath);
+	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
 private:
 	struct VersionSerialText
 	{

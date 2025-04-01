@@ -218,17 +218,17 @@ bool Game::generateCue(const std::filesystem::path& isoPath)
 	}
 }
 
-bool Game::isAJCIso(const std::filesystem::path& isoPath)
+std::optional<Version> Game::versionFromIso(const std::filesystem::path& isoPath)
 {
 	if (!std::filesystem::is_regular_file(isoPath))
 	{
-		return false;
+		return std::nullopt;
 	}
 
 	RawFile iso{ isoPath };
 
 	using OffsetPattern = std::pair<u32, SBuffer<11>>;
-	static constexpr std::array<OffsetPattern, 8> ver
+	static constexpr std::array<OffsetPattern, static_cast<std::size_t>(Version::Count)> ver
 	{{
 		{ 0x0007DA33, {0x53, 0x4C, 0x50, 0x53, 0x5F, 0x30, 0x31, 0x37, 0x2E, 0x32, 0x39} },
 		{ 0x0007CF8F, {0x53, 0x4C, 0x50, 0x53, 0x5F, 0x39, 0x31, 0x31, 0x2E, 0x35, 0x34} },
@@ -245,16 +245,17 @@ bool Game::isAJCIso(const std::filesystem::path& isoPath)
 
 	if (iso.size() < maxOffset + sizeof(OffsetPattern::second))
 	{
-		return false;
+		return std::nullopt;
 	}
 
-	for (const auto& [offset, pattern] : ver)
+	for (std::size_t i{}; i < ver.size(); ++i)
 	{
+		const auto& [offset, pattern]{ ver[i] };
 		if (iso.read<std::remove_const_t<decltype(pattern)>>(offset) == pattern)
 		{
-			return true;
+			return static_cast<Version>(i);
 		}
 	}
 
-	return false;
+	return std::nullopt;
 }
