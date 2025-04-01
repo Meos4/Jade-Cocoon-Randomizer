@@ -10,13 +10,7 @@ namespace JCUtility
 
 		for (auto& clr : clut)
 		{
-			static constexpr u8 timRGBLimit{ 0x1F };
-
-			auto
-				r{ static_cast<u16>(clr & timRGBLimit) },
-				g{ static_cast<u16>((clr >> 5) & timRGBLimit) },
-				b{ static_cast<u16>((clr >> 10) & timRGBLimit) },
-				flag{ static_cast<u16>(clr & 0x8000) };
+			auto [r, g, b, flag] { JCUtility::rgbf(clr) };
 
 			const auto maxRGB{ std::max({r, g, b}) };
 
