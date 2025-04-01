@@ -251,7 +251,7 @@ void MainWindow::onFileSaveAs()
 			const auto jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } };
 
 			const std::filesystem::path filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
-			JCTools::repacker(filesDirectoryPath, Path::jcrTempDirectory, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
+			JCTools::repacker(filesDirectoryPath, jcr_tempDirectoryPath, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
 
 			emit saveGameDialog.progressBarChanged(66);
 			emit saveGameDialog.onStateChanged("Repack iso...");
