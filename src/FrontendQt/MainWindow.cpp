@@ -100,7 +100,7 @@ MainWindow::MainWindow(QWidget* parent)
 	m_themeActions[static_cast<std::size_t>(m_guiSettings.theme())]->setChecked(true);
 }
 
-bool MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog)
+std::shared_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog)
 {
 	try
 	{
@@ -111,18 +111,18 @@ bool MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* 
 			isoPath->replace_extension(".bin");
 		}
 
-		m_game = std::make_shared<Game>(Game::createGame(*isoPath));
+		auto game{ std::make_shared<Game>(Game::createGame(*isoPath)) };
 
 		emit extractGameDialog->shouldClose();
 
-		return true;
+		return game;
 	}
 	catch (const std::exception& e)
 	{
 		emit extractGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
 		emit extractGameDialog->taskCompleted();
 		emit extractGameDialog->onOkButtonVisibilityChanged(true);
-		return false;
+		return nullptr;
 	}
 }
 
@@ -161,17 +161,19 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 void MainWindow::enableUI(std::filesystem::path* isoPath)
 {
 	ExtractGameDialog extractGameDialog(this);
-	std::future<bool> future{ std::async(std::launch::async, &MainWindow::extractGame, this, isoPath, &extractGameDialog) };
+	auto future{ std::async(std::launch::async, &MainWindow::extractGame, this, isoPath, &extractGameDialog) };
 	extractGameDialog.exec();
 
 	future.wait();
-	if (!future.get())
+	const auto game{ future.get() };
+
+	if (game)
 	{
-		disableUI();
+		enableUI(game);
 	}
 	else
 	{
-		enableUI(m_game);
+		disableUI();
 	}
 }
 
@@ -179,6 +181,7 @@ void MainWindow::enableUI(std::shared_ptr<Game> game)
 {
 	try
 	{
+		m_game = game;
 		m_randomizerTabWidget->enableUI(m_game);
 		const QString verSerial{ QString::fromStdString(std::format("{} [{}]", m_game->versionText(), m_game->serialText())) };
 		m_topInfoWidget->enableUI(verSerial);
