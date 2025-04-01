@@ -15,6 +15,18 @@ namespace JCUtility
 		u16 flag;
 	};
 
+	enum class BlackAndWhiteMethod
+	{
+		Red,
+		Green,
+		Blue,
+		Minimum,
+		Maximum,
+		Average,
+		Lightness,
+		Count
+	};
+
 	inline constexpr auto clutRotationLimit{ 360 };
 
 	constexpr JCUtility::RGBF rgbf(u16 clr)
@@ -163,5 +175,24 @@ namespace JCUtility
 		return flag | r | (g << 5) | (b << 10);
 	}
 
+	constexpr u16 blackAndWhiteClr(u16 clr, JCUtility::BlackAndWhiteMethod method)
+	{
+		auto [r, g, b, flag] { JCUtility::rgbf(clr) };
+
+		switch (method)
+		{
+		case BlackAndWhiteMethod::Red: g = r; b = r; break;
+		case BlackAndWhiteMethod::Green: r = g; b = g; break;
+		case BlackAndWhiteMethod::Blue: r = b, g = b; break;
+		case BlackAndWhiteMethod::Minimum: r = g = b = std::min(r, std::min(g, b)); break;
+		case BlackAndWhiteMethod::Maximum: r = g = b = std::max(r, std::max(g, b)); break;
+		case BlackAndWhiteMethod::Average: r = g = b = (r + g + b) / 3; break;
+		case BlackAndWhiteMethod::Lightness: r = g = b = static_cast<u16>(r * 0.299f + g * 0.587f + b * 0.114f); break;
+		}
+		
+		return flag | r | (g << 5) | (b << 10);
+	}
+
 	void rotateCLUT(std::span<u16> clut, s32 rotation);
+	void blackAndWhiteCLUT(std::span<u16> clut, JCUtility::BlackAndWhiteMethod method);
 };
