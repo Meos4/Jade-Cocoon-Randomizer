@@ -49,12 +49,6 @@ public:
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
 	static Game createGame(std::filesystem::path& isoPath);
 private:
-	struct VersionSerialText
-	{
-		const char* version;
-		const char* serial;
-	};
-
 	s32 fileByVersion(s32 file) const;
 
 	std::filesystem::path m_exePath;
