@@ -52,6 +52,7 @@ public:
 
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
+	static Game createGame(std::filesystem::path& isoPath);
 private:
 	struct VersionSerialText
 	{

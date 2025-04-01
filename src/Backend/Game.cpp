@@ -9,6 +9,8 @@
 #include "Common/JcrException.hpp"
 
 #include "JCExe.hpp"
+#include "JCTools.hpp"
+#include "dumpsxiso/dumpsxiso.h"
 
 #include <algorithm>
 #include <array>
@@ -258,4 +260,58 @@ std::optional<Version> Game::versionFromIso(const std::filesystem::path& isoPath
 	}
 
 	return std::nullopt;
+}
+
+Game Game::createGame(std::filesystem::path& isoPath)
+{
+	if (!std::filesystem::is_regular_file(isoPath))
+	{
+		if (std::filesystem::is_directory(isoPath))
+		{
+			throw JcrException{ "\"{}\" is a directory", isoPath.filename().string() };
+		}
+		else
+		{
+			throw JcrException{ "\"{}\" file does not exist", isoPath.filename().string() };
+		}
+	}
+
+	if (Game::versionFromIso(isoPath) == std::nullopt)
+	{
+		throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath.filename().string() };
+	}
+
+	if (std::filesystem::is_directory(Path::jcrTempDirectory))
+	{
+		std::error_code err;
+		const auto nbRemoved{ std::filesystem::remove_all(Path::jcrTempDirectory, err) };
+		if (nbRemoved == -1)
+		{
+			throw JcrException{ "\"{}\" directory cannot be removed", Path::jcrTempDirectory };
+		}
+	}
+
+	std::filesystem::create_directory(Path::jcrTempDirectory);
+
+	const std::filesystem::path
+		configPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::configXmlFilename) },
+		filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };
+
+	const auto dumpArgs{ Path::dumpIsoArgs(&isoPath, &configPath, &filesPath) };
+
+	dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
+	JCTools::unpacker(filesPath, std::format("{}/{}", filesPath.string(), Path::dataDirectory), Path::jcrTempDirectory);
+
+	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesPath) };
+
+	if (!exeInfo.has_value())
+	{
+		throw JcrException{ "Can't find compatible playstation executable in \"{}\"", filesPath.string() };
+	}
+	else if (exeInfo.value().version == JCExe::Version::Prototype_D05_M08_Y1999_15H48)
+	{
+		throw JcrException{ "This version is not supported" };
+	}
+
+	return { isoPath, exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version) };
 }

@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <memory>
 
+class ExtractGameDialog;
 class RandomizerTabWidget;
 class TopInfoWidget;
 class QAction;
@@ -24,6 +25,7 @@ class MainWindow final : public QMainWindow
 public:
 	MainWindow(QWidget* parent = nullptr);
 
+	bool extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
 	void enableUI(std::filesystem::path* isoPath);
 	void disableUI();
 	void saveSettings();

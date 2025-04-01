@@ -13,7 +13,6 @@
 #include "FrontendQt/QtUtility.hpp"
 
 #include "JCTools.hpp"
-#include "dumpsxiso/dumpsxiso.h"
 #include "mkpsxiso/mkpsxiso.h"
 
 #include <QActionGroup>
@@ -104,111 +103,37 @@ MainWindow::MainWindow(QWidget* parent)
 	m_themeActions[static_cast<std::size_t>(m_guiSettings.theme())]->setChecked(true);
 }
 
+bool MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog)
+{
+	try
+	{
+		emit extractGameDialog->onStateChanged("Extracting game, please wait");
+
+		if (isoPath->extension() == ".cue")
+		{
+			isoPath->replace_extension(".bin");
+		}
+
+		m_game = std::make_shared<Game>(Game::createGame(*isoPath));
+
+		emit extractGameDialog->shouldClose();
+
+		return true;
+	}
+	catch (const std::exception& e)
+	{
+		emit extractGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+	}
+
+	emit extractGameDialog->taskCompleted();
+	emit extractGameDialog->onOkButtonVisibilityChanged(true);
+	return false;
+}
+
 void MainWindow::enableUI(std::filesystem::path* isoPath)
 {
 	ExtractGameDialog extractGameDialog(this);
-
-	auto extractGame = [&]()
-	{
-		try
-		{
-			emit extractGameDialog.onStateChanged("Extracting game, please wait");
-
-			if (isoPath->extension() == ".cue")
-			{
-				isoPath->replace_extension(".bin");
-			}
-
-			if (!std::filesystem::is_regular_file(*isoPath))
-			{
-				if (std::filesystem::is_directory(*isoPath))
-				{
-					#ifdef _WIN32 
-						throw QString{ QString::fromStdWString(std::format(L"\"{}\" is a directory", isoPath->filename().wstring())) };
-					#else
-						throw JcrException{ "\"{}\" is a directory", isoPath->filename().string() };
-					#endif
-				}
-				else
-				{
-					#ifdef _WIN32 
-						throw QString{ QString::fromStdWString(std::format(L"\"{}\" file does not exist", isoPath->filename().wstring())) };
-					#else
-						throw JcrException{ "\"{}\" file does not exist", isoPath->filename().string() };
-					#endif
-				}
-			}
-
-			if (Game::versionFromIso(*isoPath) == std::nullopt)
-			{
-				#ifdef _WIN32 
-					throw QString{ QString::fromStdWString(std::format(L"\"{}\" is not a Jade Cocoon binary file", isoPath->filename().wstring())) };
-				#else
-					throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath->filename().string() };
-				#endif
-			}
-
-			if (std::filesystem::is_directory(Path::jcrTempDirectory))
-			{
-				std::error_code err;
-				const auto nbRemoved{ std::filesystem::remove_all(Path::jcrTempDirectory, err) };
-				if (nbRemoved == -1)
-				{
-					throw JcrException{ "\"{}\" directory cannot be removed", Path::jcrTempDirectory };
-				}
-			}
-
-			std::filesystem::create_directory(Path::jcrTempDirectory);
-
-			const std::filesystem::path
-				configPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::configXmlFilename) },
-				filesPath{ std::format("{}/{}", Path::jcrTempDirectory, Path::filesDirectory) };
-
-			const auto dumpArgs{ Path::dumpIsoArgs(isoPath, &configPath, &filesPath) };
-
-			dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
-			JCTools::unpacker(filesPath, std::format("{}/{}", filesPath.string(), Path::dataDirectory), Path::jcrTempDirectory);
-
-			const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesPath) };
-
-			if (!exeInfo.has_value())
-			{
-				throw JcrException{ "Can't find compatible playstation executable in \"{}\"", filesPath.string() };
-			}
-			else if (exeInfo.value().version == JCExe::Version::Prototype_D05_M08_Y1999_15H48)
-			{
-				throw JcrException{ "This version is not supported" };
-			}
-
-			m_game = std::make_shared<Game>(*isoPath, exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version));
-
-			emit extractGameDialog.shouldClose();
-
-			return true;
-		}
-		catch (const std::exception& e)
-		{
-			emit extractGameDialog.onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
-		}
-		catch (const QString& e)
-		{
-			const QString error
-			{
-				#ifdef _WIN32 
-					QString::fromStdWString(std::format(L"An error occured, Reason: {}", QtUtility::qStrToPlatformStr(e)))
-				#else
-					QString::fromStdString(std::format("An error occured, Reason: {}", QtUtility::qStrToPlatformStr(e)))
-				#endif
-			};
-			emit extractGameDialog.onStateError(error);
-		}
-
-		emit extractGameDialog.taskCompleted();
-		emit extractGameDialog.onOkButtonVisibilityChanged(true);
-		return false;
-	};
-
-	std::future<bool> future{ std::async(std::launch::async, extractGame) };
+	std::future<bool> future{ std::async(std::launch::async, &MainWindow::extractGame, this, isoPath, &extractGameDialog) };
 	extractGameDialog.exec();
 
 	future.wait();
