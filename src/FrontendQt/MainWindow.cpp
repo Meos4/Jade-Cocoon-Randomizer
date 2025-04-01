@@ -120,11 +120,10 @@ bool MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* 
 	catch (const std::exception& e)
 	{
 		emit extractGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+		emit extractGameDialog->taskCompleted();
+		emit extractGameDialog->onOkButtonVisibilityChanged(true);
+		return false;
 	}
-
-	emit extractGameDialog->taskCompleted();
-	emit extractGameDialog->onOkButtonVisibilityChanged(true);
-	return false;
 }
 
 bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialog)
