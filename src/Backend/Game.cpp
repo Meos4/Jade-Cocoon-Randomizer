@@ -19,18 +19,6 @@
 #include <type_traits>
 #include <utility>
 
-const std::unordered_map<Version, Game::VersionSerialText> Game::s_versionSerial
-{
-	{ Version::NtscJ1,	{ "NTSC-J v1", "SLPS-01729" } },
-	{ Version::NtscJ2,	{ "NTSC-J v2", "SLPS-91154" } },
-	{ Version::NtscU,	{ "NTSC-U", "SLUS-00854" } },
-	{ Version::PalEn,	{ "PAL-EN", "SLES-02201" } },
-	{ Version::PalFr,	{ "PAL-FR", "SLES-02202" } },
-	{ Version::PalDe,	{ "PAL-DE", "SLES-02203" } },
-	{ Version::PalEs,	{ "PAL-ES", "SLES-02205" } },
-	{ Version::PalIt,	{ "PAL-IT", "SLES-02206" } }
-};
-
 Game::Game(const std::filesystem::path& isoPath, const std::filesystem::path& exePath, Version version)
 	: m_isoPath(isoPath), m_exePath(exePath), m_version(version), m_offset(version),
 	m_data001FilesPath(std::move(JCExe{ Utility::gameToJcExeVersion(version) }.data001FilesPath()))
@@ -162,12 +150,24 @@ bool Game::isNtsc() const
 
 const char* Game::versionText() const
 {
-	return s_versionSerial.at(m_version).version;
+	static constexpr std::array<const char*, static_cast<std::size_t>(Version::Count)> texts
+	{
+		"NTSC-J v1", "NTSC-J v2", "NTSC-U", "PAL-EN",
+		"PAL-FR", "PAL-DE", "PAL-ES", "PAL-IT"
+	};
+
+	return texts[static_cast<std::size_t>(m_version)];
 }
 
 const char* Game::serialText() const
 {
-	return s_versionSerial.at(m_version).serial;
+	static constexpr std::array<const char*, static_cast<std::size_t>(Version::Count)> serials
+	{
+		"SLPS-01729", "SLPS-91154", "SLUS-00854", "SLES-02201",
+		"SLES-02202", "SLES-02203", "SLES-02205", "SLES-02206"
+	};
+
+	return serials[static_cast<std::size_t>(m_version)];
 }
 
 std::filesystem::path Game::isoPath() const

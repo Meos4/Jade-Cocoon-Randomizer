@@ -9,7 +9,6 @@
 #include <filesystem>
 #include <memory>
 #include <optional>
-#include <unordered_map>
 
 class Game final
 {
@@ -67,5 +66,4 @@ private:
 	Version m_version;
 	Offset m_offset;
 	u32 m_ccShift{};
-	static const std::unordered_map<Version, VersionSerialText> s_versionSerial;
 };
