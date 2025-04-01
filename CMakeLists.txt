@@ -68,7 +68,7 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Minion.cpp
     ${BACKEND_DIR}/Minion.hpp
     ${BACKEND_DIR}/Mips.hpp
-    ${BACKEND_DIR}/MipsFunctionTypes.hpp
+    ${BACKEND_DIR}/MipsFn.hpp
     ${BACKEND_DIR}/Misc.cpp
     ${BACKEND_DIR}/Misc.hpp
     ${BACKEND_DIR}/Model.cpp

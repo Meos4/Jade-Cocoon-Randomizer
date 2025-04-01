@@ -2,7 +2,7 @@
 
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
-#include "Backend/MipsFunctionTypes.hpp"
+#include "Backend/MipsFn.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Random.hpp"
 #include "Common/JcrException.hpp"

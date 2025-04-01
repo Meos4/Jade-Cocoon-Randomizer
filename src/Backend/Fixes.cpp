@@ -4,7 +4,7 @@
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
 #include "Backend/Mips.hpp"
-#include "Backend/MipsFunctionTypes.hpp"
+#include "Backend/MipsFn.hpp"
 
 #include <array>
 #include <cmath>

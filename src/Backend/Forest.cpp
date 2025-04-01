@@ -3,7 +3,7 @@
 #include "Backend/File.hpp"
 #include "Backend/JCUtility.hpp"
 #include "Backend/Mips.hpp"
-#include "Backend/MipsFunctionTypes.hpp"
+#include "Backend/MipsFn.hpp"
 #include "Backend/Ost.hpp"
 #include "Backend/Random.hpp"
 #include "Backend/Tim.hpp"

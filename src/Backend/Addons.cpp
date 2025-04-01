@@ -2,7 +2,7 @@
 
 #include "Backend/File.hpp"
 #include "Backend/Mips.hpp"
-#include "Backend/MipsFunctionTypes.hpp"
+#include "Backend/MipsFn.hpp"
 #include "Backend/Version.hpp"
 #include "Common/TemplateTypes.hpp"
 

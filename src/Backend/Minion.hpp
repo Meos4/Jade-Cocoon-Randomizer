@@ -2,7 +2,7 @@
 
 #include "Backend/Entity.hpp"
 #include "Backend/Game.hpp"
-#include "Backend/MipsFunctionTypes.hpp"
+#include "Backend/MipsFn.hpp"
 #include "Backend/SharedData.hpp"
 #include "Common/Types.hpp"
 

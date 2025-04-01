@@ -2,7 +2,7 @@
 
 #include "Backend/File.hpp"
 #include "Backend/Mips.hpp"
-#include "Backend/MipsFunctionTypes.hpp"
+#include "Backend/MipsFn.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/Buffer.hpp"
