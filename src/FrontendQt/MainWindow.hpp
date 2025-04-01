@@ -29,6 +29,7 @@ public:
 	bool extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
 	bool saveGame(const QString& filePath, SaveGameDialog* saveGameDialog);
 	void enableUI(std::filesystem::path* isoPath);
+	void enableUI(std::shared_ptr<Game> game);
 	void disableUI();
 	void saveSettings();
 public Q_SLOTS:

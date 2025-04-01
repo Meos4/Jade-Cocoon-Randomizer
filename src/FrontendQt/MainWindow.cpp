@@ -171,19 +171,24 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 	}
 	else
 	{
-		try
-		{
-			m_randomizerTabWidget->enableUI(m_game);
-			const QString verSerial{ QString::fromStdString(std::format("{} [{}]", m_game->versionText(), m_game->serialText())) };
-			m_topInfoWidget->enableUI(verSerial);
-			m_ui.actionFileClose->setEnabled(true);
-			m_ui.actionFileSaveAs->setEnabled(true);
-		}
-		catch (const std::exception& e)
-		{
-			QMessageBox::critical(this, "Error", QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
-			disableUI();
-		}
+		enableUI(m_game);
+	}
+}
+
+void MainWindow::enableUI(std::shared_ptr<Game> game)
+{
+	try
+	{
+		m_randomizerTabWidget->enableUI(m_game);
+		const QString verSerial{ QString::fromStdString(std::format("{} [{}]", m_game->versionText(), m_game->serialText())) };
+		m_topInfoWidget->enableUI(verSerial);
+		m_ui.actionFileClose->setEnabled(true);
+		m_ui.actionFileSaveAs->setEnabled(true);
+	}
+	catch (const std::exception& e)
+	{
+		QMessageBox::critical(this, "Error", QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+		disableUI();
 	}
 }
 
