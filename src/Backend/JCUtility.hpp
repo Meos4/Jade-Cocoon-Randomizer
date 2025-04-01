@@ -113,10 +113,10 @@ namespace JCUtility
 		unk >>= 0x10;
 
 		auto get = [maxRGB](s32 val) -> u16
-			{
-				val = maxRGB * (0x3E0 - val) + 0x1F0;
-				return static_cast<u16>(((((static_cast<s64>(val) * signed(0x84210843)) >> 32) + val) >> 9) - (val >> 0x1F));
-			};
+		{
+			val = maxRGB * (0x3E0 - val) + 0x1F0;
+			return static_cast<u16>(((((static_cast<s64>(val) * signed(0x84210843)) >> 32) + val) >> 9) - (val >> 0x1F));
+		};
 
 		const auto
 			one{ get(unk2) },
