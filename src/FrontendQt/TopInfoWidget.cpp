@@ -1,6 +1,5 @@
 #include "TopInfoWidget.hpp"
 
-#include "FrontendQt/GuiSettings.hpp"
 #include "FrontendQt/MainWindow.hpp"
 #include "FrontendQt/QtUtility.hpp"
 
