@@ -327,10 +327,12 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMo
 			game.file(file)->read(offsetPosititon, &position);
 		}
 		
+		const auto& gameDirectory{ game.gameDirectory() };
+
 		std::filesystem::copy_file
 		(
-			std::format("{}/{}", Path::jcrTempDirectory, game.filePathByIndex(File::EFFECT_PL_SFUBU_EFD)),
-			std::format("{}/{}", Path::jcrTempDirectory, game.filePathByIndex(file)),
+			gameDirectory / game.filePathByIndex(File::EFFECT_PL_SFUBU_EFD),
+			gameDirectory / game.filePathByIndex(file),
 			std::filesystem::copy_options::overwrite_existing
 		);
 

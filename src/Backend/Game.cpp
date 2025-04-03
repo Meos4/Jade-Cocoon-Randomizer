@@ -201,6 +201,11 @@ const Offset& Game::offset() const
 	return m_offset;
 }
 
+const std::filesystem::path& Game::gameDirectory() const
+{
+	return m_gameDirectory;
+}
+
 s32 Game::fileByVersion(s32 file) const
 {
 	return file >= File::CRAVE_CRAVE_TIM && isVersion(Version::NtscJ1, Version::NtscJ2) ? file - 2 : file;

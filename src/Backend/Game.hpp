@@ -46,6 +46,7 @@ public:
 	const char* serialText() const;
 	Version version() const;
 	const Offset& offset() const;
+	const std::filesystem::path& gameDirectory() const;
 
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
