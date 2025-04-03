@@ -32,7 +32,7 @@ void TopInfoWidget::enableUI(const QString& version)
 
 void TopInfoWidget::disableUI()
 {
-	setVersion("");
+	setVersion("None");
 
 	m_ui.loadPresets->setEnabled(false);
 	m_ui.savePresets->setEnabled(false);
