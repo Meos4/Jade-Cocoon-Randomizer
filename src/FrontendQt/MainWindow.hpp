@@ -26,6 +26,7 @@ class MainWindow final : public QMainWindow
 public:
 	MainWindow(QWidget* parent = nullptr);
 
+	bool createGameFromDirectory(std::filesystem::path&& gameDirectory);
 	std::shared_ptr<Game> extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
 	bool saveGame(const QString& filePath, SaveGameDialog* saveGameDialog);
 	void enableUI(std::filesystem::path* isoPath);

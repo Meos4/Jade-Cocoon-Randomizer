@@ -326,3 +326,22 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 
 	return { exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version)};
 }
+
+std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
+{
+	const std::filesystem::path filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
+
+	if (!std::filesystem::exists(filesDirectoryPath))
+	{
+		return std::nullopt;
+	}
+
+	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesDirectoryPath) };
+
+	if (!exeInfo.has_value() || exeInfo.value().version == JCExe::Version::Prototype_D05_M08_Y1999_15H48)
+	{
+		return std::nullopt;
+	}
+
+	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version) } };
+}

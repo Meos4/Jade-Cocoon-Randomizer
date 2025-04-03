@@ -98,6 +98,20 @@ MainWindow::MainWindow(QWidget* parent)
 	}
 
 	m_themeActions[static_cast<std::size_t>(m_guiSettings.theme())]->setChecked(true);
+
+	createGameFromDirectory(Path::defaultGameDirectory);
+}
+
+bool MainWindow::createGameFromDirectory(std::filesystem::path&& gameDirectory)
+{
+	const auto game{ Game::createGame(std::move(gameDirectory)) };
+
+	if (game.has_value())
+	{
+		enableUI(std::make_shared<Game>(game.value()));
+		return true;
+	}
+	return false;
 }
 
 std::shared_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog)
