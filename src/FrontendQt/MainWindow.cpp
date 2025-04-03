@@ -111,7 +111,7 @@ std::shared_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, Ex
 			isoPath->replace_extension(".bin");
 		}
 
-		auto game{ std::make_shared<Game>(Game::createGame(*isoPath, Path::jcrTempDirectory)) };
+		auto game{ std::make_shared<Game>(Game::createGame(*isoPath, Path::defaultGameDirectory)) };
 
 		emit extractGameDialog->shouldClose();
 

@@ -6,7 +6,7 @@
 
 namespace Path
 {
-	inline constexpr auto jcrTempDirectory{ "JCR_Temp" };
+	inline constexpr auto defaultGameDirectory{ "JCR_Temp" };
 
 	using CStringPlatform =
 	#ifdef _WIN32
