@@ -111,7 +111,7 @@ std::shared_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, Ex
 			isoPath->replace_extension(".bin");
 		}
 
-		auto game{ std::make_shared<Game>(Game::createGame(*isoPath)) };
+		auto game{ std::make_shared<Game>(Game::createGame(*isoPath, Path::jcrTempDirectory)) };
 
 		emit extractGameDialog->shouldClose();
 
@@ -137,13 +137,13 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 		emit saveGameDialog->progressBarChanged(33);
 		emit saveGameDialog->onStateChanged("Repack game files...");
 
-		Game::repackFilesToDATA001();
+		m_game->repackFilesToDATA001();
 
 		emit saveGameDialog->progressBarChanged(66);
 		emit saveGameDialog->onStateChanged("Repack iso...");
 
 		const auto destPath{ std::filesystem::path{ QtUtility::qStrToPlatformStr(filePath) } };
-		Game::createIsoFromFiles(&destPath);
+		m_game->createIsoFromFiles(&destPath);
 
 		emit saveGameDialog->progressBarChanged(100);
 		emit saveGameDialog->onStateChanged("Done");

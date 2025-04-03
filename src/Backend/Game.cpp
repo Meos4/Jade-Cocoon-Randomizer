@@ -20,16 +20,18 @@
 #include <type_traits>
 #include <utility>
 
-Game::Game(const std::filesystem::path& exePath, Version version)
-	: m_exePath(exePath), m_version(version), m_offset(version),
+Game::Game(const std::filesystem::path& exeFilename, std::filesystem::path&& directoryPath, Version version)
+	: m_exePath(Path::executablePath(directoryPath, exeFilename)),
+	m_gameDirectory(directoryPath),
+	m_version(version), 
+	m_offset(version),
 	m_data001FilesPath(std::move(JCExe{ Utility::gameToJcExeVersion(version) }.data001FilesPath()))
 {
 }
 
 std::unique_ptr<RawFile> Game::file(s32 file) const
 {
-	const std::filesystem::path filePath{ std::format("{}/{}", Path::jcrTempDirectory, m_data001FilesPath.at(fileByVersion(file))) };
-
+	const std::filesystem::path filePath{ std::format("{}/{}", m_gameDirectory.string(), m_data001FilesPath.at(fileByVersion(file)))};
 	if (!std::filesystem::is_regular_file(filePath))
 	{
 		throw JcrException{ "\"{}\" file doesn't exist in \"{}\"", filePath.filename().string(), filePath.parent_path().string() };
@@ -144,6 +146,24 @@ bool Game::isVanilla() const
 	return (lui << 16) + static_cast<s16>(addiu) == m_offset.game.heapVanillaBegin;
 }
 
+void Game::repackFilesToDATA001()
+{
+	const auto filesDirectoryPath{ Path::filesDirectoryPath(m_gameDirectory) };
+
+	JCTools::repacker(filesDirectoryPath, m_gameDirectory, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
+}
+
+void Game::createIsoFromFiles(const std::filesystem::path* destPath)
+{
+	const auto configXmlPath{ Path::configXmlPath(m_gameDirectory) };
+
+	const auto makeArgs{ Path::makeIsoArgs(destPath, &configXmlPath) };
+	if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
+	{
+		throw JcrException{ "Unable to repack iso" };
+	}
+}
+
 bool Game::isNtsc() const
 {
 	return isVersion(Version::NtscJ1, Version::NtscJ2, Version::NtscU);
@@ -248,7 +268,7 @@ std::optional<Version> Game::versionFromIso(const std::filesystem::path& isoPath
 	return std::nullopt;
 }
 
-Game Game::createGame(const std::filesystem::path& isoPath)
+Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory)
 {
 	if (!std::filesystem::is_regular_file(isoPath))
 	{
@@ -267,28 +287,26 @@ Game Game::createGame(const std::filesystem::path& isoPath)
 		throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath.filename().string() };
 	}
 
-	const auto jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } };
-
-	if (std::filesystem::is_directory(jcr_tempDirectoryPath))
+	if (std::filesystem::is_directory(gameDirectory))
 	{
 		std::error_code err;
-		const auto nbRemoved{ std::filesystem::remove_all(jcr_tempDirectoryPath, err) };
+		const auto nbRemoved{ std::filesystem::remove_all(gameDirectory, err) };
 		if (nbRemoved == -1)
 		{
-			throw JcrException{ "\"{}\" directory cannot be removed", jcr_tempDirectoryPath.string()};
+			throw JcrException{ "\"{}\" directory cannot be removed", gameDirectory.string()};
 		}
 	}
 
-	std::filesystem::create_directory(Path::jcrTempDirectory);
+	std::filesystem::create_directory(gameDirectory);
 
 	const std::filesystem::path
-		configXmlPath{ Path::configXmlPath(jcr_tempDirectoryPath) },
-		filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
+		configXmlPath{ Path::configXmlPath(gameDirectory) },
+		filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
 
 	const auto dumpArgs{ Path::dumpIsoArgs(&isoPath, &configXmlPath, &filesDirectoryPath) };
 
 	dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
-	JCTools::unpacker(filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath), Path::jcrTempDirectory);
+	JCTools::unpacker(filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath), gameDirectory);
 
 	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesDirectoryPath) };
 
@@ -301,27 +319,5 @@ Game Game::createGame(const std::filesystem::path& isoPath)
 		throw JcrException{ "This version is not supported" };
 	}
 
-	return { exeInfo.value().path, Utility::jcExeToGameVersion(exeInfo.value().version) };
-}
-
-void Game::repackFilesToDATA001()
-{
-	const auto 
-		jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } }, 
-		filesDirectoryPath{ Path::filesDirectoryPath(jcr_tempDirectoryPath) };
-
-	JCTools::repacker(filesDirectoryPath, jcr_tempDirectoryPath, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
-}
-
-void Game::createIsoFromFiles(const std::filesystem::path* destPath)
-{
-	const auto
-		jcr_tempDirectoryPath{ std::filesystem::path{ Path::jcrTempDirectory } },
-		configXmlPath{ Path::configXmlPath(jcr_tempDirectoryPath) };
-
-	const auto makeArgs{ Path::makeIsoArgs(destPath, &configXmlPath) };
-	if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
-	{
-		throw JcrException{ "Unable to repack iso" };
-	}
+	return { exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version)};
 }

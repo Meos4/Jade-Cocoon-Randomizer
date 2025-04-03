@@ -18,6 +18,7 @@ namespace Path
 	const std::filesystem::path configXmlPath(const std::filesystem::path& temp);
 	const std::filesystem::path filesDirectoryPath(const std::filesystem::path& temp);
 	const std::filesystem::path dataDirectoryPath(const std::filesystem::path& filesDirectory);
+	const std::filesystem::path executablePath(const std::filesystem::path& gameDirectory, const std::filesystem::path& executableName);
 
 	using CStringPlatformPtr = std::remove_cv_t<std::remove_pointer_t<Path::CStringPlatform>>**;
 

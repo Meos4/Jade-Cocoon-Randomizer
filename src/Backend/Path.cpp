@@ -24,6 +24,11 @@ namespace Path
 		return std::format("{}/{}", filesDirectory.string(), Path::dataDirectory);
 	}
 
+	const std::filesystem::path executablePath(const std::filesystem::path& gameDirectory, const std::filesystem::path& exeFilename)
+	{
+		return Path::filesDirectoryPath(gameDirectory) / exeFilename;
+	}
+
 	std::array<Path::CStringPlatform, 7> dumpIsoArgs(
 		const std::filesystem::path* isoPath, 
 		const std::filesystem::path* configXmlPath, 

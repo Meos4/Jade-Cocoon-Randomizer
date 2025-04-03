@@ -21,7 +21,7 @@ public:
 
 	static constexpr auto sectorSize{ 2048u };
 
-	Game(const std::filesystem::path& exePath, Version version);
+	Game(const std::filesystem::path& exePath, std::filesystem::path&& directoryPath, Version version);
 	
 	std::unique_ptr<RawFile> file(s32 file) const;
 	RawFile executable() const;
@@ -32,6 +32,8 @@ public:
 	u32 heapRandomizerBegin() const;
 	u32 gameToFileTextSectionShift() const;
 	bool isVanilla() const;
+	void repackFilesToDATA001();
+	void createIsoFromFiles(const std::filesystem::path* destPath);
 
 	template <SameAs<Version>... Args>
 	bool isVersion(Args... versions) const
@@ -47,13 +49,12 @@ public:
 
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
-	static Game createGame(const std::filesystem::path& isoPath);
-	static void repackFilesToDATA001();
-	static void createIsoFromFiles(const std::filesystem::path* destPath);
+	static Game createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory);
 private:
 	s32 fileByVersion(s32 file) const;
 
 	std::filesystem::path m_exePath;
+	std::filesystem::path m_gameDirectory;
 	std::vector<const char*> m_data001FilesPath;
 	Version m_version;
 	Offset m_offset;
