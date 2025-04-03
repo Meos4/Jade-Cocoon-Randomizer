@@ -9,14 +9,14 @@ namespace Path
 		dataDirectory{ "DATA" },
 		filesDirectory{ "Files" };
 
-	std::filesystem::path configXmlPath(const std::filesystem::path& temp)
+	std::filesystem::path configXmlPath(const std::filesystem::path& gameDirectory)
 	{
-		return std::format("{}/{}", temp.string(), Path::configXmlFilename);
+		return std::format("{}/{}", gameDirectory.string(), Path::configXmlFilename);
 	}
 
-	std::filesystem::path filesDirectoryPath(const std::filesystem::path& temp)
+	std::filesystem::path filesDirectoryPath(const std::filesystem::path& gameDirectory)
 	{
-		return std::format("{}/{}", temp.string(), Path::filesDirectory);
+		return std::format("{}/{}", gameDirectory.string(), Path::filesDirectory);
 	}
 
 	std::filesystem::path dataDirectoryPath(const std::filesystem::path& filesDirectory)
