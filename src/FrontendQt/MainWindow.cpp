@@ -72,7 +72,7 @@ MainWindow::MainWindow(QWidget* parent)
 
 	m_guiSettings.setOsTheme();
 
-	std::filesystem::path guiSettingsPath{ GuiPath::jcrGuiSettingsFilename };
+	const std::filesystem::path guiSettingsPath{ GuiPath::jcrGuiSettingsFilename };
 	if (std::filesystem::is_regular_file(guiSettingsPath))
 	{
 		try
