@@ -11,8 +11,6 @@ TopInfoWidget::TopInfoWidget(QWidget* parent)
 {
 	m_ui.setupUi(this);
 
-	disableUI();
-
 	connect(m_ui.loadPresets, &QAbstractButton::clicked, this, &TopInfoWidget::buttonLoadPresetsClicked);
 	connect(m_ui.savePresets, &QAbstractButton::clicked, this, &TopInfoWidget::buttonSavePresetsClicked);
 	connect(m_ui.seedCheckBox, &QAbstractButton::toggled, m_ui.seedLineEdit, &QWidget::setEnabled);
