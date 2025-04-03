@@ -1,7 +1,5 @@
 #include "Path.hpp"
 
-#include <format>
-
 namespace Path
 {
 	inline constexpr auto
