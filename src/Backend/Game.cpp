@@ -294,11 +294,9 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 
 	if (std::filesystem::is_directory(gameDirectory))
 	{
-		std::error_code err;
-		const auto nbRemoved{ std::filesystem::remove_all(gameDirectory, err) };
-		if (nbRemoved == -1)
+		if (!deleteGameDirectory(gameDirectory))
 		{
-			throw JcrException{ "\"{}\" directory cannot be removed", gameDirectory.string()};
+			throw JcrException{ "\"{}\" directory cannot be removed", gameDirectory.string() };
 		}
 	}
 
@@ -344,4 +342,15 @@ std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
 	}
 
 	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version) } };
+}
+
+bool Game::deleteGameDirectory(const std::filesystem::path& gameDirectory)
+{
+	std::error_code err;
+	const auto nbRemoved{ std::filesystem::remove_all(gameDirectory, err) };
+	if (nbRemoved != -1)
+	{
+		return true;
+	}
+	return false;
 }
