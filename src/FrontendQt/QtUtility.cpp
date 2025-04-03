@@ -2,14 +2,16 @@
 
 #include "Common/Types.hpp"
 
+#include <QRegularExpression>
+
 #include <limits>
-#include <string>
 
 namespace QtUtility
 {
-	void qStrToQStrU64(QString* qStr)
+	void qStrU64Filter(QString* qStr)
 	{
 		static constexpr auto u64Limit{ std::numeric_limits<u64>::max() };
+		static constexpr auto maxStringDigits{ std::numeric_limits<u64>::digits10 + 1 };
 
 		if (qStr->isEmpty())
 		{
@@ -17,34 +19,22 @@ namespace QtUtility
 			return;
 		}
 
-		for (const auto& ch : *qStr)
-		{
-			if (ch < '0' || ch > '9')
-			{
-				*qStr = '0';
-				return;
-			}
-		}
+		qStr->remove(QRegularExpression("\\D"));
 
-		if (qStr->size() > 20)
+		if (qStr->size() > maxStringDigits)
 		{
 			*qStr = QString::number(u64Limit);
 			return;
 		}
 		
-		if (qStr->size() == 20)
+		if (qStr->size() == maxStringDigits)
 		{
-			std::string str{ qStr->toStdString() }, val1, val2;
-			for (std::size_t i{}; i != str.size() / 2; ++i)
+			bool isAValidU64Number{ false };
+			const auto number{ qStr->toULongLong(&isAValidU64Number) };
+
+			if (!isAValidU64Number)
 			{
-				val1 += str[i];
-				val2 += str[i + 10];
-			}
-			if (std::stoull(val1) > 1844674407 ||
-				(std::stoull(val1) == 1844674407 && std::stoull(val2) > 3709551615))
-			{
-				*qStr = QString::fromStdString(std::to_string(u64Limit));
-				return;
+				*qStr = QString::number(u64Limit);
 			}
 		}
 	}

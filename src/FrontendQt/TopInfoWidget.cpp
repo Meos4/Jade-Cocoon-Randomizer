@@ -65,6 +65,6 @@ void TopInfoWidget::setSeed(u64 value)
 void TopInfoWidget::setSeedLineEditText(const QString& text)
 {
 	auto textQStr{ text };
-	QtUtility::qStrToQStrU64(&textQStr);
+	QtUtility::qStrU64Filter(&textQStr);
 	m_ui.seedLineEdit->setText(textQStr);
 }

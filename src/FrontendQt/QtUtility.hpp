@@ -21,5 +21,5 @@ namespace QtUtility
 		#endif
 	}
 
-	void qStrToQStrU64(QString* qStr);
+	void qStrU64Filter(QString* qStr);
 }
