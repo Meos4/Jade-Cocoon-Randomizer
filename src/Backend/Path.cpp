@@ -11,17 +11,17 @@ namespace Path
 
 	std::filesystem::path configXmlPath(const std::filesystem::path& gameDirectory)
 	{
-		return std::format("{}/{}", gameDirectory.string(), Path::configXmlFilename);
+		return gameDirectory / Path::configXmlFilename;
 	}
 
 	std::filesystem::path filesDirectoryPath(const std::filesystem::path& gameDirectory)
 	{
-		return std::format("{}/{}", gameDirectory.string(), Path::filesDirectory);
+		return gameDirectory / Path::filesDirectory;
 	}
 
 	std::filesystem::path dataDirectoryPath(const std::filesystem::path& filesDirectory)
 	{
-		return std::format("{}/{}", filesDirectory.string(), Path::dataDirectory);
+		return filesDirectory / Path::dataDirectory;
 	}
 
 	std::filesystem::path executablePath(const std::filesystem::path& gameDirectory, const std::filesystem::path& exeFilename)
