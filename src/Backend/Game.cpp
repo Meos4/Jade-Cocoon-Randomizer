@@ -213,18 +213,6 @@ Random* Game::random()
 
 Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory)
 {
-	if (!std::filesystem::is_regular_file(isoPath))
-	{
-		if (std::filesystem::is_directory(isoPath))
-		{
-			throw JcrException{ "\"{}\" is a directory", isoPath.filename().string() };
-		}
-		else
-		{
-			throw JcrException{ "\"{}\" file does not exist", isoPath.filename().string() };
-		}
-	}
-
 	if (Iso::findVersion(isoPath) == std::nullopt)
 	{
 		throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath.filename().string() };
