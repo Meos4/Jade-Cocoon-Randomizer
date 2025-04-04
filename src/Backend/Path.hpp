@@ -23,9 +23,5 @@ namespace Path
 
 	using CStringPlatformPtr = std::remove_cv_t<std::remove_pointer_t<Path::CStringPlatform>>**;
 
-	std::array<Path::CStringPlatform, 7> dumpIsoArgs(
-		const std::filesystem::path* isoPath, 
-		const std::filesystem::path* configXmlPath, 
-		const std::filesystem::path* filesPath);
 	std::array<Path::CStringPlatform, 7> makeIsoArgs(const std::filesystem::path* isoPath, const std::filesystem::path* configXmlPath);
 }

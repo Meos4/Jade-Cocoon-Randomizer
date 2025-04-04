@@ -1,6 +1,11 @@
 #include "Iso.hpp"
 
+#include "Backend/Path.hpp"
 #include "Common/RawFile.hpp"
+
+#include "dumpsxiso/dumpsxiso.h"
+
+#include <array>
 
 namespace Iso
 {
@@ -64,5 +69,31 @@ namespace Iso
 		}
 
 		return std::nullopt;
+	}
+
+	void dump(const std::filesystem::path* iso, const std::filesystem::path* configXml, const std::filesystem::path* files)
+	{
+		const std::array<Path::CStringPlatform, 7> dumpArgs
+		{
+		#ifdef _WIN32
+			L"",
+			iso->c_str(),
+			L"-s",
+			configXml->c_str(),
+			L"-x",
+			files->c_str(),
+			nullptr
+		#else
+			"",
+			iso->c_str(),
+			"-s",
+			configXml->c_str(),
+			"-x",
+			files->c_str(),
+			nullptr
+		#endif
+		};
+
+		dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
 	}
 }

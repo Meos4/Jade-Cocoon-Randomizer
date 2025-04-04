@@ -12,7 +12,6 @@
 
 #include "JCExe.hpp"
 #include "JCTools.hpp"
-#include "dumpsxiso/dumpsxiso.h"
 
 #include <algorithm>
 #include <array>
@@ -229,9 +228,7 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 		configXmlPath{ Path::configXmlPath(gameDirectory) },
 		filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
 
-	const auto dumpArgs{ Path::dumpIsoArgs(&isoPath, &configXmlPath, &filesDirectoryPath) };
-
-	dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
+	Iso::dump(&isoPath, &configXmlPath, &filesDirectoryPath);
 	JCTools::unpacker(filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath), gameDirectory);
 
 	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesDirectoryPath) };
