@@ -144,20 +144,23 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 {
 	try
 	{
-		emit saveGameDialog->onStateChanged("Randomizing game...");
+		emit saveGameDialog->onStateChanged("Copying Files...");
+		m_game->createBuilderDirectory();
 
+		emit saveGameDialog->progressBarChanged(25);
+		emit saveGameDialog->onStateChanged("Randomizing game...");	
 		m_randomizerTabWidget->write();
 
-		emit saveGameDialog->progressBarChanged(33);
+		emit saveGameDialog->progressBarChanged(50);
 		emit saveGameDialog->onStateChanged("Repack game files...");
+		m_game->builderTree().repackDATA001();
 
-		m_game->repackFilesToDATA001();
-
-		emit saveGameDialog->progressBarChanged(66);
+		emit saveGameDialog->progressBarChanged(75);
 		emit saveGameDialog->onStateChanged("Repack iso...");
 
 		const auto destPath{ std::filesystem::path{ QtUtility::qStrToPlatformStr(filePath) } };
-		m_game->createIsoFromFiles(&destPath);
+		m_game->builderTree().createIso(&destPath);
+		m_game->builderTree().remove();
 
 		emit saveGameDialog->progressBarChanged(100);
 		emit saveGameDialog->onStateChanged("Done");
@@ -166,6 +169,7 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 	}
 	catch (const std::exception& e)
 	{
+		m_game->builderTree().remove();
 		emit saveGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
 		emit saveGameDialog->taskCompleted();
 		return false;
@@ -181,14 +185,21 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 	future.wait();
 	const auto game{ future.get() };
 
-	if (game)
-	{
-		enableUI(game);
-	}
-	else
+	if (!game)
 	{
 		disableUI();
+		return;
 	}
+
+	if (!game->isVanilla())
+	{
+		game->removeStaticDirectory();
+		QMessageBox::critical(this, "Error", "This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");
+		disableUI();
+		return;
+	}
+
+	enableUI(game);
 }
 
 void MainWindow::enableUI(std::shared_ptr<Game> game)
@@ -219,6 +230,7 @@ void MainWindow::disableUI()
 
 	if (m_game)
 	{
+		m_game->removeStaticDirectory();
 		m_game.reset();
 	}
 }
@@ -263,22 +275,6 @@ void MainWindow::onFileOpen()
 
 void MainWindow::onFileSaveAs()
 {
-	try
-	{
-		if (!m_randomizerTabWidget->isVanilla())
-		{
-			QMessageBox::critical(this, "Error",
-				"This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");
-			return;
-		}
-	}
-	catch (const std::exception& e)
-	{
-		QMessageBox::critical(this, "Error", QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
-		disableUI();
-		return;
-	}
-
 	const QString filePathQStr{ QFileDialog::getSaveFileName(this, "Save Jade Cocoon Binary File", QString{}, "*.bin", nullptr)};
 	if (filePathQStr.isEmpty())
 	{

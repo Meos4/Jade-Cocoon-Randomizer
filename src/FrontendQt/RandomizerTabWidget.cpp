@@ -82,15 +82,6 @@ void RandomizerTabWidget::write() const
 	}
 }
 
-bool RandomizerTabWidget::isVanilla() const
-{
-	if (!m_game)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-	return m_game->isVanilla();
-}
-
 void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 {
 	try

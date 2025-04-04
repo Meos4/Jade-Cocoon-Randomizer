@@ -46,7 +46,7 @@ Forest::Forest(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedDat
 
 Forest::OstArray Forest::ost() const
 {
-	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
+	const auto over_game_bin{ m_game->staticFile(File::OVER_GAME_BIN) };
 	Forest::OstArray ostsId;
 
 	for (u32 i{}; i < Forest::nbForest; ++i)

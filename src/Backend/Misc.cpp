@@ -15,7 +15,7 @@ Misc::Misc(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
 
 Misc::HudColorArray Misc::hudColor() const
 {
-	return m_game->executable().read<Misc::HudColorArray>(m_game->offset().file.executable.hudColors);
+	return m_game->staticExecutable().read<Misc::HudColorArray>(m_game->offset().file.executable.hudColors);
 }
 
 void Misc::setHudColor() const

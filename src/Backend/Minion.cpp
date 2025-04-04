@@ -177,13 +177,13 @@ Minion::Minion(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedDat
 
 Id_Entity_t Minion::dreamMinion() const
 {
-	const auto scene_other_dream_sce00a_sbh{ m_game->file(File::SCENE_OTHER_DREAM_SCE00A_SBH) };
+	const auto scene_other_dream_sce00a_sbh{ m_game->staticFile(File::SCENE_OTHER_DREAM_SCE00A_SBH) };
 	return scene_other_dream_sce00a_sbh->read<Id_Entity_t>(m_game->offset().file.scene_other_dream_sce00a_sbh.dreamMinionId);
 }
 
 Id_Entity_t Minion::korisMinion() const
 {
-	const auto scene_field1_gate_sce00a_sbh{ m_game->file(File::SCENE_FIELD1_GATE_SCE00A_SBH) };
+	const auto scene_field1_gate_sce00a_sbh{ m_game->staticFile(File::SCENE_FIELD1_GATE_SCE00A_SBH) };
 	return scene_field1_gate_sce00a_sbh->read<Id_Entity_t>(m_game->offset().file.scene_field1_gate_sce00a_sbh.korisMinionId);
 }
 

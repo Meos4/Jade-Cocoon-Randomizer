@@ -27,6 +27,11 @@ namespace Path
 		return Path::filesDirectoryPath(gameDirectory) / exeFilename;
 	}
 
+	std::filesystem::path builderDirectory(const std::filesystem::path& gameDirectory)
+	{
+		return gameDirectory.parent_path() / gameDirectory.filename() += "_Builder";
+	}
+
 	std::array<Path::CStringPlatform, 7> dumpIsoArgs(
 		const std::filesystem::path* isoPath, 
 		const std::filesystem::path* configXmlPath, 

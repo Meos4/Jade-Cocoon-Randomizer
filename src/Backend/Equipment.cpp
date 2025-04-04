@@ -318,6 +318,8 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMo
 		File::EFFECT_PL_SHONE_EFD
 	};
 
+	auto* const aquazorEffect{ game.filePathByIndex(File::EFFECT_PL_SFUBU_EFD) };
+
 	for (const auto& file : effectFiles)
 	{
 		static constexpr auto offsetPosititon{ 0x00000028u };
@@ -327,15 +329,7 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMo
 			game.file(file)->read(offsetPosititon, &position);
 		}
 		
-		const auto& gameDirectory{ game.gameDirectory() };
-
-		std::filesystem::copy_file
-		(
-			gameDirectory / game.filePathByIndex(File::EFFECT_PL_SFUBU_EFD),
-			gameDirectory / game.filePathByIndex(file),
-			std::filesystem::copy_options::overwrite_existing
-		);
-
+		game.builderTree().copyFile(aquazorEffect, game.filePathByIndex(file));
 		game.file(file)->write(offsetPosititon, position);
 	}
 }

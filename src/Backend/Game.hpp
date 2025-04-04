@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Backend/GameTree.hpp"
 #include "Backend/Offset.hpp"
 #include "Backend/Version.hpp"
 #include "Common/RawFile.hpp"
@@ -25,6 +26,8 @@ public:
 	
 	std::unique_ptr<RawFile> file(s32 file) const;
 	RawFile executable() const;
+	std::unique_ptr<RawFile> staticFile(s32 file) const;
+	RawFile staticExecutable() const;
 	const char* filePathByIndex(s32 file) const;
 
 	void expandExecutable() const;
@@ -32,8 +35,8 @@ public:
 	u32 heapRandomizerBegin() const;
 	u32 gameToFileTextSectionShift() const;
 	bool isVanilla() const;
-	void repackFilesToDATA001();
-	void createIsoFromFiles(const std::filesystem::path* destPath);
+	bool removeStaticDirectory() const;
+	void createBuilderDirectory() const;
 
 	template <SameAs<Version>... Args>
 	bool isVersion(Args... versions) const
@@ -46,18 +49,17 @@ public:
 	const char* serialText() const;
 	Version version() const;
 	const Offset& offset() const;
-	const std::filesystem::path& gameDirectory() const;
+	const GameTree& builderTree() const;
 
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
 	static Game createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory);
 	static std::optional<Game> createGame(std::filesystem::path&& gameDirectory);
-	static bool deleteGameDirectory(const std::filesystem::path& gameDirectory);
 private:
 	s32 fileByVersion(s32 file) const;
 
-	std::filesystem::path m_exePath;
-	std::filesystem::path m_gameDirectory;
+	GameTree m_staticTree;
+	GameTree m_builderTree;
 	std::vector<const char*> m_data001FilesPath;
 	Version m_version;
 	Offset m_offset;

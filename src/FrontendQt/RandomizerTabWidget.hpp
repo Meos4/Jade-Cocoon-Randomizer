@@ -37,7 +37,6 @@ public:
 	void enableUI(std::shared_ptr<Game> game);
 	void disableUI();
 	void write() const;
-	bool isVanilla() const;
 	void loadPresets(const std::filesystem::path& path);
 	void savePresets(const std::filesystem::path& path) const;
 private:

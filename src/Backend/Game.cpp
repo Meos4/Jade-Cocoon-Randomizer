@@ -6,12 +6,12 @@
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/Buffer.hpp"
+#include "Common/FileSystem.hpp"
 #include "Common/JcrException.hpp"
 
 #include "JCExe.hpp"
 #include "JCTools.hpp"
 #include "dumpsxiso/dumpsxiso.h"
-#include "mkpsxiso/mkpsxiso.h"
 
 #include <algorithm>
 #include <array>
@@ -21,8 +21,8 @@
 #include <utility>
 
 Game::Game(const std::filesystem::path& exeFilename, std::filesystem::path&& directoryPath, Version version)
-	: m_exePath(Path::executablePath(directoryPath, exeFilename)),
-	m_gameDirectory(directoryPath),
+	: m_staticTree(std::move(directoryPath), exeFilename),
+	m_builderTree(Path::builderDirectory(m_staticTree.directory()), exeFilename),
 	m_version(version), 
 	m_offset(version),
 	m_data001FilesPath(std::move(JCExe{ Utility::gameToJcExeVersion(version) }.data001FilesPath()))
@@ -31,21 +31,22 @@ Game::Game(const std::filesystem::path& exeFilename, std::filesystem::path&& dir
 
 std::unique_ptr<RawFile> Game::file(s32 file) const
 {
-	const std::filesystem::path filePath{ std::format("{}/{}", m_gameDirectory.string(), m_data001FilesPath.at(fileByVersion(file)))};
-	if (!std::filesystem::is_regular_file(filePath))
-	{
-		throw JcrException{ "\"{}\" file doesn't exist in \"{}\"", filePath.filename().string(), filePath.parent_path().string() };
-	}
-	return std::make_unique<RawFile>(filePath);
+	return m_builderTree.file(m_data001FilesPath.at(fileByVersion(file)));
 }
 
 RawFile Game::executable() const
 {
-	if (!std::filesystem::is_regular_file(m_exePath))
-	{
-		throw JcrException{ "\"{}\" file doesn't exist in \"{}\"", m_exePath.filename().string(), m_exePath.parent_path().string() };
-	}
-	return RawFile{ m_exePath };
+	return m_builderTree.executable();
+}
+
+std::unique_ptr<RawFile> Game::staticFile(s32 file) const
+{
+	return m_staticTree.file(m_data001FilesPath.at(fileByVersion(file)));
+}
+
+RawFile Game::staticExecutable() const
+{
+	return m_staticTree.executable();
 }
 
 const char* Game::filePathByIndex(s32 file) const
@@ -67,7 +68,7 @@ void Game::expandExecutable() const
 	}
 
 	executable.write(0x1C, newExecutableSize - Game::sectorSize);
-	std::filesystem::resize_file(m_exePath, newExecutableSize);
+	std::filesystem::resize_file(m_builderTree.exePath(), newExecutableSize);
 
 	const auto offsetFMFn{ m_offset.file.executable.mainFn };
 	auto instructions{ executable.read<std::array<Mips_t, 2>>(offsetFMFn + 0x34) };
@@ -142,26 +143,23 @@ u32 Game::gameToFileTextSectionShift() const
 
 bool Game::isVanilla() const
 {
-	const auto [lui, addiu]{ executable().read<std::array<Mips_t, 2>>(m_offset.file.executable.mainFn + 0x34) };
+	const auto [lui, addiu]{ staticExecutable().read<std::array<Mips_t, 2>>(m_offset.file.executable.mainFn + 0x34) };
 	return (lui << 16) + static_cast<s16>(addiu) == m_offset.game.heapVanillaBegin;
 }
 
-void Game::repackFilesToDATA001()
+bool Game::removeStaticDirectory() const
 {
-	const auto filesDirectoryPath{ Path::filesDirectoryPath(m_gameDirectory) };
-
-	JCTools::repacker(filesDirectoryPath, m_gameDirectory, filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath));
+	return m_staticTree.remove();
 }
 
-void Game::createIsoFromFiles(const std::filesystem::path* destPath)
+void Game::createBuilderDirectory() const
 {
-	const auto configXmlPath{ Path::configXmlPath(m_gameDirectory) };
-
-	const auto makeArgs{ Path::makeIsoArgs(destPath, &configXmlPath) };
-	if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
+	if (m_builderTree.exists() && !m_builderTree.remove())
 	{
-		throw JcrException{ "Unable to repack iso" };
+		throw JcrException{ "\"{}\" directory cannot be removed", m_builderTree.directory().string() };
 	}
+
+	m_staticTree.copy(m_builderTree.directory());
 }
 
 bool Game::isNtsc() const
@@ -201,15 +199,10 @@ const Offset& Game::offset() const
 	return m_offset;
 }
 
-const std::filesystem::path& Game::gameDirectory() const
+const GameTree& Game::builderTree() const
 {
-	return m_gameDirectory;
+	return m_builderTree;
 }
-
-s32 Game::fileByVersion(s32 file) const
-{
-	return file >= File::CRAVE_CRAVE_TIM && isVersion(Version::NtscJ1, Version::NtscJ2) ? file - 2 : file;
-};
 
 bool Game::generateCue(const std::filesystem::path& isoPath)
 {
@@ -292,15 +285,12 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 		throw JcrException{ "\"{}\" is not a Jade Cocoon binary file", isoPath.filename().string() };
 	}
 
-	if (std::filesystem::is_directory(gameDirectory))
+	if (std::filesystem::is_directory(gameDirectory) && !FileSystem::remove(gameDirectory))
 	{
-		if (!deleteGameDirectory(gameDirectory))
-		{
-			throw JcrException{ "\"{}\" directory cannot be removed", gameDirectory.string() };
-		}
+		throw JcrException{ "\"{}\" directory cannot be removed", gameDirectory.string() };
 	}
 
-	std::filesystem::create_directory(gameDirectory);
+	std::filesystem::create_directories(gameDirectory);
 
 	const std::filesystem::path
 		configXmlPath{ Path::configXmlPath(gameDirectory) },
@@ -344,13 +334,7 @@ std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
 	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version) } };
 }
 
-bool Game::deleteGameDirectory(const std::filesystem::path& gameDirectory)
+s32 Game::fileByVersion(s32 file) const
 {
-	std::error_code err;
-	const auto nbRemoved{ std::filesystem::remove_all(gameDirectory, err) };
-	if (nbRemoved != -1)
-	{
-		return true;
-	}
-	return false;
-}
+	return file >= File::CRAVE_CRAVE_TIM && isVersion(Version::NtscJ1, Version::NtscJ2) ? file - 2 : file;
+};

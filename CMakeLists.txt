@@ -26,6 +26,8 @@ set(FRONTENDQT_DIR ${PROJECT_SOURCE_DIR}/src/FrontendQt)
 
 set(SOURCES_COMMON
     ${COMMON_DIR}/Buffer.hpp
+    ${COMMON_DIR}/FileSystem.cpp
+    ${COMMON_DIR}/FileSystem.hpp
     ${COMMON_DIR}/JcrException.hpp
     ${COMMON_DIR}/Json.hpp
     ${COMMON_DIR}/RawFile.cpp
@@ -55,6 +57,8 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Forest.hpp
     ${BACKEND_DIR}/Game.cpp
     ${BACKEND_DIR}/Game.hpp
+    ${BACKEND_DIR}/GameTree.cpp
+    ${BACKEND_DIR}/GameTree.hpp
     ${BACKEND_DIR}/Item.cpp
     ${BACKEND_DIR}/Item.hpp
     ${BACKEND_DIR}/JCUtility.cpp
