@@ -23,10 +23,11 @@
 Game::Game(const std::filesystem::path& exeFilename, std::filesystem::path&& directoryPath, Version version)
 	: m_staticTree(std::move(directoryPath), exeFilename),
 	m_builderTree(Path::builderDirectory(m_staticTree.directory()), exeFilename),
-	m_version(version), 
+	m_version(version),
 	m_offset(version),
 	m_data001FilesPath(std::move(JCExe{ Utility::gameToJcExeVersion(version) }.data001FilesPath()))
 {
+	m_staticTree.removeDATA001();
 }
 
 std::unique_ptr<RawFile> Game::file(s32 file) const

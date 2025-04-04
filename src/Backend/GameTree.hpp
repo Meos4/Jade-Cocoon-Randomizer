@@ -29,6 +29,7 @@ public:
 	std::unique_ptr<RawFile> file(const char* file) const;
 	RawFile executable() const;
 	void repackDATA001() const;
+	bool removeDATA001() const;
 	void createIso(const std::filesystem::path* destPath) const;
 	bool exists() const;
 	void copy(const std::filesystem::path& dst) const;

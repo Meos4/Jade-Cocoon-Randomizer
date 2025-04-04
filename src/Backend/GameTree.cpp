@@ -41,6 +41,11 @@ void GameTree::repackDATA001() const
 	JCTools::repacker(filesPath, m_directory, filesPath, Path::dataDirectoryPath(filesPath));
 }
 
+bool GameTree::removeDATA001() const
+{
+	return FileSystem::remove(Path::dataDirectoryPath(Path::filesDirectoryPath(m_directory)) / "DATA.001");
+}
+
 void GameTree::createIso(const std::filesystem::path* destPath) const
 {
 	const auto configXmlPath{ Path::configXmlPath(m_directory) };
