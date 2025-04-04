@@ -31,28 +31,4 @@ namespace Path
 	{
 		return gameDirectory.parent_path() / gameDirectory.filename() += "_Builder";
 	}
-
-	std::array<Path::CStringPlatform, 7> makeIsoArgs(const std::filesystem::path* isoPath, const std::filesystem::path* configXmlPath)
-	{
-		return
-		{
-			#ifdef _WIN32
-				L"",
-				L"-y",
-				L"-q",
-				L"-o",
-				isoPath->c_str(),
-				configXmlPath->c_str(),
-				nullptr
-			#else
-				"",
-				"-y",
-				"-q",
-				"-o",
-				isoPath->c_str(),
-				configXmlPath->c_str(),
-				nullptr
-			#endif
-		};
-	}
 }

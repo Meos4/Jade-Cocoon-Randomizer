@@ -1,8 +1,8 @@
 #include "GameTree.hpp"
 
 #include "JCTools.hpp"
-#include "mkpsxiso/mkpsxiso.h"
 
+#include "Backend/Iso.hpp"
 #include "Backend/Path.hpp"
 #include "Common/FileSystem.hpp"
 #include "Common/JcrException.hpp"
@@ -48,10 +48,8 @@ bool GameTree::removeDATA001() const
 
 void GameTree::createIso(const std::filesystem::path* destPath) const
 {
-	const auto configXmlPath{ Path::configXmlPath(m_directory) };
-	const auto makeArgs{ Path::makeIsoArgs(destPath, &configXmlPath) };
-
-	if (mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) == EXIT_FAILURE)
+	const auto configXml{ Path::configXmlPath(m_directory) };
+	if (!Iso::make(destPath, &configXml))
 	{
 		throw JcrException{ "Unable to repack iso" };
 	}

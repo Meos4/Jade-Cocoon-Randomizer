@@ -4,6 +4,7 @@
 #include "Common/RawFile.hpp"
 
 #include "dumpsxiso/dumpsxiso.h"
+#include "mkpsxiso/mkpsxiso.h"
 
 #include <array>
 
@@ -95,5 +96,31 @@ namespace Iso
 		};
 
 		dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
+	}
+
+	bool make(const std::filesystem::path* iso, const std::filesystem::path* configXml)
+	{
+		const std::array<Path::CStringPlatform, 7> makeArgs
+		{
+		#ifdef _WIN32
+			L"",
+			L"-y",
+			L"-q",
+			L"-o",
+			iso->c_str(),
+			configXml->c_str(),
+			nullptr
+		#else
+			"",
+			"-y",
+			"-q",
+			"-o",
+			iso->c_str(),
+			configXml->c_str(),
+			nullptr
+		#endif
+		};
+
+		return mkpsxiso(static_cast<int>(makeArgs.size()), (Path::CStringPlatformPtr)makeArgs.data()) != EXIT_FAILURE;
 	}
 }

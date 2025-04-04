@@ -22,6 +22,4 @@ namespace Path
 	std::filesystem::path builderDirectory(const std::filesystem::path& gameDirectory);
 
 	using CStringPlatformPtr = std::remove_cv_t<std::remove_pointer_t<Path::CStringPlatform>>**;
-
-	std::array<Path::CStringPlatform, 7> makeIsoArgs(const std::filesystem::path* isoPath, const std::filesystem::path* configXmlPath);
 }
