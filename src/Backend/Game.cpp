@@ -250,7 +250,7 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 
 std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
 {
-	const std::filesystem::path filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
+	const auto filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
 
 	if (!std::filesystem::exists(filesDirectoryPath))
 	{
