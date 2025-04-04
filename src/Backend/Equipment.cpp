@@ -322,14 +322,14 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMo
 
 	for (const auto& file : effectFiles)
 	{
-		static constexpr auto offsetPosititon{ 0x00000028u };
+		static constexpr auto offsetPosition{ 0x00000028u };
 		s16 position;
 
 		{
-			game.file(file)->read(offsetPosititon, &position);
+			game.file(file)->read(offsetPosition, &position);
 		}
 		
 		game.builderTree().copyFile(aquazorEffect, game.filePathByIndex(file));
-		game.file(file)->write(offsetPosititon, position);
+		game.file(file)->write(offsetPosition, position);
 	}
 }
