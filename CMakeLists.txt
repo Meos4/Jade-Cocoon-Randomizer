@@ -30,6 +30,8 @@ set(SOURCES_COMMON
     ${COMMON_DIR}/FileSystem.hpp
     ${COMMON_DIR}/JcrException.hpp
     ${COMMON_DIR}/Json.hpp
+    ${COMMON_DIR}/Random.cpp
+    ${COMMON_DIR}/Random.hpp
     ${COMMON_DIR}/RawFile.cpp
     ${COMMON_DIR}/RawFile.hpp
     ${COMMON_DIR}/RawTypeBrowser.cpp
@@ -83,8 +85,6 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Ost.hpp
     ${BACKEND_DIR}/Path.cpp
     ${BACKEND_DIR}/Path.hpp
-    ${BACKEND_DIR}/Random.cpp
-    ${BACKEND_DIR}/Random.hpp
     ${BACKEND_DIR}/SharedData.cpp
     ${BACKEND_DIR}/SharedData.hpp
     ${BACKEND_DIR}/Shop.cpp

@@ -5,9 +5,9 @@
 #include "Backend/Mips.hpp"
 #include "Backend/MipsFn.hpp"
 #include "Backend/Ost.hpp"
-#include "Backend/Random.hpp"
 #include "Backend/Tim.hpp"
 #include "Backend/Utility.hpp"
+#include "Common/Random.hpp"
 #include "Common/TemplateTypes.hpp"
 
 #include <algorithm>

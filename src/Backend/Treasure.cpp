@@ -3,7 +3,7 @@
 #include "Backend/Behavior.hpp"
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
-#include "Backend/Random.hpp"
+#include "Common/Random.hpp"
 #include "Common/TemplateTypes.hpp"
 
 #include <array>

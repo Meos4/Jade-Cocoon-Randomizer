@@ -1,9 +1,9 @@
 #include "MainWindow.hpp"
 
 #include "Backend/Path.hpp"
-#include "Backend/Random.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/JcrException.hpp"
+#include "Common/Random.hpp"
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
 #include "FrontendQt/GuiPath.hpp"

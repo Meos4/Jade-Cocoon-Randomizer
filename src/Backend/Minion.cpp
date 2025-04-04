@@ -5,9 +5,9 @@
 #include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/Model.hpp"
-#include "Backend/Random.hpp"
 #include "Common/Buffer.hpp"
 #include "Common/JcrException.hpp"
+#include "Common/Random.hpp"
 
 #include <array>
 #include <limits>

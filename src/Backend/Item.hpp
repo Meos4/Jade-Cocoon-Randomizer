@@ -2,8 +2,8 @@
 
 #include "Backend/Behavior.hpp"
 #include "Backend/Entity.hpp"
-#include "Backend/Random.hpp"
 #include "Common/JcrException.hpp"
+#include "Common/Random.hpp"
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
 

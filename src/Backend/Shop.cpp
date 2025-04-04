@@ -3,7 +3,7 @@
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
 #include "Backend/Mips.hpp"
-#include "Backend/Random.hpp"
+#include "Common/Random.hpp"
 
 #include <algorithm>
 #include <array>
