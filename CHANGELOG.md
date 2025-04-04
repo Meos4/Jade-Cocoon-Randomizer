@@ -1,3 +1,7 @@
+## [2.3.0]
+- An extracted iso can be randomized multiple times and does not need to be extracted again
+- Using a wrong character on the seed no longer resets it to 0
+
 ## [2.2.1]
 - Fixed an issue that caused the game to freeze during a multiplayer battle
 
