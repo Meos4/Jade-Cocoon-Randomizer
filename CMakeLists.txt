@@ -60,6 +60,8 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Game.hpp
     ${BACKEND_DIR}/GameTree.cpp
     ${BACKEND_DIR}/GameTree.hpp
+    ${BACKEND_DIR}/Iso.cpp
+    ${BACKEND_DIR}/Iso.hpp
     ${BACKEND_DIR}/Item.cpp
     ${BACKEND_DIR}/Item.hpp
     ${BACKEND_DIR}/JCUtility.cpp

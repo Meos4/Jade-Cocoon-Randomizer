@@ -53,8 +53,6 @@ public:
 	const GameTree& builderTree() const;
 	Random* random();
 
-	static bool generateCue(const std::filesystem::path& isoPath);
-	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
 	static Game createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory);
 	static std::optional<Game> createGame(std::filesystem::path&& gameDirectory);
 private:

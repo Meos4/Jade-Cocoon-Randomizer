@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 
+#include "Backend/Iso.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/JcrException.hpp"
@@ -312,7 +313,7 @@ void MainWindow::onFileSaveAs()
 		if (!std::filesystem::is_regular_file(filePathCue) &&
 			QMessageBox::question(this, "Save", "Generate the associated .cue file?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		{
-			Game::generateCue(filePath);
+			Iso::generateCue(filePath);
 		}
 	}
 }
