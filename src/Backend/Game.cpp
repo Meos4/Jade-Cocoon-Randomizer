@@ -237,7 +237,7 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 
 	std::filesystem::create_directories(gameDirectory);
 
-	const std::filesystem::path
+	const auto
 		configXmlPath{ Path::configXmlPath(gameDirectory) },
 		filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
 
