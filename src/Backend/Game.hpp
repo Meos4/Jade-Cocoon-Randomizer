@@ -4,6 +4,7 @@
 #include "Backend/Offset.hpp"
 #include "Backend/Version.hpp"
 #include "Common/RawFile.hpp"
+#include "Common/Random.hpp"
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
 
@@ -50,6 +51,7 @@ public:
 	Version version() const;
 	const Offset& offset() const;
 	const GameTree& builderTree() const;
+	Random* random();
 
 	static bool generateCue(const std::filesystem::path& isoPath);
 	static std::optional<Version> versionFromIso(const std::filesystem::path& isoPath);
@@ -60,6 +62,7 @@ private:
 
 	GameTree m_staticTree;
 	GameTree m_builderTree;
+	Random m_random;
 	std::vector<const char*> m_data001FilesPath;
 	Version m_version;
 	Offset m_offset;

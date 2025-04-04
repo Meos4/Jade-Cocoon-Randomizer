@@ -26,7 +26,7 @@ void Levant::setBaseStats() const
 
 	for (u8 i{}; i < iteration; ++i)
 	{
-		++levantStats[Random::get().generate(levantStats.size() - 1)];
+		++levantStats[m_game->random()->generate(levantStats.size() - 1)];
 	}
 
 	m_game->file(File::OVER_TITLE_BIN)->write(m_game->offset().file.over_title_bin.levantStats, levantStats);
@@ -51,7 +51,7 @@ void Levant::setAnimation(Levant::Animation_t state) const
 
 		for (auto& id : weaponAnimationsId)
 		{
-			id = Random::get().generate(4u);
+			id = m_game->random()->generate(4u);
 		}
 
 		over_game_bin->write(m_game->offset().file.over_game_bin.tableOfWeaponAnimationsId, weaponAnimationsId);
@@ -72,7 +72,7 @@ void Levant::setFluteStyling() const
 	executable.read(offsetSummon, stylingsPtr, sizeof(u16) * 5);
 	executable.read(offsetCapture, stylingsPtr + 5, sizeof(u16) * 5);
 
-	Random::get().shuffle(&stylings);
+	m_game->random()->shuffle(&stylings);
 
 	executable.write(offsetSummon, *stylingsPtr, sizeof(u16) * 5);
 	executable.write(offsetCapture, *(stylingsPtr + 5), sizeof(u16) * 5);

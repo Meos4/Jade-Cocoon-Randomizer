@@ -3,7 +3,6 @@
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/JcrException.hpp"
-#include "Common/Random.hpp"
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
 #include "FrontendQt/GuiPath.hpp"
@@ -284,10 +283,10 @@ void MainWindow::onFileSaveAs()
 	const bool isSeedEnabled{ m_topInfoWidget->isSeedEnabled() };
 	const auto firstSeed
 	{
-		isSeedEnabled ? m_topInfoWidget->seed() : Random::get().generate(Random::limit)
+		isSeedEnabled ? m_topInfoWidget->seed() : m_game->random()->generate(Random::limit)
 	};
 
-	Random::get().setSeed(firstSeed);
+	m_game->random()->setSeed(firstSeed);
 
 	SaveGameDialog saveGameDialog(this);
 	auto future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog) };

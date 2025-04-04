@@ -47,7 +47,7 @@ public:
 		{
 			for (const auto& treasure : treasures)
 			{
-				const auto cItem{ Item::generateItemAndCategoryPool<u16>(m_chaptersPool.at(chapter)) };
+				const auto cItem{ Item::generateItemAndCategoryPool<u16>(m_chaptersPool.at(chapter), m_game->random()) };
 
 				for (const auto& [file, offset, fourBytes] : treasure)
 				{
@@ -82,7 +82,7 @@ public:
 					treasure[0].file->read(treasure[0].offset, &category);
 				}
 
-				const auto item{ Item::generateItemFromCategoryPool(category, m_chaptersPool.at(chapter)) };
+				const auto item{ Item::generateItemFromCategoryPool(category, m_chaptersPool.at(chapter), m_game->random()) };
 
 				for (const auto& [file, offset, fourBytes] : treasure)
 				{
@@ -454,7 +454,7 @@ void Treasure::setBattle(bool shuffleSkeletonKeys) const
 			continue;
 		}
 
-		const auto rngTreasures{ Random::get().generate(treasuresList.size() - 1) };
+		const auto rngTreasures{ m_game->random()->generate(treasuresList.size() - 1) };
 		treasure = treasuresList[rngTreasures];
 		treasuresList.erase(treasuresList.begin() + rngTreasures);
 	}

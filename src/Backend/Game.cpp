@@ -205,6 +205,11 @@ const GameTree& Game::builderTree() const
 	return m_builderTree;
 }
 
+Random* Game::random()
+{
+	return &m_random;
+}
+
 bool Game::generateCue(const std::filesystem::path& isoPath)
 {
 	auto cue{ isoPath };

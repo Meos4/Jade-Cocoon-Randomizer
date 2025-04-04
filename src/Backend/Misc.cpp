@@ -23,7 +23,7 @@ void Misc::setHudColor() const
 	Misc::HudColorArray hudColor;
 	for (auto& color : hudColor)
 	{
-		color = Random::get().generate(std::numeric_limits<u32>::max()) & 0x00FFFFFF;
+		color = m_game->random()->generate(std::numeric_limits<u32>::max()) & 0x00FFFFFF;
 	}
 	setHudColor(hudColor);
 }
@@ -154,7 +154,7 @@ void Misc::setNPCsVoice() const
 	{
 		for (u32 i{}; i < nbVoices; ++i)
 		{
-			const auto rngVoice{ Random::get().generate(voices.size() - 1) };
+			const auto rngVoice{ m_game->random()->generate(voices.size() - 1) };
 			file->write(offset + i * (sizeof(Voice) + sizeof(VoiceBehavior)) + sizeof(VoiceBehavior), voices[rngVoice]);
 			voices.erase(voices.begin() + rngVoice);
 		}

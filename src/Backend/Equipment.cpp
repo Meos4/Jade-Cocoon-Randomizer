@@ -39,7 +39,7 @@ struct EquipmentStatsPoint
 	}
 };
 
-static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentStatsPoint& pattern)
+static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentStatsPoint& pattern, Random* random)
 {
 	const s32 totalStats
 	{
@@ -69,7 +69,7 @@ static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentSta
 
 	for (s32 i{}; i < totalStats; ++i)
 	{
-		const auto rng{ Random::get().generate(totalPattern) };
+		const auto rng{ random->generate(totalPattern) };
 
 		if (rng < step1)
 		{
@@ -121,8 +121,8 @@ void Equipment::setWeapons(Equipment::Weapons_t state) const
 
 		for (Item_t i{}; i < WEAPON_COUNT; ++i)
 		{
-			const auto rngItem{ Random::get().generate(patterns.size() - 1) };
-			setEquipmentStatsByPattern(&stats[i], patterns[rngItem]);
+			const auto rngItem{ m_game->random()->generate(patterns.size() - 1) };
+			setEquipmentStatsByPattern(&stats[i], patterns[rngItem], m_game->random());
 
 			characteristic[i] = characteristicConst[rngItem];
 
@@ -138,12 +138,12 @@ void Equipment::setWeapons(Equipment::Weapons_t state) const
 			case WEAPON_ELEMENT_AIR:
 			case WEAPON_ELEMENT_EARTH:
 			case WEAPON_ELEMENT_WATER:
-				characteristic[i].element = Random::get().generate<WeaponElement_t>(WEAPON_ELEMENT_FIRE, WEAPON_ELEMENT_WATER);
+				characteristic[i].element = m_game->random()->generate<WeaponElement_t>(WEAPON_ELEMENT_FIRE, WEAPON_ELEMENT_WATER);
 				break;
 			case WEAPON_ELEMENT_POISON:
 			case WEAPON_ELEMENT_SLEEP:
 			case WEAPON_ELEMENT_STONE:
-				characteristic[i].element = Random::get().generate<WeaponElement_t>(WEAPON_ELEMENT_POISON, WEAPON_ELEMENT_STONE);
+				characteristic[i].element = m_game->random()->generate<WeaponElement_t>(WEAPON_ELEMENT_POISON, WEAPON_ELEMENT_STONE);
 				break;
 			}
 
@@ -177,7 +177,7 @@ void Equipment::setWeapons(Equipment::Weapons_t state) const
 
 		for (auto& id : stats)
 		{
-			id.skin = Random::get().generate(WeaponSkin_t(WEAPON_SKIN_COUNT - 1));
+			id.skin = m_game->random()->generate(WeaponSkin_t(WEAPON_SKIN_COUNT - 1));
 			id.icon = skinsIcon[id.skin];
 		}
 	}
@@ -204,7 +204,7 @@ void Equipment::setArmors(Equipment::Armors_t state) const
 
 		for (auto& armor : stats)
 		{
-			setEquipmentStatsByPattern(&armor, patterns[Random::get().generate(patterns.size() - 1)]);
+			setEquipmentStatsByPattern(&armor, patterns[m_game->random()->generate(patterns.size() - 1)], m_game->random());
 		}
 
 		executable.write(statsOffset, stats);
@@ -216,7 +216,7 @@ void Equipment::setArmors(Equipment::Armors_t state) const
 
 		for (auto& id : armorsAppearanceId)
 		{
-			id = Random::get().generate<u8>(1, 8);
+			id = m_game->random()->generate<u8>(1, 8);
 		}
 
 		executable.write(m_game->offset().file.executable.tableOfArmorsAppearanceId, armorsAppearanceId);
@@ -239,7 +239,7 @@ void Equipment::setOthers() const
 
 	for (auto& other : stats)
 	{
-		setEquipmentStatsByPattern(&other, patterns[Random::get().generate(patterns.size() - 1)]);
+		setEquipmentStatsByPattern(&other, patterns[m_game->random()->generate(patterns.size() - 1)], m_game->random());
 	}
 
 	executable.write(statsOffset, stats);

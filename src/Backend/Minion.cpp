@@ -281,7 +281,7 @@ void Minion::setStats(Minion::Stats_t state) const
 	if (state & Minion::STATS_SHUFFLE_BETWEEN_MINIONS)
 	{
 		const auto statsConst{ stats };
-		Random::get().shuffle(&stats);
+		m_game->random()->shuffle(&stats);
 
 		for (std::size_t i{}; i < stats.size(); ++i)
 		{
@@ -299,7 +299,7 @@ void Minion::setStats(Minion::Stats_t state) const
 				id.magicDefense, id.speed, id.critical 
 			};
 
-			Random::get().shuffle(&availableStats);
+			m_game->random()->shuffle(&availableStats);
 
 			id.attack = availableStats[0];
 			id.magicAttack = availableStats[1];
@@ -379,8 +379,7 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 		}	
 	}
 
-	auto generateSpecialMagic = [&availableSpecials, &availableMagics, &availableMagicsStatus]
-	(SpecialsArray* specials, Magic_t* magics, const StatsStruct& stats, Element_t element)
+	auto generateSpecialMagic = [&](SpecialsArray* specials, Magic_t* magics, const StatsStruct& stats, Element_t element)
 	{
 		static constexpr auto rateDamage{ 2.f / 3.f * 100.f };
 
@@ -409,18 +408,18 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 				return false;
 			}
 
-			const auto bodyPartRng{ Random::get().generate(availableBodyParts.size() - 1) };
+			const auto bodyPartRng{ m_game->random()->generate(availableBodyParts.size() - 1) };
 			auto& specialBody{ (*specials)[availableBodyParts[bodyPartRng]] };
 
 			if (!availableSpecials[element].empty() &&
-				(availableSpecials[ELEMENT_NONE].empty() || Random::get().generateProba(rateDamage)))
+				(availableSpecials[ELEMENT_NONE].empty() || m_game->random()->generateProba(rateDamage)))
 			{
-				const auto id{ availableSpecials[element][Random::get().generate(availableSpecials[element].size() - 1)] };
+				const auto id{ availableSpecials[element][m_game->random()->generate(availableSpecials[element].size() - 1)] };
 				specialBody.specialAttackId = id;
 			}
 			else if (!availableSpecials[ELEMENT_NONE].empty())
 			{
-				const auto id{ availableSpecials[ELEMENT_NONE][Random::get().generate(availableSpecials[ELEMENT_NONE].size() - 1)] };
+				const auto id{ availableSpecials[ELEMENT_NONE][m_game->random()->generate(availableSpecials[ELEMENT_NONE].size() - 1)] };
 				specialBody.specialAttackId = id;
 			}
 			else
@@ -432,10 +431,10 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 			availableBodyParts.erase(availableBodyParts.begin() + bodyPartRng);
 
 			static constexpr auto enhancementRate{ 65.f / 221.f * 100.f };
-			if (Random::get().generateProba(enhancementRate))
+			if (m_game->random()->generateProba(enhancementRate))
 			{
 				specialBody.isEnhanced = 1;
-				specialBody.enhancement = Random::get().generate<EnhancementBodyPart_t>(ENHANCEMENT_BODYPART_POWER, ENHANCEMENT_BODYPART_CRITICAL);
+				specialBody.enhancement = m_game->random()->generate<EnhancementBodyPart_t>(ENHANCEMENT_BODYPART_POWER, ENHANCEMENT_BODYPART_CRITICAL);
 			}
 
 			return true;
@@ -443,13 +442,13 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 
 		auto generateMagic = [&]()
 		{
-			if (magicDamage && (!magicStatus || Random::get().generateProba(rateDamage)))
+			if (magicDamage && (!magicStatus || m_game->random()->generateProba(rateDamage)))
 			{
-				*magics |= Random::get().generateBitAndErase(&magicDamage);
+				*magics |= m_game->random()->generateBitAndErase(&magicDamage);
 			}
 			else if (magicStatus)
 			{
-				*magics |= Random::get().generateBitAndErase(&magicStatus);
+				*magics |= m_game->random()->generateBitAndErase(&magicStatus);
 			}
 			else
 			{
@@ -480,9 +479,9 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 
 		for (s32 i{}; i < 9; ++i)
 		{
-			if (Random::get().generateProba(nbRate))
+			if (m_game->random()->generateProba(nbRate))
 			{
-				if (Random::get().generateProba(specialRate))
+				if (m_game->random()->generateProba(specialRate))
 				{
 					if (!generateSpecial())
 					{
@@ -578,18 +577,18 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 			static constexpr s16 maxInterpolation{ 3072 }, iterationRate{ 512 };
 
-			const auto rate{ Random::get().generate(0.2f, 1.f) * maxInterpolation };
+			const auto rate{ m_game->random()->generate(0.2f, 1.f) * maxInterpolation };
 			const auto iteration{ maxInterpolation / iterationRate + 1 - static_cast<s32>(rate / iterationRate) };
 			modelsInterp.reserve(iteration);
 
 			for (s32 i{}; i < iteration; ++i)
 			{
-				const auto rngModel{ Random::get().generate(Model::Minion::models.size() - 1) };
+				const auto rngModel{ m_game->random()->generate(Model::Minion::models.size() - 1) };
 
 				modelsInterp.emplace_back
 				(
 					m_sharedData->model(Model::Minion::models[rngModel]),
-					Random::get().generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
+					m_game->random()->generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
 				);
 			}
 
@@ -630,7 +629,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 				
 				for (u32 i{}; i < nbProperties; ++i)
 				{
-					const auto rngProperties{ Random::get().generate(availableProperties.size() - 1) };
+					const auto rngProperties{ m_game->random()->generate(availableProperties.size() - 1) };
 
 					file->write
 					(
@@ -692,7 +691,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		{
 			for (s32 i{}; i < Entity::totalStoryMinions; ++i)
 			{
-				const auto rngModel{ Model::Minion::models[Random::get().generate(Model::Minion::models.size() - 1)] };
+				const auto rngModel{ Model::Minion::models[m_game->random()->generate(Model::Minion::models.size() - 1)] };
 				const auto& modelRotation{ modelsRotation.at(rngModel) };
 				const auto rotation
 				{
@@ -708,7 +707,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 			for (s32 i{}; i < Entity::totalECMinions; ++i)
 			{
-				const auto rngModel{ Model::Minion::models[Random::get().generate(Model::Minion::models.size() - 1)] };
+				const auto rngModel{ Model::Minion::models[m_game->random()->generate(Model::Minion::models.size() - 1)] };
 				const auto rotation{ modelsRotation.at(rngModel).rotation[i % 4] };
 				throwIfUninitialized(rngModel, rotation);
 
@@ -747,7 +746,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 			for (const auto& [model, file] : minions)
 			{
-				const auto rngModel{ texturesModels[Random::get().generate(texturesModels.size() - 1)] };
+				const auto rngModel{ texturesModels[m_game->random()->generate(texturesModels.size() - 1)] };
 				const auto& modelConst{ m_sharedData->model(rngModel) };
 				file->write
 				(
@@ -798,7 +797,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		for (const auto& [model, file] : minions)
 		{
 			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			JCUtility::rotateCLUT(clut, Random::get().generate(JCUtility::clutRotationLimit));
+			JCUtility::rotateCLUT(clut, m_game->random()->generate(JCUtility::clutRotationLimit));
 			file->write(Model::Minion::Texture::clutBegin, clut);
 		}
 	}
@@ -811,7 +810,7 @@ Id_Entity_t Minion::generateMinion(bool eternalCorridor) const
 		return id > ID_VATOLKA_W ? id + Entity::totalStoryBosses : id;
 	};
 
-	return validMinionId(Random::get().generate(eternalCorridor ? ID_TYTON - Entity::totalStoryBosses : ID_VATOLKA_W));
+	return validMinionId(m_game->random()->generate(eternalCorridor ? ID_TYTON - Entity::totalStoryBosses : ID_VATOLKA_W));
 }
 
 MipsFn::GenerateValidMinion Minion::generateValidMinionFn() const

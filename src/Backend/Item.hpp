@@ -368,7 +368,7 @@ namespace Item
 	}
 
 	template <Integral T>
-	T generateItemFromCategoryPool(T category, const ChapterPoolArray& pool)
+	T generateItemFromCategoryPool(T category, const ChapterPoolArray& pool, Random* random)
 	{
 		if (category >= Item::CATEGORY_COUNT)
 		{
@@ -379,11 +379,11 @@ namespace Item
 			throw JcrException{ "Attempt to generate an item on an empty pool category : {}", category };
 		}
 
-		return pool[category][Random::get().generate(pool[category].size() - 1)];
+		return pool[category][random->generate(pool[category].size() - 1)];
 	}
 
 	template <Integral T>
-	CategoryItem<T> generateItemAndCategoryPool(const ChapterPoolArray& pool)
+	CategoryItem<T> generateItemAndCategoryPool(const ChapterPoolArray& pool, Random* random)
 	{
 		const auto
 			step1{ pool[CATEGORY_ITEM].size() },
@@ -398,7 +398,7 @@ namespace Item
 			throw JcrException{ "Attempt to generate an item on empty pools" };
 		}
 
-		const auto rng{ Random::get().generate(step6 - 1) };
+		const auto rng{ random->generate(step6 - 1) };
 
 		if (rng < step1)
 		{

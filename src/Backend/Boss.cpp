@@ -157,7 +157,7 @@ void Boss::setElement(Boss::Element state, bool allowNoneElement) const
 	{
 		if (!(state == Boss::Element::RandomElemental && elements[i] == ELEMENT_NONE))
 		{
-			const auto rngElement{ Random::get().generate(minElement, Element_t(ELEMENT_COUNT - 1)) };
+			const auto rngElement{ m_game->random()->generate(minElement, Element_t(ELEMENT_COUNT - 1)) };
 
 			if (rngElement != elements[i])
 			{
@@ -200,7 +200,7 @@ void Boss::setSpecialMagic() const
 		{ ELEMENT_WATER, { SPECIAL_WATER_ATTACK } }
 	};
 
-	auto generateSpecial = [&availableSpecial](SpecialStruct* special, Element_t element, bool allowStatus = true)
+	auto generateSpecial = [&](SpecialStruct* special, Element_t element, bool allowStatus = true)
 	{
 		static constexpr std::array<Special_t, 3> 
 			availableSpecialStatus{ SPECIAL_POISON, SPECIAL_FLESH_TO_STONE, SPECIAL_SLEEP };
@@ -209,11 +209,11 @@ void Boss::setSpecialMagic() const
 
 		special->isEnabled = 1;
 
-		if (!allowStatus || Random::get().generateProba(elemProba))
+		if (!allowStatus || m_game->random()->generateProba(elemProba))
 		{
 			const auto elementToUse
 			{ 
-				element == ELEMENT_NONE ? Random::get().generate(element, Element_t(ELEMENT_COUNT - 1)) : element
+				element == ELEMENT_NONE ? m_game->random()->generate(element, Element_t(ELEMENT_COUNT - 1)) : element
 			};
 
 			special->specialAttackId = availableSpecial.at(elementToUse);
@@ -221,12 +221,12 @@ void Boss::setSpecialMagic() const
 		}
 		else
 		{
-			special->specialAttackId = availableSpecialStatus[Random::get().generate(availableSpecialStatus.size() - 1)];
+			special->specialAttackId = availableSpecialStatus[m_game->random()->generate(availableSpecialStatus.size() - 1)];
 			return false;
 		}
 	};
 
-	auto generateMagic = [](Mips::Register rgt, Element_t element)
+	auto generateMagic = [&](Mips::Register rgt, Element_t element)
 	{
 		static constexpr std::array<Magic_t, ELEMENT_COUNT> availableMagics
 		{
@@ -236,8 +236,8 @@ void Boss::setSpecialMagic() const
 			MAGIC_VAHLI | MAGIC_VAHLIS | MAGIC_VAHLIA | MAGIC_WATER_BOSS
 		};
 
-		const auto elementToUse{ element == ELEMENT_NONE ? Random::get().generate(Element_t(ELEMENT_COUNT - 1)) : element };
-		return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(Random::get().generateBit(availableMagics[elementToUse]))));
+		const auto elementToUse{ element == ELEMENT_NONE ? m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) : element };
+		return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
 	};
 
 	auto executable{ m_game->executable() };
@@ -265,7 +265,7 @@ void Boss::setSpecialMagic() const
 
 	static constexpr auto delfanelId{ ID_DELFANEL - ID_DREAM_MAN };
 	specials[delfanelId][BODYPART_FANG].specialAttackId =
-		Random::get().generate({ SPECIAL_DELFANEL_FLESH_TO_STONE, SPECIAL_TUTURIS_POISON, SPECIAL_SETERIAN_SLEEP });
+		m_game->random()->generate({ SPECIAL_DELFANEL_FLESH_TO_STONE, SPECIAL_TUTURIS_POISON, SPECIAL_SETERIAN_SLEEP });
 	generateSpecial(&specials[delfanelId][BODYPART_CLAW], stats[delfanelId].element, false);
 	const auto delfanelEarthBossId{ generateMagic(Mips::Register::v0, stats[delfanelId].element) };
 
@@ -278,7 +278,7 @@ void Boss::setSpecialMagic() const
 
 	static constexpr auto tuturisId{ ID_TUTURIS - ID_DREAM_MAN };
 	specials[tuturisId][BODYPART_TAIL].specialAttackId =
-		Random::get().generate({ SPECIAL_DELFANEL_FLESH_TO_STONE, SPECIAL_TUTURIS_POISON, SPECIAL_SETERIAN_SLEEP });
+		m_game->random()->generate({ SPECIAL_DELFANEL_FLESH_TO_STONE, SPECIAL_TUTURIS_POISON, SPECIAL_SETERIAN_SLEEP });
 	const auto tuturisFireBossId{ generateMagic(Mips::Register::v0, stats[tuturisId].element) };
 
 	// Fire Boss
@@ -289,7 +289,7 @@ void Boss::setSpecialMagic() const
 	// Note: Claw is unused but works well
 
 	static constexpr auto seterianId{ ID_SETERIAN - ID_DREAM_MAN };
-	const auto seterianFang{ Random::get().generate({ SPECIAL_DELFANEL_FLESH_TO_STONE, SPECIAL_SETERIAN_SLEEP }) };
+	const auto seterianFang{ m_game->random()->generate({ SPECIAL_DELFANEL_FLESH_TO_STONE, SPECIAL_SETERIAN_SLEEP }) };
 	const auto li_a1_seterianStatus{ Mips::li(Mips::Register::a1, seterianFang == SPECIAL_SETERIAN_SLEEP ? 1 << 1 : 0x0038u) };
 	specials[seterianId][BODYPART_FANG].specialAttackId = seterianFang;
 	generateSpecial(&specials[seterianId][BODYPART_TAIL], stats[seterianId].element, false);
@@ -325,7 +325,7 @@ void Boss::setSpecialMagic() const
 	// Note: Specials use priority
 
 	static constexpr auto goatId{ ID_GOAT - ID_DREAM_MAN };
-	const auto goatBodyPart{ Random::get().generate(BodyPart_t(BODYPART_COUNT - 1)) };
+	const auto goatBodyPart{ m_game->random()->generate(BodyPart_t(BODYPART_COUNT - 1)) };
 	specials[goatId][BODYPART_CLAW] = {};
 	generateSpecial(&specials[goatId][goatBodyPart], stats[goatId].element);
 
@@ -335,7 +335,7 @@ void Boss::setSpecialMagic() const
 	// Note: Specials use priority
 
 	static constexpr auto lagoatId{ ID_LAGOAT - ID_DREAM_MAN };
-	const auto lagoatBodyPart{ Random::get().generate(BodyPart_t(BODYPART_COUNT - 1)) };
+	const auto lagoatBodyPart{ m_game->random()->generate(BodyPart_t(BODYPART_COUNT - 1)) };
 	specials[lagoatId][BODYPART_HORN] = {};
 	generateSpecial(&specials[lagoatId][lagoatBodyPart], stats[lagoatId].element);
 
@@ -345,7 +345,7 @@ void Boss::setSpecialMagic() const
 	// Note: Specials use priority 
 
 	static constexpr auto gigoatId{ ID_GIGOAT - ID_DREAM_MAN };
-	const auto gigoatBodyPart{ Random::get().generate(BodyPart_t(BODYPART_COUNT - 1)) };
+	const auto gigoatBodyPart{ m_game->random()->generate(BodyPart_t(BODYPART_COUNT - 1)) };
 	specials[gigoatId][BODYPART_FANG] = {};
 	generateSpecial(&specials[gigoatId][gigoatBodyPart], stats[gigoatId].element);
 
@@ -495,7 +495,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 		}
 
 		// Cushidra
-		const auto rngElement{ Random::get().generate(Element_t(ELEMENT_COUNT - 1)) };
+		const auto rngElement{ m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) };
 		const auto cushidraRotation{ static_cast<s32>(modelsRotation.at(mfoCushidra.model).rotation[rngElement]) * 2 };
 		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, cushidraRotation);
 	}
@@ -505,7 +505,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 		for (const auto& [model, fileoffset] : mfo)
 		{
 			const auto file{ m_game->file(fileoffset.first) };
-			const auto rng{ Random::get().generate(JCUtility::clutRotationLimit) };
+			const auto rng{ m_game->random()->generate(JCUtility::clutRotationLimit) };
 
 			rotate(file.get(), fileoffset.second, rng);
 
@@ -518,11 +518,11 @@ void Boss::setAppearance(Boss::Appearance state) const
 		// Goat
 		for (auto& modelBehavior : goatModelsBehavior)
 		{
-			modelBehavior.colorRotation = Random::get().generate<u8>(255);
+			modelBehavior.colorRotation = m_game->random()->generate<u8>(255);
 		}
 
 		// Cushidra
-		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, Random::get().generate(JCUtility::clutRotationLimit));
+		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, m_game->random()->generate(JCUtility::clutRotationLimit));
 	}
 
 	executable.write(goatModelsBehaviorOffset, goatModelsBehavior);
@@ -551,7 +551,7 @@ void Boss::setElementEC(bool allowNoneElement) const
 	for (s32 i{}; i < bossCounter; ++i)
 	{
 		const auto baseElement{ scene_other_hunting_sce00_sbh->read<Element_t>(statsOffset + i * sizeof(StatsStruct) + 6) };
-		const auto rngElement{ Random::get().generate(minElement, Element_t(ELEMENT_COUNT - 1)) };
+		const auto rngElement{ m_game->random()->generate(minElement, Element_t(ELEMENT_COUNT - 1)) };
 
 		if (baseElement != rngElement)
 		{
@@ -581,7 +581,7 @@ void Boss::setSpecialMagicEC() const
 		{ ELEMENT_WATER, { SPECIAL_WATER_ATTACK } }
 	};
 
-	auto generateSpecial = [&availableSpecial](SpecialStruct* special, Element_t element, bool allowStrong = true)
+	auto generateSpecial = [&](SpecialStruct* special, Element_t element, bool allowStrong = true)
 	{
 		static constexpr std::array<Special_t, 5> availableSpecialStrong
 		{
@@ -591,11 +591,11 @@ void Boss::setSpecialMagicEC() const
 
 		static constexpr auto elemProba{ 75.f };
 
-		if (!allowStrong || Random::get().generateProba(elemProba))
+		if (!allowStrong || m_game->random()->generateProba(elemProba))
 		{
 			const auto elementToUse
 			{
-				element == ELEMENT_NONE ? Random::get().generate(element, Element_t(ELEMENT_COUNT - 1)) : element
+				element == ELEMENT_NONE ? m_game->random()->generate(element, Element_t(ELEMENT_COUNT - 1)) : element
 			};
 
 			special->specialAttackId = availableSpecial.at(elementToUse);
@@ -603,14 +603,14 @@ void Boss::setSpecialMagicEC() const
 		}
 		else
 		{
-			special->specialAttackId = availableSpecialStrong[Random::get().generate(availableSpecialStrong.size() - 1)];
+			special->specialAttackId = availableSpecialStrong[m_game->random()->generate(availableSpecialStrong.size() - 1)];
 			return false;
 		}
 	};
 
 	bool allowAdMumuls{ true };
 
-	auto generateMagic = [&allowAdMumuls](Mips::Register rgt, Element_t element)
+	auto generateMagic = [&](Mips::Register rgt, Element_t element)
 	{
 		static constexpr std::array<Magic_t, ELEMENT_COUNT> availableMagics
 		{
@@ -622,15 +622,15 @@ void Boss::setSpecialMagicEC() const
 
 		static constexpr auto adMumulsRate{ 1.f / 3.f * 100.f };
 
-		if (allowAdMumuls && Random::get().generateProba(adMumulsRate))
+		if (allowAdMumuls && m_game->random()->generateProba(adMumulsRate))
 		{
 			allowAdMumuls = false;
 			return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(Magic_t(MAGIC_AD_MUMULS))));
 		}
 		else
 		{
-			const auto elementToUse{ element == ELEMENT_NONE ? Random::get().generate(Element_t(ELEMENT_COUNT - 1)) : element };
-			return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(Random::get().generateBit(availableMagics[elementToUse]))));
+			const auto elementToUse{ element == ELEMENT_NONE ? m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) : element };
+			return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
 		}
 	};
 
@@ -737,18 +737,18 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 
 			static constexpr s16 maxInterpolation{ 3072 }, iterationRate{ 512 };
 
-			const auto rate{ Random::get().generate(0.2f, 1.f) * maxInterpolation };
+			const auto rate{ m_game->random()->generate(0.2f, 1.f) * maxInterpolation };
 			const auto iteration{ maxInterpolation / iterationRate + 1 - static_cast<s32>(rate / iterationRate) };
 			modelsInterp.reserve(iteration);
 
 			for (s32 i{}; i < iteration; ++i)
 			{
-				const auto rngModel{ Random::get().generate(Model::Minion::models.size() - 1) };
+				const auto rngModel{ m_game->random()->generate(Model::Minion::models.size() - 1) };
 
 				modelsInterp.emplace_back
 				(
 					m_sharedData->model(Model::Minion::models[rngModel]),
-					Random::get().generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
+					m_game->random()->generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
 				);
 			}
 
@@ -815,7 +815,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 
 		for (const auto& [model, file] : minions)
 		{
-			const auto rngModel{ texturesModels[Random::get().generate(texturesModels.size() - 1)] };
+			const auto rngModel{ texturesModels[m_game->random()->generate(texturesModels.size() - 1)] };
 			const auto& modelConst{ m_sharedData->model(rngModel) };
 			file->write
 			(
@@ -854,7 +854,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		for (const auto& [model, file] : minions)
 		{
 			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			JCUtility::rotateCLUT(clut, Random::get().generate(JCUtility::clutRotationLimit));
+			JCUtility::rotateCLUT(clut, m_game->random()->generate(JCUtility::clutRotationLimit));
 			file->write(Model::Minion::Texture::clutBegin, clut);
 		}
 	}

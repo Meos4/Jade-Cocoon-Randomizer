@@ -25,7 +25,7 @@ enum : Shop_t
 };
 
 template <Item::Category_t Category, std::size_t Size>
-static void monoShopRandomizer(std::array<Shop_t, Size>* items, Shop_t shop, s32 size)
+static void monoShopRandomizer(std::array<Shop_t, Size>* items, Shop_t shop, s32 size, Random* random)
 {
 	static_assert(Category <= Item::CATEGORY_OTHER, "Invalid Shop Category");
 
@@ -66,14 +66,14 @@ static void monoShopRandomizer(std::array<Shop_t, Size>* items, Shop_t shop, s32
 
 	for (s32 i{}; i < size; ++i)
 	{
-		const auto rngItem{ Random::get().generate(availableItems.size() - 1) };
+		const auto rngItem{ random->generate(availableItems.size() - 1) };
 		(*items)[availableItems.at(rngItem)] |= shop;
 		availableItems.erase(availableItems.begin() + rngItem);
 	}
 }
 
 template <Item::Category_t Category>
-static auto shopRandomizer(const std::array<s32, availableShop>& sizes)
+static auto shopRandomizer(const std::array<s32, availableShop>& sizes, Random* random)
 {
 	static constexpr std::array<Item_t, 4> itemsCount
 	{
@@ -84,7 +84,7 @@ static auto shopRandomizer(const std::array<s32, availableShop>& sizes)
 
 	for (u32 i{}; i < availableShop; ++i)
 	{
-		monoShopRandomizer<Category>(&items, 1 << i, sizes[i]);
+		monoShopRandomizer<Category>(&items, 1 << i, sizes[i], random);
 	}
 
 	return items;
@@ -98,35 +98,35 @@ Shop::Shop(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
 void Shop::setWeapon() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
-		m_game->offset().file.over_wpnshop_bin.items + 0x58, shopRandomizer<Item::CATEGORY_WEAPON>({ 3, 4, 6, 8, 17 }));
+		m_game->offset().file.over_wpnshop_bin.items + 0x58, shopRandomizer<Item::CATEGORY_WEAPON>({ 3, 4, 6, 8, 17 }, m_game->random()));
 }
 
 void Shop::setArmor() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
-		m_game->offset().file.over_wpnshop_bin.items + 0x88, shopRandomizer<Item::CATEGORY_ARMOR>({ 2, 4, 6, 4, 13 }));
+		m_game->offset().file.over_wpnshop_bin.items + 0x88, shopRandomizer<Item::CATEGORY_ARMOR>({ 2, 4, 6, 4, 13 }, m_game->random()));
 }
 
 void Shop::setOther() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
-		m_game->offset().file.over_wpnshop_bin.items + 0xA8, shopRandomizer<Item::CATEGORY_OTHER>({ 1, 2, 3, 7, 16 }));
+		m_game->offset().file.over_wpnshop_bin.items + 0xA8, shopRandomizer<Item::CATEGORY_OTHER>({ 1, 2, 3, 7, 16 }, m_game->random()));
 }
 
 void Shop::setItem() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
-		m_game->offset().file.over_wpnshop_bin.items, shopRandomizer<Item::CATEGORY_ITEM>({ 3, 5, 7, 27, 27 }));
+		m_game->offset().file.over_wpnshop_bin.items, shopRandomizer<Item::CATEGORY_ITEM>({ 3, 5, 7, 27, 27 }, m_game->random()));
 }
 
 void Shop::setEternalCorridorUnlockAll() const
 {
 	const auto over_wpnshop_bin{ m_game->file(File::OVER_WPNSHOP_BIN) };
 
-	auto writeShop = [&over_wpnshop_bin]<Item_t Size, Item::Category_t Category>(u32 offset)
+	auto writeShop = [&]<Item_t Size, Item::Category_t Category>(u32 offset)
 	{
 		auto items{ over_wpnshop_bin->read<std::array<Shop_t, Size>>(offset) };
-		monoShopRandomizer<Category>(&items, SHOP_ETERNAL_CORRIDOR, Category == Item::CATEGORY_ITEM ? Size - 14 : Size);
+		monoShopRandomizer<Category>(&items, SHOP_ETERNAL_CORRIDOR, Category == Item::CATEGORY_ITEM ? Size - 14 : Size, m_game->random());
 		over_wpnshop_bin->write(offset, items);
 	};
 

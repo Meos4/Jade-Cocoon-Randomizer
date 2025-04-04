@@ -183,7 +183,7 @@ void Forest::setPaletteColor() const
 		addRGB(file, rgbLight, offsets...);
 	};
 
-	auto rng{ Random::get().generate(JCUtility::clutRotationLimit) };
+	auto rng{ m_game->random()->generate(JCUtility::clutRotationLimit) };
 
 	static constexpr auto sizeLimitBPP16{ 0x25800u };
 
@@ -236,7 +236,7 @@ void Forest::setPaletteColor() const
 	rotateLightSpot.operator()<0>(scene_field1_forest1_sce04_sce.get(), rng, 0x50);
 
 	// Forest 2
-	rng = Random::get().generate(JCUtility::clutRotationLimit);
+	rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 	const auto
 		scene_field1_forest2_sce00_sce{ m_game->file(File::SCENE_FIELD1_FOREST2_SCE00_SCE) },
@@ -309,7 +309,7 @@ void Forest::setPaletteColor() const
 	rotateShade(scene_field1_gate_sce06_sce.get(), rotationShadeForest2, 0xB0030);
 
 	// Forest 3
-	rng = Random::get().generate(JCUtility::clutRotationLimit);
+	rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 	const auto
 		scene_field1_forest3_sce00_sce{ m_game->file(File::SCENE_FIELD1_FOREST3_SCE00_SCE) },
@@ -501,7 +501,7 @@ void Forest::setPaletteColor() const
 	rotateLight(scene_field1_gate_sce06_sce.get(), rotationLightForest3_2, 0x9583C);
 
 	// Forest 4
-	rng = Random::get().generate(JCUtility::clutRotationLimit);
+	rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 	const auto
 		scene_field1_forest4_sce00_sce{ m_game->file(File::SCENE_FIELD1_FOREST4_SCE00_SCE) },
@@ -567,7 +567,7 @@ void Forest::setPaletteColor() const
 	rotateLight(scene_field1_gate_sce06_sce.get(), rng, 0xC903C);
 
 	// Forest 1-2
-	rng = Random::get().generate(JCUtility::clutRotationLimit);
+	rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 	const auto
 		scene_field2_forest1_sce00_sce{ m_game->file(File::SCENE_FIELD2_FOREST1_SCE00_SCE) },
@@ -612,7 +612,7 @@ void Forest::setPaletteColor() const
 	rotateLight(scene_field2_forest1_sce10_sce.get(), rng, 0x3C);
 
 	// Forest 2-2
-	rng = Random::get().generate(JCUtility::clutRotationLimit);
+	rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 	const auto
 		scene_field2_forest2_sce00_sce{ m_game->file(File::SCENE_FIELD2_FOREST2_SCE00_SCE) },
@@ -696,7 +696,7 @@ void Forest::setPaletteColor() const
 	rotateLight.operator()<0>(scene_field2_forest2_sce17_sce.get(), rng, 0x3C);
 
 	// Forest 3-2
-	rng = Random::get().generate(JCUtility::clutRotationLimit);
+	rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 	const auto
 		scene_field2_forest3_sce00_sce{ m_game->file(File::SCENE_FIELD2_FOREST3_SCE00_SCE) },
@@ -803,7 +803,7 @@ void Forest::setPaletteColor() const
 		static constexpr auto nbMapsElement{ 15u };
 		const auto elementFileId{ i * nbMapsElement };
 
-		rng = Random::get().generate(JCUtility::clutRotationLimit);
+		rng = m_game->random()->generate(JCUtility::clutRotationLimit);
 
 		auto rotateBPP8ShadeAndLight = [&]<Integral... Args>(RawFile* file, Args... offsets)
 		{
@@ -878,7 +878,7 @@ void Forest::setBattleMaps() const
 		u8 rngBattleMap;
 		do
 		{
-			rngBattleMap = Random::get().generate<u8>(nbBattleMaps - 1);
+			rngBattleMap = m_game->random()->generate<u8>(nbBattleMaps - 1);
 		} while (rngBattleMap >= 15 && rngBattleMap <= 17); // Elemental map causes a deva infinite loop
 
 		battleMaps.at(rngBattleMap).insert(mapId);
@@ -920,7 +920,7 @@ void Forest::setOst(Forest::Ost state) const
 	}
 	else // Shuffle
 	{
-		ostsId = Random::get().shuffle(vanillaOstId);
+		ostsId = m_game->random()->shuffle(vanillaOstId);
 	}
 
 	setOst(ostsId);
@@ -935,7 +935,7 @@ void Forest::setOst(const Forest::OstArray& ostsId) const
 	{
 		if (ostsId[i] == Forest::randomOstVal)
 		{
-			forestOsts[i] = availableOsts[Random::get().generate(availableOsts.size() - 1)];
+			forestOsts[i] = availableOsts[m_game->random()->generate(availableOsts.size() - 1)];
 		}
 		else
 		{
@@ -1077,7 +1077,7 @@ void Forest::setRandomEternalCorridorOstPerCorridor() const
 	const MipsFn::RandomEternalCorridorOst randomEternalCorridorOst
 	{
 		.corridor = 0,
-		.currentOst = availableOsts[Random::get().generate(availableOsts.size() - 2)], // -2 Last element is only for 4 bytes padding
+		.currentOst = availableOsts[m_game->random()->generate(availableOsts.size() - 2)], // -2 Last element is only for 4 bytes padding
 		.osts = availableOsts,
 		.function =
 		{

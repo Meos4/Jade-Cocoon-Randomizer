@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Common/JcrException.hpp"
-#include "Common/Singleton.hpp"
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
 
@@ -11,11 +10,13 @@
 #include <type_traits>
 #include <vector>
 
-class Random final : public Singleton<Random>
+class Random final
 {
 public:
 	using Type = std::mt19937_64::result_type;
 	static constexpr auto limit{ std::numeric_limits<Random::Type>::max() };
+
+	Random();
 
 	template <Arithmetic T>
 	T generate(T min, T max)
@@ -104,10 +105,5 @@ public:
 
 	void setSeed(Random::Type seed);
 private:
-	Random();
-	~Random() = default;
-
-	friend class Singleton;
-
 	std::mt19937_64 m_mte;
 };
