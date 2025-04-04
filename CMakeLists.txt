@@ -36,7 +36,6 @@ set(SOURCES_COMMON
     ${COMMON_DIR}/RawFile.hpp
     ${COMMON_DIR}/RawTypeBrowser.cpp
     ${COMMON_DIR}/RawTypeBrowser.hpp
-    ${COMMON_DIR}/Singleton.hpp
     ${COMMON_DIR}/Software.hpp
     ${COMMON_DIR}/TemplateTypes.hpp
     ${COMMON_DIR}/Types.hpp)
