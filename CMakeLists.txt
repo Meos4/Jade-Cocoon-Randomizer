@@ -19,7 +19,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/dep/Jade-Cocoon-Unpacker-Repacker)
 # mkpsxiso / dumpsxiso
 add_subdirectory(${PROJECT_SOURCE_DIR}/dep/mkpsxiso)
 
-# Exe
+# Bin
 set(COMMON_DIR ${PROJECT_SOURCE_DIR}/src/Common)
 set(BACKEND_DIR ${PROJECT_SOURCE_DIR}/src/Backend)
 set(FRONTENDQT_DIR ${PROJECT_SOURCE_DIR}/src/FrontendQt)
