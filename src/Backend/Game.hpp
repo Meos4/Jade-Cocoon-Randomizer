@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Backend/File.hpp"
 #include "Backend/GameTree.hpp"
 #include "Backend/Offset.hpp"
 #include "Backend/Version.hpp"
@@ -25,11 +26,11 @@ public:
 
 	Game(const std::filesystem::path& exePath, std::filesystem::path&& directoryPath, Version version);
 	
-	std::unique_ptr<RawFile> file(s32 file) const;
+	std::unique_ptr<RawFile> file(File file) const;
 	RawFile executable() const;
-	std::unique_ptr<RawFile> staticFile(s32 file) const;
+	std::unique_ptr<RawFile> staticFile(File file) const;
 	RawFile staticExecutable() const;
-	const char* filePathByIndex(s32 file) const;
+	const char* filePathByIndex(File file) const;
 
 	void expandExecutable() const;
 	Game::CustomCodeOffset customCodeOffset(u32 size);
@@ -45,6 +46,7 @@ public:
 		return ((m_version == versions) || ...);
 	}
 	bool isNtsc() const;
+	bool isNtscJ() const;
 
 	const char* versionText() const;
 	const char* serialText() const;
@@ -56,7 +58,7 @@ public:
 	static Game createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory);
 	static std::optional<Game> createGame(std::filesystem::path&& gameDirectory);
 private:
-	s32 fileByVersion(s32 file) const;
+	File fileByVersion(File file) const;
 
 	GameTree m_staticTree;
 	GameTree m_builderTree;

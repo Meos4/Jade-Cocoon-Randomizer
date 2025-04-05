@@ -304,7 +304,7 @@ void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMo
 
 	over_battle_bin->write(game.offset().file.over_battle_bin.tableOfBattleWeaponsEffectPtr, animationsId);
 
-	static constexpr std::array<s32, 17> effectFiles
+	static constexpr std::array<File, 17> effectFiles
 	{
 		File::EFFECT_PL_AIRON_EFD, File::EFFECT_PL_AMETA_EFD,
 		File::EFFECT_PL_AORGU_EFD, File::EFFECT_PL_KAGU_EFD,

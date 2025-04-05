@@ -31,9 +31,9 @@ Game::Game(const std::filesystem::path& exeFilename, std::filesystem::path&& dir
 	m_staticTree.removeDATA001();
 }
 
-std::unique_ptr<RawFile> Game::file(s32 file) const
+std::unique_ptr<RawFile> Game::file(File file) const
 {
-	return m_builderTree.file(m_data001FilesPath.at(fileByVersion(file)));
+	return m_builderTree.file(filePathByIndex(file));
 }
 
 RawFile Game::executable() const
@@ -41,9 +41,9 @@ RawFile Game::executable() const
 	return m_builderTree.executable();
 }
 
-std::unique_ptr<RawFile> Game::staticFile(s32 file) const
+std::unique_ptr<RawFile> Game::staticFile(File file) const
 {
-	return m_staticTree.file(m_data001FilesPath.at(fileByVersion(file)));
+	return m_staticTree.file(filePathByIndex(file));
 }
 
 RawFile Game::staticExecutable() const
@@ -51,9 +51,9 @@ RawFile Game::staticExecutable() const
 	return m_staticTree.executable();
 }
 
-const char* Game::filePathByIndex(s32 file) const
+const char* Game::filePathByIndex(File file) const
 {
-	return m_data001FilesPath.at(fileByVersion(file));
+	return m_data001FilesPath[static_cast<File_t>(fileByVersion(file))];
 }
 
 void Game::expandExecutable() const
@@ -169,6 +169,11 @@ bool Game::isNtsc() const
 	return isVersion(Version::NtscJ1, Version::NtscJ2, Version::NtscU);
 }
 
+bool Game::isNtscJ() const
+{
+	return isVersion(Version::NtscJ1, Version::NtscJ2);
+}
+
 const char* Game::versionText() const
 {
 	return VersionUtil::text(m_version);
@@ -253,7 +258,10 @@ std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
 	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version) } };
 }
 
-s32 Game::fileByVersion(s32 file) const
+File Game::fileByVersion(File file) const
 {
-	return file >= File::CRAVE_CRAVE_TIM && isVersion(Version::NtscJ1, Version::NtscJ2) ? file - 2 : file;
+	const auto fileUnderlying{ static_cast<File_t>(file) };
+	
+	return fileUnderlying >= static_cast<File_t>(File::CRAVE_CRAVE_TIM) && isNtscJ() 
+	? static_cast<File>(fileUnderlying - 2) : file;
 };

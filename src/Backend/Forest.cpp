@@ -783,7 +783,7 @@ void Forest::setPaletteColor() const
 	// Eternal Corridor
 	struct FileOffsets
 	{
-		s32 file;
+		File file;
 		std::unordered_set<u32> offsets;
 	};
 
@@ -804,40 +804,44 @@ void Forest::setPaletteColor() const
 
 		rng = m_game->random()->generate(JCUtil::clutRotationLimit);
 
-		auto rotateBPP8ShadeAndLight = [&]<Integral... Args>(RawFile* file, Args... offsets)
+		auto rotateBPP8ShadeAndLight = [&]<Integral... Args>(File fileId, Args... offsets)
 		{
+			const auto currentFileId{ static_cast<File>(static_cast<File_t>(fileId) + elementFileId) };
+			const auto file{ m_game->file(currentFileId) };
+			auto* const filePtr{ file.get() };
+
 			static constexpr std::array<s32, nbElementsEC>
 				shiftShadeRotations{ 0, 90, 0, 0, 0 }, shiftLightRotations{ 0, 0, 30, 0, 0 };
 
-			Tim::rotateBPP8(file, rng, offsets...);
+			Tim::rotateBPP8(filePtr, rng, offsets...);
 			((offsets = offsets - (offsets % Game::sectorSize) + 0x30), ...);
 			if (i == 2)
 			{
-				addRGBShadeAndLight(file, { 0, 35, 0 }, { 0, 0, 1740 }, offsets...);
+				addRGBShadeAndLight(filePtr, { 0, 35, 0 }, { 0, 0, 1740 }, offsets...);
 			}
 			else
 			{
-				rotateShade(file, rng + shiftShadeRotations[i], offsets...);
+				rotateShade(filePtr, rng + shiftShadeRotations[i], offsets...);
 			}
 			((offsets += 0xC), ...);
-			rotateLight(file, rng + shiftLightRotations[i], offsets...);
+			rotateLight(filePtr, rng + shiftLightRotations[i], offsets...);
 		};
 
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE00_SCE + elementFileId).get(), 0x124);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE01_SCE + elementFileId).get(), 0x11C, 0x1491C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE02_SCE + elementFileId).get(), 0x11C, 0x1491C, 0x29120, 0x3E11C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE03_SCE + elementFileId).get(), 0x124, 0x1E91C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE04_SCE + elementFileId).get(), 0x124);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE05_SCE + elementFileId).get(), 0x124);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE06_SCE + elementFileId).get(), 0x120, 0x1B11C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE07_SCE + elementFileId).get(), 0x128, 0x1F120, 0x3A920, 0x5611C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE08_SCE + elementFileId).get(), 0x124, 0x1E924);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE09_SCE + elementFileId).get(), 0x12C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE10_SCE + elementFileId).get(), 0x11C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE11_SCE + elementFileId).get(), 0x128, 0x1F920);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE12_SCE + elementFileId).get(), 0x120, 0x1B91C, 0x30120, 0x45924);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE13_SCE + elementFileId).get(), 0x128, 0x2011C);
-		rotateBPP8ShadeAndLight(m_game->file(File::SCENE_OTHER_HUNTING_SCE14_SCE + elementFileId).get(), 0x124);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE00_SCE, 0x124);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE01_SCE, 0x11C, 0x1491C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE02_SCE, 0x11C, 0x1491C, 0x29120, 0x3E11C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE03_SCE, 0x124, 0x1E91C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE04_SCE, 0x124);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE05_SCE, 0x124);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE06_SCE, 0x120, 0x1B11C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE07_SCE, 0x128, 0x1F120, 0x3A920, 0x5611C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE08_SCE, 0x124, 0x1E924);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE09_SCE, 0x12C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE10_SCE, 0x11C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE11_SCE, 0x128, 0x1F920);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE12_SCE, 0x120, 0x1B91C, 0x30120, 0x45924);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE13_SCE, 0x128, 0x2011C);
+		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE14_SCE, 0x124);
 
 		for (const auto& offset : fileBattleOffsets[i].offsets)
 		{

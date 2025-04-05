@@ -206,7 +206,7 @@ namespace Model
 			std::vector<std::vector<Model::DecompressedNine>> nine;
 		};
 
-		inline constexpr std::array<s32, Model::Minion::nbUniqueModel> files
+		inline constexpr std::array<File, Model::Minion::nbUniqueModel> files
 		{
 			File::MODEL_DLEG_MDL, File::MODEL_DLEG_B_MDL, File::MODEL_DLEG_C_MDL, File::MODEL_DONG_MDL,
 			File::MODEL_DONG_B_MDL, File::MODEL_DONG_C_MDL, File::MODEL_HANB_A_MDL, File::MODEL_HANB_B_MDL,
@@ -220,7 +220,7 @@ namespace Model
 			File::MODEL_ALPA_MDL, File::MODEL_PDA_MDL
 		};
 
-		inline constexpr std::array<s32, Entity::totalECBosses - 2> filesEC
+		inline constexpr std::array<File, Entity::totalECBosses - 2> filesEC
 		{
 			File::MODEL_TX00_MDL, File::MODEL_TX01_MDL, File::MODEL_TX02_MDL, File::MODEL_TX03_MDL,
 			File::MODEL_TX04_MDL, File::MODEL_TX05_MDL, File::MODEL_TX06_MDL, File::MODEL_TX07_MDL
