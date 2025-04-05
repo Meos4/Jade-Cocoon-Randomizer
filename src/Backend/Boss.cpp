@@ -2,11 +2,11 @@
 
 #include "Backend/Entity.hpp"
 #include "Backend/File.hpp"
-#include "Backend/JCUtility.hpp"
+#include "Backend/JCUtil.hpp"
 #include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/Model.hpp"
-#include "Backend/Utility.hpp"
+#include "Backend/Util.hpp"
 #include "Common/JcrException.hpp"
 #include "Common/TemplateTypes.hpp"
 
@@ -408,7 +408,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 	{
 		static constexpr auto clutSize{ 0x100u };
 		auto clut{ file->read<std::array<u16, clutSize>>(offset) };
-		JCUtility::rotateCLUT(clut, rotation);
+		JCUtil::rotateCLUT(clut, rotation);
 		file->write(offset, clut);
 	};
 
@@ -504,7 +504,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 		for (const auto& [model, fileoffset] : mfo)
 		{
 			const auto file{ m_game->file(fileoffset.first) };
-			const auto rng{ m_game->random()->generate(JCUtility::clutRotationLimit) };
+			const auto rng{ m_game->random()->generate(JCUtil::clutRotationLimit) };
 
 			rotate(file.get(), fileoffset.second, rng);
 
@@ -521,7 +521,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 		}
 
 		// Cushidra
-		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, m_game->random()->generate(JCUtility::clutRotationLimit));
+		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, m_game->random()->generate(JCUtil::clutRotationLimit));
 	}
 
 	executable.write(goatModelsBehaviorOffset, goatModelsBehavior);
@@ -853,7 +853,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		for (const auto& [model, file] : minions)
 		{
 			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			JCUtility::rotateCLUT(clut, m_game->random()->generate(JCUtility::clutRotationLimit));
+			JCUtil::rotateCLUT(clut, m_game->random()->generate(JCUtil::clutRotationLimit));
 			file->write(Model::Minion::Texture::clutBegin, clut);
 		}
 	}

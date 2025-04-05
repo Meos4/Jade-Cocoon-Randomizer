@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <span>
 
-namespace JCUtility
+namespace JCUtil
 {
 	struct RGBF
 	{
@@ -29,7 +29,7 @@ namespace JCUtility
 
 	inline constexpr auto clutRotationLimit{ 360 };
 
-	constexpr JCUtility::RGBF rgbf(u16 clr)
+	constexpr JCUtil::RGBF rgbf(u16 clr)
 	{
 		constexpr u8 timRGBLimit{ 0x1F };
 
@@ -44,9 +44,9 @@ namespace JCUtility
 
 	constexpr u16 rotateHueClr(u16 clr, s32 rotation)
 	{
-		rotation %= JCUtility::clutRotationLimit;
+		rotation %= JCUtil::clutRotationLimit;
 
-		auto [r, g, b, flag] { JCUtility::rgbf(clr) };
+		auto [r, g, b, flag] { JCUtil::rgbf(clr) };
 
 		const auto maxRGB{ std::max({r, g, b}) };
 
@@ -175,9 +175,9 @@ namespace JCUtility
 		return flag | r | (g << 5) | (b << 10);
 	}
 
-	constexpr u16 blackAndWhiteClr(u16 clr, JCUtility::BlackAndWhiteMethod method)
+	constexpr u16 blackAndWhiteClr(u16 clr, JCUtil::BlackAndWhiteMethod method)
 	{
-		auto [r, g, b, flag] { JCUtility::rgbf(clr) };
+		auto [r, g, b, flag] { JCUtil::rgbf(clr) };
 
 		switch (method)
 		{
@@ -194,5 +194,5 @@ namespace JCUtility
 	}
 
 	void rotateCLUT(std::span<u16> clut, s32 rotation);
-	void blackAndWhiteCLUT(std::span<u16> clut, JCUtility::BlackAndWhiteMethod method);
+	void blackAndWhiteCLUT(std::span<u16> clut, JCUtil::BlackAndWhiteMethod method);
 };

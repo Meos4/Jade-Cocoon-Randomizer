@@ -1,7 +1,7 @@
 #include "TopInfoWidget.hpp"
 
 #include "FrontendQt/MainWindow.hpp"
-#include "FrontendQt/QtUtility.hpp"
+#include "FrontendQt/QtUtil.hpp"
 
 #include <QString>
 
@@ -62,6 +62,6 @@ void TopInfoWidget::setSeed(u64 value)
 void TopInfoWidget::setSeedLineEditText(const QString& text)
 {
 	auto textQStr{ text };
-	QtUtility::qStrU64Filter(&textQStr);
+	QtUtil::qStrU64Filter(&textQStr);
 	m_ui.seedLineEdit->setText(textQStr);
 }

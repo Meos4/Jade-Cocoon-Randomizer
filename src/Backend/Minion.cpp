@@ -1,7 +1,7 @@
 #include "Minion.hpp"
 
 #include "Backend/File.hpp"
-#include "Backend/JCUtility.hpp"
+#include "Backend/JCUtil.hpp"
 #include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/Model.hpp"
@@ -796,7 +796,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		for (const auto& [model, file] : minions)
 		{
 			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			JCUtility::rotateCLUT(clut, m_game->random()->generate(JCUtility::clutRotationLimit));
+			JCUtil::rotateCLUT(clut, m_game->random()->generate(JCUtil::clutRotationLimit));
 			file->write(Model::Minion::Texture::clutBegin, clut);
 		}
 	}

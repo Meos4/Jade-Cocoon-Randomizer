@@ -65,8 +65,8 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Iso.hpp
     ${BACKEND_DIR}/Item.cpp
     ${BACKEND_DIR}/Item.hpp
-    ${BACKEND_DIR}/JCUtility.cpp
-    ${BACKEND_DIR}/JCUtility.hpp
+    ${BACKEND_DIR}/JCUtil.cpp
+    ${BACKEND_DIR}/JCUtil.hpp
     ${BACKEND_DIR}/Levant.cpp
     ${BACKEND_DIR}/Levant.hpp
     ${BACKEND_DIR}/libgte.cpp
@@ -95,8 +95,8 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Tim.hpp
     ${BACKEND_DIR}/Treasure.cpp
     ${BACKEND_DIR}/Treasure.hpp
-    ${BACKEND_DIR}/Utility.cpp
-    ${BACKEND_DIR}/Utility.hpp
+    ${BACKEND_DIR}/Util.cpp
+    ${BACKEND_DIR}/Util.hpp
     ${BACKEND_DIR}/Version.cpp
     ${BACKEND_DIR}/Version.hpp)
 
@@ -138,8 +138,8 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/MiscWidget.cpp
     ${FRONTENDQT_DIR}/MiscWidget.hpp
     ${FRONTENDQT_DIR}/MiscWidget.ui
-    ${FRONTENDQT_DIR}/QtUtility.cpp
-    ${FRONTENDQT_DIR}/QtUtility.hpp
+    ${FRONTENDQT_DIR}/QtUtil.cpp
+    ${FRONTENDQT_DIR}/QtUtil.hpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.cpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.hpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.ui

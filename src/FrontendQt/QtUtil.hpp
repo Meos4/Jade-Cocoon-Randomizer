@@ -6,9 +6,9 @@
 
 #include <filesystem>
 
-#define UI_NAME(Variable) QtUtility::m_uiName(#Variable)
+#define UI_NAME(Variable) QtUtil::m_uiName(#Variable)
 
-namespace QtUtility
+namespace QtUtil
 {
 	consteval auto m_uiName(const char* var)
 	{

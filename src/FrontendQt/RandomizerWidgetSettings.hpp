@@ -2,7 +2,7 @@
 
 #include "Common/Json.hpp"
 #include "Common/Types.hpp"
-#include "FrontendQt/QtUtility.hpp"
+#include "FrontendQt/QtUtil.hpp"
 
 #include <QCheckBox>
 #include <QComboBox>

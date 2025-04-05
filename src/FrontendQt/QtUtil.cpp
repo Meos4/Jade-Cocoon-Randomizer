@@ -1,4 +1,4 @@
-#include "QtUtility.hpp"
+#include "QtUtil.hpp"
 
 #include "Common/Types.hpp"
 
@@ -7,7 +7,7 @@
 
 #include <limits>
 
-namespace QtUtility
+namespace QtUtil
 {
 	void qStrU64Filter(QString* qStr)
 	{

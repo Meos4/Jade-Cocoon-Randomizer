@@ -5,7 +5,7 @@
 #include "Backend/Mips.hpp"
 #include "Backend/MipsFn.hpp"
 #include "Backend/Path.hpp"
-#include "Backend/Utility.hpp"
+#include "Backend/Util.hpp"
 #include "Common/Buffer.hpp"
 #include "Common/FileSystem.hpp"
 #include "Common/JcrException.hpp"

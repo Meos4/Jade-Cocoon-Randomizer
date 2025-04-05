@@ -12,7 +12,7 @@
 #include "FrontendQt/MiscWidget.hpp"
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
-#include "FrontendQt/QtUtility.hpp"
+#include "FrontendQt/QtUtil.hpp"
 
 #include "Common/Json.hpp"
 
@@ -100,7 +100,7 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 	}
 	catch (const Json::Exception& e)
 	{
-		QMessageBox::critical(this, "Error", QtUtility::jsonErrorMessage(path, e));
+		QMessageBox::critical(this, "Error", QtUtil::jsonErrorMessage(path, e));
 	}
 }
 

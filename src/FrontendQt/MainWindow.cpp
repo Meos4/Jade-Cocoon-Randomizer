@@ -2,7 +2,7 @@
 
 #include "Backend/Iso.hpp"
 #include "Backend/Path.hpp"
-#include "Backend/Utility.hpp"
+#include "Backend/Util.hpp"
 #include "Common/JcrException.hpp"
 #include "Common/Json.hpp"
 #include "FrontendQt/AboutDialog.hpp"
@@ -11,7 +11,7 @@
 #include "FrontendQt/RandomizerTabWidget.hpp"
 #include "FrontendQt/SaveGameDialog.hpp"
 #include "FrontendQt/TopInfoWidget.hpp"
-#include "FrontendQt/QtUtility.hpp"
+#include "FrontendQt/QtUtil.hpp"
 
 #include <QActionGroup>
 #include <QDesktopServices>
@@ -86,7 +86,7 @@ MainWindow::MainWindow(QWidget* parent)
 		}
 		catch (const Json::Exception& e)
 		{
-			QMessageBox::critical(this, "Error", QtUtility::jsonErrorMessage(guiSettingsPath, e));
+			QMessageBox::critical(this, "Error", QtUtil::jsonErrorMessage(guiSettingsPath, e));
 		}
 	}
 
@@ -151,7 +151,7 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 		emit saveGameDialog->progressBarChanged(75);
 		emit saveGameDialog->onStateChanged("Repack iso...");
 
-		const auto destPath{ std::filesystem::path{ QtUtility::qStrToPlatformStr(filePath) } };
+		const auto destPath{ std::filesystem::path{ QtUtil::qStrToPlatformStr(filePath) } };
 		m_game->builderTree().createIso(&destPath);
 		m_game->builderTree().remove();
 
@@ -240,7 +240,7 @@ void MainWindow::loadPresets()
 	const auto presetsPathQStr{ QFileDialog::getOpenFileName(this, "Open Presets File", QString{}, "*.json", nullptr) };
 	if (!presetsPathQStr.isEmpty())
 	{
-		const std::filesystem::path presetsPath{ QtUtility::qStrToPlatformStr(presetsPathQStr) };
+		const std::filesystem::path presetsPath{ QtUtil::qStrToPlatformStr(presetsPathQStr) };
 		m_randomizerTabWidget->loadPresets(presetsPath);
 	}	
 }
@@ -250,7 +250,7 @@ void MainWindow::savePresets()
 	const auto presetsPathQStr{ QFileDialog::getSaveFileName(this, "Save Presets File", QString{}, "*.json", nullptr)};
 	if (!presetsPathQStr.isEmpty())
 	{
-		const std::filesystem::path presetsPath{ QtUtility::qStrToPlatformStr(presetsPathQStr) };
+		const std::filesystem::path presetsPath{ QtUtil::qStrToPlatformStr(presetsPathQStr) };
 		m_randomizerTabWidget->savePresets(presetsPath);
 	}
 }
@@ -260,7 +260,7 @@ void MainWindow::onFileOpen()
 	const auto filePathQStr{ QFileDialog::getOpenFileName(this, "Open Jade Cocoon Binary File", QString{}, "*.bin *.cue", nullptr)};
 	if (!filePathQStr.isEmpty())
 	{
-		std::filesystem::path filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
+		std::filesystem::path filePath{ QtUtil::qStrToPlatformStr(filePathQStr) };
 		enableUI(&filePath);
 	}
 }
@@ -292,7 +292,7 @@ void MainWindow::onFileSaveAs()
 	}
 	else
 	{
-		const std::filesystem::path filePath{ QtUtility::qStrToPlatformStr(filePathQStr) };
+		const std::filesystem::path filePath{ QtUtil::qStrToPlatformStr(filePathQStr) };
 
 		if (!isSeedEnabled)
 		{
