@@ -177,7 +177,7 @@ const char* AddonsWidget::name() const
 	return "Addons";
 }
 
-void AddonsWidget::loadPresets(const nlohmann::json& json)
+void AddonsWidget::loadPresets(const Json::Read& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -190,7 +190,7 @@ void AddonsWidget::loadPresets(const nlohmann::json& json)
 	}
 }
 
-void AddonsWidget::savePresets(nlohmann::ordered_json* json)
+void AddonsWidget::savePresets(Json::Write* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

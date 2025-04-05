@@ -23,12 +23,12 @@ public:
 
 	virtual ~RandomizerWidgetSettings() = default;
 
-	void load(const nlohmann::json& json)
+	void load(const Json::Read& json)
 	{
 		Json::set<T>(json, m_name, [this](auto&& v) { set(v); });
 	}
 
-	void save(nlohmann::ordered_json* json) const
+	void save(Json::Write* json) const
 	{
 		(*json)[m_name] = get();
 	}

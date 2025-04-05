@@ -1,6 +1,6 @@
 #pragma once
 
-#include "nlohmann/json.hpp"
+#include "Common/Json.hpp"
 
 class QString;
 class QWidget;
@@ -19,8 +19,8 @@ public:
 
 	void setOsTheme();
 	void updateTheme(Theme theme);
-	void loadSettings(const nlohmann::json& json);
-	void saveSettings(nlohmann::ordered_json* json);
+	void loadSettings(const Json::Read& json);
+	void saveSettings(Json::Write* json);
 
 	Theme theme() const;
 private:

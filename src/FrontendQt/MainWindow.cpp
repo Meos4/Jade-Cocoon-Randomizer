@@ -4,6 +4,7 @@
 #include "Backend/Path.hpp"
 #include "Backend/Utility.hpp"
 #include "Common/JcrException.hpp"
+#include "Common/Json.hpp"
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
 #include "FrontendQt/GuiPath.hpp"
@@ -78,11 +79,11 @@ MainWindow::MainWindow(QWidget* parent)
 		try
 		{
 			std::ifstream jsonFile(guiSettingsPath);
-			nlohmann::json json;
+			Json::Read json;
 			jsonFile >> json;
 			m_guiSettings.loadSettings(json);
 		}
-		catch (nlohmann::json::exception& e)
+		catch (Json::Exception& e)
 		{
 			QString errorMessage
 			{
@@ -237,7 +238,7 @@ void MainWindow::disableUI()
 
 void MainWindow::saveSettings()
 {
-	nlohmann::ordered_json json;
+	Json::Write json;
 	std::ofstream jsonFile(GuiPath::jcrGuiSettingsFilename);
 	m_guiSettings.saveSettings(&json);
 	jsonFile << std::setw(4) << json;

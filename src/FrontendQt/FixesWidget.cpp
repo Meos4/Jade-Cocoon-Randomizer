@@ -96,7 +96,7 @@ const char* FixesWidget::name() const
 	return "Fixes";
 }
 
-void FixesWidget::loadPresets(const nlohmann::json& json)
+void FixesWidget::loadPresets(const Json::Read& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -109,7 +109,7 @@ void FixesWidget::loadPresets(const nlohmann::json& json)
 	}
 }
 
-void FixesWidget::savePresets(nlohmann::ordered_json* json)
+void FixesWidget::savePresets(Json::Write* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

@@ -93,7 +93,7 @@ void GuiSettings::updateTheme(Theme theme)
 	m_theme = theme;
 }
 
-void GuiSettings::loadSettings(const nlohmann::json& json)
+void GuiSettings::loadSettings(const Json::Read& json)
 {
 	if (json.contains("theme"))
 	{
@@ -103,7 +103,7 @@ void GuiSettings::loadSettings(const nlohmann::json& json)
 	}
 }
 
-void GuiSettings::saveSettings(nlohmann::ordered_json* json)
+void GuiSettings::saveSettings(Json::Write* json)
 {
 	(*json)["theme"] = m_theme;
 }

@@ -18,8 +18,8 @@ public:
 	void disableUI() override;
 	void write() const override;
 	const char* name() const override;
-	void loadPresets(const nlohmann::json& json) override;
-	void savePresets(nlohmann::ordered_json* json) override;
+	void loadPresets(const Json::Read& json) override;
+	void savePresets(Json::Write* json) override;
 private:
 	Ui::ShopWidget m_ui;
 

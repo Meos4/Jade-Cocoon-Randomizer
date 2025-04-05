@@ -3,7 +3,7 @@
 #include "Backend/Game.hpp"
 #include "Backend/SharedData.hpp"
 
-#include "nlohmann/json.hpp"
+#include "Common/Json.hpp"
 
 #include <QWidget>
 
@@ -20,6 +20,6 @@ public:
 	virtual void disableUI() = 0;
 	virtual void write() const = 0;
 	virtual const char* name() const = 0;
-	virtual void loadPresets(const nlohmann::json& json) = 0;
-	virtual void savePresets(nlohmann::ordered_json* json) = 0;
+	virtual void loadPresets(const Json::Read& json) = 0;
+	virtual void savePresets(Json::Write* json) = 0;
 };

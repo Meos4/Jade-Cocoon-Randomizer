@@ -155,7 +155,7 @@ const char* BossWidget::name() const
 	return "Boss";
 }
 
-void BossWidget::loadPresets(const nlohmann::json& json)
+void BossWidget::loadPresets(const Json::Read& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -163,7 +163,7 @@ void BossWidget::loadPresets(const nlohmann::json& json)
 	}
 }
 
-void BossWidget::savePresets(nlohmann::ordered_json* json)
+void BossWidget::savePresets(Json::Write* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

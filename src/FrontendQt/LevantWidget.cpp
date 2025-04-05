@@ -87,7 +87,7 @@ const char* LevantWidget::name() const
 	return "Levant";
 }
 
-void LevantWidget::loadPresets(const nlohmann::json& json)
+void LevantWidget::loadPresets(const Json::Read& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -95,7 +95,7 @@ void LevantWidget::loadPresets(const nlohmann::json& json)
 	}
 }
 
-void LevantWidget::savePresets(nlohmann::ordered_json* json)
+void LevantWidget::savePresets(Json::Write* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

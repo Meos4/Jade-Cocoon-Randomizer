@@ -13,7 +13,7 @@
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
 
-#include "nlohmann/json.hpp"
+#include "Common/Json.hpp"
 
 #include <QMessageBox>
 
@@ -87,7 +87,7 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 	try
 	{
 		std::ifstream jsonFile(path);
-		nlohmann::json json;
+		Json::Read json;
 		jsonFile >> json;
 
 		for (const auto widget : m_randomizerWidgets)
@@ -95,7 +95,7 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 			widget->loadPresets(json[widget->name()]);
 		}
 	}
-	catch (nlohmann::json::exception& e)
+	catch (const Json::Exception& e)
 	{
 		QString errorMessage
 		{
@@ -112,7 +112,7 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 
 void RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
 {
-	nlohmann::ordered_json json;
+	Json::Write json;
 
 	for (const auto widget : m_randomizerWidgets)
 	{

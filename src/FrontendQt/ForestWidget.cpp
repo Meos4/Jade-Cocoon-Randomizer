@@ -178,7 +178,7 @@ const char* ForestWidget::name() const
 	return "Forest";
 }
 
-void ForestWidget::loadPresets(const nlohmann::json& json)
+void ForestWidget::loadPresets(const Json::Read& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -206,7 +206,7 @@ void ForestWidget::loadPresets(const nlohmann::json& json)
 	ostToUI(m_ui.ostCustomForestCombo->currentIndex());
 }
 
-void ForestWidget::savePresets(nlohmann::ordered_json* json)
+void ForestWidget::savePresets(Json::Write* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{

@@ -87,7 +87,7 @@ const char* ShopWidget::name() const
 	return "Shop";
 }
 
-void ShopWidget::loadPresets(const nlohmann::json& json)
+void ShopWidget::loadPresets(const Json::Read& json)
 {
 	for (auto& checkBox : m_qCheckBox)
 	{
@@ -95,7 +95,7 @@ void ShopWidget::loadPresets(const nlohmann::json& json)
 	}
 }
 
-void ShopWidget::savePresets(nlohmann::ordered_json* json)
+void ShopWidget::savePresets(Json::Write* json)
 {
 	for (const auto& checkBox : m_qCheckBox)
 	{
