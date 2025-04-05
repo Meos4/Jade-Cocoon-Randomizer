@@ -26,7 +26,7 @@ Game::Game(const std::filesystem::path& exeFilename, std::filesystem::path&& dir
 	m_builderTree(Path::builderDirectory(m_staticTree.directory()), exeFilename),
 	m_version(version),
 	m_offset(version),
-	m_data001FilesPath(std::move(JCExe{ Utility::gameToJcExeVersion(version) }.data001FilesPath()))
+	m_data001FilesPath(std::move(JCExe{ VersionUtil::gameToJcExeVersion(version) }.data001FilesPath()))
 {
 	m_staticTree.removeDATA001();
 }
@@ -231,7 +231,7 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 		throw JcrException{ "This version is not supported" };
 	}
 
-	return { exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version)};
+	return { exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version)};
 }
 
 std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
@@ -250,7 +250,7 @@ std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
 		return std::nullopt;
 	}
 
-	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), Utility::jcExeToGameVersion(exeInfo.value().version) } };
+	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version) } };
 }
 
 s32 Game::fileByVersion(s32 file) const
