@@ -37,7 +37,7 @@ EquipmentWidget::EquipmentWidget(QWidget* parent)
 	);
 }
 
-void EquipmentWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void EquipmentWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_equipment = std::make_unique<Equipment>(game, sharedData);
 	setEnabled(true);

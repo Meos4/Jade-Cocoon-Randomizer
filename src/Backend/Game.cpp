@@ -204,7 +204,7 @@ Random* Game::random()
 	return &m_random;
 }
 
-Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory)
+std::unique_ptr<Game> Game::createGame(const std::filesystem::path& isoPath, std::filesystem::path&& gameDirectory)
 {
 	if (Iso::findVersion(isoPath) == std::nullopt)
 	{
@@ -236,26 +236,26 @@ Game Game::createGame(const std::filesystem::path& isoPath, std::filesystem::pat
 		throw JcrException{ "This version is not supported" };
 	}
 
-	return { exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version)};
+	return std::make_unique<Game>(exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version));
 }
 
-std::optional<Game> Game::createGame(std::filesystem::path&& gameDirectory)
+std::unique_ptr<Game> Game::createGame(std::filesystem::path&& gameDirectory)
 {
 	const auto filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
 
 	if (!std::filesystem::exists(filesDirectoryPath))
 	{
-		return std::nullopt;
+		return nullptr;
 	}
 
 	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesDirectoryPath) };
 
 	if (!exeInfo.has_value() || exeInfo.value().version == JCExe::Version::Prototype_D05_M08_Y1999_15H48)
 	{
-		return std::nullopt;
+		return nullptr;
 	}
 
-	return { Game{ exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version) } };
+	return std::make_unique<Game>(exeInfo.value().path.filename(), std::move(gameDirectory), VersionUtil::jcExeToGameVersion(exeInfo.value().version));
 }
 
 File Game::fileByVersion(File file) const

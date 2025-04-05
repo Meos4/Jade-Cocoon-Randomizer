@@ -8,7 +8,7 @@
 class Shop final
 {
 public:
-	Shop(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Shop(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	void setWeapon() const;
 	void setArmor() const;
@@ -16,6 +16,6 @@ public:
 	void setItem() const;
 	void setEternalCorridorUnlockAll() const;
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

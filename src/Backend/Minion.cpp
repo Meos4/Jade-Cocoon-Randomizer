@@ -169,8 +169,8 @@ struct MinionModelProperties
 	std::array<u8, 100> empty;
 };
 
-Minion::Minion(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
+Minion::Minion(Game* game, std::shared_ptr<SharedData> sharedData)
+	: m_game(game), m_sharedData(std::move(sharedData))
 {
 }
 

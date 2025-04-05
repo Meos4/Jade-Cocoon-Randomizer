@@ -4,8 +4,8 @@
 #include "Backend/Model.hpp"
 #include "Common/JcrException.hpp"
 
-SharedData::SharedData(std::shared_ptr<Game> game)
-	: m_game(std::move(game))
+SharedData::SharedData(Game* game)
+	: m_game(game)
 {
 }
 

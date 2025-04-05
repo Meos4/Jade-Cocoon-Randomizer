@@ -97,17 +97,17 @@ MainWindow::MainWindow(QWidget* parent)
 
 bool MainWindow::createGameFromDirectory(std::filesystem::path&& gameDirectory)
 {
-	const auto game{ Game::createGame(std::move(gameDirectory)) };
+	auto game{ Game::createGame(std::move(gameDirectory)) };
 
-	if (game.has_value())
+	if (game)
 	{
-		enableUI(std::make_shared<Game>(game.value()));
+		enableUI(std::move(game));
 		return true;
 	}
 	return false;
 }
 
-std::shared_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog)
+std::unique_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog)
 {
 	try
 	{
@@ -118,7 +118,7 @@ std::shared_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, Ex
 			isoPath->replace_extension(".bin");
 		}
 
-		auto game{ std::make_shared<Game>(Game::createGame(*isoPath, Path::defaultGameDirectory)) };
+		auto game{ Game::createGame(*isoPath, Path::defaultGameDirectory) };
 
 		emit extractGameDialog->shouldClose();
 
@@ -176,7 +176,7 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 	extractGameDialog.exec();
 
 	future.wait();
-	const auto game{ future.get() };
+	auto game{ future.get() };
 
 	if (!game)
 	{
@@ -192,15 +192,15 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 		return;
 	}
 
-	enableUI(game);
+	enableUI(std::move(game));
 }
 
-void MainWindow::enableUI(std::shared_ptr<Game> game)
+void MainWindow::enableUI(std::unique_ptr<Game> game)
 {
 	try
 	{
-		m_game = game;
-		m_randomizerTabWidget->enableUI(m_game);
+		m_game = std::move(game);
+		m_randomizerTabWidget->enableUI(m_game.get());
 		const QString verSerial{ QString::fromStdString(std::format("{} [{}]", m_game->versionText(), m_game->serialText())) };
 		m_topInfoWidget->enableUI(verSerial);
 		m_ui.actionFileClose->setEnabled(true);

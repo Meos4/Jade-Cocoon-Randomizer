@@ -49,7 +49,7 @@ FixesWidget::FixesWidget(QWidget* parent)
 	connect(m_ui.hpMpBarsSizeSlider, &QSlider::valueChanged, this, &FixesWidget::setHpMpBarsSizeText);
 }
 
-void FixesWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void FixesWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_ui.specialAttackModifiersDisplayBox->setEnabled(game->isVersion(Version::PalFr));
 	m_fixes = std::make_unique<Fixes>(game, sharedData);

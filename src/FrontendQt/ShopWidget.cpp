@@ -34,7 +34,7 @@ ShopWidget::ShopWidget(QWidget* parent)
 	);
 }
 
-void ShopWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void ShopWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_shop = std::make_unique<Shop>(game, sharedData);
 	setEnabled(true);

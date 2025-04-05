@@ -119,7 +119,7 @@ MinionWidget::MinionWidget(QWidget* parent)
 	connect(m_ui.appearanceGrowthSizeInvert, &QAbstractButton::toggled, this, &MinionWidget::updateAppearanceGrowthSizeInvert);
 }
 
-void MinionWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void MinionWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	const bool isNtscJ{ game->isVersion(Version::NtscJ1, Version::NtscJ2) };
 	m_minion = std::make_unique<Minion>(game, sharedData);

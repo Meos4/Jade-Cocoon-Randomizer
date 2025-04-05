@@ -128,8 +128,8 @@ static void setDamageModifiersNone(DamageModifiers* damageModifiers, Element_t e
 	}
 }
 
-Boss::Boss(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
+Boss::Boss(Game* game, std::shared_ptr<SharedData> sharedData)
+	: m_game(game), m_sharedData(std::move(sharedData))
 {
 }
 

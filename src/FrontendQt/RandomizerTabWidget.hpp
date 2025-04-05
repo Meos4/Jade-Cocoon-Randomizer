@@ -34,7 +34,7 @@ public:
 
 	RandomizerTabWidget(QWidget* parent = nullptr);
 
-	void enableUI(std::shared_ptr<Game> game);
+	void enableUI(Game* game);
 	void disableUI();
 	void write() const;
 	void loadPresets(const std::filesystem::path& path);
@@ -43,6 +43,6 @@ private:
 	Ui::RandomizerTabWidget m_ui;
 
 	std::array<RandomizerWidget*, TAB_COUNT> m_randomizerWidgets;
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

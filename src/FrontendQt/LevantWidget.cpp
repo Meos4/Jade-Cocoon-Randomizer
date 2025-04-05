@@ -35,7 +35,7 @@ LevantWidget::LevantWidget(QWidget* parent)
 	);
 }
 
-void LevantWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void LevantWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_levant = std::make_unique<Levant>(game, sharedData);
 	setEnabled(true);

@@ -68,7 +68,7 @@ TreasureWidget::TreasureWidget(QWidget* parent)
 	connect(m_ui.battleShuffle, &QAbstractButton::toggled, m_ui.battleShuffleSkeletonKeys, &QWidget::setEnabled);
 }
 
-void TreasureWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void TreasureWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_treasure = std::make_unique<Treasure>(game, sharedData);
 	setEnabled(true);

@@ -15,8 +15,8 @@
 class TreasureRandomizer final
 {
 public:
-	TreasureRandomizer(std::shared_ptr<Game> game)
-		: m_game(std::move(game))
+	TreasureRandomizer(Game* game)
+		: m_game(game)
 	{
 		static constexpr std::array<Chapter_t, 7> chapters
 		{
@@ -107,14 +107,14 @@ private:
 		bool fourBytes;
 	};
 
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 
 	std::unordered_map<Chapter_t, ChapterPoolArray> m_chaptersPool;
 	std::unordered_map<Chapter_t, std::vector<std::vector<TreasureInfo>>> m_treasuresInfo;
 };
 
-Treasure::Treasure(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
+Treasure::Treasure(Game* game, std::shared_ptr<SharedData> sharedData)
+	: m_game(game), m_sharedData(std::move(sharedData))
 {
 }
 

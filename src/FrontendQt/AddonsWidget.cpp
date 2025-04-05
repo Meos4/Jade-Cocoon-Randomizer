@@ -98,7 +98,7 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 	connect(m_ui.eternalCorridorLevelCapSlider, &QAbstractSlider::valueChanged, this, &AddonsWidget::setEternalCorridorLevelCapText);
 }
 
-void AddonsWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void AddonsWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_ui.palToNtscBox->setEnabled(!game->isNtsc());
 	m_addons = std::make_unique<Addons>(game, sharedData);

@@ -14,7 +14,7 @@ class EquipmentWidget final : public RandomizerWidget
 public:
 	EquipmentWidget(QWidget* parent = nullptr);
 
-	void enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
 	void disableUI() override;
 	void write() const override;
 	const char* name() const override;

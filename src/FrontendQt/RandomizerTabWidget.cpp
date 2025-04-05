@@ -48,7 +48,7 @@ RandomizerTabWidget::RandomizerTabWidget(QWidget* parent)
 	m_ui.fixesScroll->setWidget(m_randomizerWidgets[TAB_FIXES]);
 }
 
-void RandomizerTabWidget::enableUI(std::shared_ptr<Game> game)
+void RandomizerTabWidget::enableUI(Game* game)
 {
 	m_game = game;
 	m_sharedData = std::make_shared<SharedData>(game);
@@ -64,7 +64,7 @@ void RandomizerTabWidget::disableUI()
 	{
 		widget->disableUI();
 	}
-	m_game.reset();
+	m_game = nullptr;
 	m_sharedData.reset();
 }
 

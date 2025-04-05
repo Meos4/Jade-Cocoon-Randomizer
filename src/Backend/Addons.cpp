@@ -35,8 +35,8 @@ static constexpr MipsFn::AfterTutorialStateData afterTutorialStateData
 	0x04, 0x00, 0x01, 0x00, 0x06, 0x00, 0x71, 0x00
 };
 
-Addons::Addons(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
+Addons::Addons(Game* game, std::shared_ptr<SharedData> sharedData)
+	: m_game(game), m_sharedData(std::move(sharedData))
 {
 }
 

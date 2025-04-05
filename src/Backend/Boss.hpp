@@ -31,7 +31,7 @@ public:
 		APPEARANCE_EC_TEXTURE_RANDOM_COLOR = 1 << 3
 	};
 
-	Boss(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Boss(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	void setElement(Boss::Element state, bool allowNoneElement) const;
 	void setSpecialMagic() const;
@@ -40,6 +40,6 @@ public:
 	void setSpecialMagicEC() const;
 	void setAppearanceEC(Boss::AppearanceEC_t state) const;
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

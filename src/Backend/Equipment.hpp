@@ -25,7 +25,7 @@ public:
 		ARMORS_RANDOM_APPEARANCE = 1 << 1
 	};
 
-	Equipment(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Equipment(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	void setWeapons(Equipment::Weapons_t state) const;
 	void setArmors(Equipment::Armors_t state) const;
@@ -33,6 +33,6 @@ public:
 
 	static void setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect);
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

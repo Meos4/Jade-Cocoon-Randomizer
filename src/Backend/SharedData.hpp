@@ -17,7 +17,7 @@ struct RotationElement
 class SharedData final
 {
 public:
-	SharedData(std::shared_ptr<Game> game);
+	SharedData(Game* game);
 
 	void read();
 
@@ -28,7 +28,7 @@ public:
 
 	void setGoatTextureModelId(Model_t model);
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 
 	std::unordered_map<Model_t, Buffer> m_models;
 	std::unordered_map<Model_t, RotationElement> m_rotations;

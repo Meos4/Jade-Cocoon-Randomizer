@@ -24,7 +24,7 @@ public:
 		Extreme
 	};
 
-	Addons(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Addons(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	void setNuzlocke(Addons::Nuzlocke_t state) const;
 	void setDifficulty(Addons::Difficulty state) const;
@@ -35,6 +35,6 @@ public:
 	void setShowHiddenStats() const;
 	void setPalToNtsc() const;
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

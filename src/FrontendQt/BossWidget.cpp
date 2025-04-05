@@ -71,7 +71,7 @@ BossWidget::BossWidget(QWidget* parent)
 	connect(m_ui.eternalCorridorAppearanceTextureRandom, &QAbstractButton::toggled, m_ui.eternalCorridorAppearanceTextureIncludeCompatible, &QWidget::setEnabled);
 }
 
-void BossWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void BossWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_boss = std::make_unique<Boss>(game, sharedData);
 	setEnabled(true);

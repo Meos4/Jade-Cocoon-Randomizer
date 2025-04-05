@@ -39,7 +39,7 @@ public:
 		APPEARANCE_GROWTH_SIZE_INVERT = 1 << 6
 	};
 
-	Minion(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Minion(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	Id_Entity_t dreamMinion() const;
 	Id_Entity_t korisMinion() const;
@@ -58,6 +58,6 @@ private:
 	MipsFn::GenerateValidMinion generateValidMinionFn() const;
 	bool isValidMinionForStory(Id_Entity_t id) const;
 
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

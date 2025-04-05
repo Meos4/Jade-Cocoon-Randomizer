@@ -29,7 +29,7 @@ public:
 
 	using HudColorArray = std::array<Misc::Color, 15>;
 
-	Misc(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Misc(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	HudColorArray hudColor() const;
 
@@ -37,6 +37,6 @@ public:
 	void setHudColor(const Misc::HudColorArray& hud) const;
 	void setNPCsVoice() const;
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

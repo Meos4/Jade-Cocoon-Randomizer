@@ -99,7 +99,7 @@ ForestWidget::ForestWidget(QWidget* parent)
 	connect(m_ui.ostCustomForestCombo, &QComboBox::currentIndexChanged, this, &ForestWidget::updateOst);
 }
 
-void ForestWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void ForestWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_forest = std::make_unique<Forest>(game, sharedData);
 

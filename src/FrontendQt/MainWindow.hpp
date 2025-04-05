@@ -27,10 +27,10 @@ public:
 	MainWindow(QWidget* parent = nullptr);
 
 	bool createGameFromDirectory(std::filesystem::path&& gameDirectory);
-	std::shared_ptr<Game> extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
+	std::unique_ptr<Game> extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
 	bool saveGame(const QString& filePath, SaveGameDialog* saveGameDialog);
 	void enableUI(std::filesystem::path* isoPath);
-	void enableUI(std::shared_ptr<Game> game);
+	void enableUI(std::unique_ptr<Game> game);
 	void disableUI();
 	void saveSettings();
 public Q_SLOTS:
@@ -51,6 +51,6 @@ private:
 	QActionGroup* m_themeActionsGroup;
 	std::array<QAction*, static_cast<std::size_t>(Theme::Count)> m_themeActions;
 
-	std::shared_ptr<Game> m_game;
+	std::unique_ptr<Game> m_game;
 	GuiSettings m_guiSettings;
 };

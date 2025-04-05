@@ -74,7 +74,7 @@ MiscWidget::MiscWidget(QWidget* parent)
 	connect(m_ui.hudHighlightB, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 }
 
-void MiscWidget::enableUI(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
+void MiscWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 	m_misc = std::make_unique<Misc>(game, sharedData);
 

@@ -27,13 +27,13 @@ public:
 		RandomByCategory
 	};
 
-	Treasure(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData);
+	Treasure(Game* game, std::shared_ptr<SharedData> sharedData);
 
 	void setItems(Treasure::Items state, bool randomSkeletonKeys) const;
 	void setValuables(Treasure::Valuables state, bool randomUsableValuables) const;
 	void setEquipments(Treasure::Equipments state) const;
 	void setBattle(bool shuffleSkeletonKeys) const;
 private:
-	std::shared_ptr<Game> m_game;
+	Game* m_game;
 	std::shared_ptr<SharedData> m_sharedData;
 };

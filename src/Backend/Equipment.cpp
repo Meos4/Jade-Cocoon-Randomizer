@@ -93,8 +93,8 @@ static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentSta
 	}
 }
 
-Equipment::Equipment(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
+Equipment::Equipment(Game* game, std::shared_ptr<SharedData> sharedData)
+	: m_game(game), m_sharedData(std::move(sharedData))
 {
 }
 

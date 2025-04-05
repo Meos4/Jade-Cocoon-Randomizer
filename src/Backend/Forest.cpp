@@ -38,8 +38,8 @@ static constexpr Forest::OstArray vanillaOstId
 	17, 32, 26, 31, 41, 42, 39, 143
 };
 
-Forest::Forest(std::shared_ptr<Game> game, std::shared_ptr<SharedData> sharedData)
-	: m_game(std::move(game)), m_sharedData(std::move(sharedData))
+Forest::Forest(Game* game, std::shared_ptr<SharedData> sharedData)
+	: m_game(game), m_sharedData(std::move(sharedData))
 {
 }
 
