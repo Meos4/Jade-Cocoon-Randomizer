@@ -29,6 +29,7 @@ set(SOURCES_COMMON
     ${COMMON_DIR}/FileSystem.cpp
     ${COMMON_DIR}/FileSystem.hpp
     ${COMMON_DIR}/JcrException.hpp
+    ${COMMON_DIR}/Json.cpp
     ${COMMON_DIR}/Json.hpp
     ${COMMON_DIR}/Random.cpp
     ${COMMON_DIR}/Random.hpp

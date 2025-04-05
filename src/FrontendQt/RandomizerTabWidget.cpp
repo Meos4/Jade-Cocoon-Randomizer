@@ -86,13 +86,15 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 {
 	try
 	{
-		std::ifstream jsonFile(path);
-		Json::Read json;
-		jsonFile >> json;
+		const auto json{ Json::read(path) };
 
-		for (const auto widget : m_randomizerWidgets)
+		if (json.has_value())
 		{
-			widget->loadPresets(json[widget->name()]);
+			const auto jsonValue{ json.value() };
+			for (const auto widget : m_randomizerWidgets)
+			{
+				widget->loadPresets(jsonValue[widget->name()]);
+			}
 		}
 	}
 	catch (const Json::Exception& e)
@@ -119,6 +121,5 @@ void RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
 		widget->savePresets(&json[widget->name()]);
 	}
 
-	std::ofstream jsonFile(path);
-	jsonFile << std::setw(4) << json;
+	Json::overwrite(json, path);
 }

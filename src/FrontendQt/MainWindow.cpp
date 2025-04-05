@@ -78,12 +78,13 @@ MainWindow::MainWindow(QWidget* parent)
 	{
 		try
 		{
-			std::ifstream jsonFile(guiSettingsPath);
-			Json::Read json;
-			jsonFile >> json;
-			m_guiSettings.loadSettings(json);
+			const auto json{ Json::read(guiSettingsPath) };
+			if (json.has_value())
+			{
+				m_guiSettings.loadSettings(json.value());
+			}		
 		}
-		catch (Json::Exception& e)
+		catch (const Json::Exception& e)
 		{
 			QString errorMessage
 			{
@@ -239,9 +240,8 @@ void MainWindow::disableUI()
 void MainWindow::saveSettings()
 {
 	Json::Write json;
-	std::ofstream jsonFile(GuiPath::jcrGuiSettingsFilename);
 	m_guiSettings.saveSettings(&json);
-	jsonFile << std::setw(4) << json;
+	Json::overwrite(json, GuiPath::jcrGuiSettingsFilename);
 }
 
 void MainWindow::loadPresets()
