@@ -6,7 +6,7 @@
 #include <span>
 #include <type_traits>
 
-namespace Utility
+namespace Util
 {
 	template <Integral T>
 	constexpr T bitToInt(T bit)

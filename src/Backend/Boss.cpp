@@ -236,7 +236,7 @@ void Boss::setSpecialMagic() const
 		};
 
 		const auto elementToUse{ element == ELEMENT_NONE ? m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) : element };
-		return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
+		return Mips::li(rgt, static_cast<u16>(Util::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
 	};
 
 	auto executable{ m_game->executable() };
@@ -624,12 +624,12 @@ void Boss::setSpecialMagicEC() const
 		if (allowAdMumuls && m_game->random()->generateProba(adMumulsRate))
 		{
 			allowAdMumuls = false;
-			return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(Magic_t(MAGIC_AD_MUMULS))));
+			return Mips::li(rgt, static_cast<u16>(Util::bitToInt(Magic_t(MAGIC_AD_MUMULS))));
 		}
 		else
 		{
 			const auto elementToUse{ element == ELEMENT_NONE ? m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) : element };
-			return Mips::li(rgt, static_cast<u16>(Utility::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
+			return Mips::li(rgt, static_cast<u16>(Util::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
 		}
 	};
 

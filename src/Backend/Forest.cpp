@@ -85,7 +85,7 @@ void Forest::setPaletteColor() const
 	{
 		auto rgb{ file->read<std::array<u16, 3>>(offset) };
 
-		if (!Utility::areSame<u16>(rgb))
+		if (!Util::areSame<u16>(rgb))
 		{
 			auto timClutRGB
 			{
