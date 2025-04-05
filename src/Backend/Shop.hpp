@@ -2,7 +2,6 @@
 
 #include "Backend/Game.hpp"
 #include "Backend/SharedData.hpp"
-#include "Common/Types.hpp"
 
 #include <memory>
 
