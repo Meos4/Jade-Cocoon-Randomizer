@@ -163,7 +163,7 @@
   <widget class="QWidget" name="forestTab">
    <attribute name="icon">
     <iconset resource="resources/resources.qrc">
-     <normaloff>:/icons/BeetleKey16.png</normaloff>:/icons/BeetleKey16.png</iconset>
+     <normaloff>:/icons/DragonflyKey16.png</normaloff>:/icons/DragonflyKey16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Forest</string>
