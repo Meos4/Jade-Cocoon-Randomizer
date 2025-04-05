@@ -34,8 +34,8 @@ set(SOURCES_COMMON
     ${COMMON_DIR}/Random.hpp
     ${COMMON_DIR}/RawFile.cpp
     ${COMMON_DIR}/RawFile.hpp
-    ${COMMON_DIR}/RawTypeBrowser.cpp
-    ${COMMON_DIR}/RawTypeBrowser.hpp
+    ${COMMON_DIR}/RawTypeNavigator.cpp
+    ${COMMON_DIR}/RawTypeNavigator.hpp
     ${COMMON_DIR}/Software.hpp
     ${COMMON_DIR}/TemplateTypes.hpp
     ${COMMON_DIR}/Types.hpp)

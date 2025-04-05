@@ -2,7 +2,7 @@
 
 #include "Backend/libgte.hpp"
 #include "Common/JcrException.hpp"
-#include "Common/RawTypeBrowser.hpp"
+#include "Common/RawTypeNavigator.hpp"
 
 #include <array>
 #include <numeric>
@@ -560,7 +560,7 @@ namespace Merge
 		const auto nbModels{ models.size() + 1 };
 
 		std::vector<Body> body(nbModels);
-		std::vector<RawTypeBrowser> rawModels{ { mainModel->data(), mainModel->size() } };
+		std::vector<RawTypeNavigator> rawModels{ { mainModel->data(), mainModel->size() } };
 
 		for (std::size_t i{}; i < nbModels - 1; ++i)
 		{
@@ -916,7 +916,7 @@ namespace Merge
 		libgte::SVECTOR sVector1{}, sVector2{};
 
 		Buffer bufferScratchpad(0x400);
-		RawTypeBrowser scratchpad{ bufferScratchpad.data(), bufferScratchpad.size() };
+		RawTypeNavigator scratchpad{ bufferScratchpad.data(), bufferScratchpad.size() };
 
 		for (s32 i{}; i < 9; ++i)
 		{
@@ -1013,7 +1013,7 @@ namespace Merge
 		libgte::ApplyMatrix(&matrixs[19], &sVector3, &vector1);
 		const auto yCoord{ static_cast<s16>(vectors[19].vy + vector1.vy) };
 
-		auto writeYCoord = [yCoord](RawTypeBrowser* raw, u32 offset) 
+		auto writeYCoord = [yCoord](RawTypeNavigator* raw, u32 offset) 
 		{
 			*raw = offset;
 			const auto nbFrames{ raw->read<u16>() };

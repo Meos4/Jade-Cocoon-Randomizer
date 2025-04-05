@@ -3,10 +3,10 @@
 #include <cstddef>
 #include <cstdint>
 
-class RawTypeBrowser final
+class RawTypeNavigator final
 {
 public:
-	RawTypeBrowser(void* ptr, std::size_t size);
+	RawTypeNavigator(void* ptr, std::size_t size);
 
 	template <typename T>
 	T read() const
