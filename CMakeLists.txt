@@ -163,8 +163,7 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/TreasureWidget.hpp
     ${FRONTENDQT_DIR}/TreasureWidget.ui)
 
-set(SOURCES_RESOURCEQT
-    ${PROJECT_SOURCE_DIR}/src/FrontendQt/resources/resources.qrc)
+set(SOURCES_RESOURCEQT ${PROJECT_SOURCE_DIR}/src/FrontendQt/resources/resources.qrc)
 
 if (WIN32)
     enable_language("RC")
@@ -191,8 +190,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${PROJECT_SOURCE_DIR}/dep/json/include
     ${PROJECT_SOURCE_DIR}/dep/mkpsxiso/src)
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    $<$<CONFIG:Debug>:JCR_DEBUG>)
+target_compile_definitions(${PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:JCR_DEBUG>)
 
 target_link_libraries(${PROJECT_NAME} 
     Qt6::Widgets 
