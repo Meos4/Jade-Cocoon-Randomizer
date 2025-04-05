@@ -22,7 +22,7 @@ namespace Json
 	{
 		const auto parentPath{ path.parent_path() };
 
-		if (!std::filesystem::exists(parentPath) && !std::filesystem::create_directories(parentPath))
+		if (!parentPath.empty() && !std::filesystem::exists(parentPath) && !std::filesystem::create_directories(parentPath))
 		{
 			return false;
 		}
