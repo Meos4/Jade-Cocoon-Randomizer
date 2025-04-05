@@ -7,14 +7,12 @@
 #include <fstream>
 #include <string>
 
-class RawFile
+class RawFile final
 {
 public:
 	explicit RawFile(const char* pathFile);
 	explicit RawFile(const std::string& pathFile);
 	explicit RawFile(const std::filesystem::path& pathFile);
-
-	virtual ~RawFile() = default;
 	
 	template <typename T>
 	T read(u64 offset, std::size_t size = sizeof(T))
