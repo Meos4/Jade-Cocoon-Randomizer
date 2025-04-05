@@ -169,12 +169,12 @@ set(SOURCES_RESOURCEQT
 if (WIN32)
     enable_language("RC")
     set(WIN32_RESOURCE ${FRONTENDQT_DIR}/resources/JCRandomizer.rc)
-    add_executable(jade_cocoon_randomizer WIN32 ${WIN32_RESOURCE})
+    add_executable(${PROJECT_NAME} WIN32 ${WIN32_RESOURCE})
 else()
-    add_executable(jade_cocoon_randomizer)
+    add_executable(${PROJECT_NAME})
 endif()
 
-target_sources(jade_cocoon_randomizer PRIVATE 
+target_sources(${PROJECT_NAME} PRIVATE 
     ${SOURCES_FRONTENDQT}
     ${SOURCES_COMMON}
     ${SOURCES_BACKEND}
@@ -185,16 +185,16 @@ source_group(Backend FILES ${SOURCES_BACKEND})
 source_group(FrontendQt FILES ${SOURCES_FRONTENDQT})
 source_group(FrontendQt/resources FILES ${SOURCES_RESOURCEQT})
 
-target_include_directories(jade_cocoon_randomizer PRIVATE 
+target_include_directories(${PROJECT_NAME} PRIVATE 
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/dep/Jade-Cocoon-Unpacker-Repacker/src
     ${PROJECT_SOURCE_DIR}/dep/json/include
     ${PROJECT_SOURCE_DIR}/dep/mkpsxiso/src)
 
-target_compile_definitions(jade_cocoon_randomizer PRIVATE
+target_compile_definitions(${PROJECT_NAME} PRIVATE
     $<$<CONFIG:Debug>:JCR_DEBUG>)
 
-target_link_libraries(jade_cocoon_randomizer 
+target_link_libraries(${PROJECT_NAME} 
     Qt6::Widgets 
     jade_cocoon_unpacker_repacker
     mkpsxiso
