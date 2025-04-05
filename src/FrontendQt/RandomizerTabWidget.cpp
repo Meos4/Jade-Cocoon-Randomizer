@@ -12,6 +12,7 @@
 #include "FrontendQt/MiscWidget.hpp"
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
+#include "FrontendQt/QtUtility.hpp"
 
 #include "Common/Json.hpp"
 
@@ -99,16 +100,7 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 	}
 	catch (const Json::Exception& e)
 	{
-		QString errorMessage
-		{
-			#ifdef _WIN32
-				QString::fromStdWString(std::format(L"\"{}\" is not a valid json file, ", path.wstring()))
-			#else
-				QString::fromStdString(std::format("\"{}\" is not a valid json file, ", path.string()))
-			#endif
-		};
-		errorMessage += QString::fromStdString(std::format("Reason:\n{}", e.what()));
-		QMessageBox::critical(this, "Error", errorMessage);
+		QMessageBox::critical(this, "Error", QtUtility::jsonErrorMessage(path, e));
 	}
 }
 

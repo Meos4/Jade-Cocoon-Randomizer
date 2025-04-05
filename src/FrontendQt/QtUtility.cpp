@@ -2,6 +2,7 @@
 
 #include "Common/Types.hpp"
 
+#include <QMessageBox>
 #include <QRegularExpression>
 
 #include <limits>
@@ -37,5 +38,19 @@ namespace QtUtility
 				*qStr = QString::number(u64Limit);
 			}
 		}
+	}
+
+	QString jsonErrorMessage(const std::filesystem::path& path, const Json::Exception& e)
+	{
+		QString errorMessage
+		{
+		#ifdef _WIN32
+			QString::fromStdWString(std::format(L"\"{}\" is not a valid json file, ", path.wstring()))
+		#else
+			QString::fromStdString(std::format("\"{}\" is not a valid json file, ", path.string()))
+		#endif
+		};
+		errorMessage += QString::fromStdString(std::format("Reason:\n{}", e.what()));
+		return errorMessage;
 	}
 }

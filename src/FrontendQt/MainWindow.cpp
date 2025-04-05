@@ -86,16 +86,7 @@ MainWindow::MainWindow(QWidget* parent)
 		}
 		catch (const Json::Exception& e)
 		{
-			QString errorMessage
-			{
-				#ifdef _WIN32
-					QString::fromStdWString(std::format(L"\"{}\" is not a valid json file, ", guiSettingsPath.wstring()))
-				#else
-					QString::fromStdString(std::format("\"{}\" is not a valid json file, ", guiSettingsPath.string()))
-				#endif
-			};
-			errorMessage += QString::fromStdString(std::format("Reason:\n{}", e.what()));
-			QMessageBox::critical(this, "Error", errorMessage);
+			QMessageBox::critical(this, "Error", QtUtility::jsonErrorMessage(guiSettingsPath, e));
 		}
 	}
 

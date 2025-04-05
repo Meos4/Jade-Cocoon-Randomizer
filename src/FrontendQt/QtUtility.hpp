@@ -1,6 +1,10 @@
 #pragma once
 
+#include "Common/Json.hpp"
+
 #include <QString>
+
+#include <filesystem>
 
 #define UI_NAME(Variable) QtUtility::m_uiName(#Variable)
 
@@ -22,4 +26,5 @@ namespace QtUtility
 	}
 
 	void qStrU64Filter(QString* qStr);
+	QString jsonErrorMessage(const std::filesystem::path& path, const Json::Exception& e);
 }
