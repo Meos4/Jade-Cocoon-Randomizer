@@ -6,6 +6,7 @@
 #include "Backend/MipsFn.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Util.hpp"
+#include "Backend/VersionUtil.hpp"
 #include "Common/Buffer.hpp"
 #include "Common/FileSystem.hpp"
 #include "Common/JcrException.hpp"
@@ -170,24 +171,12 @@ bool Game::isNtsc() const
 
 const char* Game::versionText() const
 {
-	static constexpr std::array<const char*, static_cast<std::size_t>(Version::Count)> texts
-	{
-		"NTSC-J v1", "NTSC-J v2", "NTSC-U", "PAL-EN",
-		"PAL-FR", "PAL-DE", "PAL-ES", "PAL-IT"
-	};
-
-	return texts[static_cast<std::size_t>(m_version)];
+	return VersionUtil::text(m_version);
 }
 
 const char* Game::serialText() const
 {
-	static constexpr std::array<const char*, static_cast<std::size_t>(Version::Count)> serials
-	{
-		"SLPS-01729", "SLPS-91154", "SLUS-00854", "SLES-02201",
-		"SLES-02202", "SLES-02203", "SLES-02205", "SLES-02206"
-	};
-
-	return serials[static_cast<std::size_t>(m_version)];
+	return VersionUtil::serial(m_version);
 }
 
 Version Game::version() const

@@ -98,7 +98,9 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Util.cpp
     ${BACKEND_DIR}/Util.hpp
     ${BACKEND_DIR}/Version.cpp
-    ${BACKEND_DIR}/Version.hpp)
+    ${BACKEND_DIR}/Version.hpp
+    ${BACKEND_DIR}/VersionUtil.cpp
+    ${BACKEND_DIR}/VersionUtil.hpp)
 
 set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/AboutDialog.cpp
