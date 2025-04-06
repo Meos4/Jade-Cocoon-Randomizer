@@ -281,7 +281,7 @@ void MainWindow::onFileSaveAs()
 
 	m_game->random()->setSeed(firstSeed);
 
-	SaveGameDialog saveGameDialog(this);
+	SaveGameDialog saveGameDialog(&m_uiRandom, this);
 	auto future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog) };
 	saveGameDialog.exec();
 

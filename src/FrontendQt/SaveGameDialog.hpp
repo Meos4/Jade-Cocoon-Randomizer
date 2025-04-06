@@ -6,13 +6,15 @@
 
 #include <QDialog>
 
+class ImageAnimator;
 class QString;
+class Random;
 
 class SaveGameDialog final : public QDialog
 {
 	Q_OBJECT
 public:
-	SaveGameDialog(QWidget* parent = nullptr);
+	SaveGameDialog(Random* random, QWidget* parent = nullptr);
 private Q_SLOTS:
 	void setProgressBarValue(s32 value);
 	void setStateLabel(const QString& text);
@@ -25,4 +27,5 @@ Q_SIGNALS:
 	void taskCompleted();
 private:
 	Ui::SaveGameDialog m_ui;
+	ImageAnimator* m_animator;
 };

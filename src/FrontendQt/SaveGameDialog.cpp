@@ -1,11 +1,16 @@
 #include "SaveGameDialog.hpp"
 
-#include <QString>
+#include "Common/Random.hpp"
+#include "FrontendQt/ImageAnimator.hpp"
+#include "FrontendQt/ImageAnimatorFactory.hpp"
 
-SaveGameDialog::SaveGameDialog(QWidget* parent)
+SaveGameDialog::SaveGameDialog(Random* random, QWidget* parent)
 	: QDialog(parent)
 {
 	m_ui.setupUi(this);
+
+	const auto loading{ static_cast<ImageAnimatorFactory::Loading>(random->generate(static_cast<s32>(ImageAnimatorFactory::Loading::Count) - 1)) };
+	m_animator = ImageAnimatorFactory::create(loading, m_ui.loadingLabel, this);
 
 	setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint);
 

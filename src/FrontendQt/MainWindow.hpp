@@ -3,6 +3,7 @@
 #include "ui_MainWindow.h"
 
 #include "Backend/Game.hpp"
+#include "Common/Random.hpp"
 #include "FrontendQt/GuiSettings.hpp"
 
 #include <QMainWindow>
@@ -50,6 +51,7 @@ private:
 	RandomizerTabWidget* m_randomizerTabWidget;
 	QActionGroup* m_themeActionsGroup;
 	std::array<QAction*, static_cast<std::size_t>(Theme::Count)> m_themeActions;
+	Random m_uiRandom;
 
 	std::unique_ptr<Game> m_game;
 	GuiSettings m_guiSettings;
