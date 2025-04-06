@@ -1,6 +1,7 @@
 #include "Forest.hpp"
 
 #include "Backend/File.hpp"
+#include "Backend/Iso.hpp"
 #include "Backend/JCUtil.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/MipsFn.hpp"
@@ -814,7 +815,7 @@ void Forest::setPaletteColor() const
 				shiftShadeRotations{ 0, 90, 0, 0, 0 }, shiftLightRotations{ 0, 0, 30, 0, 0 };
 
 			Tim::rotateBPP8(filePtr, rng, offsets...);
-			((offsets = offsets - (offsets % Game::sectorSize) + 0x30), ...);
+			((offsets = offsets - (offsets % Iso::sectorSize) + 0x30), ...);
 			if (i == 2)
 			{
 				addRGBShadeAndLight(filePtr, { 0, 35, 0 }, { 0, 0, 1740 }, offsets...);

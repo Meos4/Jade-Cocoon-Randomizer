@@ -7,6 +7,8 @@
 
 namespace Iso
 {
+    inline constexpr auto sectorSize{ 2048u };
+
     bool generateCue(const std::filesystem::path& isoPath);
 	std::optional<Version> findVersion(const std::filesystem::path& isoPath);
     void dump(const std::filesystem::path* iso, const std::filesystem::path* configXml, const std::filesystem::path* files);

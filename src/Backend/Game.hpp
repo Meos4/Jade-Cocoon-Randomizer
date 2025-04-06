@@ -22,8 +22,6 @@ public:
 		u32 game;
 	};
 
-	static constexpr auto sectorSize{ 2048u };
-
 	Game(const std::filesystem::path& exePath, std::filesystem::path&& directoryPath, Version version);
 	
 	std::unique_ptr<RawFile> file(File file) const;

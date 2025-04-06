@@ -63,13 +63,13 @@ void Game::expandExecutable() const
 
 	const auto heapShift{ heapRandomizerBegin() - offsetGHvb };
 	auto newExecutableSize{ (offsetGHvb + heapShift - gameToFileTextSectionShift()) & ~0x80000000 };
-	const auto sectorRemainer{ newExecutableSize % Game::sectorSize };
+	const auto sectorRemainer{ newExecutableSize % Iso::sectorSize };
 	if (sectorRemainer)
 	{
-		newExecutableSize += Game::sectorSize - sectorRemainer;
+		newExecutableSize += Iso::sectorSize - sectorRemainer;
 	}
 
-	executable.write(0x1C, newExecutableSize - Game::sectorSize);
+	executable.write(0x1C, newExecutableSize - Iso::sectorSize);
 	std::filesystem::resize_file(m_builderTree.exePath(), newExecutableSize);
 
 	const auto offsetFMFn{ m_offset.file.executable.mainFn };
