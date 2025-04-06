@@ -8,6 +8,7 @@
 ImageAnimator::ImageAnimator(QVector<QPixmap>&& images, ImageAnimator::Mode mode, s32 msec, QLabel* label, QObject* parent)
 	: QObject(parent), m_frames(std::move(images)), m_label(label)
 {
+	m_label->setPixmap(m_frames[0]);
 	m_timer = new QTimer(this);
 	m_timer->start(msec);
 	const auto callback{ mode == ImageAnimator::Mode::Normal ? &ImageAnimator::nextFrameNormal : &ImageAnimator::nextFrameRevert };

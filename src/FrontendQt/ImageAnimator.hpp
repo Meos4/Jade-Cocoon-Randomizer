@@ -27,5 +27,5 @@ private:
 	QTimer* m_timer;
 	QLabel* m_label;
 	QVector<QPixmap> m_frames;
-	s32 m_currentFrame{};
+	s32 m_currentFrame{ 1 };
 };
