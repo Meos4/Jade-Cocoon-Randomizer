@@ -286,11 +286,7 @@ void MainWindow::onFileSaveAs()
 	saveGameDialog.exec();
 
 	future.wait();
-	if (!future.get())
-	{
-		disableUI();
-	}
-	else
+	if (future.get())
 	{
 		const std::filesystem::path filePath{ QtUtil::qStrToPlatformStr(filePathQStr) };
 
