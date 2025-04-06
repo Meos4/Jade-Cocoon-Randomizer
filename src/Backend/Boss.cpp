@@ -133,7 +133,7 @@ Boss::Boss(Game* game, std::shared_ptr<SharedData> sharedData)
 {
 }
 
-void Boss::setElement(Boss::Element state, bool allowNoneElement) const
+void Boss::setElement(Boss::Element state) const
 {
 	const u32 statsOffset{ m_game->offset().file.executable.entityStats + ID_DREAM_MAN * sizeof(StatsStruct) };
 
@@ -150,7 +150,7 @@ void Boss::setElement(Boss::Element state, bool allowNoneElement) const
 	const u32 damageModifiersOffset{ m_game->offset().file.executable.entityDamageModifiers + 0x1FC };
 	auto damageModifiers{ executable.read<std::array<DamageModifiers, bossCounter>>(damageModifiersOffset) };
 
-	const Element_t minElement{ allowNoneElement ? ELEMENT_NONE : ELEMENT_FIRE };
+	const Element_t minElement{ ELEMENT_FIRE };
 
 	for (std::size_t i{}; i < elements.size(); ++i)
 	{
@@ -527,7 +527,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 	executable.write(goatModelsBehaviorOffset, goatModelsBehavior);
 }
 
-void Boss::setElementEC(bool allowNoneElement) const
+void Boss::setElementEC() const
 {
 	const auto scene_other_hunting_sce00_sbh{ m_game->file(File::SCENE_OTHER_HUNTING_SCE00_SBH) };
 
@@ -544,7 +544,7 @@ void Boss::setElementEC(bool allowNoneElement) const
 	};
 	auto modelsBehavior{ executable.read<std::array<ModelBehavior, bossCounter>>(modelsBehaviorOffset) };
 
-	const Element_t minElement{ allowNoneElement ? ELEMENT_NONE : ELEMENT_FIRE };
+	const Element_t minElement{ ELEMENT_FIRE };
 	const auto statsOffset{ m_game->offset().file.scene_other_hunting_sce00_sbh.statsEC };
 
 	for (s32 i{}; i < bossCounter; ++i)

@@ -33,10 +33,10 @@ public:
 
 	Boss(Game* game, std::shared_ptr<SharedData> sharedData);
 
-	void setElement(Boss::Element state, bool allowNoneElement) const;
+	void setElement(Boss::Element state) const;
 	void setSpecialMagic() const;
 	void setAppearance(Appearance state) const;
-	void setElementEC(bool allowNoneElement) const;
+	void setElementEC() const;
 	void setSpecialMagicEC() const;
 	void setAppearanceEC(Boss::AppearanceEC_t state) const;
 private:

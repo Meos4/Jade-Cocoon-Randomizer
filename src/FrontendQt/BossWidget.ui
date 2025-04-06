@@ -50,19 +50,6 @@
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="eternalCorridorElementIncludeNoneElement">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="text">
-              <string>+Include &quot;None&quot; Element</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
@@ -172,19 +159,6 @@
              </property>
              <property name="text">
               <string>Random All</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QCheckBox" name="storyElementIncludeNoneElement">
-             <property name="enabled">
-              <bool>true</bool>
-             </property>
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="text">
-              <string>+Include &quot;None&quot; Element</string>
              </property>
             </widget>
            </item>

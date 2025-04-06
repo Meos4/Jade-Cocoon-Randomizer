@@ -14,12 +14,10 @@ BossWidget::BossWidget(QWidget* parent)
 	{
 		{ SETTINGS(m_ui.storyElementRandomAll) },
 		{ SETTINGS(m_ui.storyElementRandomElemental) },
-		{ SETTINGS(m_ui.storyElementIncludeNoneElement) },
 		{ SETTINGS(m_ui.storySpecialMagicRandom) },
 		{ SETTINGS(m_ui.storyAppearanceTextureColorBasedOnElement) },
 		{ SETTINGS(m_ui.storyAppearanceTextureRandomColor) },
 		{ SETTINGS(m_ui.eternalCorridorElementRandom) },
-		{ SETTINGS(m_ui.eternalCorridorElementIncludeNoneElement) },
 		{ SETTINGS(m_ui.eternalCorridorSpecialMagicRandom) },
 		{ SETTINGS(m_ui.eternalCorridorRandomNewAppearance) },
 		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureRandom) },
@@ -35,8 +33,6 @@ BossWidget::BossWidget(QWidget* parent)
 		"Randomize the element only of story bosses that have an element."
 		"\n\n*Elemental battle maps will be adapted to the summon element (Tuturis, Seterian and Delfanel.)"
 	);
-	static constexpr auto includeNoneElement{ "Include the \"none\" element in the pool." };
-	GuiSettings::setToolTip(m_ui.storyElementIncludeNoneElement, includeNoneElement);
 	GuiSettings::setToolTip(m_ui.storySpecialMagicRandom,
 		"Randomize specials and magics based on boss elements."
 		"\n\n*Does not randomize heals/taunts and some AI-based attacks."
@@ -47,7 +43,6 @@ BossWidget::BossWidget(QWidget* parent)
 	);
 	GuiSettings::setToolTip(m_ui.storyAppearanceTextureRandomColor, "Randomize the texture colors of bosses.");
 	GuiSettings::setToolTip(m_ui.eternalCorridorElementRandom, "Randomize Eternal Corridor boss elements.");
-	GuiSettings::setToolTip(m_ui.eternalCorridorElementIncludeNoneElement, includeNoneElement);
 	GuiSettings::setToolTip(m_ui.eternalCorridorSpecialMagicRandom,
 		"Randomize specials and magics based on Eternal Corridor boss elements."
 		"\n\n*Does not randomize AI-based attacks."
@@ -57,8 +52,6 @@ BossWidget::BossWidget(QWidget* parent)
 	GuiSettings::setToolTip(m_ui.eternalCorridorAppearanceTextureRandomColor, "Randomize the texture colors of Eternal Corridor bosses.");
 	GuiSettings::setToolTip(m_ui.eternalCorridorAppearanceTextureIncludeCompatible, "Includes minions + Minion (Dark Arpatron) textures in the pool.");
 
-	m_ui.storyElementIncludeNoneElement->setEnabled(false);
-	m_ui.eternalCorridorElementIncludeNoneElement->setEnabled(false);
 	m_ui.eternalCorridorAppearanceTextureIncludeCompatible->setEnabled(false);
 
 	connect(m_ui.storyElementRandomAll, &QAbstractButton::toggled, this, &BossWidget::updateStoryElement);
@@ -95,11 +88,11 @@ void BossWidget::write() const
 
 	if (m_ui.storyElementRandomAll->isChecked())
 	{
-		m_boss->setElement(Boss::Element::RandomAll, m_ui.storyElementIncludeNoneElement->isChecked());
+		m_boss->setElement(Boss::Element::RandomAll);
 	}
 	else if (m_ui.storyElementRandomElemental->isChecked())
 	{
-		m_boss->setElement(Boss::Element::RandomElemental, m_ui.storyElementIncludeNoneElement->isChecked());
+		m_boss->setElement(Boss::Element::RandomElemental);
 	}
 
 	if (m_ui.storySpecialMagicRandom->isChecked())
@@ -118,7 +111,7 @@ void BossWidget::write() const
 
 	if (m_ui.eternalCorridorElementRandom->isChecked())
 	{
-		m_boss->setElementEC(m_ui.eternalCorridorElementIncludeNoneElement->isChecked());
+		m_boss->setElementEC();
 	}
 
 	if (m_ui.eternalCorridorSpecialMagicRandom->isChecked())
@@ -199,7 +192,6 @@ void BossWidget::updateStoryElement()
 		}
 	}
 
-	m_ui.storyElementIncludeNoneElement->setEnabled(isOneChecked);
 	m_ui.storySpecialMagicRandom->setEnabled(!isOneChecked);
 	m_ui.storyElementRandomAll->setEnabled(!isElementalChecked);
 	m_ui.storyElementRandomElemental->setEnabled(!isAllChecked);
@@ -232,6 +224,5 @@ void BossWidget::updateEternalCorridorElementRandom()
 	{
 		m_ui.eternalCorridorSpecialMagicRandom->setChecked(true);
 	}
-	m_ui.eternalCorridorElementIncludeNoneElement->setEnabled(isChecked);
 	m_ui.eternalCorridorSpecialMagicRandom->setEnabled(!isChecked);
 }
