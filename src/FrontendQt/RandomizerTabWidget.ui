@@ -14,7 +14,7 @@
    <string>RandomizerTabWidget</string>
   </property>
   <property name="currentIndex">
-   <number>0</number>
+   <number>2</number>
   </property>
   <property name="iconSize">
    <size>
@@ -117,7 +117,7 @@
   <widget class="QWidget" name="bossTab">
    <attribute name="icon">
     <iconset resource="resources/resources.qrc">
-     <normaloff>:/icons/DreamMan16.png</normaloff>:/icons/DreamMan16.png</iconset>
+     <normaloff>:/icons/FireBoss16.png</normaloff>:/icons/FireBoss16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Boss</string>
@@ -151,8 +151,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>99</width>
-         <height>30</height>
+         <width>795</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -452,8 +452,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>796</width>
-         <height>570</height>
+         <width>100</width>
+         <height>30</height>
         </rect>
        </property>
       </widget>
