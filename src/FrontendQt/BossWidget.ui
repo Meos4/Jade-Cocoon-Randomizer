@@ -197,32 +197,23 @@
        </layout>
       </item>
       <item>
-       <widget class="QGroupBox" name="storyAppearanceBox">
+       <widget class="QGroupBox" name="storyAppearanceTextureBox_2">
         <property name="title">
-         <string>Appearance</string>
+         <string>Appearance Texture</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
          <item>
-          <widget class="QGroupBox" name="storyAppearanceTextureBox">
-           <property name="title">
-            <string>Texture</string>
+          <widget class="QCheckBox" name="storyAppearanceTextureColorBasedOnElement">
+           <property name="text">
+            <string>Color Based On Element</string>
            </property>
-           <layout class="QVBoxLayout" name="verticalLayout_4">
-            <item>
-             <widget class="QCheckBox" name="storyAppearanceTextureColorBasedOnElement">
-              <property name="text">
-               <string>Color Based On Element</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QCheckBox" name="storyAppearanceTextureRandomColor">
-              <property name="text">
-               <string>Random Color</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="storyAppearanceTextureRandomColor">
+           <property name="text">
+            <string>Random Color</string>
+           </property>
           </widget>
          </item>
         </layout>
