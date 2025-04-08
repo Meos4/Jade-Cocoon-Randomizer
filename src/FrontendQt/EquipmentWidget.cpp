@@ -1,9 +1,9 @@
 #include "EquipmentWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
-EquipmentWidget::EquipmentWidget(QWidget* parent)
+EquipmentWidget::EquipmentWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -19,21 +19,32 @@ EquipmentWidget::EquipmentWidget(QWidget* parent)
 		{ SETTINGS(m_ui.othersRandomStats) }
 	};
 
-	GuiSettings::setToolTip(m_ui.weaponsRandomStatsAndElement,
+	const QString _Weapons{ m_ui.weaponsBox->title() };
+
+	helpConsole->addFeature(m_ui.weaponsRandomStatsAndElement, _Weapons,
 		"Randomize weapons stats and element."
-		"\n\n*Stats and element are generated based on the pattern of other weapons and are based on the weapon's total stats."
+		"\n\nStats and element are generated based on the pattern of other weapons and are based on the weapon's total stats."
 	);
 
-	GuiSettings::setToolTip(m_ui.weaponsRandomAppearance, "Randomize the appearance of weapons.\n\nEx: a dagger can look like an axe, a sword a spear...");
-	GuiSettings::setToolTip(m_ui.armorsRandomStats,
+	helpConsole->addFeature(m_ui.weaponsRandomAppearance, _Weapons,
+		"Randomize the appearance of weapons."
+		"\n\nEx: a dagger can look like an axe, a sword a spear..."
+	);
+
+	const QString _Armors{ m_ui.armorsBox->title() };
+
+	helpConsole->addFeature(m_ui.armorsRandomStats, _Armors,
 		"Randomize armors stats."
-		"\n\n*Stats are generated based on the pattern of other armors and are based on the armor's total stats."
+		"\n\nStats are generated based on the pattern of other armors and are based on the armor's total stats."
 	);
 
-	GuiSettings::setToolTip(m_ui.armorsRandomAppearance, "Randomize the appearance of armors.");
-	GuiSettings::setToolTip(m_ui.othersRandomStats,
+	helpConsole->addFeature(m_ui.armorsRandomAppearance, _Armors,
+		"Randomize the appearance of armors."
+	);
+
+	helpConsole->addFeature(m_ui.othersRandomStats, m_ui.othersBox->title(),
 		"Randomize \"others\" stats."
-		"\n\n*Stats are generated based on the pattern of other \"others\" and are based on the \"other\"'s total stats."
+		"\n\nStats are generated based on the pattern of other \"others\" and are based on the \"other\"'s total stats."
 	);
 }
 

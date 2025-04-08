@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <memory>
 
+class HelpConsoleWidget;
 class RandomizerWidget;
 
 class RandomizerTabWidget final : public QTabWidget
@@ -32,7 +33,7 @@ public:
 		TAB_COUNT
 	};
 
-	RandomizerTabWidget(QWidget* parent = nullptr);
+	RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
 	void enableUI(Game* game);
 	void disableUI();

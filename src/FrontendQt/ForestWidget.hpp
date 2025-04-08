@@ -8,11 +8,13 @@
 
 #include <vector>
 
+class HelpConsoleWidget;
+
 class ForestWidget final : public RandomizerWidget
 {
 	Q_OBJECT
 public:
-	ForestWidget(QWidget* parent = nullptr);
+	ForestWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
 	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
 	void disableUI() override;

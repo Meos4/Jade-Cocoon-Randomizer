@@ -8,6 +8,7 @@
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
 #include "FrontendQt/GuiPath.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 #include "FrontendQt/RandomizerTabWidget.hpp"
 #include "FrontendQt/SaveGameDialog.hpp"
 #include "FrontendQt/TopInfoWidget.hpp"
@@ -32,8 +33,10 @@ MainWindow::MainWindow(QWidget* parent)
 	m_topInfoWidget = new TopInfoWidget(this);
 	m_ui.mainLayout->addWidget(m_topInfoWidget);
 
-	m_randomizerTabWidget = new RandomizerTabWidget(this);
+	m_helpConsoleWidget = new HelpConsoleWidget(this);
+	m_randomizerTabWidget = new RandomizerTabWidget(m_helpConsoleWidget, this);
 	m_ui.mainLayout->addWidget(m_randomizerTabWidget);
+	m_ui.mainLayout->addWidget(m_helpConsoleWidget);
 
 	m_themeActionsGroup = new QActionGroup(this);
 	m_themeActionsGroup->addAction(m_ui.actionSettingsThemeDark);

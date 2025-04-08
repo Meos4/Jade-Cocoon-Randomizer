@@ -1,9 +1,9 @@
 ﻿#include "AddonsWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
-AddonsWidget::AddonsWidget(QWidget* parent)
+AddonsWidget::AddonsWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -30,61 +30,75 @@ AddonsWidget::AddonsWidget(QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorLevelCapSlider) }
 	};
 
-	GuiSettings::setToolTip(m_ui.nuzlockeOneCapturePerArea,
+	const QString _Nuzlocke{ m_ui.nuzlockeBox->title() };
+
+	helpConsole->addFeature(m_ui.nuzlockeOneCapturePerArea, _Nuzlocke, 
 		"Allows the capture of only one minion from the first encounter per area."
 		"\n\nAreas:"
-		"\nKoris Minion"
-		"\nBeetle Forest"
-		"\nDragonfly Forest"
-		"\nSpider Forest"
-		"\nMoth Forest"
-		"\nNetherworld Beetle Forest"
-		"\nNetherworld Dragonfly Forest"
-		"\nNetherworld Spider Forest"
-		"\nEternal Corridor"
+		"\nKoris Minion, Beetle Forest, Dragonfly Forest, Spider Forest, Moth Forest"
+		"\nNetherworld Beetle Forest, Netherworld Dragonfly Forest, Netherworld Spider Forest, Eternal Corridor"
 	);
 
-	GuiSettings::setToolTip(m_ui.nuzlockeDefinitiveMinionDeath, "The death of one of your minions is definitive and will be automatically released.");
-	GuiSettings::setToolTip(m_ui.nuzlockeDefinitiveLevantDeath, "When Levant dies, the game will automatically restart.");
-	GuiSettings::setToolTip(m_ui.difficultyHard,
-		"Increase boss stats by:"
-		"\nAttack +33.33%"
-		"\nDefense +33.33%"
-		"\nMagic Attack +33.33%"
-		"\nMagic Defense +33.33%"
-		"\nSpeed +20%"
-		"\nCritical +20%"
-		"\n\n*Does not apply to Eternal Corridor bosses."
+	helpConsole->addFeature(m_ui.nuzlockeDefinitiveMinionDeath, _Nuzlocke, 
+		"The death of one of your minions is definitive and will be automatically released."
 	);
 
-	GuiSettings::setToolTip(m_ui.difficultyExtreme,
-		"Increase boss stats by:"
-		"\nAttack +50%"
-		"\nDefense +50%"
-		"\nMagic Attack +50%"
-		"\nMagic Defense +50%"
-		"\nSpeed +33.33%"
-		"\nCritical +33.33%"
-		"\n\n*Does not apply to Eternal Corridor bosses."
+	helpConsole->addFeature(m_ui.nuzlockeDefinitiveLevantDeath, _Nuzlocke, 
+		"When Levant dies, the game will automatically restart."
 	);
 
-	GuiSettings::setToolTip(m_ui.skipTutorialEnable, "Skip new game tutorial.");
-	GuiSettings::setToolTip(m_ui.skipTutorialSkipKoris, "Skip Koris tutorial in the Beetle Forest.");
-	GuiSettings::setToolTip(m_ui.x2FramerateEnable,
+	const QString _Difficulty{ m_ui.difficultyBox->title() };
+
+	helpConsole->addFeature(m_ui.difficultyHard, _Difficulty, 
+		"Increase boss stats by: "
+		"Attack - Defense - Magic Attack - Magic Defense +33.33% | Speed - Critical +20%"
+		"\n\nDoes not apply to Eternal Corridor bosses."
+	);
+
+	helpConsole->addFeature(m_ui.difficultyExtreme, _Difficulty, 
+		"Increase boss stats by: "
+		"Attack - Defense - Magic Attack - Magic Defense +50% | Speed - Critical +33.33%"
+		"\n\nDoes not apply to Eternal Corridor bosses."
+	);
+
+	const QString _SkipTutorial{ m_ui.skipTutorialBox->title() };
+
+	helpConsole->addFeature(m_ui.skipTutorialEnable, _SkipTutorial,
+		"Skip the new game tutorial."
+	);
+
+	helpConsole->addFeature(m_ui.skipTutorialSkipKoris, _SkipTutorial,
+		"Skip Koris tutorial in the Beetle Forest."
+	);
+
+	helpConsole->addFeature(m_ui.x2FramerateEnable, m_ui.x2FramerateBox->title(),
 		"By pressing Select you can switch to a x2 framerate speed, if press again, switch back to x1."
-		"\n\n*It is recommended to use this feature using emulator that supports CPU overclocking, otherwise"
-		"\nif there are too many 3D models on the screen, the game will not fully support the x2."
+		"\n\nIt is recommended to use this feature using emulator that supports CPU overclocking, otherwise "
+		"if there are too many 3D models on the screen, the game will not fully support the x2."
 	);
 
-	GuiSettings::setToolTip(m_ui.showHiddenStatsEnable,
+	helpConsole->addFeature(m_ui.showHiddenStatsEnable, m_ui.showHiddenStatsBox->title(),
 		"Show Critical and Body Enhancement of minions in the stats frame."
 		"\n\nBipedal = +10 Special Attack Damage."
 		"\nWinged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack."
 	);
 
-	GuiSettings::setToolTip(m_ui.itemQuantityLimitSlider, "Changes item quantity limit.\n\nDefault = 20");
-	GuiSettings::setToolTip(m_ui.eternalCorridorLevelCapSlider, "Change the level cap of the Eternal Corridor.\n\nDefault = 26");
-	GuiSettings::setToolTip(m_ui.palToNtscEnable, "Turn pal versions in ntsc.\n\n*Does not work on some emulators.");
+	const QString _Slider{ "Slider" };
+
+	helpConsole->addFeature(m_ui.itemQuantityLimitSlider, m_ui.itemQuantityLimitBox->title(), _Slider,
+		"Changes item quantity limit."
+		"\n\nDefault = 20"
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorLevelCapSlider, m_ui.eternalCorridorLevelCapBox->title(), _Slider,
+		"Change the level cap of the Eternal Corridor."
+		"\n\nDefault = 26"
+	);
+
+	helpConsole->addFeature(m_ui.palToNtscEnable, m_ui.palToNtscBox->title(),
+		"Turn pal versions in ntsc."
+		"\n\nDoes not work on some emulators."
+	);
 
 	m_ui.itemQuantityLimitValue->setStyleSheet("font-weight: normal;");
 	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: normal;");

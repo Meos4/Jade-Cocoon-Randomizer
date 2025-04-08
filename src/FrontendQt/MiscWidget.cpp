@@ -1,11 +1,11 @@
 #include "MiscWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
 #include <format>
 
-MiscWidget::MiscWidget(QWidget* parent)
+MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -19,11 +19,21 @@ MiscWidget::MiscWidget(QWidget* parent)
 		{ SETTINGS(m_ui.npcsVoiceRandom) }
 	};
 
-	GuiSettings::setToolTip(m_ui.hudRandom, "Randomize the colors of the 5 huds.");
-	static constexpr auto hudCustom{ "Allows to change the colors of the huds." };
-	GuiSettings::setToolTip(m_ui.hudColorCustom, hudCustom);
-	GuiSettings::setToolTip(m_ui.hudColorCombo, hudCustom);
-	GuiSettings::setToolTip(m_ui.npcsVoiceRandom, "Randomize NPCs voices.");
+	const QString _HudColor{ m_ui.hudColorBox->title() };
+
+	helpConsole->addFeature(m_ui.hudRandom, _HudColor, 
+		"Randomize the colors of the 5 huds."
+	);
+
+	const QString hudCustom{ "Allows to change the colors of the huds." };
+	const QString _Custom{ "Custom" };
+
+	helpConsole->addFeature(m_ui.hudColorCustom, _HudColor, _Custom, hudCustom);
+	helpConsole->addFeature(m_ui.hudColorCombo, _HudColor, _Custom, hudCustom);
+
+	helpConsole->addFeature(m_ui.npcsVoiceRandom, m_ui.npcsVoiceBox->title(), 
+		"Randomize NPCs voices."
+	);
 
 	m_ui.hudColorCombo->setStyleSheet("font-weight: normal;");
 	m_ui.hudColorLabel->setStyleSheet("font-weight: normal;");

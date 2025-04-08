@@ -12,6 +12,7 @@
 #include "FrontendQt/MiscWidget.hpp"
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 #include "FrontendQt/QtUtil.hpp"
 
 #include "Common/Json.hpp"
@@ -20,21 +21,21 @@
 
 #include <format>
 
-RandomizerTabWidget::RandomizerTabWidget(QWidget* parent)
+RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: QTabWidget(parent)
 {
 	m_ui.setupUi(this);
 
-	m_randomizerWidgets[TAB_LEVANT] = new LevantWidget(this);
-	m_randomizerWidgets[TAB_MINION] = new MinionWidget(this);
-	m_randomizerWidgets[TAB_BOSS] = new BossWidget(this);
-	m_randomizerWidgets[TAB_FOREST] = new ForestWidget(this);
-	m_randomizerWidgets[TAB_EQUIPMENT] = new EquipmentWidget(this);
-	m_randomizerWidgets[TAB_TREASURE] = new TreasureWidget(this);
-	m_randomizerWidgets[TAB_SHOP] = new ShopWidget(this);
-	m_randomizerWidgets[TAB_MISC] = new MiscWidget(this);
-	m_randomizerWidgets[TAB_ADDONS] = new AddonsWidget(this);
-	m_randomizerWidgets[TAB_FIXES] = new FixesWidget(this);
+	m_randomizerWidgets[TAB_LEVANT] = new LevantWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_MINION] = new MinionWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_BOSS] = new BossWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_FOREST] = new ForestWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_EQUIPMENT] = new EquipmentWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_TREASURE] = new TreasureWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_SHOP] = new ShopWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_MISC] = new MiscWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_ADDONS] = new AddonsWidget(helpConsole, this);
+	m_randomizerWidgets[TAB_FIXES] = new FixesWidget(helpConsole, this);
 
 	m_ui.levantScroll->setWidget(m_randomizerWidgets[TAB_LEVANT]);
 	m_ui.minionScroll->setWidget(m_randomizerWidgets[TAB_MINION]);

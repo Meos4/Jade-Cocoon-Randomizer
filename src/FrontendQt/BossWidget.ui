@@ -197,7 +197,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QGroupBox" name="storyAppearanceTextureBox_2">
+       <widget class="QGroupBox" name="storyAppearanceTextureBox">
         <property name="title">
          <string>Appearance Texture</string>
         </property>

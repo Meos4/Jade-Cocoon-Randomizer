@@ -1,9 +1,9 @@
 #include "ShopWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
-ShopWidget::ShopWidget(QWidget* parent)
+ShopWidget::ShopWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -19,18 +19,30 @@ ShopWidget::ShopWidget(QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorUnlockAllEnable) },
 	};
 
-	GuiSettings::setToolTip(m_ui.weaponRandom, "Randomize shops weapons.\n\n*Shops are randomized by chapter pool.");
-	GuiSettings::setToolTip(m_ui.armorRandom, "Randomize shops armors.\n\n*Shops are randomized by chapter pool.");
-	GuiSettings::setToolTip(m_ui.otherRandom, "Randomize shops others.\n\n*Shops are randomized by chapter pool.");
-	GuiSettings::setToolTip(m_ui.itemRandom,
-		"Randomize shops items."
-		"\n\n*Ban items: Great Walnut, Skeleton Key, Oils, Silks."
-		"\n\n*Shops are randomized by chapter pool."
+	helpConsole->addFeature(m_ui.weaponRandom, m_ui.weaponBox->title(), 
+		"Randomize shops weapons."
+		"\n\nShops are randomized by chapter pool."
 	);
 
-	GuiSettings::setToolTip(m_ui.eternalCorridorUnlockAllEnable,
+	helpConsole->addFeature(m_ui.armorRandom, m_ui.armorBox->title(), 
+		"Randomize shops armors."
+		"\n\nShops are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.otherRandom, m_ui.otherBox->title(), 
+		"Randomize shops others."
+		"\n\nShops are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.itemRandom, m_ui.itemBox->title(), 
+		"Randomize shops items."
+		"\n\nBan items: Great Walnut, Skeleton Key, Oils, Silks."
+		"\nShops are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorUnlockAllEnable, m_ui.eternalCorridorUnlockAllBox->title(), 
 		"Unlock all in eternal corridor shops."
-		"\n\n*Ban items: Great Walnut, Skeleton Key, Oils, Silks."
+		"\n\nBan items: Great Walnut, Skeleton Key, Oils, Silks."
 	);
 }
 

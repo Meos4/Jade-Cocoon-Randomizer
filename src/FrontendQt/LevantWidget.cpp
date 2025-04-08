@@ -1,9 +1,9 @@
 #include "LevantWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
-LevantWidget::LevantWidget(QWidget* parent)
+LevantWidget::LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -18,20 +18,25 @@ LevantWidget::LevantWidget(QWidget* parent)
 		{ SETTINGS(m_ui.fluteStylingShuffle) }
 	};
 
-	GuiSettings::setToolTip(m_ui.baseStatsRandom,
+	helpConsole->addFeature(m_ui.baseStatsRandom, m_ui.baseStatsBox->title(),
 		"Randomly shuffle the total of Levant stats at the new game."
-		"\n\n*A stat cannot be lower than 18 for balancing reasons."
+		"\n\nA stat cannot be lower than 18 for balancing reasons."
 	);
 
-	GuiSettings::setToolTip(m_ui.animationBetaUsingItem, "Replaces the item use animation with a beta/unused magic animation.");
-	GuiSettings::setToolTip(m_ui.animationRandomWeaponsPosture,
+	const auto _Animation{ m_ui.animationBox->title() };
+
+	helpConsole->addFeature(m_ui.animationBetaUsingItem, _Animation,
+		"Replaces the item use animation with a beta/unused magic animation."
+	);
+
+	helpConsole->addFeature(m_ui.animationRandomWeaponsPosture, _Animation,
 		"Random battle weapons postures."
 		"\n\nEx: a dagger can be held like a sword."
 	);
 
-	GuiSettings::setToolTip(m_ui.fluteStylingShuffle,
+	helpConsole->addFeature(m_ui.fluteStylingShuffle, m_ui.fluteStylingBox->title(),
 		"Shuffle the sound effects played when Levant summon / capture a minion."
-		"\n\n*A summon sound effect can be remplaced by a capture effect and vice versa."
+		"\n\nA summon sound effect can be remplaced by a capture effect and vice versa."
 	);
 }
 

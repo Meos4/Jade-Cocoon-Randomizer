@@ -13,6 +13,7 @@
 #include <memory>
 
 class ExtractGameDialog;
+class HelpConsoleWidget;
 class RandomizerTabWidget;
 class SaveGameDialog;
 class TopInfoWidget;
@@ -49,6 +50,7 @@ private:
 
 	TopInfoWidget* m_topInfoWidget;
 	RandomizerTabWidget* m_randomizerTabWidget;
+	HelpConsoleWidget* m_helpConsoleWidget;
 	QActionGroup* m_themeActionsGroup;
 	std::array<QAction*, static_cast<std::size_t>(Theme::Count)> m_themeActions;
 	Random m_uiRandom;

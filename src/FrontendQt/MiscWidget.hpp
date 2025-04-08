@@ -9,11 +9,13 @@
 
 #include <vector>
 
+class HelpConsoleWidget;
+
 class MiscWidget final : public RandomizerWidget
 {
 	Q_OBJECT
 public:
-	MiscWidget(QWidget* parent = nullptr);
+	MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
 	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
 	void disableUI() override;

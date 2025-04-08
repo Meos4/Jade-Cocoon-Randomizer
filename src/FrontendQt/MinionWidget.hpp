@@ -8,13 +8,14 @@
 
 #include <vector>
 
+class HelpConsoleWidget;
 class SpecialMagicDialog;
 
 class MinionWidget final : public RandomizerWidget
 {
 	Q_OBJECT
 public:
-	MinionWidget(QWidget* parent = nullptr);
+	MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
 	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
 	void disableUI() override;

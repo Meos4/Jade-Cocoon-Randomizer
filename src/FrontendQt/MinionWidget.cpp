@@ -2,12 +2,12 @@
 
 #include "Backend/Entity.hpp"
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 #include "FrontendQt/SpecialMagicDialog.hpp"
 
 #include <QAbstractItemView>
 
-MinionWidget::MinionWidget(QWidget* parent)
+MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -41,39 +41,101 @@ MinionWidget::MinionWidget(QWidget* parent)
 		{ SETTINGS(m_ui.spawnKorisCombo) }
 	};
 
-	GuiSettings::setToolTip(m_ui.spawnStoryRandomRealtime, "Randomize minion spawns during the story in real time.");
-	GuiSettings::setToolTip(m_ui.spawnStoryRandomPremade,
+	const auto _Spawn{ m_ui.spawnBox->title() };
+	const auto _SpawnStory{ _Spawn + " " + m_ui.spawnStoryBox->title()};
+
+	helpConsole->addFeature(m_ui.spawnStoryRandomRealtime, _SpawnStory,
+		"Randomize minion spawns during the story in real time."
+	);
+
+	helpConsole->addFeature(m_ui.spawnStoryRandomPremade, _SpawnStory,
 		"Randomize minion spawns during the story in a premade way."
 		"\n\nEx: Once randomized Pataimel is an Arpatron, it will be an Arpatron each time."
 	);
 
-	GuiSettings::setToolTip(m_ui.spawnEternalCorridorRandom, "Randomize minion spawns in the Eternal Corridor.");
-	GuiSettings::setToolTip(m_ui.spawnDreamRandom, "Randomize the minion from Levant's second dream.");
-	static constexpr auto customDream{ "Allows to choose the minion of Levant's second dream." };
-	GuiSettings::setToolTip(m_ui.spawnDreamCustom, customDream);
-	GuiSettings::setToolTip(m_ui.spawnDreamCombo, customDream);
-	GuiSettings::setToolTip(m_ui.spawnKorisRandom, "Randomize Arpatron from the Koris tutorial.");
-	static constexpr auto customKoris{ "Allows to choose the minion from the Koris tutorial." };
-	GuiSettings::setToolTip(m_ui.spawnKorisCustom, customKoris);
-	GuiSettings::setToolTip(m_ui.spawnKorisCombo, customKoris);
-	GuiSettings::setToolTip(m_ui.statsShuffleBetweenMinions,
-		"Shuffle stats between minions."
-		"\n\nEx: Pataimel can get Arpatron stats, Arpatron get Marrdreg stats..."
-		"\n\n*Body Enhancements are also shuffled."
-		"\nBipedal = +10 Special Attack Damage."
-		"\nWinged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack."
+	helpConsole->addFeature(m_ui.spawnEternalCorridorRandom, _Spawn + " " + m_ui.spawnEternalCorridorBox->title(),
+		"Randomize minion spawns in the Eternal Corridor."
 	);
 
-	GuiSettings::setToolTip(m_ui.statsShuffleStats, "Shuffle stats randomly.\n\nEx: Attack = Speed, Speed = Magic Attack...");
-	GuiSettings::setToolTip(m_ui.specialMagicRandom, "Randomize special attacks and magics according on the element.");
-	GuiSettings::setToolTip(m_ui.specialMagicPool, "Pool of specials and magic.\n\nChecked = Enabled, Unchecked = Disabled.");
-	GuiSettings::setToolTip(m_ui.appearanceRandomNewMinion, "Create new randomly generated minions appearance.");
-	GuiSettings::setToolTip(m_ui.appearanceModelRandom, "Randomize minions model.");
-	GuiSettings::setToolTip(m_ui.appearanceTextureRandom, "Randomize minions texture.");
-	GuiSettings::setToolTip(m_ui.appearanceTextureIncludeCompatible, "Include Eternal Corridor Bosses + Minion (Dark Arpatron) textures in the pool.");
-	GuiSettings::setToolTip(m_ui.appearanceTextureRandomColor, "Randomize minion texture colors.");
-	GuiSettings::setToolTip(m_ui.appearanceGrowthSizeShuffle, "Shuffle growth level size.");
-	GuiSettings::setToolTip(m_ui.appearanceGrowthSizeInvert, "Invert growth level size.");
+	const auto _SpawnDream{ _Spawn + " " + m_ui.spawnDreamBox->title() };
+
+	helpConsole->addFeature(m_ui.spawnDreamRandom, _SpawnDream,
+		"Randomize the minion from Levant's second dream."
+	);
+
+	const QString _Custom{ "Custom" };
+	const QString customDream{ "Allows to choose the minion of Levant's second dream." };
+
+	helpConsole->addFeature(m_ui.spawnDreamCustom, _SpawnDream, _Custom, customDream);
+	helpConsole->addFeature(m_ui.spawnDreamCombo, _SpawnDream, _Custom, customDream);
+
+	const auto _SpawnKoris{ _Spawn + " " + m_ui.spawnKorisBox->title() };
+
+	helpConsole->addFeature(m_ui.spawnKorisRandom, _SpawnKoris,
+		"Randomize Arpatron from the Koris tutorial."
+	);
+
+	const QString customKoris{ "Allows to choose the minion from the Koris tutorial." };
+
+	helpConsole->addFeature(m_ui.spawnKorisCustom, _SpawnKoris, _Custom, customKoris);
+	helpConsole->addFeature(m_ui.spawnKorisCombo, _SpawnKoris, _Custom, customKoris);
+
+	const QString _Stats{ m_ui.statsBox->title() };
+
+	helpConsole->addFeature(m_ui.statsShuffleBetweenMinions, _Stats,
+		"Shuffle stats between minions."
+		"\n\nEx: Pataimel can get Arpatron stats, Arpatron get Marrdreg stats..."
+		"\n\nBody Enhancements are also shuffled (Bipedal = +10 Special Attack Damage. Winged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack.)"
+	);
+
+	helpConsole->addFeature(m_ui.statsShuffleStats, _Stats, 
+		"Shuffle stats randomly.\n\nEx: Attack = Speed, Speed = Magic Attack..."
+	);
+
+	const QString _SpecialMagic{ m_ui.specialMagicBox->title() };
+
+	helpConsole->addFeature(m_ui.specialMagicRandom, _SpecialMagic,
+		"Randomize special attacks and magics according on the element."
+	);
+
+	helpConsole->addFeature(m_ui.specialMagicPool, _SpecialMagic,
+		"Pool of specials and magic."
+		"\n\nChecked = Enabled, Unchecked = Disabled."
+	);
+
+	const QString _Appearance{ m_ui.appearanceBox->title() };
+
+	helpConsole->addFeature(m_ui.appearanceRandomNewMinion, _Appearance, 
+		"Create new randomly generated minions appearance."
+	);
+
+	helpConsole->addFeature(m_ui.appearanceModelRandom, _Appearance + " " + m_ui.appearanceModelBox->title(),
+		"Randomize minions model."
+	);
+
+	const auto _AppearanceTexture{ _Appearance + " " + m_ui.appearanceTextureBox->title() };
+
+	helpConsole->addFeature(m_ui.appearanceTextureRandom, _AppearanceTexture, 
+		"Randomize minions texture."
+	);
+
+	helpConsole->addFeature(m_ui.appearanceTextureIncludeCompatible, _AppearanceTexture, 
+		"Include Eternal Corridor Bosses + Minion (Dark Arpatron) textures in the pool."
+	);
+
+	helpConsole->addFeature(m_ui.appearanceTextureRandomColor, _AppearanceTexture, 
+		"Randomize minion texture colors."
+	);
+
+	const auto _AppearanceGrowthSize{ _Appearance + " " + m_ui.appearanceGrowthSizeBox->title() };
+
+	helpConsole->addFeature(m_ui.appearanceGrowthSizeShuffle, _AppearanceGrowthSize, 
+		"Shuffle growth level size."
+	);
+
+	helpConsole->addFeature(m_ui.appearanceGrowthSizeInvert, _AppearanceGrowthSize, 
+		"Invert growth level size."
+	);
 
 	m_ui.specialMagicPool->setStyleSheet("font-weight: normal;");
 	m_ui.spawnDreamCombo->setStyleSheet("font-weight: normal; combobox-popup: 0;");

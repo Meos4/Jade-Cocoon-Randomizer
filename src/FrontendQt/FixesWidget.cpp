@@ -1,9 +1,9 @@
 #include "FixesWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
-FixesWidget::FixesWidget(QWidget* parent)
+FixesWidget::FixesWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -24,26 +24,26 @@ FixesWidget::FixesWidget(QWidget* parent)
 
 	m_ui.hpMpBarsSizeValue->setStyleSheet("font-weight: normal;");
 
-	GuiSettings::setToolTip(m_ui.bodyEnhancementFix,
-		"Due to a programming error, body enhancements on Eternal Corridor minions and Eternal Corridor"
-		"\nbosses do not work, this solves the issue."
-		"\n\n*When fixed, Eternal Corridor minions will use body enhancements from story minions,"
-		"\nand Eternal Corridor bosses will use their supposed body enhancements."
+	helpConsole->addFeature(m_ui.bodyEnhancementFix, m_ui.bodyEnhancementBox->title(), 
+		"Due to a programming error, body enhancements on Eternal Corridor minions and Eternal Corridor "
+		"bosses do not work, this solves the issue."
+		"\n\nWhen fixed, Eternal Corridor minions will use body enhancements from story minions "
+		"and Eternal Corridor bosses will use their supposed body enhancements."
 	);
 
-	GuiSettings::setToolTip(m_ui.autumnMoonEffectFix,
-		"Autumn Moon was supposed to have a unique attack effect, unfortunately due to an oversight"
-		"\nfrom the developers, the weapon file does not include the effect and use none, this solves this issue."
+	helpConsole->addFeature(m_ui.autumnMoonEffectFix, m_ui.autumnMoonEffectBox->title(), 
+		"Autumn Moon was supposed to have a unique attack effect. Unfortunately due to an oversight "
+		"from the developers, the weapon file does not include the effect and use none, this solves this issue."
 	);
 
-	GuiSettings::setToolTip(m_ui.hpMpBarsSizeSlider,
+	helpConsole->addFeature(m_ui.hpMpBarsSizeSlider, m_ui.hpMpBarsSizeBox->title(), "Slider", 
 		"Bug may occur on hp / mp bars when playing on unofficial hardware, this will reduce its size."
-		"\n\n*Most of the time, reducing the size to 24 or 23 is fine, but it can differ and needs to be gauged."
+		"\n\nMost of the time, reducing the size to 24 or 23 is fine, but it can differ and needs to be gauged."
 	);
 
-	GuiSettings::setToolTip(m_ui.specialAttackModifiersDisplayFix,
-		"Due to a programming error, on the French version the special attack modifiers"
-		"\n(+Power, +Accuracy and +Critical) are not displayed, this solves the issue."
+	helpConsole->addFeature(m_ui.specialAttackModifiersDisplayFix, m_ui.specialAttackModifiersDisplayBox->title(), 
+		"Due to a programming error, on the French version the special attack modifiers "
+		"(+Power, +Accuracy and +Critical) are not displayed, this solves the issue."
 	);
 
 	connect(m_ui.hpMpBarsSizeSlider, &QSlider::valueChanged, this, &FixesWidget::setHpMpBarsSizeText);

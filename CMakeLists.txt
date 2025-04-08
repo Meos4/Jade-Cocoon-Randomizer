@@ -127,6 +127,9 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/GuiPath.hpp
     ${FRONTENDQT_DIR}/GuiSettings.cpp
     ${FRONTENDQT_DIR}/GuiSettings.hpp
+    ${FRONTENDQT_DIR}/HelpConsoleWidget.cpp
+    ${FRONTENDQT_DIR}/HelpConsoleWidget.hpp
+    ${FRONTENDQT_DIR}/HelpConsoleWidget.ui
     ${FRONTENDQT_DIR}/ImageAnimator.cpp
     ${FRONTENDQT_DIR}/ImageAnimator.hpp
     ${FRONTENDQT_DIR}/ImageAnimatorFactory.cpp

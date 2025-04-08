@@ -1,9 +1,9 @@
 #include "BossWidget.hpp"
 
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
-BossWidget::BossWidget(QWidget* parent)
+BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -25,32 +25,65 @@ BossWidget::BossWidget(QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureIncludeCompatible) }
 	};
 
-	GuiSettings::setToolTip(m_ui.storyElementRandomAll,
+	const QString _Story{ m_ui.storyBox->title() };
+	const auto _StoryElement{ _Story + " " + m_ui.storyElementBox->title() };
+
+	helpConsole->addFeature(m_ui.storyElementRandomAll, _StoryElement, 
 		"Randomize the element of all story bosses."
-		"\n\n*Elemental battle maps will be adapted to the summon element (Tuturis, Seterian and Delfanel.)"
+		"\n\nElemental battle maps will be adapted to the summon element (Tuturis, Seterian and Delfanel.)"
 	);
-	GuiSettings::setToolTip(m_ui.storyElementRandomElemental,
+
+	helpConsole->addFeature(m_ui.storyElementRandomElemental, _StoryElement, 
 		"Randomize the element only of story bosses that have an element."
-		"\n\n*Elemental battle maps will be adapted to the summon element (Tuturis, Seterian and Delfanel.)"
+		"\n\nElemental battle maps will be adapted to the summon element (Tuturis, Seterian and Delfanel.)"
 	);
-	GuiSettings::setToolTip(m_ui.storySpecialMagicRandom,
+
+	helpConsole->addFeature(m_ui.storySpecialMagicRandom, _Story + " " + m_ui.storySpecialMagicBox->title(),
 		"Randomize specials and magics based on boss elements."
-		"\n\n*Does not randomize heals/taunts and some AI-based attacks."
+		"\n\nDoes not randomize heals/taunts and some AI-based attacks."
 	);
-	GuiSettings::setToolTip(m_ui.storyAppearanceTextureColorBasedOnElement,
+
+	const auto _StoryAppearanceTexture{ _Story + " " + m_ui.storyAppearanceTextureBox->title() };
+
+	helpConsole->addFeature(m_ui.storyAppearanceTextureColorBasedOnElement, _StoryAppearanceTexture,
 		"Colorize the textures of the story bosses according to the elements."
-		"\n\n*\"None\" bosses will use the default color and Cushidra will randomly use an elemental color."
+		"\n\n\"None\" bosses will use the default color and Cushidra will randomly use an elemental color."
 	);
-	GuiSettings::setToolTip(m_ui.storyAppearanceTextureRandomColor, "Randomize the texture colors of bosses.");
-	GuiSettings::setToolTip(m_ui.eternalCorridorElementRandom, "Randomize Eternal Corridor boss elements.");
-	GuiSettings::setToolTip(m_ui.eternalCorridorSpecialMagicRandom,
+
+	helpConsole->addFeature(m_ui.storyAppearanceTextureRandomColor, _StoryAppearanceTexture,
+		"Randomize the texture colors of bosses."
+	);
+
+	const QString _EternalCorridor{ m_ui.eternalCorridorBox->title() };
+
+	helpConsole->addFeature(m_ui.eternalCorridorElementRandom, _EternalCorridor + " " + m_ui.eternalCorridorElementBox->title(),
+		"Randomize Eternal Corridor boss elements."
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorSpecialMagicRandom, _EternalCorridor + " " + m_ui.eternalCorridorSpecialMagicBox->title(),
 		"Randomize specials and magics based on Eternal Corridor boss elements."
-		"\n\n*Does not randomize AI-based attacks."
+		"\n\nDoes not randomize AI-based attacks."
 	);
-	GuiSettings::setToolTip(m_ui.eternalCorridorRandomNewAppearance, "Create new randomly generated appearances.");
-	GuiSettings::setToolTip(m_ui.eternalCorridorAppearanceTextureRandom, "Randomize the texture of Eternal Corridor bosses.");
-	GuiSettings::setToolTip(m_ui.eternalCorridorAppearanceTextureRandomColor, "Randomize the texture colors of Eternal Corridor bosses.");
-	GuiSettings::setToolTip(m_ui.eternalCorridorAppearanceTextureIncludeCompatible, "Includes minions + Minion (Dark Arpatron) textures in the pool.");
+
+	const auto _EternalCorridorAppearance{ _EternalCorridor + " " + m_ui.eternalCorridorAppearanceBox->title() };
+
+	helpConsole->addFeature(m_ui.eternalCorridorRandomNewAppearance, _EternalCorridorAppearance,
+		"Create new randomly generated appearances."
+	);
+
+	const auto _EternalCorridorAppearanceTexture{ _EternalCorridorAppearance + " " + m_ui.eternalCorridorAppearanceTextureBox->title() };
+
+	helpConsole->addFeature(m_ui.eternalCorridorAppearanceTextureRandom, _EternalCorridorAppearanceTexture,
+		"Randomize the texture of Eternal Corridor bosses."
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorAppearanceTextureRandomColor, _EternalCorridorAppearanceTexture,
+		"Randomize the texture colors of Eternal Corridor bosses."
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorAppearanceTextureIncludeCompatible, _EternalCorridorAppearanceTexture,
+		"Includes minions + Minion (Dark Arpatron) textures in the pool."
+	);
 
 	m_ui.eternalCorridorAppearanceTextureIncludeCompatible->setEnabled(false);
 

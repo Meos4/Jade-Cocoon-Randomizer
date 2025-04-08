@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item row="0" column="0">
-    <widget class="QGroupBox" name="hudBox">
+    <widget class="QGroupBox" name="hudColorBox">
      <property name="title">
       <string>Hud Color</string>
      </property>
@@ -47,7 +47,7 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="hudLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+       <layout class="QHBoxLayout" name="hudColorLayout" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
         <item>
          <widget class="QCheckBox" name="hudColorCustom">
           <property name="toolTip">

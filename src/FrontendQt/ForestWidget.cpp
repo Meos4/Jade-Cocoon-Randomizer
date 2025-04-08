@@ -2,7 +2,7 @@
 
 #include "Backend/Ost.hpp"
 #include "Common/JcrException.hpp"
-#include "FrontendQt/GuiSettings.hpp"
+#include "FrontendQt/HelpConsoleWidget.hpp"
 
 #include <QAbstractItemView>
 #include <QStringList>
@@ -23,7 +23,7 @@ static s16 textToId(const char* text)
 	return Forest::randomOstVal;
 }
 
-ForestWidget::ForestWidget(QWidget* parent)
+ForestWidget::ForestWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	: RandomizerWidget(parent)
 {
 	m_ui.setupUi(this);
@@ -40,20 +40,35 @@ ForestWidget::ForestWidget(QWidget* parent)
 		{ SETTINGS(m_ui.ostRandomEternalCorridorOstPerCorridor) }
 	};
 
-	GuiSettings::setToolTip(m_ui.paletteColorRandom, "Randomize the colors of the forest palettes.");
-	GuiSettings::setToolTip(m_ui.battleMapsRandom,
-		"Randomize battle maps."
-		"\n\n*Elemental battle maps are not randomized (Tuturis, Seterian and Delfanel.)"
+	helpConsole->addFeature(m_ui.paletteColorRandom, m_ui.paletteColorBox->title(),
+		"Randomize the colors of the forest palettes."
 	);
 
-	GuiSettings::setToolTip(m_ui.ostRandom, "Randomize osts.");
-	GuiSettings::setToolTip(m_ui.ostShuffle, "Shuffle ost between forests.");
-	static constexpr auto customOst{ "Allows to choose the ost by forest." };
-	GuiSettings::setToolTip(m_ui.ostCustom, customOst);
-	GuiSettings::setToolTip(m_ui.ostCustomForestCombo, customOst);
-	GuiSettings::setToolTip(m_ui.ostCustomChoiceCombo, customOst);
-	GuiSettings::setToolTip(m_ui.ostRandomEternalCorridorOstPerCorridor,
-		"Randomly change the ost in real time during Eternal Corridor with each new corridor.");
+	helpConsole->addFeature(m_ui.battleMapsRandom, m_ui.battleMapsBox->title(),
+		"Randomize battle maps."
+		"\n\nElemental battle maps are not randomized (Tuturis, Seterian and Delfanel.)"
+	);
+
+	const QString _Ost{ m_ui.ostBox->title() };
+
+	helpConsole->addFeature(m_ui.ostRandom, _Ost,
+		"Randomize osts."
+	);
+
+	helpConsole->addFeature(m_ui.ostShuffle, _Ost,
+		"Shuffle ost between forests."
+	);
+
+	const QString customOst{ "Allows to choose the ost by forest." };
+	const QString _Custom{ "Custom" };
+
+	helpConsole->addFeature(m_ui.ostCustom, _Ost, _Custom, customOst);
+	helpConsole->addFeature(m_ui.ostCustomForestCombo, _Ost, _Custom, customOst);
+	helpConsole->addFeature(m_ui.ostCustomChoiceCombo, _Ost, _Custom, customOst);
+
+	helpConsole->addFeature(m_ui.ostRandomEternalCorridorOstPerCorridor, _Ost,
+		"Randomly change the ost in real time during Eternal Corridor with each new corridor."
+	);
 
 	m_ui.ostCustomForestCombo->setStyleSheet("font-weight: normal;");
 	m_ui.ostCustomChoiceCombo->setStyleSheet("font-weight: normal;");
