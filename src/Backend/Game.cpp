@@ -56,8 +56,9 @@ const char* Game::filePathByIndex(File file) const
 	return m_data001FilesPath[static_cast<File_t>(fileByVersion(file))];
 }
 
-void Game::expandExecutable() const
+void Game::expandExecutable()
 {
+	m_ccShift = 0;
 	auto executable{ this->executable() };
 	const auto offsetGHvb{ m_offset.game.heapVanillaBegin };
 

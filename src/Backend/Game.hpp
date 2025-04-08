@@ -30,7 +30,7 @@ public:
 	RawFile staticExecutable() const;
 	const char* filePathByIndex(File file) const;
 
-	void expandExecutable() const;
+	void expandExecutable();
 	Game::CustomCodeOffset customCodeOffset(u32 size);
 	u32 heapRandomizerBegin() const;
 	u32 gameToFileTextSectionShift() const;
