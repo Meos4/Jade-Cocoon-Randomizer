@@ -95,7 +95,11 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 			const auto jsonValue{ json.value() };
 			for (const auto widget : m_randomizerWidgets)
 			{
-				widget->loadPresets(jsonValue[widget->name()]);
+				const auto it{ jsonValue.find(widget->name()) };
+				if (it != jsonValue.end())
+				{
+					widget->loadPresets(it.value());
+				}
 			}
 		}
 	}
