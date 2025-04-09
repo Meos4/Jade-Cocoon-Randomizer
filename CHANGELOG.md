@@ -1,3 +1,35 @@
+## [2.4.0]
+- Generate loading animation when saving iso
+- Use a console to get help on features instead of tooltips
+- Does not disable the user interface if the iso save fails
+- Prevent crash when reading json presets with missing tab
+- Fixed a bug that could corrupt the iso when saving too many times
+  
+### Levant
+- Brighter icon
+
+### Minion 
+- Brighter icon
+
+### Boss
+- New Fire Boss icon
+- Removed feature to include the "none" element
+
+### Forest
+- New dragonfly forest key icon
+
+### Equipment
+- Brighter icon
+
+### Treasure
+- Brighter icon
+
+### Shop
+- New sword icon
+
+### Misc
+- Use a green icon instead of blue
+
 ## [2.3.0]
 - An extracted iso can be randomized multiple times and does not need to be extracted again
 - Using a wrong character on the seed no longer resets it to 0
