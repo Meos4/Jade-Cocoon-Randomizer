@@ -15,8 +15,6 @@ enum class Theme
 class GuiSettings final
 {
 public:
-	static void setToolTip(QWidget* widget, const QString& str);
-
 	void setOsTheme();
 	void updateTheme(Theme theme);
 	void loadSettings(const Json::Read& json);
