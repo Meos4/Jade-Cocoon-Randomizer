@@ -15,10 +15,6 @@ Features
 
 And more
 
-Download
---------
-[GitHub](https://github.com/Meos4/Jade-Cocoon-Randomizer/releases)
-
 How to Use
 ----------
 A Jade Cocoon iso of a retail version in the .bin format is required.
@@ -26,18 +22,11 @@ A Jade Cocoon iso of a retail version in the .bin format is required.
 Building
 --------
 Requirements:
-* Git
 * CMake
 * C++20
 * Qt 6
 
 Clone repository using: `git clone --recursive https://github.com/Meos4/Jade-Cocoon-Randomizer.git`
-
-Dependencies
------------
-* [Jade Cocoon Unpacker Repacker](https://github.com/Meos4/Jade-Cocoon-Unpacker-Repacker)
-* [mkpsxiso](https://github.com/Meos4/mkpsxiso)
-* [nlohmann json](https://github.com/nlohmann/json)
 
 Screenshots
 -----------
