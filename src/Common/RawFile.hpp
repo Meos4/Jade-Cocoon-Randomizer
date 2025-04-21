@@ -17,7 +17,6 @@ public:
 	template <typename T>
 	T read(u64 offset, std::size_t size = sizeof(T))
 	{
-		static_assert(sizeof(T) < 1024, "Size limit reached, should read using heap");
 		T hook;
 		m_stream.seekg(offset);
 		m_stream.read((char*)&hook, size);
