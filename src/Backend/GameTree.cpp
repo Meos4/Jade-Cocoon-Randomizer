@@ -35,6 +35,19 @@ RawFile GameTree::executable() const
 	return RawFile{ m_exePath };
 }
 
+std::unique_ptr<RawFileReadOnly> GameTree::fileReadOnly(const char* file) const
+{
+	const auto filePath{ m_directory / file };
+	checkRegularFile(filePath);
+	return std::make_unique<RawFileReadOnly>(filePath);
+}
+
+RawFileReadOnly GameTree::executableReadOnly() const
+{
+	checkRegularFile(m_exePath);
+	return RawFileReadOnly{ m_exePath };
+}
+
 void GameTree::repackDATA001() const
 {
 	const auto filesPath{ Path::filesDirectoryPath(m_directory) };

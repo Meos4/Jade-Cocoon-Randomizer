@@ -5,6 +5,7 @@
 #include "Backend/Offset.hpp"
 #include "Backend/Version.hpp"
 #include "Common/RawFile.hpp"
+#include "Common/RawFileReadOnly.hpp"
 #include "Common/Random.hpp"
 #include "Common/TemplateTypes.hpp"
 #include "Common/Types.hpp"
@@ -26,8 +27,8 @@ public:
 	
 	std::unique_ptr<RawFile> file(File file) const;
 	RawFile executable() const;
-	std::unique_ptr<RawFile> staticFile(File file) const;
-	RawFile staticExecutable() const;
+	std::unique_ptr<RawFileReadOnly> staticFile(File file) const;
+	RawFileReadOnly staticExecutable() const;
 	const char* filePathByIndex(File file) const;
 
 	void expandExecutable();

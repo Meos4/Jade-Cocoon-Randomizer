@@ -41,14 +41,14 @@ RawFile Game::executable() const
 	return m_builderTree.executable();
 }
 
-std::unique_ptr<RawFile> Game::staticFile(File file) const
+std::unique_ptr<RawFileReadOnly> Game::staticFile(File file) const
 {
-	return m_staticTree.file(filePathByIndex(file));
+	return m_staticTree.fileReadOnly(filePathByIndex(file));
 }
 
-RawFile Game::staticExecutable() const
+RawFileReadOnly Game::staticExecutable() const
 {
-	return m_staticTree.executable();
+	return m_staticTree.executableReadOnly();
 }
 
 const char* Game::filePathByIndex(File file) const

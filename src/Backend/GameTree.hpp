@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/RawFile.hpp"
+#include "Common/RawFileReadOnly.hpp"
 
 #include <filesystem>
 #include <memory>
@@ -28,6 +29,8 @@ public:
 
 	std::unique_ptr<RawFile> file(const char* file) const;
 	RawFile executable() const;
+	std::unique_ptr<RawFileReadOnly> fileReadOnly(const char* file) const;
+	RawFileReadOnly executableReadOnly() const;
 	void repackDATA001() const;
 	bool removeDATA001() const;
 	void createIso(const std::filesystem::path* destPath) const;
