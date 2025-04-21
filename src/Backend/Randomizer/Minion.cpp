@@ -183,7 +183,7 @@ Id_Entity_t Randomizer::korisMinion() const
 
 void Randomizer::minionSpawnStory(Randomizer::MinionSpawnStory state) const
 {
-	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
+	const bool isNtscJ{ m_game->isNtscJ() };
 	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
 
 	if (state == Randomizer::MinionSpawnStory::RandomRealtime && !isNtscJ)
@@ -235,7 +235,7 @@ void Randomizer::minionSpawnEC() const
 
 void Randomizer::minionDreamMinion() const
 {
-	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
+	const bool isNtscJ{ m_game->isNtscJ() };
 	const auto scene_other_dream_sce00a_sbh{ m_game->file(File::SCENE_OTHER_DREAM_SCE00A_SBH) };
 	scene_other_dream_sce00a_sbh->write(m_game->offset().file.scene_other_dream_sce00a_sbh.dreamMinionId, generateMinion(!isNtscJ));
 }
@@ -252,7 +252,7 @@ void Randomizer::minionDreamMinion(Id_Entity_t id) const
 
 void Randomizer::minionKorisMinion() const
 {
-	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
+	const bool isNtscJ{ m_game->isNtscJ() };
 	const auto scene_field1_gate_sce00a_sbh{ m_game->file(File::SCENE_FIELD1_GATE_SCE00A_SBH) };
 	scene_field1_gate_sce00a_sbh->write(m_game->offset().file.scene_field1_gate_sce00a_sbh.korisMinionId, generateMinion(!isNtscJ));
 }
@@ -519,7 +519,7 @@ void Randomizer::minionSpecialMagic(const std::unordered_set<Special_t>& special
 	executable.write(offsetSpecialsStory, specialsStory);
 	executable.write(offsetMagicsStory, magicsStory);
 
-	if (m_game->isVersion(Version::NtscJ1, Version::NtscJ2))
+	if (m_game->isNtscJ())
 	{
 		const auto scene_other_hunting_sce00_sbh{ m_game->file(File::SCENE_OTHER_HUNTING_SCE00_SBH) };
 
@@ -842,11 +842,9 @@ MipsFn::GenerateValidMinion Randomizer::generateValidMinionFn() const
 
 bool Randomizer::isValidMinionForStory(Id_Entity_t id) const
 {
-	const bool 
-		isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) },
-		firstPortion{ id >= ID_MARRDREG && id < ID_DREAM_MAN };
+	const bool firstPortion{ id >= ID_MARRDREG && id < ID_DREAM_MAN };
 
-	if (isNtscJ)
+	if (m_game->isNtscJ())
 	{
 		return firstPortion;
 	}

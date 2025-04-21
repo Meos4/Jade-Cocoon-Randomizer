@@ -70,7 +70,7 @@ void SharedData::read()
 	m_rotations[MODEL_TX06] = { { 64, 96, 128, 0 }, 0, ELEMENT_WATER };
 	m_rotations[MODEL_TX07] = { { 64, 96, 128, 160 }, 0, ELEMENT_FIRE };
 
-	if (!m_game->isVersion(Version::NtscJ1, Version::NtscJ2))
+	if (!m_game->isNtscJ())
 	{
 		m_rotations[MODEL_ASHA] = { { 155, 20, 65, 110 }, 0, ELEMENT_FIRE };
 	}

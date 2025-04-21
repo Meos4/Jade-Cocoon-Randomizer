@@ -43,7 +43,7 @@ void Randomizer::addonsNuzlocke(Randomizer::AddonsNuzlocke_t state) const
 	if (state & Randomizer::ADDONS_NUZLOCKE_DEFINITIVE_DEATH)
 	{
 		const auto li32_minion1State{ Mips::li32(Mips::Register::t0, m_game->offset().game.minion1State) };
-		const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
+		const bool isNtscJ{ m_game->isNtscJ() };
 
 		const MipsFn::NuzlockeDefinitiveDeath nuzlockeDefinitiveDeathFn
 		{
@@ -327,7 +327,7 @@ void Randomizer::addonsDifficulty(Randomizer::AddonsDifficulty state) const
 		0x0043001A, // div v0, v1
 		0x00004012, // mflo t0
 		0x00481021, // move v0, t0
-		m_game->isVersion(Version::NtscJ1, Version::NtscJ2) ? Mips_t(0xA0A20028) : Mips_t(0xA0A2002C), // sb v0, 0x28/0x2C
+		m_game->isNtscJ() ? Mips_t(0xA0A20028) : Mips_t(0xA0A2002C), // sb v0, 0x28/0x2C
 		0x000A20C2, // srl a0, t2, 3
 		0x00801821, // move v1, a0
 		0x8FA80004, // lw t0, 4(sp)
@@ -422,7 +422,7 @@ void Randomizer::addonsSkipTutorial(bool skipKoris) const
 	const auto over_title_bin{ m_game->file(File::OVER_TITLE_BIN) };
 
 	const auto
-		sb_setLevantGarb{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) ? Mips_t(0xA04007DD) : Mips_t(0xA04007E5) }; // sb zero, 0x7DD/0x7E5(v0)
+		sb_setLevantGarb{ m_game->isNtscJ() ? Mips_t(0xA04007DD) : Mips_t(0xA04007E5)}; // sb zero, 0x7DD/0x7E5(v0)
 
 	over_title_bin->write(m_game->offset().file.over_title_bin.initMapNewGame, Mips::jal(writeAfterTutorialStateOffset.game));
 	over_title_bin->write(m_game->offset().file.over_title_bin.initMapNewGame - 8, Mips_t(0));
@@ -630,7 +630,7 @@ void Randomizer::addonsShowHiddenStats() const
 		li_bipedalText2{ Mips::li(Mips::Register::v1, arrayTextToInteger.operator()<u16>(bipedal.data() + 8)) },
 		li_wingedText2{ Mips::li(Mips::Register::v1, arrayTextToInteger.operator()<u16>(winged.data() + 8)) };
 
-	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
+	const bool isNtscJ{ m_game->isNtscJ()};
 
 	const MipsFn::DrawHiddenStats drawCriticalAndBodyTextFn
 	{
