@@ -1,4 +1,4 @@
-#include "Shop.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
@@ -89,36 +89,31 @@ static auto shopRandomizer(const std::array<s32, availableShop>& sizes, Random* 
 	return items;
 }
 
-Shop::Shop(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Shop::setWeapon() const
+void Randomizer::shopWeapon() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
 		m_game->offset().file.over_wpnshop_bin.items + 0x58, shopRandomizer<Item::CATEGORY_WEAPON>({ 3, 4, 6, 8, 17 }, m_game->random()));
 }
 
-void Shop::setArmor() const
+void Randomizer::shopArmor() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
 		m_game->offset().file.over_wpnshop_bin.items + 0x88, shopRandomizer<Item::CATEGORY_ARMOR>({ 2, 4, 6, 4, 13 }, m_game->random()));
 }
 
-void Shop::setOther() const
+void Randomizer::shopOther() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
 		m_game->offset().file.over_wpnshop_bin.items + 0xA8, shopRandomizer<Item::CATEGORY_OTHER>({ 1, 2, 3, 7, 16 }, m_game->random()));
 }
 
-void Shop::setItem() const
+void Randomizer::shopItem() const
 {
 	m_game->file(File::OVER_WPNSHOP_BIN)->write(
 		m_game->offset().file.over_wpnshop_bin.items, shopRandomizer<Item::CATEGORY_ITEM>({ 3, 5, 7, 27, 27 }, m_game->random()));
 }
 
-void Shop::setEternalCorridorUnlockAll() const
+void Randomizer::shopEternalCorridorUnlockAll() const
 {
 	const auto over_wpnshop_bin{ m_game->file(File::OVER_WPNSHOP_BIN) };
 

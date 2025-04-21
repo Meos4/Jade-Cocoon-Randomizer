@@ -95,59 +95,14 @@ TreasureWidget::TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.battleShuffle, &QAbstractButton::toggled, m_ui.battleShuffleSkeletonKeys, &QWidget::setEnabled);
 }
 
-void TreasureWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void TreasureWidget::enableUI(Randomizer* randomizer)
 {
-	m_treasure = std::make_unique<Treasure>(game, sharedData);
 	setEnabled(true);
 }
 
 void TreasureWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_treasure)
-	{
-		m_treasure.reset();
-	}
-}
-
-void TreasureWidget::write() const
-{
-	if (!m_treasure)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.itemsRandom->isChecked())
-	{
-		m_treasure->setItems(Treasure::Items::Random, m_ui.itemsRandomSkeletonKeys->isChecked());
-	}
-	else if (m_ui.itemsRandomByCategory->isChecked())
-	{
-		m_treasure->setItems(Treasure::Items::RandomByCategory, m_ui.itemsRandomSkeletonKeys->isChecked());
-	}
-
-	if (m_ui.valuablesRandom->isChecked())
-	{
-		m_treasure->setValuables(Treasure::Valuables::Random, m_ui.valuablesRandomUsableValuables->isChecked());
-	}
-	else if (m_ui.valuablesRandomByCategory->isChecked())
-	{
-		m_treasure->setValuables(Treasure::Valuables::RandomByCategory, m_ui.valuablesRandomUsableValuables->isChecked());
-	}
-
-	if (m_ui.equipmentsRandom->isChecked())
-	{
-		m_treasure->setEquipments(Treasure::Equipments::Random);
-	}
-	else if (m_ui.equipmentsRandomByCategory->isChecked())
-	{
-		m_treasure->setEquipments(Treasure::Equipments::RandomByCategory);
-	}
-
-	if (m_ui.battleShuffle->isChecked())
-	{
-		m_treasure->setBattle(m_ui.battleShuffleSkeletonKeys->isChecked());
-	}
 }
 
 const char* TreasureWidget::name() const
@@ -169,6 +124,11 @@ void TreasureWidget::savePresets(Json::Write* json)
 	{
 		checkBox.save(json);
 	}
+}
+
+const Ui::TreasureWidget& TreasureWidget::Ui() const
+{
+	return m_ui; 
 }
 
 void TreasureWidget::updateItems()

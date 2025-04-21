@@ -97,83 +97,14 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.eternalCorridorAppearanceTextureRandom, &QAbstractButton::toggled, m_ui.eternalCorridorAppearanceTextureIncludeCompatible, &QWidget::setEnabled);
 }
 
-void BossWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void BossWidget::enableUI(Randomizer* randomizer)
 {
-	m_boss = std::make_unique<Boss>(game, sharedData);
 	setEnabled(true);
 }
 
 void BossWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_boss)
-	{
-		m_boss.reset();
-	}
-}
-
-void BossWidget::write() const
-{
-	if (!m_boss)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.storyElementRandomAll->isChecked())
-	{
-		m_boss->setElement(Boss::Element::RandomAll);
-	}
-	else if (m_ui.storyElementRandomElemental->isChecked())
-	{
-		m_boss->setElement(Boss::Element::RandomElemental);
-	}
-
-	if (m_ui.storySpecialMagicRandom->isChecked())
-	{
-		m_boss->setSpecialMagic();
-	}
-
-	if (m_ui.storyAppearanceTextureColorBasedOnElement->isChecked())
-	{
-		m_boss->setAppearance(Boss::Appearance::ColorBasedOnElement);
-	}
-	else if (m_ui.storyAppearanceTextureRandomColor->isChecked())
-	{
-		m_boss->setAppearance(Boss::Appearance::RandomColor);
-	}
-
-	if (m_ui.eternalCorridorElementRandom->isChecked())
-	{
-		m_boss->setElementEC();
-	}
-
-	if (m_ui.eternalCorridorSpecialMagicRandom->isChecked())
-	{
-		m_boss->setSpecialMagicEC();
-	}
-
-	Boss::AppearanceEC_t appearanceEC{};
-	if (m_ui.eternalCorridorRandomNewAppearance->isChecked())
-	{
-		appearanceEC |= Boss::APPEARANCE_EC_RANDOM_NEW_APPEARANCE;
-	}
-	if (m_ui.eternalCorridorAppearanceTextureRandom->isChecked())
-	{
-		appearanceEC |= Boss::APPEARANCE_EC_TEXTURE_RANDOM;
-
-		if (m_ui.eternalCorridorAppearanceTextureIncludeCompatible->isChecked())
-		{
-			appearanceEC |= Boss::APPEARANCE_EC_TEXTURE_INCLUDE_COMPATIBLE;
-		}
-	}
-	if (m_ui.eternalCorridorAppearanceTextureRandomColor->isChecked())
-	{
-		appearanceEC |= Boss::APPEARANCE_EC_TEXTURE_RANDOM_COLOR;
-	}
-	if (appearanceEC)
-	{
-		m_boss->setAppearanceEC(appearanceEC);
-	}
 }
 
 const char* BossWidget::name() const
@@ -195,6 +126,11 @@ void BossWidget::savePresets(Json::Write* json)
 	{
 		checkBox.save(json);
 	}
+}
+
+const Ui::BossWidget& BossWidget::Ui() const
+{
+	return m_ui;
 }
 
 void BossWidget::updateStoryElement()

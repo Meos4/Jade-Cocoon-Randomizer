@@ -1,4 +1,4 @@
-#include "Minion.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 #include "Backend/JCUtil.hpp"
@@ -169,36 +169,31 @@ struct MinionModelProperties
 	std::array<u8, 100> empty;
 };
 
-Minion::Minion(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-Id_Entity_t Minion::dreamMinion() const
+Id_Entity_t Randomizer::dreamMinion() const
 {
 	const auto scene_other_dream_sce00a_sbh{ m_game->staticFile(File::SCENE_OTHER_DREAM_SCE00A_SBH) };
 	return scene_other_dream_sce00a_sbh->read<Id_Entity_t>(m_game->offset().file.scene_other_dream_sce00a_sbh.dreamMinionId);
 }
 
-Id_Entity_t Minion::korisMinion() const
+Id_Entity_t Randomizer::korisMinion() const
 {
 	const auto scene_field1_gate_sce00a_sbh{ m_game->staticFile(File::SCENE_FIELD1_GATE_SCE00A_SBH) };
 	return scene_field1_gate_sce00a_sbh->read<Id_Entity_t>(m_game->offset().file.scene_field1_gate_sce00a_sbh.korisMinionId);
 }
 
-void Minion::setSpawnStory(Minion::SpawnStory state) const
+void Randomizer::minionSpawnStory(Randomizer::MinionSpawnStory state) const
 {
 	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
 	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
 
-	if (state == Minion::SpawnStory::RandomRealtime && !isNtscJ)
+	if (state == Randomizer::MinionSpawnStory::RandomRealtime && !isNtscJ)
 	{
 		const auto generateValidMinionOffset{ m_game->customCodeOffset(sizeof(MipsFn::GenerateValidMinion)) };
 
 		m_game->executable().write(generateValidMinionOffset.file, generateValidMinionFn());
 		over_game_bin->write(m_game->offset().file.over_game_bin.spawnStory, Mips::jal(generateValidMinionOffset.game));
 	}
-	else if (state == Minion::SpawnStory::RandomPremade)
+	else if (state == Randomizer::MinionSpawnStory::RandomPremade)
 	{
 		std::array<Id_Entity_t, 51> minionsId;
 
@@ -220,7 +215,7 @@ void Minion::setSpawnStory(Minion::SpawnStory state) const
 	}
 }
 
-void Minion::setSpawnEC() const
+void Randomizer::minionSpawnEC() const
 {
 	const auto generateValidMinionOffset{ m_game->customCodeOffset(sizeof(MipsFn::GenerateValidMinion)) };
 
@@ -238,14 +233,14 @@ void Minion::setSpawnEC() const
 	scene_other_hunting_sce00_sbh->write(m_game->offset().file.scene_other_hunting_sce00_sbh.neutralSpawnEC + 0x80, jal_generateValidMinionEC);
 }
 
-void Minion::setDreamMinion() const
+void Randomizer::minionDreamMinion() const
 {
 	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
 	const auto scene_other_dream_sce00a_sbh{ m_game->file(File::SCENE_OTHER_DREAM_SCE00A_SBH) };
 	scene_other_dream_sce00a_sbh->write(m_game->offset().file.scene_other_dream_sce00a_sbh.dreamMinionId, generateMinion(!isNtscJ));
 }
 
-void Minion::setDreamMinion(Id_Entity_t id) const
+void Randomizer::minionDreamMinion(Id_Entity_t id) const
 {
 	if (!isValidMinionForStory(id))
 	{
@@ -255,14 +250,14 @@ void Minion::setDreamMinion(Id_Entity_t id) const
 	scene_other_dream_sce00a_sbh->write(m_game->offset().file.scene_other_dream_sce00a_sbh.dreamMinionId, id);
 }
 
-void Minion::setKorisMinion() const
+void Randomizer::minionKorisMinion() const
 {
 	const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
 	const auto scene_field1_gate_sce00a_sbh{ m_game->file(File::SCENE_FIELD1_GATE_SCE00A_SBH) };
 	scene_field1_gate_sce00a_sbh->write(m_game->offset().file.scene_field1_gate_sce00a_sbh.korisMinionId, generateMinion(!isNtscJ));
 }
 
-void Minion::setKorisMinion(Id_Entity_t id) const
+void Randomizer::minionKorisMinion(Id_Entity_t id) const
 {
 	if (!isValidMinionForStory(id))
 	{
@@ -272,12 +267,12 @@ void Minion::setKorisMinion(Id_Entity_t id) const
 	scene_field1_gate_sce00a_sbh->write(m_game->offset().file.scene_field1_gate_sce00a_sbh.korisMinionId, id);
 }
 
-void Minion::setStats(Minion::Stats_t state) const
+void Randomizer::minionStats(Randomizer::MinionStats_t state) const
 {
 	auto executable{ m_game->executable() };
 	auto stats{ executable.read<std::array<StatsStruct, Entity::totalStoryMinions>>(m_game->offset().file.executable.entityStats) };
 
-	if (state & Minion::STATS_SHUFFLE_BETWEEN_MINIONS)
+	if (state & Randomizer::MINION_STATS_SHUFFLE_BETWEEN_MINIONS)
 	{
 		const auto statsConst{ stats };
 		m_game->random()->shuffle(&stats);
@@ -288,7 +283,7 @@ void Minion::setStats(Minion::Stats_t state) const
 		}
 	}
 
-	if (state & Minion::STATS_SHUFFLE_STATS)
+	if (state & Randomizer::MINION_STATS_SHUFFLE_STATS)
 	{
 		for (auto& id : stats)
 		{
@@ -312,7 +307,7 @@ void Minion::setStats(Minion::Stats_t state) const
 	executable.write(m_game->offset().file.executable.entityStats, stats);
 }
 
-void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic_t magic) const
+void Randomizer::minionSpecialMagic(const std::unordered_set<Special_t>& special, Magic_t magic) const
 {
 	const std::unordered_map<Element_t, std::unordered_set<Special_t>> specialsAllowed
 	{
@@ -557,7 +552,7 @@ void Minion::setSpecialMagic(const std::unordered_set<Special_t>& special, Magic
 	executable.write(m_game->offset().file.executable.branchSetVatolkaSpecials, branchVatolkaSpecials);
 }
 
-void Minion::setAppearance(Minion::Appearance_t state) const
+void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state)
 {
 	std::unordered_map<Model_t, std::unique_ptr<RawFile>> minions;
 
@@ -568,7 +563,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 	
 	auto executable{ m_game->executable() };
 
-	if (state & Minion::APPEARANCE_RANDOM_NEW_MINION)
+	if (state & Randomizer::MINION_APPEARANCE_RANDOM_NEW_MINION)
 	{
 		for (const auto& [model, file] : minions)
 		{
@@ -586,12 +581,12 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 				modelsInterp.emplace_back
 				(
-					m_sharedData->model(Model::Minion::models[rngModel]),
+					m_sharedData.model(Model::Minion::models[rngModel]),
 					m_game->random()->generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
 				);
 			}
 
-			auto mainModel{ m_sharedData->model(model) };
+			auto mainModel{ m_sharedData.model(model) };
 			const auto firstAnimPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr) };
 			const auto animPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr + sizeof(u32) * model) };
 			const auto offset{ (animPtr - firstAnimPtr + m_game->offset().file.executable.tableOfModelAnimations) & ~0x80000000 };
@@ -606,7 +601,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		}
 	}
 
-	if (state & (Minion::APPEARANCE_GROWTH_SIZE_SHUFFLE | Minion::APPEARANCE_GROWTH_SIZE_INVERT))
+	if (state & (Randomizer::MINION_APPEARANCE_GROWTH_SIZE_SHUFFLE | Randomizer::MINION_APPEARANCE_GROWTH_SIZE_INVERT))
 	{
 		auto propertiesBegin = [](RawFile* file)
 		{
@@ -615,14 +610,14 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 		static constexpr auto nbProperties{ 5u };
 
-		if (state & Minion::APPEARANCE_GROWTH_SIZE_SHUFFLE)
+		if (state & Randomizer::MINION_APPEARANCE_GROWTH_SIZE_SHUFFLE)
 		{
 			for (const auto& [model, file] : minions)
 			{
 				std::vector<u32> availableProperties(nbProperties);
 				std::iota(availableProperties.begin(), availableProperties.end(), 0);
 
-				const auto& modelConst{ m_sharedData->model(model) };
+				const auto& modelConst{ m_sharedData.model(model) };
 				const auto fileBegin{ propertiesBegin(file.get()) };
 				const auto* const propertiesBeginPtr{ modelConst.data() + fileBegin };
 				
@@ -645,7 +640,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		{
 			for (const auto& [model, file] : minions)
 			{
-				const auto& modelConst{ m_sharedData->model(model) };
+				const auto& modelConst{ m_sharedData.model(model) };
 				const auto fileBegin{ propertiesBegin(file.get()) };
 				const auto* const propertiesBeginPtr{ modelConst.data() + fileBegin };
 
@@ -662,7 +657,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		}	
 	}
 
-	if (state & (Minion::APPEARANCE_MODEL_RANDOM | Minion::APPEARANCE_TEXTURE_RANDOM))
+	if (state & (Randomizer::MINION_APPEARANCE_MODEL_RANDOM | Randomizer::MINION_APPEARANCE_TEXTURE_RANDOM))
 	{
 		const auto statsStory
 		{
@@ -670,7 +665,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			(m_game->offset().file.executable.entityStats)
 		};
 
-		const auto& modelsRotation{ m_sharedData->rotations() };
+		const auto& modelsRotation{ m_sharedData.rotations() };
 
 		auto modelsBehavior
 		{
@@ -686,7 +681,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			}
 		};
 
-		if (state & Minion::APPEARANCE_MODEL_RANDOM)
+		if (state & Randomizer::MINION_APPEARANCE_MODEL_RANDOM)
 		{
 			for (s32 i{}; i < Entity::totalStoryMinions; ++i)
 			{
@@ -716,9 +711,9 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			}
 		}
 
-		if (state & Minion::APPEARANCE_TEXTURE_RANDOM)
+		if (state & Randomizer::MINION_APPEARANCE_TEXTURE_RANDOM)
 		{
-			const auto includeCompatible{ state & Minion::APPEARANCE_TEXTURE_INCLUDE_COMPATIBLE };
+			const auto includeCompatible{ state & Randomizer::MINION_APPEARANCE_TEXTURE_INCLUDE_COMPATIBLE };
 			const auto totalTextures
 			{
 				includeCompatible ?
@@ -746,7 +741,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 			for (const auto& [model, file] : minions)
 			{
 				const auto rngModel{ texturesModels[m_game->random()->generate(texturesModels.size() - 1)] };
-				const auto& modelConst{ m_sharedData->model(rngModel) };
+				const auto& modelConst{ m_sharedData.model(rngModel) };
 				file->write
 				(
 					Model::Minion::Texture::begin, 
@@ -756,7 +751,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 
 				if (model == MODEL_ZIRA)
 				{
-					m_sharedData->setGoatTextureModelId(rngModel);
+					m_sharedData.setGoatTextureModelId(rngModel);
 				}
 
 				for (s32 i{}; i < Entity::totalStoryMinions; ++i)
@@ -791,7 +786,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 		executable.write(m_game->offset().file.executable.entityModelsBehavior, modelsBehavior);	
 	}
 
-	if (state & Minion::APPEARANCE_TEXTURE_RANDOM_COLOR)
+	if (state & Randomizer::MINION_APPEARANCE_TEXTURE_RANDOM_COLOR)
 	{
 		for (const auto& [model, file] : minions)
 		{
@@ -802,7 +797,7 @@ void Minion::setAppearance(Minion::Appearance_t state) const
 	}
 }
 
-Id_Entity_t Minion::generateMinion(bool eternalCorridor) const
+Id_Entity_t Randomizer::generateMinion(bool eternalCorridor) const
 {
 	auto validMinionId = [](Id_Entity_t id) -> Id_Entity_t
 	{
@@ -812,7 +807,7 @@ Id_Entity_t Minion::generateMinion(bool eternalCorridor) const
 	return validMinionId(m_game->random()->generate(eternalCorridor ? ID_TYTON - Entity::totalStoryBosses : ID_VATOLKA_W));
 }
 
-MipsFn::GenerateValidMinion Minion::generateValidMinionFn() const
+MipsFn::GenerateValidMinion Randomizer::generateValidMinionFn() const
 {
 	const auto randOffset{ m_game->offset().game.randSeed };
 	const auto 
@@ -845,7 +840,7 @@ MipsFn::GenerateValidMinion Minion::generateValidMinionFn() const
 	return generateValidMinionFn;
 }
 
-bool Minion::isValidMinionForStory(Id_Entity_t id) const
+bool Randomizer::isValidMinionForStory(Id_Entity_t id) const
 {
 	const bool 
 		isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) },

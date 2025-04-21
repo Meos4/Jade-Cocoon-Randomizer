@@ -1,4 +1,4 @@
-#include "Misc.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 
@@ -7,32 +7,27 @@
 #include <utility>
 #include <vector>
 
-Misc::Misc(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
+Randomizer::HudColorArray Randomizer::hudColor() const
 {
+	return m_game->staticExecutable().read<Randomizer::HudColorArray>(m_game->offset().file.executable.hudColors);
 }
 
-Misc::HudColorArray Misc::hudColor() const
+void Randomizer::miscHudColor() const
 {
-	return m_game->staticExecutable().read<Misc::HudColorArray>(m_game->offset().file.executable.hudColors);
-}
-
-void Misc::setHudColor() const
-{
-	Misc::HudColorArray hudColor;
+	Randomizer::HudColorArray hudColor;
 	for (auto& color : hudColor)
 	{
 		color = m_game->random()->generate(std::numeric_limits<u32>::max()) & 0x00FFFFFF;
 	}
-	setHudColor(hudColor);
+	miscHudColor(hudColor);
 }
 
-void Misc::setHudColor(const Misc::HudColorArray& hud) const
+void Randomizer::miscHudColor(const Randomizer::HudColorArray& hud) const
 {
 	m_game->executable().write(m_game->offset().file.executable.hudColors, hud);
 }
 
-void Misc::setNPCsVoice() const
+void Randomizer::miscNPCsVoice() const
 {
 	struct VoiceBehavior
 	{

@@ -2,7 +2,6 @@
 
 #include "ui_TreasureWidget.h"
 
-#include "Backend/Treasure.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
 
@@ -16,12 +15,13 @@ class TreasureWidget final : public RandomizerWidget
 public:
 	TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
+
+	const Ui::TreasureWidget& Ui() const;
 public Q_SLOTS:
 	void updateItems();
 	void updateValuables();
@@ -30,6 +30,5 @@ public Q_SLOTS:
 private:
 	Ui::TreasureWidget m_ui;
 
-	std::unique_ptr<Treasure> m_treasure;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };

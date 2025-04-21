@@ -181,10 +181,9 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.appearanceGrowthSizeInvert, &QAbstractButton::toggled, this, &MinionWidget::updateAppearanceGrowthSizeInvert);
 }
 
-void MinionWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void MinionWidget::enableUI(Randomizer* randomizer)
 {
-	const bool isNtscJ{ game->isVersion(Version::NtscJ1, Version::NtscJ2) };
-	m_minion = std::make_unique<Minion>(game, sharedData);
+	const bool isNtscJ{ randomizer->game().isVersion(Version::NtscJ1, Version::NtscJ2) };
 
 	auto minionForCombobox = [isNtscJ](Id_Entity_t id) -> s32
 	{
@@ -260,8 +259,8 @@ void MinionWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 
 			addStoryMinions();
 
-			m_ui.spawnDreamCombo->setCurrentIndex(minionForCombobox(m_minion->dreamMinion()));
-			m_ui.spawnKorisCombo->setCurrentIndex(minionForCombobox(m_minion->korisMinion()));
+			m_ui.spawnDreamCombo->setCurrentIndex(minionForCombobox(randomizer->dreamMinion()));
+			m_ui.spawnKorisCombo->setCurrentIndex(minionForCombobox(randomizer->korisMinion()));
 		}
 	}
 	else
@@ -273,8 +272,8 @@ void MinionWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 			addECMinions();
 		}
 
-		m_ui.spawnDreamCombo->setCurrentIndex(minionForCombobox(m_minion->dreamMinion()));
-		m_ui.spawnKorisCombo->setCurrentIndex(minionForCombobox(m_minion->korisMinion()));
+		m_ui.spawnDreamCombo->setCurrentIndex(minionForCombobox(randomizer->dreamMinion()));
+		m_ui.spawnKorisCombo->setCurrentIndex(minionForCombobox(randomizer->korisMinion()));
 	}
 
 	setEnabled(true);
@@ -283,109 +282,6 @@ void MinionWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 void MinionWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_minion)
-	{
-		m_minion.reset();
-	}
-}
-
-void MinionWidget::write() const
-{
-	auto getMinionFromCombobox = [](s32 id) -> Id_Entity_t
-	{
-		return id >= ID_DREAM_MAN ? id + Entity::totalStoryBosses : id;
-	};
-
-	if (!m_minion)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.spawnStoryRandomRealtime->isChecked())
-	{
-		m_minion->setSpawnStory(Minion::SpawnStory::RandomRealtime);
-	}
-	else if (m_ui.spawnStoryRandomPremade->isChecked())
-	{
-		m_minion->setSpawnStory(Minion::SpawnStory::RandomPremade);
-	}
-
-	if (m_ui.spawnEternalCorridorRandom->isChecked())
-	{
-		m_minion->setSpawnEC();
-	}
-
-	if (m_ui.spawnDreamRandom->isChecked())
-	{
-		m_minion->setDreamMinion();
-	}
-	else if (m_ui.spawnDreamCustom->isChecked())
-	{
-		m_minion->setDreamMinion(getMinionFromCombobox(m_ui.spawnDreamCombo->currentIndex()));
-	}
-
-	if (m_ui.spawnKorisRandom->isChecked())
-	{
-		m_minion->setKorisMinion();
-	}
-	else if (m_ui.spawnKorisCustom->isChecked())
-	{
-		m_minion->setKorisMinion(getMinionFromCombobox(m_ui.spawnKorisCombo->currentIndex()));
-	}
-
-	Minion::Stats_t stats{};
-	if (m_ui.statsShuffleBetweenMinions->isChecked())
-	{
-		stats |= Minion::STATS_SHUFFLE_BETWEEN_MINIONS;
-	}
-	if (m_ui.statsShuffleStats->isChecked())
-	{
-		stats |= Minion::STATS_SHUFFLE_STATS;
-	}
-	if (stats)
-	{
-		m_minion->setStats(stats);
-	}
-
-	if (m_ui.specialMagicRandom->isChecked())
-	{
-		m_minion->setSpecialMagic(m_specialMagicDialog->specials(), m_specialMagicDialog->magics());
-	}
-
-	Minion::Appearance_t appearance{};
-	if (m_ui.appearanceRandomNewMinion->isChecked())
-	{
-		appearance |= Minion::APPEARANCE_RANDOM_NEW_MINION;
-	}
-	if (m_ui.appearanceModelRandom->isChecked())
-	{
-		appearance |= Minion::APPEARANCE_MODEL_RANDOM;
-	}
-	if (m_ui.appearanceTextureRandom->isChecked())
-	{
-		appearance |= Minion::APPEARANCE_TEXTURE_RANDOM;
-
-		if (m_ui.appearanceTextureIncludeCompatible->isChecked())
-		{
-			appearance |= Minion::APPEARANCE_TEXTURE_INCLUDE_COMPATIBLE;
-		}
-	}
-	if (m_ui.appearanceTextureRandomColor->isChecked())
-	{
-		appearance |= Minion::APPEARANCE_TEXTURE_RANDOM_COLOR;
-	}
-	if (m_ui.appearanceGrowthSizeShuffle->isChecked())
-	{
-		appearance |= Minion::APPEARANCE_GROWTH_SIZE_SHUFFLE;
-	}
-	else if (m_ui.appearanceGrowthSizeInvert->isChecked())
-	{
-		appearance |= Minion::APPEARANCE_GROWTH_SIZE_INVERT;
-	}
-	if (appearance)
-	{
-		m_minion->setAppearance(appearance);
-	}
 }
 
 const char* MinionWidget::name() const
@@ -423,6 +319,16 @@ void MinionWidget::savePresets(Json::Write* json)
 
 	(*json)["specials"] = m_specialMagicDialog->specials();
 	(*json)["magics"] = m_specialMagicDialog->magics();
+}
+
+const Ui::MinionWidget& MinionWidget::Ui() const
+{
+	return m_ui;
+}
+
+const SpecialMagicDialog& MinionWidget::specialMagicDialog() const
+{
+	return *m_specialMagicDialog;
 }
 
 void MinionWidget::updateSpawnStoryRandomRealtime()

@@ -1,4 +1,4 @@
-#include "Forest.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 #include "Backend/Iso.hpp"
@@ -22,7 +22,7 @@ struct MapsShift
 	u32 shift;
 };
 
-static constexpr std::array<MapsShift, Forest::nbForest> ostMapsShift
+static constexpr std::array<MapsShift, Randomizer::nbForest> ostMapsShift
 {
 	13, 0xE88, // F1
 	21, 0xF68, // F2
@@ -34,22 +34,17 @@ static constexpr std::array<MapsShift, Forest::nbForest> ostMapsShift
 	75, 0xE8 // EC
 };
 
-static constexpr Forest::OstArray vanillaOstId
+static constexpr Randomizer::ForestOstArray vanillaOstId
 {
 	17, 32, 26, 31, 41, 42, 39, 143
 };
 
-Forest::Forest(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-Forest::OstArray Forest::ost() const
+Randomizer::ForestOstArray Randomizer::forestOst() const
 {
 	const auto over_game_bin{ m_game->staticFile(File::OVER_GAME_BIN) };
-	Forest::OstArray ostsId;
+	Randomizer::ForestOstArray ostsId;
 
-	for (u32 i{}; i < Forest::nbForest; ++i)
+	for (u32 i{}; i < Randomizer::nbForest; ++i)
 	{
 		over_game_bin->read(m_game->offset().file.over_game_bin.tableOfMapsBehavior + ostMapsShift[i].shift, &ostsId[i]);
 	}
@@ -57,7 +52,7 @@ Forest::OstArray Forest::ost() const
 	return ostsId;
 }
 
-void Forest::setPaletteColor() const
+void Randomizer::forestPaletteColor() const
 {
 	auto rotate255 = [](RawFile* file, s32 rotation, u32 offset)
 	{
@@ -851,7 +846,7 @@ void Forest::setPaletteColor() const
 	}
 }
 
-void Forest::setBattleMaps() const
+void Randomizer::forestBattleMaps() const
 {
 	static constexpr u8 nbBattleMaps{ 39 };
 
@@ -914,30 +909,30 @@ void Forest::setBattleMaps() const
 	over_game_bin->write(m_game->offset().file.over_game_bin.battleMaps + sizeof(mapsIdRaw), battleMapsPtr);
 }
 
-void Forest::setOst(Forest::Ost state) const
+void Randomizer::forestOst(Randomizer::ForestOst state) const
 {
-	Forest::OstArray ostsId;
+	Randomizer::ForestOstArray ostsId;
 
-	if (state == Forest::Ost::Random)
+	if (state == Randomizer::ForestOst::Random)
 	{
-		ostsId.fill(Forest::randomOstVal);
+		ostsId.fill(Randomizer::randomOstVal);
 	}
 	else // Shuffle
 	{
 		ostsId = m_game->random()->shuffle(vanillaOstId);
 	}
 
-	setOst(ostsId);
+	forestOst(ostsId);
 }
 
-void Forest::setOst(const Forest::OstArray& ostsId) const
+void Randomizer::forestOst(const Randomizer::ForestOstArray& ostsId) const
 {
-	Forest::OstArray forestOsts;
-	const auto availableOsts{ ::Ost::idWithoutDuplicate() };
+	Randomizer::ForestOstArray forestOsts;
+	const auto availableOsts{ Ost::idWithoutDuplicate() };
 
-	for (u32 i{}; i < Forest::nbForest; ++i)
+	for (u32 i{}; i < Randomizer::nbForest; ++i)
 	{
-		if (ostsId[i] == Forest::randomOstVal)
+		if (ostsId[i] == Randomizer::randomOstVal)
 		{
 			forestOsts[i] = availableOsts[m_game->random()->generate(availableOsts.size() - 1)];
 		}
@@ -950,7 +945,7 @@ void Forest::setOst(const Forest::OstArray& ostsId) const
 	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
 	const auto offset{ m_game->offset().file.over_game_bin.tableOfMapsBehavior };
 
-	for (u32 i{}; i < Forest::nbForest; ++i)
+	for (u32 i{}; i < Randomizer::nbForest; ++i)
 	{
 		const auto firstOst{ over_game_bin->read<s16>(offset + ostMapsShift[i].shift)};
 
@@ -1049,7 +1044,7 @@ void Forest::setOst(const Forest::OstArray& ostsId) const
 	}
 }
 
-void Forest::setRandomEternalCorridorOstPerCorridor() const
+void Randomizer::forestRandomEternalCorridorOstPerCorridor() const
 {
 	const auto ostsIdWithoutDuplicate{ ::Ost::idWithoutDuplicate() };
 

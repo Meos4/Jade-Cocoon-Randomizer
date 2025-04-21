@@ -20,7 +20,7 @@ static s16 textToId(const char* text)
 			return id;
 		}
 	}
-	return Forest::randomOstVal;
+	return Randomizer::randomOstVal;
 }
 
 ForestWidget::ForestWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
@@ -114,13 +114,11 @@ ForestWidget::ForestWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.ostCustomForestCombo, &QComboBox::currentIndexChanged, this, &ForestWidget::updateOst);
 }
 
-void ForestWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void ForestWidget::enableUI(Randomizer* randomizer)
 {
-	m_forest = std::make_unique<Forest>(game, sharedData);
-
 	if (m_isFirstEnableUI)
 	{
-		const auto forestOst{ m_forest->ost() };
+		const auto forestOst{ randomizer->forestOst() };
 		const auto nbOst{ m_ui.ostCustomChoiceCombo->count() };
 		for (std::size_t i{}; i < forestOst.size(); ++i)
 		{
@@ -146,46 +144,6 @@ void ForestWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 void ForestWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_forest)
-	{
-		m_forest.reset();
-	}
-}
-
-void ForestWidget::write() const
-{
-	if (!m_forest)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.paletteColorRandom->isChecked())
-	{
-		m_forest->setPaletteColor();
-	}
-
-	if (m_ui.battleMapsRandom->isChecked())
-	{
-		m_forest->setBattleMaps();
-	}
-
-	if (m_ui.ostRandom->isChecked())
-	{
-		m_forest->setOst(Forest::Ost::Random);
-	}
-	else if (m_ui.ostShuffle->isChecked())
-	{
-		m_forest->setOst(Forest::Ost::Shuffle);
-	}
-	else if (m_ui.ostCustom->isChecked())
-	{
-		m_forest->setOst(ostArray());
-	}
-
-	if (m_ui.ostRandomEternalCorridorOstPerCorridor->isChecked())
-	{
-		m_forest->setRandomEternalCorridorOstPerCorridor();
-	}
 }
 
 const char* ForestWidget::name() const
@@ -232,9 +190,14 @@ void ForestWidget::savePresets(Json::Write* json)
 	(*json)["ost"] = m_ostIndex;
 }
 
-Forest::OstArray ForestWidget::ostArray() const
+const Ui::ForestWidget& ForestWidget::Ui() const
 {
-	Forest::OstArray ost;
+	return m_ui;
+}
+
+Randomizer::ForestOstArray ForestWidget::ostArray() const
+{
+	Randomizer::ForestOstArray ost;
 	auto ostIndex{ m_ostIndex };
 	ostIndex[m_ui.ostCustomForestCombo->currentIndex()] = m_ui.ostCustomChoiceCombo->currentIndex();
 

@@ -2,7 +2,6 @@
 
 #include "ui_MiscWidget.h"
 
-#include "Backend/Misc.hpp"
 #include "Common/Types.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
@@ -17,13 +16,14 @@ class MiscWidget final : public RandomizerWidget
 public:
 	MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
-	Misc::HudColorArray hudColor() const;
+
+	const Ui::MiscWidget& Ui() const;
+	Randomizer::HudColorArray hudColor() const;	
 public Q_SLOTS:
 	void updateHudColorRandom();
 	void updateHudColorCustom();
@@ -37,10 +37,9 @@ private:
 
 	Ui::MiscWidget m_ui;
 
-	Misc::HudColorArray m_colors{};
+	Randomizer::HudColorArray m_colors{};
 	s32 m_previousThemeIndex{};
 	bool m_isFirstEnableUI{ true };
 
-	std::unique_ptr<Misc> m_misc;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };

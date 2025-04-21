@@ -2,7 +2,6 @@
 
 #include "ui_LevantWidget.h"
 
-#include "Backend/Levant.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
 
@@ -16,15 +15,15 @@ class LevantWidget final : public RandomizerWidget
 public:
 	LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
+
+	const Ui::LevantWidget& Ui() const;
 private:
 	Ui::LevantWidget m_ui;
 
-	std::unique_ptr<Levant> m_levant;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };

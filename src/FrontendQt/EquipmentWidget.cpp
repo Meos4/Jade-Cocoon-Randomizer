@@ -48,60 +48,14 @@ EquipmentWidget::EquipmentWidget(HelpConsoleWidget* helpConsole, QWidget* parent
 	);
 }
 
-void EquipmentWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void EquipmentWidget::enableUI(Randomizer* randomizer)
 {
-	m_equipment = std::make_unique<Equipment>(game, sharedData);
 	setEnabled(true);
 }
 
 void EquipmentWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_equipment)
-	{
-		m_equipment.reset();
-	}
-}
-
-void EquipmentWidget::write() const
-{
-	if (!m_equipment)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	Equipment::Weapons_t weapons{};
-	if (m_ui.weaponsRandomStatsAndElement->isChecked())
-	{
-		weapons |= Equipment::WEAPONS_RANDOM_STATS_AND_ELEMENT;
-	}
-	if (m_ui.weaponsRandomAppearance->isChecked())
-	{
-		weapons |= Equipment::WEAPONS_RANDOM_APPEARANCE;
-	}
-	if (weapons)
-	{
-		m_equipment->setWeapons(weapons);
-	}
-
-	Equipment::Armors_t armors{};
-	if (m_ui.armorsRandomStats->isChecked())
-	{
-		armors |= Equipment::ARMORS_RANDOM_STATS;
-	}
-	if (m_ui.armorsRandomAppearance->isChecked())
-	{
-		armors |= Equipment::ARMORS_RANDOM_APPEARANCE;
-	}
-	if (armors)
-	{
-		m_equipment->setArmors(armors);
-	}
-
-	if (m_ui.othersRandomStats->isChecked())
-	{
-		m_equipment->setOthers();
-	}
 }
 
 const char* EquipmentWidget::name() const
@@ -123,4 +77,9 @@ void EquipmentWidget::savePresets(Json::Write* json)
 	{
 		checkBox.save(json);
 	}
+}
+
+const Ui::EquipmentWidget& EquipmentWidget::Ui() const
+{
+	return m_ui;
 }

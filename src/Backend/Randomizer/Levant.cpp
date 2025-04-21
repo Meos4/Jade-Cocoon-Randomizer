@@ -1,4 +1,4 @@
-#include "Levant.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
@@ -7,12 +7,7 @@
 #include <array>
 #include <utility>
 
-Levant::Levant(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Levant::setBaseStats() const
+void Randomizer::levantBaseStats() const
 {
 	static constexpr u8 
 		totalStats{ 106 }, 
@@ -31,11 +26,11 @@ void Levant::setBaseStats() const
 	m_game->file(File::OVER_TITLE_BIN)->write(m_game->offset().file.over_title_bin.levantStats, levantStats);
 }
 
-void Levant::setAnimation(Levant::Animation_t state) const
+void Randomizer::levantAnimation(Randomizer::LevantAnimation_t state) const
 {
 	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
 
-	if (state & Levant::ANIMATION_BETA_USING_ITEM)
+	if (state & Randomizer::LEVANT_ANIMATION_BETA_USING_ITEM)
 	{
 		static constexpr s32 betaMagicAnimationId{ 0x19 };
 		static constexpr std::array<Mips_t, 2> b_2A_nop{ 0x1000002A, 0x00000000 };
@@ -44,7 +39,7 @@ void Levant::setAnimation(Levant::Animation_t state) const
 		over_game_bin->write(m_game->offset().file.over_game_bin.levantCastingItemId, betaMagicAnimationId);
 	}
 
-	if (state & Levant::ANIMATION_RANDOM_WEAPONS_POSTURE)
+	if (state & Randomizer::LEVANT_ANIMATION_RANDOM_WEAPONS_POSTURE)
 	{
 		std::array<u32, WEAPON_SKIN_COUNT> weaponAnimationsId;
 
@@ -57,7 +52,7 @@ void Levant::setAnimation(Levant::Animation_t state) const
 	}
 }
 
-void Levant::setFluteStyling() const
+void Randomizer::levantFluteStyling() const
 {
 	std::array<u16, 10> stylings;
 	auto* const stylingsPtr{ stylings.data() };

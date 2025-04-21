@@ -2,7 +2,6 @@
 
 #include "ui_AddonsWidget.h"
 
-#include "Backend/Addons.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
 
@@ -16,12 +15,13 @@ class AddonsWidget final : public RandomizerWidget
 public:
 	AddonsWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
+
+	const Ui::AddonsWidget& Ui() const;
 public Q_SLOTS:
 	void updateDifficultyHard();
 	void updateDifficultyExtreme();
@@ -30,7 +30,6 @@ public Q_SLOTS:
 private:
 	Ui::AddonsWidget m_ui;
 
-	std::unique_ptr<Addons> m_addons;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 	std::vector<RandomizerQSlider> m_qSlider;
 };

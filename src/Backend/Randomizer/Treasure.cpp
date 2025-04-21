@@ -1,4 +1,4 @@
-#include "Treasure.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/Behavior.hpp"
 #include "Backend/File.hpp"
@@ -113,12 +113,7 @@ private:
 	std::unordered_map<Chapter_t, std::vector<std::vector<TreasureInfo>>> m_treasuresInfo;
 };
 
-Treasure::Treasure(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Treasure::setItems(Treasure::Items state, bool randomSkeletonKeys) const
+void Randomizer::treasureItems(Randomizer::TreasureItems state, bool randomSkeletonKeys) const
 {
 	TreasureRandomizer treasureR{ m_game };
 
@@ -243,7 +238,7 @@ void Treasure::setItems(Treasure::Items state, bool randomSkeletonKeys) const
 		treasureR.append({ skeletonKey11 }, CHAPTER_NETHERWORLD);
 	}
 
-	if (state == Treasure::Items::Random)
+	if (state == Randomizer::TreasureItems::Random)
 	{
 		treasureR.random();
 	}
@@ -253,7 +248,7 @@ void Treasure::setItems(Treasure::Items state, bool randomSkeletonKeys) const
 	}
 }
 
-void Treasure::setValuables(Treasure::Valuables state, bool randomUsableValuables) const
+void Randomizer::treasureValuables(Randomizer::TreasureValuables state, bool randomUsableValuables) const
 {
 	TreasureRandomizer treasureR{ m_game };
 
@@ -336,7 +331,7 @@ void Treasure::setValuables(Treasure::Valuables state, bool randomUsableValuable
 		treasureR.append({ ocarina }, CHAPTER_DRAGONFLY, true);
 	}
 
-	if (state == Treasure::Valuables::Random)
+	if (state == Randomizer::TreasureValuables::Random)
 	{
 		treasureR.random();
 	}
@@ -346,7 +341,7 @@ void Treasure::setValuables(Treasure::Valuables state, bool randomUsableValuable
 	}
 }
 
-void Treasure::setEquipments(Treasure::Equipments state) const
+void Randomizer::treasureEquipments(Randomizer::TreasureEquipments state) const
 {
 	TreasureRandomizer treasureR{ m_game };
 
@@ -388,7 +383,7 @@ void Treasure::setEquipments(Treasure::Equipments state) const
 	treasureR.append({ lifeStealer }, CHAPTER_SPIDER, true);
 	treasureR.append({ riketzGarb }, CHAPTER_MOTH, true);
 
-	if (state == Treasure::Equipments::Random)
+	if (state == Randomizer::TreasureEquipments::Random)
 	{
 		treasureR.random();
 	}
@@ -398,7 +393,7 @@ void Treasure::setEquipments(Treasure::Equipments state) const
 	}
 }
 
-void Treasure::setBattle(bool shuffleSkeletonKeys) const
+void Randomizer::treasureBattle(bool shuffleSkeletonKeys) const
 {
 	struct EntityTreasure
 	{

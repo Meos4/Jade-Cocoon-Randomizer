@@ -84,13 +84,11 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.hudHighlightB, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 }
 
-void MiscWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void MiscWidget::enableUI(Randomizer* randomizer)
 {
-	m_misc = std::make_unique<Misc>(game, sharedData);
-
 	if (m_isFirstEnableUI)
 	{
-		m_colors = m_misc->hudColor();
+		m_colors = randomizer->hudColor();
 		m_previousThemeIndex = m_ui.hudColorCombo->currentIndex();
 		colorToUI(m_previousThemeIndex);
 		m_isFirstEnableUI = false;
@@ -102,32 +100,6 @@ void MiscWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
 void MiscWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_misc)
-	{
-		m_misc.reset();
-	}
-}
-
-void MiscWidget::write() const
-{
-	if (!m_misc)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.hudRandom->isChecked())
-	{
-		m_misc->setHudColor();
-	}
-	else if (m_ui.hudColorCustom->isChecked())
-	{
-		m_misc->setHudColor(hudColor());
-	}
-
-	if (m_ui.npcsVoiceRandom->isChecked())
-	{
-		m_misc->setNPCsVoice();
-	}
 }
 
 const char* MiscWidget::name() const
@@ -167,7 +139,12 @@ void MiscWidget::savePresets(Json::Write* json)
 	}
 }
 
-Misc::HudColorArray MiscWidget::hudColor() const
+const Ui::MiscWidget& MiscWidget::Ui() const
+{
+	return m_ui; 
+}
+
+Randomizer::HudColorArray MiscWidget::hudColor() const
 {
 	auto hud{ m_colors };
 	const auto theme{ m_ui.hudColorCombo->currentIndex() };

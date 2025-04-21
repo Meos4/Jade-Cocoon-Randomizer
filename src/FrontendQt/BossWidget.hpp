@@ -2,7 +2,6 @@
 
 #include "ui_BossWidget.h"
 
-#include "Backend/Boss.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
 
@@ -16,12 +15,13 @@ class BossWidget final : public RandomizerWidget
 public:
 	BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
+
+	const Ui::BossWidget& Ui() const;
 public Q_SLOTS:
 	void updateStoryElement();
 	void updateStoryAppearanceTextureBasedOnElement();
@@ -30,6 +30,5 @@ public Q_SLOTS:
 private:
 	Ui::BossWidget m_ui;
 
-	std::unique_ptr<Boss> m_boss;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };

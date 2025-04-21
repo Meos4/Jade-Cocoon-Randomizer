@@ -1,4 +1,4 @@
-#include "Boss.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/Entity.hpp"
 #include "Backend/File.hpp"
@@ -128,12 +128,7 @@ static void setDamageModifiersNone(DamageModifiers* damageModifiers, Element_t e
 	}
 }
 
-Boss::Boss(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Boss::setElement(Boss::Element state) const
+void Randomizer::bossElement(Randomizer::BossElement state) const
 {
 	const u32 statsOffset{ m_game->offset().file.executable.entityStats + ID_DREAM_MAN * sizeof(StatsStruct) };
 
@@ -154,7 +149,7 @@ void Boss::setElement(Boss::Element state) const
 
 	for (std::size_t i{}; i < elements.size(); ++i)
 	{
-		if (!(state == Boss::Element::RandomElemental && elements[i] == ELEMENT_NONE))
+		if (!(state == Randomizer::BossElement::RandomElemental && elements[i] == ELEMENT_NONE))
 		{
 			const auto rngElement{ m_game->random()->generate(minElement, Element_t(ELEMENT_COUNT - 1)) };
 
@@ -188,7 +183,7 @@ void Boss::setElement(Boss::Element state) const
 	over_game_bin->write(m_game->offset().file.over_game_bin.fireMapBonus + 0xC, earthMapBonus);
 }
 
-void Boss::setSpecialMagic() const
+void Randomizer::bossSpecialMagic() const
 {
 	const std::unordered_map<Element_t, Special_t> availableSpecial
 	{
@@ -402,7 +397,7 @@ void Boss::setSpecialMagic() const
 	}
 }
 
-void Boss::setAppearance(Boss::Appearance state) const
+void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 {
 	auto rotate = [](RawFile* file, u32 offset, s32 rotation)
 	{
@@ -450,7 +445,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 	};
 	auto goatModelsBehavior{ executable.read<std::array<ModelBehavior, 3>>(goatModelsBehaviorOffset) };
 
-	if (state == Boss::Appearance::ColorBasedOnElement)
+	if (state == Randomizer::BossAppearance::ColorBasedOnElement)
 	{
 		const u32 statsOffset{ m_game->offset().file.executable.entityStats + ID_DREAM_MAN * sizeof(StatsStruct) };
 		std::array<Element_t, Entity::totalStoryBosses - 2> elements; // -2 no Chosen One and Cushidra
@@ -460,7 +455,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 			executable.read(statsOffset + i * sizeof(StatsStruct) + 6, &elements[i]);
 		}
 
-		const auto& modelsRotation{ m_sharedData->rotations() };
+		const auto& modelsRotation{ m_sharedData.rotations() };
 
 		// Boss
 		for (std::size_t i{}; i < mfo.size(); ++i)
@@ -480,7 +475,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 		}
 
 		// Goat
-		const auto goatTextureModelId{ m_sharedData->goatTextureModelId() };
+		const auto goatTextureModelId{ m_sharedData.goatTextureModelId() };
 		for (std::size_t i{}; i < goatModelsBehavior.size(); ++i)
 		{
 			const auto element{ elements[11 + i] };
@@ -527,7 +522,7 @@ void Boss::setAppearance(Boss::Appearance state) const
 	executable.write(goatModelsBehaviorOffset, goatModelsBehavior);
 }
 
-void Boss::setElementEC() const
+void Randomizer::bossElementEC() const
 {
 	const auto scene_other_hunting_sce00_sbh{ m_game->file(File::SCENE_OTHER_HUNTING_SCE00_SBH) };
 
@@ -559,7 +554,7 @@ void Boss::setElementEC() const
 
 			if (rngElement != ELEMENT_NONE)
 			{
-				const auto& rotation{ m_sharedData->rotation(MODEL_TX00 + i) };
+				const auto& rotation{ m_sharedData.rotation(MODEL_TX00 + i) };
 				modelsBehavior[i].colorRotation = rotation.rotation[rngElement];
 			}
 		}
@@ -569,7 +564,7 @@ void Boss::setElementEC() const
 	executable.write(modelsBehaviorOffset, modelsBehavior);
 }
 
-void Boss::setSpecialMagicEC() const
+void Randomizer::bossSpecialMagicEC() const
 {
 	const std::unordered_map<Element_t, Special_t> availableSpecial
 	{
@@ -717,7 +712,7 @@ void Boss::setSpecialMagicEC() const
 	}
 }
 
-void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
+void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const
 {
 	std::unordered_map<Model_t, std::unique_ptr<RawFile>> minions;
 
@@ -728,7 +723,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 
 	auto executable{ m_game->executable() };
 
-	if (state & Boss::APPEARANCE_EC_RANDOM_NEW_APPEARANCE)
+	if (state & Randomizer::BOSS_APPEARANCE_EC_RANDOM_NEW_APPEARANCE)
 	{
 		for (const auto& [model, file] : minions)
 		{
@@ -746,12 +741,12 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 
 				modelsInterp.emplace_back
 				(
-					m_sharedData->model(Model::Minion::models[rngModel]),
+					m_sharedData.model(Model::Minion::models[rngModel]),
 					m_game->random()->generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
 				);
 			}
 
-			auto mainModel{ m_sharedData->model(model) };
+			auto mainModel{ m_sharedData.model(model) };
 			const auto firstAnimPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr) };
 			const auto animPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr + sizeof(u32) * model) };
 			const auto offset{ (animPtr - firstAnimPtr + m_game->offset().file.executable.tableOfModelAnimations) & ~0x80000000 };
@@ -766,7 +761,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		}
 	}
 
-	if (state & Boss::APPEARANCE_EC_TEXTURE_RANDOM)
+	if (state & Randomizer::BOSS_APPEARANCE_EC_TEXTURE_RANDOM)
 	{
 		const auto scene_other_hunting_sce00_sbh{ m_game->file(File::SCENE_OTHER_HUNTING_SCE00_SBH) };
 
@@ -778,7 +773,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 			(m_game->offset().file.scene_other_hunting_sce00_sbh.statsEC)
 		};
 
-		const auto& modelsRotation{ m_sharedData->rotations() };
+		const auto& modelsRotation{ m_sharedData.rotations() };
 
 		const u32 modelsBehaviorOffset
 		{
@@ -787,7 +782,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		};
 		auto modelsBehavior{ executable.read<std::array<ModelBehavior, bossCounter>>(modelsBehaviorOffset)};
 
-		const auto includeCompatible{ state & Boss::APPEARANCE_EC_TEXTURE_INCLUDE_COMPATIBLE };
+		const auto includeCompatible{ state & Randomizer::BOSS_APPEARANCE_EC_TEXTURE_INCLUDE_COMPATIBLE };
 		const auto totalTextures
 		{
 			includeCompatible ?
@@ -815,7 +810,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		for (const auto& [model, file] : minions)
 		{
 			const auto rngModel{ texturesModels[m_game->random()->generate(texturesModels.size() - 1)] };
-			const auto& modelConst{ m_sharedData->model(rngModel) };
+			const auto& modelConst{ m_sharedData.model(rngModel) };
 			file->write
 			(
 				Model::Minion::Texture::begin, 
@@ -848,7 +843,7 @@ void Boss::setAppearanceEC(Boss::AppearanceEC_t state) const
 		executable.write(modelsBehaviorOffset, modelsBehavior);
 	}
 
-	if (state & Boss::APPEARANCE_EC_TEXTURE_RANDOM_COLOR)
+	if (state & Randomizer::BOSS_APPEARANCE_EC_TEXTURE_RANDOM_COLOR)
 	{
 		for (const auto& [model, file] : minions)
 		{

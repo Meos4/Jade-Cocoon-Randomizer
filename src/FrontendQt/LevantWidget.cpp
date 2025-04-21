@@ -40,51 +40,14 @@ LevantWidget::LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	);
 }
 
-void LevantWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void LevantWidget::enableUI(Randomizer* randomizer)
 {
-	m_levant = std::make_unique<Levant>(game, sharedData);
 	setEnabled(true);
 }
 
 void LevantWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_levant)
-	{
-		m_levant.reset();
-	}
-}
-
-void LevantWidget::write() const
-{
-	if (!m_levant)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.baseStatsRandom->isChecked())
-	{
-		m_levant->setBaseStats();
-	}
-
-	Levant::Animation_t animation{};
-	if (m_ui.animationBetaUsingItem->isChecked())
-	{
-		animation |= Levant::ANIMATION_BETA_USING_ITEM;
-	}
-	if (m_ui.animationRandomWeaponsPosture->isChecked())
-	{
-		animation |= Levant::ANIMATION_RANDOM_WEAPONS_POSTURE;
-	}
-	if (animation)
-	{
-		m_levant->setAnimation(animation);
-	}
-
-	if (m_ui.fluteStylingShuffle->isChecked())
-	{
-		m_levant->setFluteStyling();
-	}
 }
 
 const char* LevantWidget::name() const
@@ -106,4 +69,9 @@ void LevantWidget::savePresets(Json::Write* json)
 	{
 		checkBox.save(json);
 	}
+}
+
+const Ui::LevantWidget& LevantWidget::Ui() const
+{
+	return m_ui;
 }

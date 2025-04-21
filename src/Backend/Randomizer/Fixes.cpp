@@ -1,6 +1,5 @@
-#include "Fixes.hpp"
+#include "Backend/Randomizer.hpp"
 
-#include "Backend/Equipment.hpp"
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
 #include "Backend/Mips.hpp"
@@ -10,12 +9,7 @@
 #include <cmath>
 #include <utility>
 
-Fixes::Fixes(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Fixes::setBodyEnhancement() const
+void Randomizer::fixesBodyEnhancement() const
 {
 	const auto
 		li32_minionStats{ Mips::li32(Mips::Register::v0, m_game->offset().game.minionStats) },
@@ -66,12 +60,12 @@ void Fixes::setBodyEnhancement() const
 	executable.write(fixEntityEnhancementOffset.file, fixEntityEnhancementFn);
 }
 
-void Fixes::setAutumnMoonEffect() const
+void Randomizer::fixesAutumnMoonEffect() const
 {
-	Equipment::setDamageEffectFromWeaponIdFn(*m_game, true);
+	Randomizer::setDamageEffectFromWeaponIdFn(*m_game, true);
 }
 
-void Fixes::setHpMpBarsSize(u16 value) const
+void Randomizer::fixesHpMpBarsSize(u16 value) const
 {
 	static constexpr u16 defaultHpMpBars{ 47 };
 
@@ -98,7 +92,7 @@ void Fixes::setHpMpBarsSize(u16 value) const
 	}
 }
 
-void Fixes::setSpecialsModifiers() const
+void Randomizer::fixesSpecialsModifiers() const
 {
 	if (m_game->isVersion(Version::PalFr))
 	{

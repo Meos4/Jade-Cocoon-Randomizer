@@ -2,7 +2,6 @@
 
 #include "ui_ForestWidget.h"
 
-#include "Backend/Forest.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
 
@@ -16,13 +15,14 @@ class ForestWidget final : public RandomizerWidget
 public:
 	ForestWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
-	Forest::OstArray ostArray() const;
+
+	const Ui::ForestWidget& Ui() const;
+	Randomizer::ForestOstArray ostArray() const;
 public Q_SLOTS:
 	void updateOstRandom();
 	void updateOstShuffle();
@@ -34,10 +34,9 @@ private:
 
 	Ui::ForestWidget m_ui;
 
-	std::array<s32, Forest::nbForest> m_ostIndex{};
+	std::array<s32, Randomizer::nbForest> m_ostIndex{};
 	s32 m_previousForestIndex{};
 	bool m_isFirstEnableUI{ true };
 
-	std::unique_ptr<Forest> m_forest;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };

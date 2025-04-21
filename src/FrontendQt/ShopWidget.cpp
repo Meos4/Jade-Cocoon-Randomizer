@@ -46,52 +46,14 @@ ShopWidget::ShopWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	);
 }
 
-void ShopWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void ShopWidget::enableUI(Randomizer* randomizer)
 {
-	m_shop = std::make_unique<Shop>(game, sharedData);
 	setEnabled(true);
 }
 
 void ShopWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_shop)
-	{
-		m_shop.reset();
-	}
-}
-
-void ShopWidget::write() const
-{
-	if (!m_shop)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.weaponRandom->isChecked())
-	{
-		m_shop->setWeapon();
-	}
-
-	if (m_ui.armorRandom->isChecked())
-	{
-		m_shop->setArmor();
-	}
-
-	if (m_ui.otherRandom->isChecked())
-	{
-		m_shop->setOther();
-	}
-
-	if (m_ui.itemRandom->isChecked())
-	{
-		m_shop->setItem();
-	}
-
-	if (m_ui.eternalCorridorUnlockAllEnable->isChecked())
-	{
-		m_shop->setEternalCorridorUnlockAll();
-	}
 }
 
 const char* ShopWidget::name() const
@@ -113,4 +75,9 @@ void ShopWidget::savePresets(Json::Write* json)
 	{
 		checkBox.save(json);
 	}
+}
+
+const Ui::ShopWidget& ShopWidget::Ui() const
+{
+	return m_ui; 
 }

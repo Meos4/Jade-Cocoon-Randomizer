@@ -1,4 +1,4 @@
-#include "Equipment.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 #include "Backend/Item.hpp"
@@ -93,19 +93,14 @@ static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentSta
 	}
 }
 
-Equipment::Equipment(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Equipment::setWeapons(Equipment::Weapons_t state) const
+void Randomizer::equipmentWeapons(Randomizer::EquipmentWeapons_t state) const
 {
 	auto executable{ m_game->executable() };
 
 	const auto statsOffset{ m_game->offset().file.executable.tableOfWeaponStats };
 	auto stats{ executable.read<std::array<EquipmentStats, WEAPON_COUNT>>(statsOffset) };
 
-	if (state & Equipment::WEAPONS_RANDOM_STATS_AND_ELEMENT)
+	if (state & Randomizer::EQUIPMENT_WEAPONS_RANDOM_STATS_AND_ELEMENT)
 	{
 		std::array<EquipmentStatsPoint, WEAPON_COUNT> patterns;
 
@@ -163,7 +158,7 @@ void Equipment::setWeapons(Equipment::Weapons_t state) const
 		executable.write(characteristicOffset, characteristic);
 	}
 
-	if (state & Equipment::WEAPONS_RANDOM_APPEARANCE)
+	if (state & Randomizer::EQUIPMENT_WEAPONS_RANDOM_APPEARANCE)
 	{
 		static constexpr std::array<EquipmentIcon_t, WEAPON_SKIN_COUNT> skinsIcon
 		{
@@ -185,11 +180,11 @@ void Equipment::setWeapons(Equipment::Weapons_t state) const
 	setDamageEffectFromWeaponIdFn(*m_game, false);
 }
 
-void Equipment::setArmors(Equipment::Armors_t state) const
+void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 {
 	auto executable{ m_game->executable() };
 
-	if (state & Equipment::ARMORS_RANDOM_STATS)
+	if (state & Randomizer::EQUIPMENT_ARMORS_RANDOM_STATS)
 	{
 		const auto statsOffset{ m_game->offset().file.executable.tableOfArmorStats };
 		auto stats{ executable.read<std::array<EquipmentStats, ARMOR_COUNT>>(statsOffset) };
@@ -209,7 +204,7 @@ void Equipment::setArmors(Equipment::Armors_t state) const
 		executable.write(statsOffset, stats);
 	}
 
-	if (state & Equipment::ARMORS_RANDOM_APPEARANCE)
+	if (state & Randomizer::EQUIPMENT_ARMORS_RANDOM_APPEARANCE)
 	{
 		std::array<u8, ARMOR_COUNT> armorsAppearanceId;
 
@@ -222,7 +217,7 @@ void Equipment::setArmors(Equipment::Armors_t state) const
 	}
 }
 
-void Equipment::setOthers() const
+void Randomizer::equipmentOthers() const
 {
 	auto executable{ m_game->executable() };
 
@@ -244,7 +239,7 @@ void Equipment::setOthers() const
 	executable.write(statsOffset, stats);
 }
 
-void Equipment::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect)
+void Randomizer::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect)
 {
 	const auto over_battle_bin{ game.file(File::OVER_BATTLE_BIN) };
 

@@ -1,4 +1,4 @@
-#include "Addons.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
 #include "Backend/Mips.hpp"
@@ -35,17 +35,12 @@ static constexpr MipsFn::AfterTutorialStateData afterTutorialStateData
 	0x04, 0x00, 0x01, 0x00, 0x06, 0x00, 0x71, 0x00
 };
 
-Addons::Addons(Game* game, std::shared_ptr<SharedData> sharedData)
-	: m_game(game), m_sharedData(std::move(sharedData))
-{
-}
-
-void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
+void Randomizer::addonsNuzlocke(Randomizer::AddonsNuzlocke_t state) const
 {
 	auto executable{ m_game->executable() };
 	const auto over_battle_bin{ m_game->file(File::OVER_BATTLE_BIN) };
 
-	if (state & Addons::NUZLOCKE_DEFINITIVE_DEATH)
+	if (state & Randomizer::ADDONS_NUZLOCKE_DEFINITIVE_DEATH)
 	{
 		const auto li32_minion1State{ Mips::li32(Mips::Register::t0, m_game->offset().game.minion1State) };
 		const bool isNtscJ{ m_game->isVersion(Version::NtscJ1, Version::NtscJ2) };
@@ -87,7 +82,7 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 		m_game->file(File::OVER_GAME_BIN)->write(m_game->offset().file.over_game_bin.levantAnimArgs, Mips::j(nuzlockeDefinitiveDeathOffset.game));
 	}
 
-	if (state & Addons::NUZLOCKE_ONE_CAPTURE)
+	if (state & Randomizer::ADDONS_NUZLOCKE_ONE_CAPTURE)
 	{
 		static constexpr MipsFn::WriteUsedMapEOBData nuzlockeMaps
 		{
@@ -264,7 +259,7 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 		executable.write(readUsedMap.file, readUsedMapFn);
 	}
 
-	if (state & Addons::NUZLOCKE_DEFINITIVE_LEVANT_DEATH)
+	if (state & Randomizer::ADDONS_NUZLOCKE_DEFINITIVE_LEVANT_DEATH)
 	{
 		const auto jal_setDefeatScene{ over_battle_bin->read<Mips_t>(m_game->offset().file.over_battle_bin.endOfBattleSetSceneFn + 0xE4) };
 		const auto li32_idOpponent1{ Mips::li32(Mips::Register::t0, m_game->offset().game.idOpponent1) };
@@ -302,10 +297,10 @@ void Addons::setNuzlocke(Addons::Nuzlocke_t state) const
 	}
 }
 
-void Addons::setDifficulty(Addons::Difficulty state) const
+void Randomizer::addonsDifficulty(Randomizer::AddonsDifficulty state) const
 {
 	const auto li32_idOpponent1{ Mips::li32(Mips::Register::t0, m_game->offset().game.idOpponent1) };
-	const bool isHard{ state == Addons::Difficulty::Hard };
+	const bool isHard{ state == Randomizer::AddonsDifficulty::Hard };
 
 	const MipsFn::DifficultyModeStats difficultyModeStatsFn
 	{
@@ -352,7 +347,7 @@ void Addons::setDifficulty(Addons::Difficulty state) const
 	executable.write(difficultyModeStatsOffset.file, difficultyModeStatsFn);
 }
 
-void Addons::setSkipTutorial(bool skipKoris) const
+void Randomizer::addonsSkipTutorial(bool skipKoris) const
 {
 	const auto afterTutorialStateOffset{ m_game->customCodeOffset(sizeof(MipsFn::AfterTutorialStateData)) };
 
@@ -434,7 +429,7 @@ void Addons::setSkipTutorial(bool skipKoris) const
 	over_title_bin->write(m_game->offset().file.over_title_bin.setLevantGarb, sb_setLevantGarb);
 }
 
-void Addons::setX2Framerate() const
+void Randomizer::addonsX2Framerate() const
 {
 	const auto
 		li32_controllerTemp{ Mips::li32(Mips::Register::t0, m_game->offset().game.controllerTemp) },
@@ -472,7 +467,7 @@ void Addons::setX2Framerate() const
 	executable.write(m_game->offset().file.executable.afterFramerateLimiter, Mips::j(toggleX2FramerateOffset.game));
 }
 
-void Addons::setItemQuantityLimit(u8 limit) const
+void Randomizer::addonsItemQuantityLimit(u8 limit) const
 {
 	const auto
 		over_game_bin{ m_game->file(File::OVER_GAME_BIN) },
@@ -520,7 +515,7 @@ void Addons::setItemQuantityLimit(u8 limit) const
 	over_game_bin->write(m_game->offset().file.over_game_bin.setItemQuantityFromChestFn + 0x34, Mips::jal(setChestNewItemQuantityLimitOffset.game));
 }
 
-void Addons::setLevelCapEC(u8 levelCap) const
+void Randomizer::addonsLevelCapEC(u8 levelCap) const
 {
 	if (levelCap != 26 && levelCap >= 19 && levelCap < 64)
 	{
@@ -540,7 +535,7 @@ void Addons::setLevelCapEC(u8 levelCap) const
 	}
 }
 
-void Addons::setShowHiddenStats() const
+void Randomizer::addonsShowHiddenStats() const
 {
 	std::array<u8, 10> bipedal, winged, critical;
 
@@ -809,7 +804,7 @@ void Addons::setShowHiddenStats() const
 	}
 }
 
-void Addons::setPalToNtsc() const
+void Randomizer::addonsPalToNtsc() const
 {
 	if (!m_game->isNtsc())
 	{

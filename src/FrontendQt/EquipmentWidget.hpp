@@ -2,7 +2,6 @@
 
 #include "ui_EquipmentWidget.h"
 
-#include "Backend/Equipment.hpp"
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
 
@@ -16,15 +15,15 @@ class EquipmentWidget final : public RandomizerWidget
 public:
 	EquipmentWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
-	void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) override;
+	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
-	void write() const override;
 	const char* name() const override;
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
+
+	const Ui::EquipmentWidget& Ui() const;
 private:
 	Ui::EquipmentWidget m_ui;
 
-	std::unique_ptr<Equipment> m_equipment;
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };

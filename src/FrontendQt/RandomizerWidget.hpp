@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Backend/Game.hpp"
-#include "Backend/SharedData.hpp"
+#include "Backend/Randomizer.hpp"
 
 #include "Common/Json.hpp"
 
@@ -16,9 +15,8 @@ public:
 	RandomizerWidget(QWidget* parent = nullptr);
 	virtual ~RandomizerWidget() = default;
 
-	virtual void enableUI(Game* game, std::shared_ptr<SharedData> sharedData) = 0;
+	virtual void enableUI(Randomizer* randomizer) = 0;
 	virtual void disableUI() = 0;
-	virtual void write() const = 0;
 	virtual const char* name() const = 0;
 	virtual void loadPresets(const Json::Read& json) = 0;
 	virtual void savePresets(Json::Write* json) = 0;

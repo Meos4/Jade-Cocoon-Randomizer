@@ -20,9 +20,65 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/dep/Jade-Cocoon-Unpacker-Repacker)
 add_subdirectory(${PROJECT_SOURCE_DIR}/dep/mkpsxiso)
 
 # Bin
-set(COMMON_DIR ${PROJECT_SOURCE_DIR}/src/Common)
 set(BACKEND_DIR ${PROJECT_SOURCE_DIR}/src/Backend)
+set(BACKEND_RANDOMIZER_DIR ${BACKEND_DIR}/Randomizer)
+set(COMMON_DIR ${PROJECT_SOURCE_DIR}/src/Common)
 set(FRONTENDQT_DIR ${PROJECT_SOURCE_DIR}/src/FrontendQt)
+
+set(SOURCES_BACKEND
+    ${BACKEND_DIR}/Behavior.hpp
+    ${BACKEND_DIR}/Entity.cpp
+    ${BACKEND_DIR}/Entity.hpp
+    ${BACKEND_DIR}/File.cpp
+    ${BACKEND_DIR}/File.hpp
+    ${BACKEND_DIR}/Game.cpp
+    ${BACKEND_DIR}/Game.hpp
+    ${BACKEND_DIR}/GameTree.cpp
+    ${BACKEND_DIR}/GameTree.hpp
+    ${BACKEND_DIR}/Iso.cpp
+    ${BACKEND_DIR}/Iso.hpp
+    ${BACKEND_DIR}/Item.cpp
+    ${BACKEND_DIR}/Item.hpp
+    ${BACKEND_DIR}/JCUtil.cpp
+    ${BACKEND_DIR}/JCUtil.hpp
+    ${BACKEND_DIR}/libgte.cpp
+    ${BACKEND_DIR}/libgte.hpp
+    ${BACKEND_DIR}/Merge.cpp
+    ${BACKEND_DIR}/Merge.hpp
+    ${BACKEND_DIR}/Mips.hpp
+    ${BACKEND_DIR}/MipsFn.hpp
+    ${BACKEND_DIR}/Model.cpp
+    ${BACKEND_DIR}/Model.hpp
+    ${BACKEND_DIR}/Offset.cpp
+    ${BACKEND_DIR}/Offset.hpp
+    ${BACKEND_DIR}/Ost.cpp
+    ${BACKEND_DIR}/Ost.hpp
+    ${BACKEND_DIR}/Path.cpp
+    ${BACKEND_DIR}/Path.hpp
+    ${BACKEND_DIR}/Randomizer.cpp
+    ${BACKEND_DIR}/Randomizer.hpp
+    ${BACKEND_DIR}/SharedData.cpp
+    ${BACKEND_DIR}/SharedData.hpp
+    ${BACKEND_DIR}/Tim.cpp
+    ${BACKEND_DIR}/Tim.hpp
+    ${BACKEND_DIR}/Util.cpp
+    ${BACKEND_DIR}/Util.hpp
+    ${BACKEND_DIR}/Version.cpp
+    ${BACKEND_DIR}/Version.hpp
+    ${BACKEND_DIR}/VersionUtil.cpp
+    ${BACKEND_DIR}/VersionUtil.hpp)
+
+set(SOURCES_BACKEND_RANDOMIZER
+    ${BACKEND_DIR}/Randomizer/Addons.cpp
+    ${BACKEND_DIR}/Randomizer/Boss.cpp
+    ${BACKEND_DIR}/Randomizer/Equipment.cpp
+    ${BACKEND_DIR}/Randomizer/Fixes.cpp
+    ${BACKEND_DIR}/Randomizer/Forest.cpp
+    ${BACKEND_DIR}/Randomizer/Levant.cpp
+    ${BACKEND_DIR}/Randomizer/Minion.cpp
+    ${BACKEND_DIR}/Randomizer/Misc.cpp
+    ${BACKEND_DIR}/Randomizer/Shop.cpp
+    ${BACKEND_DIR}/Randomizer/Treasure.cpp)
 
 set(SOURCES_COMMON
     ${COMMON_DIR}/Buffer.hpp
@@ -40,67 +96,6 @@ set(SOURCES_COMMON
     ${COMMON_DIR}/Software.hpp
     ${COMMON_DIR}/TemplateTypes.hpp
     ${COMMON_DIR}/Types.hpp)
-
-set(SOURCES_BACKEND
-    ${BACKEND_DIR}/Addons.cpp
-    ${BACKEND_DIR}/Addons.hpp
-    ${BACKEND_DIR}/Behavior.hpp
-    ${BACKEND_DIR}/Boss.cpp
-    ${BACKEND_DIR}/Boss.hpp
-    ${BACKEND_DIR}/Entity.cpp
-    ${BACKEND_DIR}/Entity.hpp
-    ${BACKEND_DIR}/Equipment.cpp
-    ${BACKEND_DIR}/Equipment.hpp
-    ${BACKEND_DIR}/File.cpp
-    ${BACKEND_DIR}/File.hpp
-    ${BACKEND_DIR}/Fixes.cpp
-    ${BACKEND_DIR}/Fixes.hpp
-    ${BACKEND_DIR}/Forest.cpp
-    ${BACKEND_DIR}/Forest.hpp
-    ${BACKEND_DIR}/Game.cpp
-    ${BACKEND_DIR}/Game.hpp
-    ${BACKEND_DIR}/GameTree.cpp
-    ${BACKEND_DIR}/GameTree.hpp
-    ${BACKEND_DIR}/Iso.cpp
-    ${BACKEND_DIR}/Iso.hpp
-    ${BACKEND_DIR}/Item.cpp
-    ${BACKEND_DIR}/Item.hpp
-    ${BACKEND_DIR}/JCUtil.cpp
-    ${BACKEND_DIR}/JCUtil.hpp
-    ${BACKEND_DIR}/Levant.cpp
-    ${BACKEND_DIR}/Levant.hpp
-    ${BACKEND_DIR}/libgte.cpp
-    ${BACKEND_DIR}/libgte.hpp
-    ${BACKEND_DIR}/Merge.cpp
-    ${BACKEND_DIR}/Merge.hpp
-    ${BACKEND_DIR}/Minion.cpp
-    ${BACKEND_DIR}/Minion.hpp
-    ${BACKEND_DIR}/Mips.hpp
-    ${BACKEND_DIR}/MipsFn.hpp
-    ${BACKEND_DIR}/Misc.cpp
-    ${BACKEND_DIR}/Misc.hpp
-    ${BACKEND_DIR}/Model.cpp
-    ${BACKEND_DIR}/Model.hpp
-    ${BACKEND_DIR}/Offset.cpp
-    ${BACKEND_DIR}/Offset.hpp
-    ${BACKEND_DIR}/Ost.cpp
-    ${BACKEND_DIR}/Ost.hpp
-    ${BACKEND_DIR}/Path.cpp
-    ${BACKEND_DIR}/Path.hpp
-    ${BACKEND_DIR}/SharedData.cpp
-    ${BACKEND_DIR}/SharedData.hpp
-    ${BACKEND_DIR}/Shop.cpp
-    ${BACKEND_DIR}/Shop.hpp
-    ${BACKEND_DIR}/Tim.cpp
-    ${BACKEND_DIR}/Tim.hpp
-    ${BACKEND_DIR}/Treasure.cpp
-    ${BACKEND_DIR}/Treasure.hpp
-    ${BACKEND_DIR}/Util.cpp
-    ${BACKEND_DIR}/Util.hpp
-    ${BACKEND_DIR}/Version.cpp
-    ${BACKEND_DIR}/Version.hpp
-    ${BACKEND_DIR}/VersionUtil.cpp
-    ${BACKEND_DIR}/VersionUtil.hpp)
 
 set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/AboutDialog.cpp
@@ -152,6 +147,8 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/RandomizerTabWidget.cpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.hpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.ui
+    ${FRONTENDQT_DIR}/RandomizerUiManager.cpp
+    ${FRONTENDQT_DIR}/RandomizerUiManager.hpp
     ${FRONTENDQT_DIR}/RandomizerWidget.cpp
     ${FRONTENDQT_DIR}/RandomizerWidget.hpp
     ${FRONTENDQT_DIR}/RandomizerWidgetSettings.cpp
@@ -182,14 +179,16 @@ else()
     add_executable(${PROJECT_NAME})
 endif()
 
-target_sources(${PROJECT_NAME} PRIVATE 
-    ${SOURCES_FRONTENDQT}
-    ${SOURCES_COMMON}
+target_sources(${PROJECT_NAME} PRIVATE  
     ${SOURCES_BACKEND}
+    ${SOURCES_BACKEND_RANDOMIZER}
+    ${SOURCES_COMMON}
+    ${SOURCES_FRONTENDQT}
     ${SOURCES_RESOURCEQT})
 
-source_group(Common FILES ${SOURCES_COMMON})
 source_group(Backend FILES ${SOURCES_BACKEND})
+source_group(Backend/Randomizer FILES ${SOURCES_BACKEND_RANDOMIZER})
+source_group(Common FILES ${SOURCES_COMMON})
 source_group(FrontendQt FILES ${SOURCES_FRONTENDQT})
 source_group(FrontendQt/resources FILES ${SOURCES_RESOURCEQT})
 

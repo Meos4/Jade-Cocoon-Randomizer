@@ -1,21 +1,21 @@
 #include "RandomizerTabWidget.hpp"
 
+#include "Backend/Game.hpp"
 #include "Common/JcrException.hpp"
-#include "FrontendQt/RandomizerWidget.hpp"
-#include "FrontendQt/LevantWidget.hpp"
-#include "FrontendQt/MinionWidget.hpp"
+#include "Common/Json.hpp"
+#include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/BossWidget.hpp"
 #include "FrontendQt/EquipmentWidget.hpp"
-#include "FrontendQt/ForestWidget.hpp"
-#include "FrontendQt/TreasureWidget.hpp"
-#include "FrontendQt/ShopWidget.hpp"
-#include "FrontendQt/MiscWidget.hpp"
-#include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
+#include "FrontendQt/ForestWidget.hpp"
 #include "FrontendQt/HelpConsoleWidget.hpp"
+#include "FrontendQt/LevantWidget.hpp"
+#include "FrontendQt/MinionWidget.hpp"
+#include "FrontendQt/MiscWidget.hpp"
 #include "FrontendQt/QtUtil.hpp"
-
-#include "Common/Json.hpp"
+#include "FrontendQt/RandomizerWidget.hpp"
+#include "FrontendQt/ShopWidget.hpp"
+#include "FrontendQt/TreasureWidget.hpp"
 
 #include <QMessageBox>
 
@@ -26,16 +26,34 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 {
 	m_ui.setupUi(this);
 
-	m_randomizerWidgets[TAB_LEVANT] = new LevantWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_MINION] = new MinionWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_BOSS] = new BossWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_FOREST] = new ForestWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_EQUIPMENT] = new EquipmentWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_TREASURE] = new TreasureWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_SHOP] = new ShopWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_MISC] = new MiscWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_ADDONS] = new AddonsWidget(helpConsole, this);
-	m_randomizerWidgets[TAB_FIXES] = new FixesWidget(helpConsole, this);
+	auto* const levantWidget{ new LevantWidget(helpConsole, this) };
+	auto* const minionWidget{ new MinionWidget(helpConsole, this) };
+	auto* const bossWidget{ new BossWidget(helpConsole, this) };
+	auto* const forestWidget{ new ForestWidget(helpConsole, this) };
+	auto* const equipmentWidget{ new EquipmentWidget(helpConsole, this) };
+	auto* const treasureWidget{ new TreasureWidget(helpConsole, this) };
+	auto* const shopWidget{ new ShopWidget(helpConsole, this) };
+	auto* const miscWidget{ new MiscWidget(helpConsole, this) };
+	auto* const addonsWidget{ new AddonsWidget(helpConsole, this) };
+	auto* const fixesWidget{ new FixesWidget(helpConsole, this) };
+
+	m_randomizerUiManager = std::make_unique<RandomizerUiManager>
+	(
+		levantWidget, minionWidget, bossWidget, forestWidget,
+		equipmentWidget, treasureWidget, shopWidget, miscWidget,
+		addonsWidget, fixesWidget
+	);
+
+	m_randomizerWidgets[TAB_LEVANT] = levantWidget;
+	m_randomizerWidgets[TAB_MINION] = minionWidget;
+	m_randomizerWidgets[TAB_BOSS] = bossWidget;
+	m_randomizerWidgets[TAB_FOREST] = forestWidget;
+	m_randomizerWidgets[TAB_EQUIPMENT] = equipmentWidget;
+	m_randomizerWidgets[TAB_TREASURE] = treasureWidget;
+	m_randomizerWidgets[TAB_SHOP] = shopWidget;
+	m_randomizerWidgets[TAB_MISC] = miscWidget;
+	m_randomizerWidgets[TAB_ADDONS] = addonsWidget;
+	m_randomizerWidgets[TAB_FIXES] = fixesWidget;
 
 	m_ui.levantScroll->setWidget(m_randomizerWidgets[TAB_LEVANT]);
 	m_ui.minionScroll->setWidget(m_randomizerWidgets[TAB_MINION]);
@@ -51,11 +69,11 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 
 void RandomizerTabWidget::enableUI(Game* game)
 {
-	m_game = game;
-	m_sharedData = std::make_shared<SharedData>(game);
+	m_randomizer = std::make_unique<Randomizer>(game);
+
 	for (const auto widget : m_randomizerWidgets)
 	{
-		widget->enableUI(game, m_sharedData);
+		widget->enableUI(m_randomizer.get());
 	}
 }
 
@@ -65,23 +83,18 @@ void RandomizerTabWidget::disableUI()
 	{
 		widget->disableUI();
 	}
-	m_game = nullptr;
-	m_sharedData.reset();
+	
+	m_randomizer.reset();
 }
 
 void RandomizerTabWidget::write() const
 {
-	if (!m_game || !m_sharedData)
+	if (!m_randomizer)
 	{
-		throw JcrException{ "Game is uninitialized" };
+		throw JcrException{ "Randomizer is uninitialized" };
 	}
 
-	m_sharedData->read();
-	m_game->expandExecutable();
-	for (const auto widget : m_randomizerWidgets)
-	{
-		widget->write();
-	}
+	m_randomizerUiManager->write(m_randomizer.get());
 }
 
 void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)

@@ -2,8 +2,8 @@
 
 #include "ui_RandomizerTabWidget.h"
 
-#include "Backend/Game.hpp"
-#include "Backend/SharedData.hpp"
+#include "Backend/Randomizer.hpp"
+#include "FrontendQt/RandomizerUiManager.hpp"
 
 #include <QTabWidget>
 
@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <memory>
 
+class Game;
 class HelpConsoleWidget;
 class RandomizerWidget;
 
@@ -44,6 +45,6 @@ private:
 	Ui::RandomizerTabWidget m_ui;
 
 	std::array<RandomizerWidget*, TAB_COUNT> m_randomizerWidgets;
-	Game* m_game;
-	std::shared_ptr<SharedData> m_sharedData;
+	std::unique_ptr<RandomizerUiManager> m_randomizerUiManager;
+	std::unique_ptr<Randomizer> m_randomizer;
 };

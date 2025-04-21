@@ -49,46 +49,15 @@ FixesWidget::FixesWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.hpMpBarsSizeSlider, &QSlider::valueChanged, this, &FixesWidget::setHpMpBarsSizeText);
 }
 
-void FixesWidget::enableUI(Game* game, std::shared_ptr<SharedData> sharedData)
+void FixesWidget::enableUI(Randomizer* randomizer)
 {
-	m_ui.specialAttackModifiersDisplayBox->setEnabled(game->isVersion(Version::PalFr));
-	m_fixes = std::make_unique<Fixes>(game, sharedData);
+	m_ui.specialAttackModifiersDisplayBox->setEnabled(randomizer->game().isVersion(Version::PalFr));
 	setEnabled(true);
 }
 
 void FixesWidget::disableUI()
 {
 	setDisabled(true);
-	if (m_fixes)
-	{
-		m_fixes.reset();
-	}
-}
-
-void FixesWidget::write() const
-{
-	if (!m_fixes)
-	{
-		throw JcrException{ "Game is uninitialized" };
-	}
-
-	if (m_ui.bodyEnhancementFix->isChecked())
-	{
-		m_fixes->setBodyEnhancement();
-	}
-
-	if (m_ui.autumnMoonEffectFix->isChecked())
-	{
-		m_fixes->setAutumnMoonEffect();
-	}
-
-	m_fixes->setHpMpBarsSize(static_cast<u16>(m_ui.hpMpBarsSizeSlider->value()));
-
-	if (m_ui.specialAttackModifiersDisplayBox->isEnabled() && 
-		m_ui.specialAttackModifiersDisplayFix->isChecked())
-	{
-		m_fixes->setSpecialsModifiers();
-	}
 }
 
 const char* FixesWidget::name() const
@@ -120,6 +89,11 @@ void FixesWidget::savePresets(Json::Write* json)
 	{
 		slider.save(json);
 	}
+}
+
+const Ui::FixesWidget& FixesWidget::Ui() const
+{
+	return m_ui;
 }
 
 void FixesWidget::setHpMpBarsSizeText(s32 value)
