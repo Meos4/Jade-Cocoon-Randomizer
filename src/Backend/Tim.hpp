@@ -9,22 +9,23 @@ class RawFile;
 
 namespace Tim
 {
+	using Type_t = u32;
+	enum : Type_t
+	{
+		TYPE_4BPP = 0x08,
+		TYPE_8BPP = 0x09,
+		TYPE_16BPP = 0x02,
+	};
+
 	struct Header
 	{
 		u32 magic;
-		u32 type;
+		Type_t type;
 		u32 offset;
 		s16 paletteX;
 		s16 paletteY;
 		s16 paletteColors;
 		s16 nbPalettes; 
-	};
-
-	enum : u32
-	{
-		TYPE_4BPP = 0x08,
-		TYPE_8BPP = 0x09,
-		TYPE_16BPP = 0x02,
 	};
 
 	bool isValid(const Tim::Header& header);	
