@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ui_AddonsWidget.h"
+#include "ui_ChallengeWidget.h"
 
 #include "FrontendQt/RandomizerWidget.hpp"
 #include "FrontendQt/RandomizerWidgetSettings.hpp"
@@ -9,11 +9,11 @@
 
 class HelpConsoleWidget;
 
-class AddonsWidget final : public RandomizerWidget
+class ChallengeWidget final : public RandomizerWidget
 {
 	Q_OBJECT
 public:
-	AddonsWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
+	ChallengeWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
 
 	void enableUI(Randomizer* randomizer) override;
 	void disableUI() override;
@@ -21,13 +21,12 @@ public:
 	void loadPresets(const Json::Read& json) override;
 	void savePresets(Json::Write* json) override;
 
-	const Ui::AddonsWidget& Ui() const;
+	const Ui::ChallengeWidget& Ui() const;
 public Q_SLOTS:
-	void setItemQuantityText(s32 value);
-	void setEternalCorridorLevelCapText(s32 value);
+	void updateDifficultyHard();
+	void updateDifficultyExtreme();
 private:
-	Ui::AddonsWidget m_ui;
+	Ui::ChallengeWidget m_ui;
 
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
-	std::vector<RandomizerQSlider> m_qSlider;
 };

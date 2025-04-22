@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ChallengeWidget</class>
+ <widget class="QWidget" name="ChallengeWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ChallengeWidget</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QHBoxLayout" name="difficultyLayout">
+     <item>
+      <widget class="QGroupBox" name="nuzlockeBox">
+       <property name="title">
+        <string>Nuzlocke</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="nuzlockeOneCapturePerArea">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>1 Capture Per Area</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="nuzlockeDefinitiveMinionDeath">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Definitive Minion Death</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="nuzlockeDefinitiveLevantDeath">
+          <property name="text">
+           <string>Definitive Levant Death</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="difficultyBox">
+       <property name="title">
+        <string>Difficulty</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QCheckBox" name="difficultyHard">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Hard</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="difficultyExtreme">
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="text">
+           <string>Extreme</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

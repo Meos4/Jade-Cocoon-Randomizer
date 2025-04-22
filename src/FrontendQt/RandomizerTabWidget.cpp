@@ -5,6 +5,7 @@
 #include "Common/Json.hpp"
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/BossWidget.hpp"
+#include "FrontendQt/ChallengeWidget.hpp"
 #include "FrontendQt/EquipmentWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
 #include "FrontendQt/ForestWidget.hpp"
@@ -35,13 +36,14 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 	auto* const shopWidget{ new ShopWidget(helpConsole, this) };
 	auto* const miscWidget{ new MiscWidget(helpConsole, this) };
 	auto* const addonsWidget{ new AddonsWidget(helpConsole, this) };
+	auto* const challengeWidget{ new ChallengeWidget(helpConsole, this) };
 	auto* const fixesWidget{ new FixesWidget(helpConsole, this) };
 
 	m_randomizerUiManager = std::make_unique<RandomizerUiManager>
 	(
 		levantWidget, minionWidget, bossWidget, forestWidget,
 		equipmentWidget, treasureWidget, shopWidget, miscWidget,
-		addonsWidget, fixesWidget
+		addonsWidget, challengeWidget, fixesWidget
 	);
 
 	m_randomizerWidgets[TAB_LEVANT] = levantWidget;
@@ -53,6 +55,7 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 	m_randomizerWidgets[TAB_SHOP] = shopWidget;
 	m_randomizerWidgets[TAB_MISC] = miscWidget;
 	m_randomizerWidgets[TAB_ADDONS] = addonsWidget;
+	m_randomizerWidgets[TAB_CHALLENGE] = challengeWidget;
 	m_randomizerWidgets[TAB_FIXES] = fixesWidget;
 
 	m_ui.levantScroll->setWidget(m_randomizerWidgets[TAB_LEVANT]);
@@ -64,6 +67,7 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 	m_ui.shopScroll->setWidget(m_randomizerWidgets[TAB_SHOP]);
 	m_ui.miscScroll->setWidget(m_randomizerWidgets[TAB_MISC]);
 	m_ui.addonsScroll->setWidget(m_randomizerWidgets[TAB_ADDONS]);
+	m_ui.challengeScroll->setWidget(m_randomizerWidgets[TAB_CHALLENGE]);
 	m_ui.fixesScroll->setWidget(m_randomizerWidgets[TAB_FIXES]);
 }
 

@@ -71,6 +71,7 @@ set(SOURCES_BACKEND
 set(SOURCES_BACKEND_RANDOMIZER
     ${BACKEND_DIR}/Randomizer/Addons.cpp
     ${BACKEND_DIR}/Randomizer/Boss.cpp
+    ${BACKEND_DIR}/Randomizer/Challenge.cpp
     ${BACKEND_DIR}/Randomizer/Equipment.cpp
     ${BACKEND_DIR}/Randomizer/Fixes.cpp
     ${BACKEND_DIR}/Randomizer/Forest.cpp
@@ -109,6 +110,9 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/BossWidget.cpp
     ${FRONTENDQT_DIR}/BossWidget.hpp
     ${FRONTENDQT_DIR}/BossWidget.ui
+    ${FRONTENDQT_DIR}/ChallengeWidget.cpp
+    ${FRONTENDQT_DIR}/ChallengeWidget.hpp
+    ${FRONTENDQT_DIR}/ChallengeWidget.ui
     ${FRONTENDQT_DIR}/EquipmentWidget.cpp
     ${FRONTENDQT_DIR}/EquipmentWidget.hpp
     ${FRONTENDQT_DIR}/EquipmentWidget.ui

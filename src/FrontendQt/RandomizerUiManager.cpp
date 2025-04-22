@@ -3,6 +3,7 @@
 #include "Backend/Randomizer.hpp"
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/BossWidget.hpp"
+#include "FrontendQt/ChallengeWidget.hpp"
 #include "FrontendQt/EquipmentWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
 #include "FrontendQt/ForestWidget.hpp"
@@ -15,7 +16,7 @@
 
 RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
     EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-    AddonsWidget* addons, FixesWidget* fixes)
+    AddonsWidget* addons, ChallengeWidget* challenge, FixesWidget* fixes)
     : m_levant(levant),
       m_minion(minion),
       m_boss(boss),
@@ -25,6 +26,7 @@ RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* min
       m_shop(shop),
       m_misc(misc),
       m_addons(addons),
+	  m_challenge(challenge),
       m_fixes(fixes)
 {
 }
@@ -364,33 +366,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
     // Addons
 	const auto& addonsUi{ m_addons->Ui() };
 
-    Randomizer::AddonsNuzlocke_t addonsNuzlocke{};
-	if (addonsUi.nuzlockeOneCapturePerArea->isChecked())
-	{
-		addonsNuzlocke |= Randomizer::ADDONS_NUZLOCKE_ONE_CAPTURE;
-	}
-	if (addonsUi.nuzlockeDefinitiveMinionDeath->isChecked())
-	{
-		addonsNuzlocke |= Randomizer::ADDONS_NUZLOCKE_DEFINITIVE_DEATH;
-	}
-	if (addonsUi.nuzlockeDefinitiveLevantDeath->isChecked())
-	{
-		addonsNuzlocke |= Randomizer::ADDONS_NUZLOCKE_DEFINITIVE_LEVANT_DEATH;
-	}
-	if (addonsNuzlocke)
-	{
-		randomizer->addonsNuzlocke(addonsNuzlocke);
-	}
-
-	if (addonsUi.difficultyHard->isChecked())
-	{
-		randomizer->addonsDifficulty(Randomizer::AddonsDifficulty::Hard);
-	}
-	else if (addonsUi.difficultyExtreme->isChecked())
-	{
-		randomizer->addonsDifficulty(Randomizer::AddonsDifficulty::Extreme);
-	}
-
 	if (addonsUi.skipTutorialEnable->isChecked())
 	{
 		randomizer->addonsSkipTutorial(addonsUi.skipTutorialSkipKoris->isChecked());
@@ -412,6 +387,36 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	if (addonsUi.palToNtscBox->isEnabled() && addonsUi.palToNtscEnable->isChecked())
 	{
 		randomizer->addonsPalToNtsc();
+	}
+
+	// Challenge
+	const auto& challengeUi{ m_challenge->Ui() };
+
+	Randomizer::ChallengeNuzlocke_t challengeNuzlocke{};
+	if (challengeUi.nuzlockeOneCapturePerArea->isChecked())
+	{
+		challengeNuzlocke |= Randomizer::CHALLENGE_NUZLOCKE_ONE_CAPTURE;
+	}
+	if (challengeUi.nuzlockeDefinitiveMinionDeath->isChecked())
+	{
+		challengeNuzlocke |= Randomizer::CHALLENGE_NUZLOCKE_DEFINITIVE_DEATH;
+	}
+	if (challengeUi.nuzlockeDefinitiveLevantDeath->isChecked())
+	{
+		challengeNuzlocke |= Randomizer::CHALLENGE_NUZLOCKE_DEFINITIVE_LEVANT_DEATH;
+	}
+	if (challengeNuzlocke)
+	{
+		randomizer->challengeNuzlocke(challengeNuzlocke);
+	}
+
+	if (challengeUi.difficultyHard->isChecked())
+	{
+		randomizer->challengeDifficulty(Randomizer::ChallengeDifficulty::Hard);
+	}
+	else if (challengeUi.difficultyExtreme->isChecked())
+	{
+		randomizer->challengeDifficulty(Randomizer::ChallengeDifficulty::Extreme);
 	}
 
     // Fixes

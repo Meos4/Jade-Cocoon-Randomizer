@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>1000</width>
     <height>600</height>
    </rect>
   </property>
@@ -62,7 +62,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>796</width>
+         <width>996</width>
          <height>570</height>
         </rect>
        </property>
@@ -105,8 +105,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -151,8 +151,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>99</width>
-         <height>30</height>
+         <width>995</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -194,8 +194,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -237,8 +237,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -280,8 +280,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -323,8 +323,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -366,7 +366,7 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>796</width>
+         <width>996</width>
          <height>570</height>
         </rect>
        </property>
@@ -409,8 +409,51 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="challengeTab">
+   <attribute name="icon">
+    <iconset resource="resources/resources.qrc">
+     <normaloff>:/icons/Challenge16.png</normaloff>:/icons/Challenge16.png</iconset>
+   </attribute>
+   <attribute name="title">
+    <string>Challenge</string>
+   </attribute>
+   <layout class="QGridLayout" name="gridLayout_11">
+    <property name="leftMargin">
+     <number>1</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="challengeScroll">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_11">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>995</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>
@@ -452,8 +495,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>100</width>
-         <height>30</height>
+         <width>996</width>
+         <height>570</height>
         </rect>
        </property>
       </widget>

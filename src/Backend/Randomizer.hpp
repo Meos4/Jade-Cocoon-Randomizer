@@ -127,15 +127,15 @@ public:
 
 	using HudColorArray = std::array<Randomizer::Color, 15>;
 
-	using AddonsNuzlocke_t = u32;
-	enum : AddonsNuzlocke_t
+	using ChallengeNuzlocke_t = u32;
+	enum : ChallengeNuzlocke_t
 	{
-		ADDONS_NUZLOCKE_ONE_CAPTURE = 1 << 0,
-		ADDONS_NUZLOCKE_DEFINITIVE_DEATH = 1 << 1,
-		ADDONS_NUZLOCKE_DEFINITIVE_LEVANT_DEATH = 1 << 2
+		CHALLENGE_NUZLOCKE_ONE_CAPTURE = 1 << 0,
+		CHALLENGE_NUZLOCKE_DEFINITIVE_DEATH = 1 << 1,
+		CHALLENGE_NUZLOCKE_DEFINITIVE_LEVANT_DEATH = 1 << 2
 	};
 
-	enum class AddonsDifficulty
+	enum class ChallengeDifficulty
 	{
 		Hard,
 		Extreme
@@ -193,14 +193,14 @@ public:
 	void miscHudColor() const;
 	void miscHudColor(const Randomizer::HudColorArray& hud) const;
 	void miscNPCsVoice() const;
-	void addonsNuzlocke(Randomizer::AddonsNuzlocke_t state) const;
-	void addonsDifficulty(Randomizer::AddonsDifficulty state) const;
 	void addonsSkipTutorial(bool skipKoris) const;
 	void addonsX2Framerate() const;
 	void addonsItemQuantityLimit(u8 limit) const;
 	void addonsLevelCapEC(u8 levelCap) const;
 	void addonsShowHiddenStats() const;
 	void addonsPalToNtsc() const;
+	void challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const;
+	void challengeDifficulty(Randomizer::ChallengeDifficulty state) const;
 	void fixesBodyEnhancement() const;
 	void fixesAutumnMoonEffect() const;
 	void fixesHpMpBarsSize(u16 value) const;
