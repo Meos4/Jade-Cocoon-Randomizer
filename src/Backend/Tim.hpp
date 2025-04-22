@@ -9,6 +9,26 @@ class RawFile;
 
 namespace Tim
 {
+	struct Header
+	{
+		u32 magic;
+		u32 type;
+		u32 offset;
+		s16 paletteX;
+		s16 paletteY;
+		s16 paletteColors;
+		s16 nbPalettes; 
+	};
+
+	enum : u32
+	{
+		TYPE_4BPP = 0x08,
+		TYPE_8BPP = 0x09,
+		TYPE_16BPP = 0x02,
+	};
+
+	bool isValid(const Tim::Header& header);	
+
 	void rotateBPP8(RawFile* file, s32 rotation, u32 offset);
 
 	template <Integral... Args>
