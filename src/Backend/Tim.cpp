@@ -1,6 +1,6 @@
 #include "Tim.hpp"
 
-#include "Backend/JCUtil.hpp"
+#include "Backend/TimPalette.hpp"
 #include "Common/JcrException.hpp"
 #include "Common/RawFile.hpp"
 
@@ -20,7 +20,7 @@ namespace Tim
 			const u32 clutOffset{ offset + Tim::sizeHeader + clutSize * sizeof(u16) * i };
 
 			auto clut{ file->read<std::array<u16, clutSize>>(clutOffset) };
-			JCUtil::rotateCLUT(clut, rotation);
+			TimPalette::rotateCLUT(clut, rotation);
 			file->write(clutOffset, clut);
 		}
 	}
@@ -39,7 +39,7 @@ namespace Tim
 		auto* const clutPtr{ clut.data() };
 
 		file->read(clutOffset, clutPtr, clutSize);
-		JCUtil::rotateCLUT(clut, rotation);
+		TimPalette::rotateCLUT(clut, rotation);
 		file->write(clutOffset, *clutPtr, clutSize);
 	}
 }

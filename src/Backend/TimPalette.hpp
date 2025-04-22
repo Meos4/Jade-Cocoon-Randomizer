@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <span>
 
-namespace JCUtil
+namespace TimPalette
 {
 	struct RGBF
 	{
@@ -29,7 +29,7 @@ namespace JCUtil
 
 	inline constexpr auto clutRotationLimit{ 360 };
 
-	constexpr JCUtil::RGBF rgbf(u16 clr)
+	constexpr TimPalette::RGBF rgbf(u16 clr)
 	{
 		constexpr u8 timRGBLimit{ 0x1F };
 
@@ -44,9 +44,9 @@ namespace JCUtil
 
 	constexpr u16 rotateHueClr(u16 clr, s32 rotation)
 	{
-		rotation %= JCUtil::clutRotationLimit;
+		rotation %= TimPalette::clutRotationLimit;
 
-		auto [r, g, b, flag] { JCUtil::rgbf(clr) };
+		auto [r, g, b, flag] { TimPalette::rgbf(clr) };
 
 		const auto maxRGB{ std::max({r, g, b}) };
 
@@ -175,9 +175,9 @@ namespace JCUtil
 		return flag | r | (g << 5) | (b << 10);
 	}
 
-	constexpr u16 blackAndWhiteClr(u16 clr, JCUtil::BlackAndWhiteMethod method)
+	constexpr u16 blackAndWhiteClr(u16 clr, TimPalette::BlackAndWhiteMethod method)
 	{
-		auto [r, g, b, flag] { JCUtil::rgbf(clr) };
+		auto [r, g, b, flag] { TimPalette::rgbf(clr) };
 
 		switch (method)
 		{
@@ -194,5 +194,5 @@ namespace JCUtil
 	}
 
 	void rotateCLUT(std::span<u16> clut, s32 rotation);
-	void blackAndWhiteCLUT(std::span<u16> clut, JCUtil::BlackAndWhiteMethod method);
+	void blackAndWhiteCLUT(std::span<u16> clut, TimPalette::BlackAndWhiteMethod method);
 };

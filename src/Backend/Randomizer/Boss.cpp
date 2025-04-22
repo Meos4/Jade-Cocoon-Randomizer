@@ -2,7 +2,7 @@
 
 #include "Backend/Entity.hpp"
 #include "Backend/File.hpp"
-#include "Backend/JCUtil.hpp"
+#include "Backend/TimPalette.hpp"
 #include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/Model.hpp"
@@ -403,7 +403,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 	{
 		static constexpr auto clutSize{ 0x100u };
 		auto clut{ file->read<std::array<u16, clutSize>>(offset) };
-		JCUtil::rotateCLUT(clut, rotation);
+		TimPalette::rotateCLUT(clut, rotation);
 		file->write(offset, clut);
 	};
 
@@ -499,7 +499,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 		for (const auto& [model, fileoffset] : mfo)
 		{
 			const auto file{ m_game->file(fileoffset.first) };
-			const auto rng{ m_game->random()->generate(JCUtil::clutRotationLimit) };
+			const auto rng{ m_game->random()->generate(TimPalette::clutRotationLimit) };
 
 			rotate(file.get(), fileoffset.second, rng);
 
@@ -516,7 +516,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 		}
 
 		// Cushidra
-		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, m_game->random()->generate(JCUtil::clutRotationLimit));
+		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, m_game->random()->generate(TimPalette::clutRotationLimit));
 	}
 
 	executable.write(goatModelsBehaviorOffset, goatModelsBehavior);
@@ -848,7 +848,7 @@ void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const
 		for (const auto& [model, file] : minions)
 		{
 			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			JCUtil::rotateCLUT(clut, m_game->random()->generate(JCUtil::clutRotationLimit));
+			TimPalette::rotateCLUT(clut, m_game->random()->generate(TimPalette::clutRotationLimit));
 			file->write(Model::Minion::Texture::clutBegin, clut);
 		}
 	}

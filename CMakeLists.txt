@@ -39,8 +39,6 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Iso.hpp
     ${BACKEND_DIR}/Item.cpp
     ${BACKEND_DIR}/Item.hpp
-    ${BACKEND_DIR}/JCUtil.cpp
-    ${BACKEND_DIR}/JCUtil.hpp
     ${BACKEND_DIR}/libgte.cpp
     ${BACKEND_DIR}/libgte.hpp
     ${BACKEND_DIR}/Merge.cpp
@@ -61,6 +59,8 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/SharedData.hpp
     ${BACKEND_DIR}/Tim.cpp
     ${BACKEND_DIR}/Tim.hpp
+    ${BACKEND_DIR}/TimPalette.cpp
+    ${BACKEND_DIR}/TimPalette.hpp
     ${BACKEND_DIR}/Util.cpp
     ${BACKEND_DIR}/Util.hpp
     ${BACKEND_DIR}/Version.cpp

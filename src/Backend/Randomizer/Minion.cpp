@@ -1,7 +1,7 @@
 #include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
-#include "Backend/JCUtil.hpp"
+#include "Backend/TimPalette.hpp"
 #include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/Model.hpp"
@@ -791,7 +791,7 @@ void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state)
 		for (const auto& [model, file] : minions)
 		{
 			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			JCUtil::rotateCLUT(clut, m_game->random()->generate(JCUtil::clutRotationLimit));
+			TimPalette::rotateCLUT(clut, m_game->random()->generate(TimPalette::clutRotationLimit));
 			file->write(Model::Minion::Texture::clutBegin, clut);
 		}
 	}
