@@ -28,7 +28,18 @@ namespace Tim
 		s16 nbPalettes; 
 	};
 
-	bool isValid(const Tim::Header& header);	
+	struct ImageDataHeader
+	{
+		u32 size;
+		s16 vramX;
+		s16 vramY;
+		s16 width;
+		s16 height;
+	};
+
+	u32 singlePaletteOffset(Type_t type);
+	u32 expectedPaletteOffset(const Tim::Header& header);
+	bool isValid(const Tim::Header& header);
 	void rotateBPP8(RawFile* file, s32 rotation, u32 offset);
 	void rotateBPP16(RawFile* file, s32 rotation, u32 offset, std::optional<u32> sizeLimit = std::nullopt);
 

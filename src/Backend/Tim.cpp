@@ -10,6 +10,21 @@ namespace Tim
 {
 	static constexpr auto sizeHeader{ sizeof(Tim::Header) };
 
+	u32 singlePaletteOffset(Type_t type)
+	{
+		switch (type)
+		{
+		case TYPE_4BPP: return 16 * sizeof(u16);
+		case TYPE_8BPP: return 256 * sizeof(u16);
+		default: throw JcrException{ "Wrong palette type" };
+		}
+	}
+
+	u32 expectedPaletteOffset(const Tim::Header& header)
+	{
+		return header.nbPalettes * singlePaletteOffset(header.type);
+	}
+
 	bool isValid(const Tim::Header& header)
 	{
 		return header.magic == 0x10 && 
