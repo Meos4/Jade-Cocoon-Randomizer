@@ -27,8 +27,8 @@ namespace Tim
 
 	bool isValid(const Tim::Header& header)
 	{
-		return header.magic == 0x10 && 
-			header.type == TYPE_4BPP || header.type == TYPE_8BPP || header.type == TYPE_16BPP &&
+		return header.magic == 0x10 &&
+			(header.type == TYPE_4BPP || header.type == TYPE_8BPP || header.type == TYPE_16BPP) &&
 			header.paletteX < 1024 && header.paletteY < 512;
 	}
 
