@@ -1,2 +1,5 @@
-/build
+/build*
 /.vscode
+CLAUDE.MD
+IMPROVEMENTS.MD
+*.txt
