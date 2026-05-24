@@ -75,6 +75,8 @@ set(SOURCES_BACKEND_RANDOMIZER
     ${BACKEND_DIR}/Randomizer/Equipment.cpp
     ${BACKEND_DIR}/Randomizer/Fixes.cpp
     ${BACKEND_DIR}/Randomizer/Forest.cpp
+    ${BACKEND_DIR}/Randomizer/Helpers.cpp
+    ${BACKEND_DIR}/Randomizer/Helpers.hpp
     ${BACKEND_DIR}/Randomizer/Levant.cpp
     ${BACKEND_DIR}/Randomizer/Minion.cpp
     ${BACKEND_DIR}/Randomizer/Misc.cpp

@@ -1,10 +1,9 @@
 #include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
-#include "Backend/TimPalette.hpp"
-#include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
 #include "Backend/Model.hpp"
+#include "Backend/Randomizer/Helpers.hpp"
 #include "Common/Buffer.hpp"
 #include "Common/JcrException.hpp"
 
@@ -567,37 +566,7 @@ void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state)
 	{
 		for (const auto& [model, file] : minions)
 		{
-			std::vector<Merge::ModelInterp> modelsInterp;
-
-			static constexpr s16 maxInterpolation{ 3072 }, iterationRate{ 512 };
-
-			const auto rate{ m_game->random()->generate(0.2f, 1.f) * maxInterpolation };
-			const auto iteration{ maxInterpolation / iterationRate + 1 - static_cast<s32>(rate / iterationRate) };
-			modelsInterp.reserve(iteration);
-
-			for (s32 i{}; i < iteration; ++i)
-			{
-				const auto rngModel{ m_game->random()->generate(Model::Minion::models.size() - 1) };
-
-				modelsInterp.emplace_back
-				(
-					m_sharedData.model(Model::Minion::models[rngModel]),
-					m_game->random()->generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
-				);
-			}
-
-			auto mainModel{ m_sharedData.model(model) };
-			const auto firstAnimPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr) };
-			const auto animPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr + sizeof(u32) * model) };
-			const auto offset{ (animPtr - firstAnimPtr + m_game->offset().file.executable.tableOfModelAnimations) & ~0x80000000 };
-
-			Model::Minion::Animation::UnpackedOffsetSize unpackedOffsetSize
-			{
-				executable.read<std::array<std::pair<u16, u16>, Model::Minion::Animation::nbUnpacked>>(offset + 0x3E)
-			};
-
-			Merge::Model(&mainModel, unpackedOffsetSize, modelsInterp);
-			file->write(0, *mainModel.data(), mainModel.size());
+			Helpers::randomizeModelInterp(file.get(), model, m_sharedData, m_game, executable);
 		}
 	}
 
@@ -790,9 +759,7 @@ void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state)
 	{
 		for (const auto& [model, file] : minions)
 		{
-			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			TimPalette::rotateCLUT(clut, m_game->random()->generate(TimPalette::clutRotationLimit));
-			file->write(Model::Minion::Texture::clutBegin, clut);
+			Helpers::randomizeCLUT(file.get(), m_game->random());
 		}
 	}
 }

@@ -10,6 +10,8 @@
 #include "Common/JcrException.hpp"
 #include "Common/TemplateTypes.hpp"
 
+#include "Helpers.hpp"
+
 #include <array>
 #include <algorithm>
 #include <bit>
@@ -34,6 +36,16 @@ struct DamageModifiers
 	s8 standardAttacks;
 	s8 unk2;
 };
+
+static constexpr std::array<Magic_t, ELEMENT_COUNT> availableMagics
+{
+	MAGIC_AGNI | MAGIC_AGNIS | MAGIC_AGNIA | MAGIC_FIRE_BOSS,
+	MAGIC_MALTI | MAGIC_MALTIS | MAGIC_MALTIA | MAGIC_AIR_BOSS,
+	MAGIC_ULVI | MAGIC_ULVIS | MAGIC_ULVIA | MAGIC_EARTH_BOSS,
+	MAGIC_VAHLI | MAGIC_VAHLIS | MAGIC_VAHLIA | MAGIC_WATER_BOSS
+};
+
+static constexpr auto elemProba{ 75.f };
 
 static void setDamageModifiers(DamageModifiers* damageModifiers, Element_t element)
 {
@@ -128,6 +140,18 @@ static void setDamageModifiersNone(DamageModifiers* damageModifiers, Element_t e
 	}
 }
 
+static Special_t specialFromElement(Element_t element)
+{
+	switch (element)
+	{
+	case ELEMENT_FIRE: return SPECIAL_FIRE_ATTACK;
+	case ELEMENT_AIR: return SPECIAL_WIND_ATTACK;
+	case ELEMENT_EARTH: return SPECIAL_EARTH_ATTACK;
+	case ELEMENT_WATER: return SPECIAL_WATER_ATTACK;
+	default: return SPECIAL_NEUTRAL0;
+	}
+}
+
 void Randomizer::bossElement(Randomizer::BossElement state) const
 {
 	const u32 statsOffset{ m_game->offset().file.executable.entityStats + ID_DREAM_MAN * sizeof(StatsStruct) };
@@ -185,21 +209,10 @@ void Randomizer::bossElement(Randomizer::BossElement state) const
 
 void Randomizer::bossSpecialMagic() const
 {
-	const std::unordered_map<Element_t, Special_t> availableSpecial
-	{
-		{ ELEMENT_NONE, { SPECIAL_NEUTRAL0 } },
-		{ ELEMENT_FIRE, { SPECIAL_FIRE_ATTACK } },
-		{ ELEMENT_AIR, { SPECIAL_WIND_ATTACK } },
-		{ ELEMENT_EARTH, { SPECIAL_EARTH_ATTACK } },
-		{ ELEMENT_WATER, { SPECIAL_WATER_ATTACK } }
-	};
-
 	auto generateSpecial = [&](SpecialStruct* special, Element_t element, bool allowStatus = true)
 	{
-		static constexpr std::array<Special_t, 3> 
+		static constexpr std::array<Special_t, 3>
 			availableSpecialStatus{ SPECIAL_POISON, SPECIAL_FLESH_TO_STONE, SPECIAL_SLEEP };
-
-		static constexpr auto elemProba{ 75.f };
 
 		special->isEnabled = 1;
 
@@ -210,7 +223,7 @@ void Randomizer::bossSpecialMagic() const
 				element == ELEMENT_NONE ? m_game->random()->generate(element, Element_t(ELEMENT_COUNT - 1)) : element
 			};
 
-			special->specialAttackId = availableSpecial.at(elementToUse);
+			special->specialAttackId = specialFromElement(elementToUse);
 			return allowStatus;
 		}
 		else
@@ -222,14 +235,6 @@ void Randomizer::bossSpecialMagic() const
 
 	auto generateMagic = [&](Mips::Register rgt, Element_t element)
 	{
-		static constexpr std::array<Magic_t, ELEMENT_COUNT> availableMagics
-		{
-			MAGIC_AGNI | MAGIC_AGNIS | MAGIC_AGNIA | MAGIC_FIRE_BOSS,
-			MAGIC_MALTI | MAGIC_MALTIS | MAGIC_MALTIA | MAGIC_AIR_BOSS,
-			MAGIC_ULVI | MAGIC_ULVIS | MAGIC_ULVIA | MAGIC_EARTH_BOSS,
-			MAGIC_VAHLI | MAGIC_VAHLIS | MAGIC_VAHLIA | MAGIC_WATER_BOSS
-		};
-
 		const auto elementToUse{ element == ELEMENT_NONE ? m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) : element };
 		return Mips::li(rgt, static_cast<u16>(Util::bitToInt(m_game->random()->generateBit(availableMagics[elementToUse]))));
 	};
@@ -566,15 +571,6 @@ void Randomizer::bossElementEC() const
 
 void Randomizer::bossSpecialMagicEC() const
 {
-	const std::unordered_map<Element_t, Special_t> availableSpecial
-	{
-		{ ELEMENT_NONE, { SPECIAL_NEUTRAL0 } },
-		{ ELEMENT_FIRE, { SPECIAL_FIRE_ATTACK } },
-		{ ELEMENT_AIR, { SPECIAL_WIND_ATTACK } },
-		{ ELEMENT_EARTH, { SPECIAL_EARTH_ATTACK } },
-		{ ELEMENT_WATER, { SPECIAL_WATER_ATTACK } }
-	};
-
 	auto generateSpecial = [&](SpecialStruct* special, Element_t element, bool allowStrong = true)
 	{
 		static constexpr std::array<Special_t, 5> availableSpecialStrong
@@ -583,8 +579,6 @@ void Randomizer::bossSpecialMagicEC() const
 			SPECIAL_CRITICAL
 		};
 
-		static constexpr auto elemProba{ 75.f };
-
 		if (!allowStrong || m_game->random()->generateProba(elemProba))
 		{
 			const auto elementToUse
@@ -592,7 +586,7 @@ void Randomizer::bossSpecialMagicEC() const
 				element == ELEMENT_NONE ? m_game->random()->generate(element, Element_t(ELEMENT_COUNT - 1)) : element
 			};
 
-			special->specialAttackId = availableSpecial.at(elementToUse);
+			special->specialAttackId = specialFromElement(elementToUse);
 			return allowStrong;
 		}
 		else
@@ -606,14 +600,6 @@ void Randomizer::bossSpecialMagicEC() const
 
 	auto generateMagic = [&](Mips::Register rgt, Element_t element)
 	{
-		static constexpr std::array<Magic_t, ELEMENT_COUNT> availableMagics
-		{
-			MAGIC_AGNI | MAGIC_AGNIS | MAGIC_AGNIA | MAGIC_FIRE_BOSS,
-			MAGIC_MALTI | MAGIC_MALTIS | MAGIC_MALTIA | MAGIC_AIR_BOSS,
-			MAGIC_ULVI | MAGIC_ULVIS | MAGIC_ULVIA | MAGIC_EARTH_BOSS,
-			MAGIC_VAHLI | MAGIC_VAHLIS | MAGIC_VAHLIA | MAGIC_WATER_BOSS
-		};
-
 		static constexpr auto adMumulsRate{ 1.f / 3.f * 100.f };
 
 		if (allowAdMumuls && m_game->random()->generateProba(adMumulsRate))
@@ -727,37 +713,7 @@ void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const
 	{
 		for (const auto& [model, file] : minions)
 		{
-			std::vector<Merge::ModelInterp> modelsInterp;
-
-			static constexpr s16 maxInterpolation{ 3072 }, iterationRate{ 512 };
-
-			const auto rate{ m_game->random()->generate(0.2f, 1.f) * maxInterpolation };
-			const auto iteration{ maxInterpolation / iterationRate + 1 - static_cast<s32>(rate / iterationRate) };
-			modelsInterp.reserve(iteration);
-
-			for (s32 i{}; i < iteration; ++i)
-			{
-				const auto rngModel{ m_game->random()->generate(Model::Minion::models.size() - 1) };
-
-				modelsInterp.emplace_back
-				(
-					m_sharedData.model(Model::Minion::models[rngModel]),
-					m_game->random()->generate(static_cast<s16>(rate / 1.5f), static_cast<s16>(rate))
-				);
-			}
-
-			auto mainModel{ m_sharedData.model(model) };
-			const auto firstAnimPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr) };
-			const auto animPtr{ executable.read<u32>(m_game->offset().file.executable.tableOfModelAnimationsPtr + sizeof(u32) * model) };
-			const auto offset{ (animPtr - firstAnimPtr + m_game->offset().file.executable.tableOfModelAnimations) & ~0x80000000 };
-
-			Model::Minion::Animation::UnpackedOffsetSize unpackedOffsetSize
-			{
-				executable.read<std::array<std::pair<u16, u16>, Model::Minion::Animation::nbUnpacked>>(offset + 0x3E)
-			};
-
-			Merge::Model(&mainModel, unpackedOffsetSize, modelsInterp);
-			file->write(0, *mainModel.data(), mainModel.size());
+			Helpers::randomizeModelInterp(file.get(), model, m_sharedData, m_game, executable);
 		}
 	}
 
@@ -847,9 +803,7 @@ void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const
 	{
 		for (const auto& [model, file] : minions)
 		{
-			auto clut{ file->read<std::array<u16, Model::Minion::Texture::clutSize>>(Model::Minion::Texture::clutBegin) };
-			TimPalette::rotateCLUT(clut, m_game->random()->generate(TimPalette::clutRotationLimit));
-			file->write(Model::Minion::Texture::clutBegin, clut);
+			Helpers::randomizeCLUT(file.get(), m_game->random());
 		}
 	}
 }
