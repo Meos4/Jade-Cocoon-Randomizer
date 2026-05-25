@@ -9,6 +9,6 @@ class SharedData;
 
 namespace Helpers
 {
-	void randomizeModelInterp(RawFile* file, Model_t model, const SharedData& sharedData, Game* game, RawFile& executable);
+	void randomizeModelInterp(RawFile* file, Model_t model, const SharedData& sharedData, Game* game, RawFile& executable, s32 craziness);
 	void randomizeCLUT(RawFile* file, Random* random);
 }

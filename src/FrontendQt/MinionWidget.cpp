@@ -41,6 +41,11 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.spawnKorisCombo) }
 	};
 
+	m_qSlider =
+	{
+		{ SETTINGS(m_ui.appearanceCrazinessSlider) }
+	};
+
 	const auto _Spawn{ m_ui.spawnBox->title() };
 	const auto _SpawnStory{ _Spawn + " " + m_ui.spawnStoryBox->title()};
 
@@ -104,9 +109,14 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	);
 
 	const QString _Appearance{ m_ui.appearanceBox->title() };
+	const QString _Craziness{ _Appearance + " " + m_ui.appearanceCrazinessBox->title() };
 
-	helpConsole->addFeature(m_ui.appearanceRandomNewMinion, _Appearance, 
+	helpConsole->addFeature(m_ui.appearanceRandomNewMinion, _Craziness,
 		"Create new randomly generated minions appearance."
+	);
+
+	helpConsole->addFeature(m_ui.appearanceCrazinessSlider, _Craziness, "Craziness",
+		"The higher the percentage, the more bizarre the generated appearances will be."
 	);
 
 	helpConsole->addFeature(m_ui.appearanceModelRandom, _Appearance + " " + m_ui.appearanceModelBox->title(),
@@ -147,6 +157,7 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	m_ui.spawnKorisCombo->setEnabled(false);
 	m_ui.specialMagicPool->setEnabled(false);
 	m_ui.appearanceTextureIncludeCompatible->setEnabled(false);
+	m_ui.appearanceCrazinessValue->setEnabled(false);
 
 	m_specialMagicDialog = new SpecialMagicDialog(this);
 
@@ -179,6 +190,9 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.appearanceTextureRandom, &QAbstractButton::toggled, m_ui.appearanceTextureIncludeCompatible, &QWidget::setEnabled);
 	connect(m_ui.appearanceGrowthSizeShuffle, &QAbstractButton::toggled, this, &MinionWidget::updateAppearanceGrowthSizeShuffle);
 	connect(m_ui.appearanceGrowthSizeInvert, &QAbstractButton::toggled, this, &MinionWidget::updateAppearanceGrowthSizeInvert);
+	connect(m_ui.appearanceRandomNewMinion, &QAbstractButton::toggled, m_ui.appearanceCrazinessSlider, &QWidget::setEnabled);
+	connect(m_ui.appearanceRandomNewMinion, &QAbstractButton::toggled, m_ui.appearanceCrazinessValue, &QWidget::setEnabled);
+	connect(m_ui.appearanceCrazinessSlider, &QAbstractSlider::valueChanged, this, &MinionWidget::updateCraziness);
 }
 
 void MinionWidget::enableUI(Randomizer* randomizer)
@@ -296,10 +310,17 @@ void MinionWidget::loadPresets(const Json::Read& json)
 		checkBox.load(json);
 	}
 
+	for (auto& slider : m_qSlider)
+	{
+		slider.load(json);
+	}
+
 	for (auto& comboBox : m_qComboBox)
 	{
 		comboBox.load(json);
 	}
+
+	updateCraziness(m_ui.appearanceCrazinessSlider->value());
 
 	Json::set<std::unordered_set<Special_t>>(json, "specials", [this](const auto& v) { m_specialMagicDialog->setSpecials(v); });
 	Json::set<Magic_t>(json, "magics", [this](auto v) { m_specialMagicDialog->setMagics(v); });
@@ -310,6 +331,11 @@ void MinionWidget::savePresets(Json::Write* json)
 	for (const auto& checkBox : m_qCheckBox)
 	{
 		checkBox.save(json);
+	}
+
+	for (const auto& slider : m_qSlider)
+	{
+		slider.save(json);
 	}
 
 	for (const auto& comboBox : m_qComboBox)
@@ -416,4 +442,9 @@ void MinionWidget::updateAppearanceGrowthSizeInvert()
 		m_ui.appearanceGrowthSizeShuffle->setChecked(false);
 	}
 	m_ui.appearanceGrowthSizeShuffle->setEnabled(!isChecked);
+}
+
+void MinionWidget::updateCraziness(s32 value)
+{
+	m_ui.appearanceCrazinessValue->setText(QString::number(value) + "%");
 }

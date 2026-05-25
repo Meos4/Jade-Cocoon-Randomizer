@@ -33,10 +33,12 @@ public Q_SLOTS:
 	void updateSpawnKorisCustom();
 	void updateAppearanceGrowthSizeShuffle();
 	void updateAppearanceGrowthSizeInvert();
+	void updateCraziness(s32 value);
 private:
 	Ui::MinionWidget m_ui;
 
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
+	std::vector<RandomizerQSlider> m_qSlider;
 	std::vector<RandomizerQComboBox> m_qComboBox;
 	bool m_isSpawnStoryRandomRealtimeBanned{ false };
 	SpecialMagicDialog* m_specialMagicDialog;

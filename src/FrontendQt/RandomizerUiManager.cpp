@@ -154,7 +154,7 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	}
 	if (appearance)
 	{
-		randomizer->minionAppearance(appearance);
+		randomizer->minionAppearance(appearance, minionUi.appearanceCrazinessSlider->value());
 	}
 
     // Boss
@@ -213,7 +213,7 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	}
 	if (appearanceEC)
 	{
-		randomizer->bossAppearanceEC(appearanceEC);
+		randomizer->bossAppearanceEC(appearanceEC, bossUi.eternalCorridorCrazinessSlider->value());
 	}
 
     // Forest

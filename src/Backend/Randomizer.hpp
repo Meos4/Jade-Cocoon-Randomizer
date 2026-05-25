@@ -165,13 +165,13 @@ public:
 	void minionKorisMinion(Id_Entity_t id) const;
 	void minionStats(Randomizer::MinionStats_t state) const;
 	void minionSpecialMagic(const std::unordered_set<Special_t>& special, Magic_t magic) const;
-	void minionAppearance(Randomizer::MinionAppearance_t state);
+	void minionAppearance(Randomizer::MinionAppearance_t state, s32 craziness);
 	void bossElement(Randomizer::BossElement state) const;
 	void bossSpecialMagic() const;
 	void bossAppearance(Randomizer::BossAppearance state) const;
 	void bossElementEC() const;
 	void bossSpecialMagicEC() const;
-	void bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const;
+	void bossAppearanceEC(Randomizer::BossAppearanceEC_t state, s32 craziness) const;
 	void forestPaletteColor() const;
 	void forestBattleMaps() const;
 	void forestOst(Randomizer::ForestOst state) const;

@@ -546,11 +546,477 @@ struct Body
 	std::array<Model::Minion::Decompressed, Model::Minion::nbParts> decompressed;
 };
 
+static void parseBodies(std::vector<Body>* body, std::vector<RawTypeNavigator>* rawModels, std::size_t nbModels)
+{
+	for (std::size_t i{}; i < nbModels; ++i)
+	{
+		(*rawModels)[i] = Model::Minion::begin + Model::Minion::headerSize;
+		for (u32 j{}; j < Model::Minion::nbParts; ++j)
+		{
+			const auto types{ (*rawModels)[i].read<std::array<s32, Model::TYPE_COUNT>>() };
+			const auto totalTypes{ std::accumulate(types.begin(), types.end(), 0) };
+			(*rawModels)[i] += sizeof(s32) * Model::TYPE_COUNT;
+
+			for (s32 k{}; k < totalTypes; ++k)
+			{
+				const auto _3_2{ (*rawModels)[i].read<u8>(3) };
+				(*rawModels)[i] += 4;
+
+				switch ((*rawModels)[i].read<u8>(-4))
+				{
+				case Model::TYPE_THREE:
+				{
+					(*body)[i].compressed[j].three.emplace_back((*rawModels)[i].read<Model::CompressedThree>());
+					(*body)[i].decompressed[j].three.emplace_back((*body)[i].compressed[j].three.back(), _3_2);
+					(*rawModels)[i] += sizeof(Model::CompressedThree);
+					break;
+				}
+				case Model::TYPE_FOUR:
+				{
+					(*body)[i].compressed[j].four.emplace_back((*rawModels)[i].read<Model::CompressedFour>());
+					(*body)[i].decompressed[j].four.emplace_back((*body)[i].compressed[j].four.back(), _3_2);
+					(*rawModels)[i] += sizeof(Model::CompressedFour);
+					break;
+				}
+				case Model::TYPE_SHADOW:
+				{
+					(*body)[i].compressed[j].shadow.emplace_back((*rawModels)[i].read<Model::CompressedShadow>());
+					(*body)[i].decompressed[j].shadow.emplace_back((*body)[i].compressed[j].shadow.back(), _3_2);
+					(*rawModels)[i] += sizeof(Model::CompressedShadow);
+					break;
+				}
+				case Model::TYPE_SEVEN:
+				{
+					(*body)[i].compressed[j].seven.emplace_back((*rawModels)[i].read<Model::CompressedSeven>());
+					(*body)[i].decompressed[j].seven.emplace_back((*body)[i].compressed[j].seven.back(), _3_2);
+					(*rawModels)[i] += sizeof(Model::CompressedSeven);
+					break;
+				}
+				case Model::TYPE_NINE:
+				{
+					const auto nbPacked{ (*rawModels)[i].read<s32>() };
+					(*rawModels)[i] += 8;
+
+					(*body)[i].compressed[j].nine.emplace_back();
+					(*body)[i].decompressed[j].nine.emplace_back();
+
+					const auto
+						lastCompressed{ (*body)[i].compressed[j].nine.size() - 1 },
+						lastDecompressed{ (*body)[i].decompressed[j].nine.size() - 1 };
+
+					(*body)[i].compressed[j].nine[lastCompressed].reserve(nbPacked);
+					(*body)[i].decompressed[j].nine[lastDecompressed].reserve(nbPacked);
+
+					for (s32 l{}; l < nbPacked; ++l)
+					{
+						(*body)[i].compressed[j].nine[lastCompressed].emplace_back((*rawModels)[i].read<Model::CompressedNine>());
+						(*body)[i].decompressed[j].nine[lastDecompressed].emplace_back((*body)[i].compressed[j].nine[lastCompressed][l], _3_2);
+						(*rawModels)[i] += sizeof(Model::CompressedNine);
+					}
+					break;
+				}
+				default:
+					throw JcrException{ "Invalid Model Type" };
+				}
+			}
+		}
+	}
+}
+
+static void recompressBodies(std::vector<Body>* body)
+{
+	for (u32 i{}; i < Model::Minion::nbParts; ++i)
+	{
+		for (std::size_t j{}; j < (*body)[0].compressed[i].three.size(); ++j)
+		{
+			(*body)[0].compressed[i].three[j].recompress((*body)[0].decompressed[i].three[j]);
+		}
+
+		for (std::size_t j{}; j < (*body)[0].compressed[i].four.size(); ++j)
+		{
+			(*body)[0].compressed[i].four[j].recompress((*body)[0].decompressed[i].four[j]);
+		}
+
+		for (std::size_t j{}; j < (*body)[0].compressed[i].shadow.size(); ++j)
+		{
+			(*body)[0].compressed[i].shadow[j].recompress((*body)[0].decompressed[i].shadow[j]);
+		}
+
+		for (std::size_t j{}; j < (*body)[0].compressed[i].seven.size(); ++j)
+		{
+			(*body)[0].compressed[i].seven[j].recompress((*body)[0].decompressed[i].seven[j]);
+		}
+
+		for (std::size_t j{}; j < (*body)[0].compressed[i].nine.size(); ++j)
+		{
+			for (std::size_t k{}; k < (*body)[0].compressed[i].nine[j].size(); ++k)
+			{
+				(*body)[0].compressed[i].nine[j][k].recompress((*body)[0].decompressed[i].nine[j][k]);
+			}
+		}
+	}
+}
+
+static void writeBodies(std::vector<Body>* body, RawTypeNavigator* nav)
+{
+	*nav = Model::Minion::begin + Model::Minion::headerSize;
+	for (u32 i{}; i < Model::Minion::nbParts; ++i)
+	{
+		const auto types{ nav->read<std::array<s32, Model::TYPE_COUNT>>() };
+		const auto totalTypes{ std::accumulate(types.begin(), types.end(), 0) };
+		*nav += sizeof(s32) * Model::TYPE_COUNT;
+
+		for (s32 j{}; j < totalTypes; ++j)
+		{
+			*nav += 4;
+
+			switch (nav->read<u8>(-4))
+			{
+			case Model::TYPE_THREE:
+			{
+				nav->write((*body)[0].compressed[i].three[0]);
+				(*body)[0].compressed[i].three.erase((*body)[0].compressed[i].three.begin());
+				*nav += sizeof(Model::CompressedThree);
+				break;
+			}
+			case Model::TYPE_FOUR:
+			{
+				nav->write((*body)[0].compressed[i].four[0]);
+				(*body)[0].compressed[i].four.erase((*body)[0].compressed[i].four.begin());
+				*nav += sizeof(Model::CompressedFour);
+				break;
+			}
+			case Model::TYPE_SHADOW:
+			{
+				nav->write((*body)[0].compressed[i].shadow[0]);
+				(*body)[0].compressed[i].shadow.erase((*body)[0].compressed[i].shadow.begin());
+				*nav += sizeof(Model::CompressedShadow);
+				break;
+			}
+			case Model::TYPE_SEVEN:
+			{
+				nav->write((*body)[0].compressed[i].seven[0]);
+				(*body)[0].compressed[i].seven.erase((*body)[0].compressed[i].seven.begin());
+				*nav += sizeof(Model::CompressedSeven);
+				break;
+			}
+			case Model::TYPE_NINE:
+			{
+				const auto nbPacked{ nav->read<s32>() };
+				*nav += 8;
+
+				for (s32 k{}; k < nbPacked; ++k)
+				{
+					nav->write((*body)[0].compressed[i].nine[0][k]);
+					*nav += sizeof(Model::CompressedNine);
+				}
+
+				(*body)[0].compressed[i].nine.erase((*body)[0].compressed[i].nine.begin());
+				break;
+			}
+			default:
+				throw JcrException{ "Invalid Model Type" };
+			}
+		}
+	}
+}
+
+template<typename GetInterp>
+static std::array<u32, Model::Minion::Animation::nbPacked> blendBodyPartsPosition(
+	std::vector<RawTypeNavigator>* rawModels,
+	const Model::Minion::Animation::UnpackedOffsetSize& animations,
+	std::size_t nbModels,
+	GetInterp getInterp)
+{
+	(*rawModels)[0] = Model::Minion::Animation::begin;
+	const auto packedBegin{ (*rawModels)[0].read<std::array<u32, Model::Minion::Animation::nbPacked>>(4) };
+	auto pos0{ (*rawModels)[0].read<std::array<s16, 72>>(0x38) };
+
+	for (std::size_t i{ 1 }; i < nbModels; ++i)
+	{
+		const s16 interpolation{ getInterp(i) };
+
+		(*rawModels)[i] = Model::Minion::Animation::begin;
+		const auto posI{ (*rawModels)[i].read<std::array<s16, 72>>(0x38) };
+
+		for (s32 j{}; j < 72; ++j)
+		{
+			pos0[j] += libgte::mult(posI[j] - pos0[j], interpolation);
+		}
+	}
+
+	for (u32 i{}; i < Model::Minion::Animation::nbPacked; ++i)
+	{
+		(*rawModels)[0] = Model::Minion::Animation::begin + packedBegin[i];
+		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
+	}
+
+	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
+	{
+		(*rawModels)[0] = animations.offset(i);
+		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
+	}
+
+	return packedBegin;
+}
+
+static std::array<u32, Model::Minion::Animation::nbPacked> blendBodyPartsPositionPerPart(
+	std::vector<RawTypeNavigator>* rawModels,
+	const Model::Minion::Animation::UnpackedOffsetSize& animations,
+	std::size_t nbModels,
+	const std::array<std::size_t, Model::Minion::nbParts>& partBodyIndex,
+	const std::array<Merge::PartInterp, Model::Minion::nbParts>& parts)
+{
+	(*rawModels)[0] = Model::Minion::Animation::begin;
+	const auto packedBegin{ (*rawModels)[0].read<std::array<u32, Model::Minion::Animation::nbPacked>>(4) };
+	auto pos0{ (*rawModels)[0].read<std::array<s16, 72>>(0x38) };
+
+	std::vector<std::array<s16, 72>> posModels(nbModels);
+	posModels[0] = pos0;
+	for (std::size_t i{ 1 }; i < nbModels; ++i)
+	{
+		(*rawModels)[i] = Model::Minion::Animation::begin;
+		posModels[i] = (*rawModels)[i].read<std::array<s16, 72>>(0x38);
+	}
+
+	for (s32 j{}; j < static_cast<s32>(Model::Minion::nbParts) - 1; ++j)
+	{
+		const std::size_t src{ partBodyIndex[j + 1] };
+		const s16 interpolation{ parts[j + 1].interpolation % (Merge::maxInterpolation + 1) };
+		for (s32 k{}; k < 3; ++k)
+		{
+			const s32 idx{ j * 3 + k };
+			pos0[idx] += libgte::mult(posModels[src][idx] - pos0[idx], interpolation);
+		}
+	}
+
+	for (u32 i{}; i < Model::Minion::Animation::nbPacked; ++i)
+	{
+		(*rawModels)[0] = Model::Minion::Animation::begin + packedBegin[i];
+		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
+	}
+
+	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
+	{
+		(*rawModels)[0] = animations.offset(i);
+		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
+	}
+
+	return packedBegin;
+}
+
+template <typename GetInterp>
+static void blendXYZGrowthSize(std::vector<RawTypeNavigator>* rawModels, std::size_t nbModels, GetInterp getInterp)
+{
+	for (std::size_t i{ 1 }; i < nbModels; ++i)
+	{
+		const s16
+			interpolation{ getInterp(i) },
+			interpolation0{ static_cast<s16>(Merge::maxInterpolation - interpolation) };
+
+		(*rawModels)[0] = 0xC;
+		(*rawModels)[i] = 0xC;
+		(*rawModels)[0] = (*rawModels)[0].read<u32>() + 0xC;
+		(*rawModels)[i] = (*rawModels)[i].read<u32>() + 0xC;
+
+		for (s32 j{}; j < 5; ++j)
+		{
+			auto xyz0{ (*rawModels)[0].read<std::array<s32, 3>>(0x18) };
+			const auto xyz{ (*rawModels)[i].read<std::array<s32, 3>>(0x18) };
+
+			for (s32 k{}; k < 3; ++k)
+			{
+				xyz0[k] = libgte::mult(static_cast<s16>(xyz0[k]), interpolation0) +
+					libgte::mult(static_cast<s16>(xyz[k]), interpolation);
+			}
+
+			(*rawModels)[0].write(xyz0, 0x18);
+			(*rawModels)[0] += 0x160;
+			(*rawModels)[i] += 0x160;
+		}
+	}
+}
+
+template <typename GetInterp>
+static void blendGlobalPosition(std::vector<RawTypeNavigator>* rawModels, std::size_t nbModels, GetInterp getInterp)
+{
+	for (std::size_t i{ 1 }; i < nbModels; ++i)
+	{
+		const s16
+			interpolation{ getInterp(i) },
+			interpolation0{ static_cast<s16>(Merge::maxInterpolation - interpolation) };
+
+		static constexpr auto fInt{ 0x39800000u };
+
+		const auto
+			fInterpolation{ static_cast<float>(interpolation) * *(float*)&fInt },
+			fInterpolation0{ static_cast<float>(interpolation0) * *(float*)&fInt };
+
+		(*rawModels)[0] = 8;
+		(*rawModels)[i] = 8;
+		(*rawModels)[0] = (*rawModels)[0].read<u32>() + 4;
+		(*rawModels)[i] = (*rawModels)[i].read<u32>() + 4;
+
+		for (s32 j{}; j < 0x2B; ++j)
+		{
+			auto xyz0{ (*rawModels)[0].read<std::array<s16, 3>>(4) };
+			const auto xyz{ (*rawModels)[i].read<std::array<s16, 3>>(4) };
+
+			for (std::size_t k{}; k < 3; ++k)
+			{
+				const float fCoord
+				{
+					static_cast<float>(xyz0[k]) * fInterpolation0 +
+					static_cast<float>(xyz[k]) * fInterpolation
+				};
+
+				xyz0[k] = static_cast<s16>(fCoord);
+			}
+
+			(*rawModels)[0].write(xyz0, 4);
+			(*rawModels)[0] += 0xC;
+			(*rawModels)[i] += 0xC;
+		}
+	}
+}
+
+static void computeYCoordinate(
+	RawTypeNavigator* nav,
+	const Model::Minion::Animation::UnpackedOffsetSize& animations,
+	const std::array<u32, Model::Minion::Animation::nbPacked>& packedBegin)
+{
+	std::array<libgte::MATRIX, Model::Minion::nbParts> matrixs{};
+	std::array<libgte::VECTOR, Model::Minion::nbParts> vectors{};
+	libgte::SVECTOR sVector1{}, sVector2{};
+
+	Buffer bufferScratchpad(0x400);
+	RawTypeNavigator scratchpad{ bufferScratchpad.data(), bufferScratchpad.size() };
+
+	for (s32 i{}; i < 9; ++i)
+	{
+		scratchpad.write(i % 4 == 0 ? s16(0x1000) : s16(0), 0x60 + i * 2);
+	}
+
+	for (u32 i{}; i < Model::Minion::nbParts; ++i)
+	{
+		const auto desiredVec{ tableOfBodyParts[i * 8 + 2] };
+
+		if (!desiredVec)
+		{
+			sVector1.vx = 0;
+			sVector2.vx = 0;
+		}
+		else
+		{
+			const auto vecOffset{ (desiredVec + 2) * 6 };
+
+			*nav = 0x128D2;
+			sVector2.vx = nav->read<s16>(vecOffset);
+			sVector1.vx = nav->read<s16>(vecOffset + 0x130);
+		}
+
+		*nav = 0x12A0E;
+
+		const auto
+			vecY{ nav->read<u16>(2 + i * 6) },
+			vecZ{ nav->read<u16>(4 + i * 6) };
+
+		const auto
+			x_0{ tableOfRates[static_cast<u16>(sVector1.vx) & 0xFFF] },
+			x_400{ tableOfRates[(static_cast<u16>(sVector1.vx) + 0x400) & 0xFFF] },
+			y_0{ tableOfRates[vecY & 0xFFF] },
+			y_400{ tableOfRates[(vecY + 0x400) & 0xFFF] },
+			z_0{ tableOfRates[vecZ & 0xFFF] },
+			z_400{ tableOfRates[(vecZ + 0x400) & 0xFFF] },
+			x2_0{ tableOfRates[static_cast<u16>(sVector2.vx) & 0xFFF] },
+			x2_400{ tableOfRates[(static_cast<u16>(sVector2.vx) + 0x400) & 0xFFF] };
+
+		libgte::MATRIX scratchMatrix;
+
+		scratchMatrix.m[0][0] = (z_400 * y_400) >> 0xC;
+		scratchMatrix.m[0][1] = ((((z_400 * y_0) >> 0xC) * x_0) >> 0xC) - ((z_0 * x_400) >> 0xC);
+		scratchMatrix.m[0][2] = ((x_0 * z_0) >> 0xC) + ((((z_400 * y_0) >> 0xC) * x_400) >> 0xC);
+		scratchMatrix.m[1][0] = ((((y_400 * z_0) >> 0xC) * x2_400) >> 0xC) + ((y_0 * x2_0) >> 0xC);
+		scratchMatrix.m[1][1] = (((((z_400 * x_400) >> 0xC) + ((((z_0 * y_0) >> 0xC) * x_0) >> 0xC)) * x2_400) >> 0xC) - ((((z_400 * y_0) >> 0xC) * x2_0) >> 0xC);
+		scratchMatrix.m[1][2] = (((((((z_0 * y_0) >> 0xC) * x_400) >> 0xC) - ((z_400 * x_0) >> 0xC)) * x2_400) >> 0xC) - ((((x_400 * y_400) >> 0xC) * x2_0) >> 0xC);
+		scratchMatrix.m[2][0] = ((((y_400 * z_0) >> 0xC) * x2_0) >> 0xC) - ((y_0 * x2_400) >> 0xC);
+		scratchMatrix.m[2][1] = (((((z_400 * x_400) >> 0xC) + ((((z_0 * y_0) >> 0xC) * x_0) >> 0xC)) * x2_0) >> 0xC) + ((((x_0 * y_400) >> 0xC) * x2_400) >> 0xC);
+		scratchMatrix.m[2][2] = (((((((z_0 * y_0) >> 0xC) * x_400) >> 0xC) - ((z_400 * x_0) >> 0xC)) * x2_0) >> 0xC) + ((((x_400 * y_400) >> 0xC) * x2_400) >> 0xC);
+		scratchMatrix.t[0] = 0;
+		scratchMatrix.t[1] = 0;
+		scratchMatrix.t[2] = 0;
+
+		const auto shiftOffset{ sizeof(libgte::MATRIX) * (tableOfBodyParts[i * 8] + 2) };
+		scratchpad.write(scratchMatrix, 0x40 + shiftOffset);
+
+		scratchMatrix = scratchpad.read<libgte::MATRIX>(0x20 + shiftOffset);
+		for (s32 j{}; j < 3; ++j)
+		{
+			sVector1.vx = scratchpad.read<s16>(0x40 + shiftOffset + j * 2);
+			sVector1.vy = scratchpad.read<s16>(0x46 + shiftOffset + j * 2);
+			sVector1.vz = scratchpad.read<s16>(0x4C + shiftOffset + j * 2);
+
+			libgte::ApplyMatrixSV(&scratchMatrix, &sVector1, &sVector2);
+
+			scratchpad.write(sVector2.vx, 0x40 + shiftOffset + j * 2);
+			scratchpad.write(sVector2.vy, 0x46 + shiftOffset + j * 2);
+			scratchpad.write(sVector2.vz, 0x4C + shiftOffset + j * 2);
+		}
+
+		*nav = 0x1296C;
+		sVector1.vx = nav->read<s16>(i * 6);
+		sVector1.vy = nav->read<s16>(2 + i * 6);
+		sVector1.vz = nav->read<s16>(4 + i * 6);
+
+		libgte::ApplyMatrix(&scratchMatrix, &sVector1, &vectors[i]);
+
+		vectors[i].vx = vectors[i].vx + scratchpad.read<s32>(0x34 + shiftOffset);
+		vectors[i].vy = vectors[i].vy + scratchpad.read<s32>(0x38 + shiftOffset);
+		vectors[i].vz = vectors[i].vz + scratchpad.read<s32>(0x3C + shiftOffset);
+
+		scratchpad.write(vectors[i].vx, 0x54 + shiftOffset);
+		scratchpad.write(vectors[i].vy, 0x58 + shiftOffset);
+		scratchpad.write(vectors[i].vz, 0x5C + shiftOffset);
+		matrixs[i] = scratchpad.read<libgte::MATRIX>(0x40 + shiftOffset);
+	}
+
+	*nav = 0;
+	*nav = nav->read<u32>(8);
+	libgte::SVECTOR sVector3{ nav->read<libgte::SVECTOR>(0x1AC) };
+	libgte::VECTOR vector1{};
+	libgte::ApplyMatrix(&matrixs[19], &sVector3, &vector1);
+	const auto yCoord{ static_cast<s16>(vectors[19].vy + vector1.vy) };
+
+	auto writeYCoord = [yCoord](RawTypeNavigator* raw, u32 offset)
+	{
+		*raw = offset;
+		const auto nbFrames{ raw->read<u16>() };
+		*raw += raw->read<u8>(3) & 0x80 ? 0xAA : 0xA6;
+
+		for (u16 j{}; j < nbFrames; ++j)
+		{
+			const auto yMinionCoord{ raw->read<s16>(j * Model::Minion::Animation::size) };
+			raw->write(s16(yMinionCoord - yCoord), j * Model::Minion::Animation::size);
+		}
+	};
+
+	for (u32 i{ 1 }; i < Model::Minion::Animation::nbPacked; ++i)
+	{
+		writeYCoord(nav, Model::Minion::Animation::begin + packedBegin[i]);
+	}
+
+	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
+	{
+		writeYCoord(nav, animations.offset(i));
+	}
+}
+
 namespace Merge
 {
 	void Model(Buffer* mainModel,
 		const Model::Minion::Animation::UnpackedOffsetSize& animations,
-		const std::vector<ModelInterp>& models)
+		const std::vector<ModelInterp>& models,
+		bool skipYCoord)
 	{
 		if (models.empty() || !mainModel)
 		{
@@ -567,79 +1033,7 @@ namespace Merge
 			rawModels.emplace_back(const_cast<Buffer::value_type*>(models[i].raw.data()), models[i].raw.size());
 		}
 
-		for (std::size_t i{}; i < nbModels; ++i)
-		{
-			rawModels[i] = Model::Minion::begin + Model::Minion::headerSize;
-			for (u32 j{}; j < Model::Minion::nbParts; ++j)
-			{
-				const auto types{ rawModels[i].read<std::array<s32, Model::TYPE_COUNT>>() };
-				const auto totalTypes{ std::accumulate(types.begin(), types.end(), 0) };
-				rawModels[i] += sizeof(s32) * Model::TYPE_COUNT;
-
-				for (s32 k{}; k < totalTypes; ++k)
-				{
-					const auto _3_2{ rawModels[i].read<u8>(3) };
-					rawModels[i] += 4;
-
-					switch (rawModels[i].read<u8>(-4))
-					{
-					case Model::TYPE_THREE:
-					{
-						body[i].compressed[j].three.emplace_back(rawModels[i].read<Model::CompressedThree>());
-						body[i].decompressed[j].three.emplace_back(body[i].compressed[j].three.back(), _3_2);
-						rawModels[i] += sizeof(Model::CompressedThree);
-						break;
-					}
-					case Model::TYPE_FOUR:
-					{
-						body[i].compressed[j].four.emplace_back(rawModels[i].read<Model::CompressedFour>());
-						body[i].decompressed[j].four.emplace_back(body[i].compressed[j].four.back(), _3_2);
-						rawModels[i] += sizeof(Model::CompressedFour);
-						break;
-					}
-					case Model::TYPE_SHADOW:
-					{
-						body[i].compressed[j].shadow.emplace_back(rawModels[i].read<Model::CompressedShadow>());
-						body[i].decompressed[j].shadow.emplace_back(body[i].compressed[j].shadow.back(), _3_2);
-						rawModels[i] += sizeof(Model::CompressedShadow);
-						break;
-					}
-					case Model::TYPE_SEVEN:
-					{
-						body[i].compressed[j].seven.emplace_back(rawModels[i].read<Model::CompressedSeven>());
-						body[i].decompressed[j].seven.emplace_back(body[i].compressed[j].seven.back(), _3_2);
-						rawModels[i] += sizeof(Model::CompressedSeven);
-						break;
-					}
-					case Model::TYPE_NINE:
-					{
-						const auto nbPacked{ rawModels[i].read<s32>() };
-						rawModels[i] += 8;
-
-						body[i].compressed[j].nine.emplace_back();
-						body[i].decompressed[j].nine.emplace_back();
-
-						const auto
-							lastCompressed{ body[i].compressed[j].nine.size() - 1 },
-							lastDecompressed{ body[i].decompressed[j].nine.size() - 1 };
-
-						body[i].compressed[j].nine[lastCompressed].reserve(nbPacked);
-						body[i].decompressed[j].nine[lastDecompressed].reserve(nbPacked);
-
-						for (s32 l{}; l < nbPacked; ++l)
-						{
-							body[i].compressed[j].nine[lastCompressed].emplace_back(rawModels[i].read<Model::CompressedNine>());
-							body[i].decompressed[j].nine[lastDecompressed].emplace_back(body[i].compressed[j].nine[lastCompressed][l], _3_2);
-							rawModels[i] += sizeof(Model::CompressedNine);
-						}
-						break;
-					}
-					default: 
-						throw JcrException{ "Invalid Model Type" };
-					}
-				}
-			}
-		}
+		parseBodies(&body, &rawModels, nbModels);
 
 		for (std::size_t i{ 1 }; i < nbModels; ++i)
 		{
@@ -717,323 +1111,154 @@ namespace Merge
 					}
 				}
 			}
-		}	
-
-		for (u32 i{}; i < Model::Minion::nbParts; ++i)
-		{
-			for (std::size_t j{}; j < body[0].compressed[i].three.size(); ++j)
-			{
-				body[0].compressed[i].three[j].recompress(body[0].decompressed[i].three[j]);
-			}
-
-			for (std::size_t j{}; j < body[0].compressed[i].four.size(); ++j)
-			{
-				body[0].compressed[i].four[j].recompress(body[0].decompressed[i].four[j]);
-			}
-
-			for (std::size_t j{}; j < body[0].compressed[i].shadow.size(); ++j)
-			{
-				body[0].compressed[i].shadow[j].recompress(body[0].decompressed[i].shadow[j]);
-			}
-
-			for (std::size_t j{}; j < body[0].compressed[i].seven.size(); ++j)
-			{
-				body[0].compressed[i].seven[j].recompress(body[0].decompressed[i].seven[j]);
-			}
-
-			for (std::size_t j{}; j < body[0].compressed[i].nine.size(); ++j)
-			{
-				for (std::size_t k{}; k < body[0].compressed[i].nine[j].size(); ++k)
-				{
-					body[0].compressed[i].nine[j][k].recompress(body[0].decompressed[i].nine[j][k]);
-				}
-			}
 		}
 
-		rawModels[0] = Model::Minion::begin + Model::Minion::headerSize;
-		for (u32 i{}; i < Model::Minion::nbParts; ++i)
-		{
-			const auto types{ rawModels[0].read<std::array<s32, Model::TYPE_COUNT>>() };
-			const auto totalTypes{ std::accumulate(types.begin(), types.end(), 0) };
-			rawModels[0] += sizeof(s32) * Model::TYPE_COUNT;
+		recompressBodies(&body);
+		writeBodies(&body, &rawModels[0]);
 
-			for (s32 j{}; j < totalTypes; ++j)
+		auto getInterp = [&](std::size_t i) -> s16
+		{
+			return static_cast<s16>(models[i - 1].interpolation % (Merge::maxInterpolation + 1));
+		};
+
+		const auto packedBegin{ blendBodyPartsPosition(&rawModels, animations, nbModels, getInterp) };
+		blendXYZGrowthSize(&rawModels, nbModels, getInterp);
+		blendGlobalPosition(&rawModels, nbModels, getInterp);
+		if (!skipYCoord)
+		{
+			computeYCoordinate(&rawModels[0], animations, packedBegin);
+		}
+	}
+
+	void ModelPerPart(Buffer* mainModel,
+		const Model::Minion::Animation::UnpackedOffsetSize& animations,
+		const std::array<PartInterp, Model::Minion::nbParts>& parts)
+	{
+		if (!mainModel)
+		{
+			throw JcrException{ "Invalid model" };
+		}
+
+		std::vector<const Buffer*> uniqueSources;
+		std::array<std::size_t, Model::Minion::nbParts> partBodyIndex;
+
+		for (std::size_t j{}; j < parts.size(); ++j)
+		{
+			const Buffer* raw{ parts[j].raw };
+			const auto it{ std::find(uniqueSources.begin(), uniqueSources.end(), raw) };
+			if (it == uniqueSources.end())
 			{
-				rawModels[0] += 4;
-
-				switch (rawModels[0].read<u8>(-4))
-				{
-				case Model::TYPE_THREE:
-				{
-					rawModels[0].write(body[0].compressed[i].three[0]);
-					body[0].compressed[i].three.erase(body[0].compressed[i].three.begin());
-					rawModels[0] += sizeof(Model::CompressedThree);
-					break;
-				}
-				case Model::TYPE_FOUR:
-				{
-					rawModels[0].write(body[0].compressed[i].four[0]);
-					body[0].compressed[i].four.erase(body[0].compressed[i].four.begin());
-					rawModels[0] += sizeof(Model::CompressedFour);
-					break;
-				}
-				case Model::TYPE_SHADOW:
-				{
-					rawModels[0].write(body[0].compressed[i].shadow[0]);
-					body[0].compressed[i].shadow.erase(body[0].compressed[i].shadow.begin());
-					rawModels[i] += sizeof(Model::CompressedShadow);
-					break;
-				}
-				case Model::TYPE_SEVEN:
-				{
-					rawModels[0].write(body[0].compressed[i].seven[0]);
-					body[0].compressed[i].seven.erase(body[0].compressed[i].seven.begin());
-					rawModels[0] += sizeof(Model::CompressedSeven);
-					break;
-				}
-				case Model::TYPE_NINE:
-				{
-					const auto nbPacked{ rawModels[0].read<s32>() };
-					rawModels[0] += 8;
-
-					for (s32 k{}; k < nbPacked; ++k)
-					{
-						rawModels[0].write(body[0].compressed[i].nine[0][k]);
-						rawModels[0] += sizeof(Model::CompressedNine);
-					}
-
-					body[0].compressed[i].nine.erase(body[0].compressed[i].nine.begin());
-					break;
-				}
-				default: 
-					throw JcrException{ "Invalid Model Type" };
-				}
-			}
-		}
-
-		// Body parts position
-		rawModels[0] = Model::Minion::Animation::begin;
-		const auto packedBegin{ rawModels[0].read<std::array<u32, Model::Minion::Animation::nbPacked>>(4) };
-		auto pos0{ rawModels[0].read<std::array<s16, 72>>(0x38) };
-
-		for (std::size_t i{ 1 }; i < nbModels; ++i)
-		{
-			const s16 interpolation{ models[i - 1].interpolation % (Merge::maxInterpolation + 1) };
-
-			rawModels[i] = Model::Minion::Animation::begin;
-			const auto posI{ rawModels[i].read<std::array<s16, 72>>(0x38) };	
-
-			for (s32 j{}; j < 72; ++j)
-			{
-				pos0[j] += libgte::mult(posI[j] - pos0[j], interpolation);
-			}
-		}
-
-		for (u32 i{}; i < Model::Minion::Animation::nbPacked; ++i)
-		{
-			rawModels[0] = Model::Minion::Animation::begin + packedBegin[i];
-			rawModels[0].write(pos0, rawModels[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
-		}
-
-		for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
-		{
-			rawModels[0] = animations.offset(i);
-			rawModels[0].write(pos0, rawModels[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
-		}
-
-		// XYZ Growth size
-		for (std::size_t i{ 1 }; i < nbModels; ++i)
-		{
-			const s16 
-				interpolation{ models[i - 1].interpolation % (Merge::maxInterpolation + 1) },
-				interpolation0{ Merge::maxInterpolation - interpolation };
-
-			rawModels[0] = 0xC;
-			rawModels[i] = 0xC;
-			rawModels[0] = rawModels[0].read<u32>() + 0xC;
-			rawModels[i] = rawModels[i].read<u32>() + 0xC;		
-
-			for (s32 j{}; j < 5; ++j)
-			{
-				auto xyz0{ rawModels[0].read<std::array<s32, 3>>(0x18) };
-				const auto xyz{ rawModels[i].read<std::array<s32, 3>>(0x18) };
-
-				for (s32 k{}; k < 3; ++k)
-				{
-					xyz0[k] = libgte::mult(static_cast<s16>(xyz0[k]), interpolation0) + 
-						libgte::mult(static_cast<s16>(xyz[k]), interpolation);
-				}
-
-				rawModels[0].write(xyz0, 0x18);
-				rawModels[0] += 0x160;
-				rawModels[i] += 0x160;
-			}
-		}
-
-		// Global position
-		for (std::size_t i{ 1 }; i < nbModels; ++i)
-		{
-			const s16
-				interpolation{ models[i - 1].interpolation % (Merge::maxInterpolation + 1) },
-				interpolation0{ Merge::maxInterpolation - interpolation };
-
-			static constexpr auto fInt{ 0x39800000u };
-
-			const auto
-				fInterpolation{ static_cast<float>(interpolation) * *(float*)&fInt },
-				fInterpolation0{ static_cast<float>(interpolation0) * *(float*)&fInt };
-
-			rawModels[0] = 8;
-			rawModels[i] = 8;
-			rawModels[0] = rawModels[0].read<u32>() + 4;
-			rawModels[i] = rawModels[i].read<u32>() + 4;
-
-			for (s32 j{}; j < 0x2B; ++j)
-			{
-				auto xyz0{ rawModels[0].read<std::array<s16, 3>>(4) };
-				const auto xyz{ rawModels[i].read<std::array<s16, 3>>(4) };
-
-				for (std::size_t k{}; k < 3; ++k)
-				{
-					const float fCoord
-					{
-						static_cast<float>(xyz0[k]) * fInterpolation0 + 
-						static_cast<float>(xyz[k]) * fInterpolation
-					};
-
-					xyz0[k] = static_cast<s16>(fCoord);
-				}
-
-				rawModels[0].write(xyz0, 4);
-				rawModels[0] += 0xC;
-				rawModels[i] += 0xC;
-			}
-		}
-
-		// Y Coordinate
-		std::array<libgte::MATRIX, Model::Minion::nbParts> matrixs{};
-		std::array<libgte::VECTOR, Model::Minion::nbParts> vectors{};
-		libgte::SVECTOR sVector1{}, sVector2{};
-
-		Buffer bufferScratchpad(0x400);
-		RawTypeNavigator scratchpad{ bufferScratchpad.data(), bufferScratchpad.size() };
-
-		for (s32 i{}; i < 9; ++i)
-		{
-			scratchpad.write(i % 4 == 0 ? s16(0x1000) : s16(0), 0x60 + i * 2);
-		}
-
-		for (u32 i{}; i < Model::Minion::nbParts; ++i)
-		{
-			const auto desiredVec{ tableOfBodyParts[i * 8 + 2] };
-
-			if (!desiredVec)
-			{
-				sVector1.vx = 0;
-				sVector2.vx = 0;
+				partBodyIndex[j] = uniqueSources.size() + 1;
+				uniqueSources.push_back(raw);
 			}
 			else
 			{
-				const auto vecOffset{ (desiredVec + 2) * 6 };
-
-				rawModels[0] = 0x128D2;
-				sVector2.vx = rawModels[0].read<s16>(vecOffset);
-				sVector1.vx = rawModels[0].read<s16>(vecOffset + 0x130);
+				partBodyIndex[j] = static_cast<std::size_t>(std::distance(uniqueSources.begin(), it)) + 1;
 			}
-
-			rawModels[0] = 0x12A0E;
-
-			const auto 
-				vecY{ rawModels[0].read<u16>(2 + i * 6) },
-				vecZ{ rawModels[0].read<u16>(4 + i * 6) };
-
-			const auto 
-				x_0{ tableOfRates[static_cast<u16>(sVector1.vx) & 0xFFF] },
-				x_400{ tableOfRates[(static_cast<u16>(sVector1.vx) + 0x400) & 0xFFF] },
-				y_0{ tableOfRates[vecY & 0xFFF] },
-				y_400{ tableOfRates[(vecY + 0x400) & 0xFFF] },
-				z_0{ tableOfRates[vecZ & 0xFFF] },
-				z_400{ tableOfRates[(vecZ + 0x400) & 0xFFF] },
-				x2_0{ tableOfRates[static_cast<u16>(sVector2.vx) & 0xFFF] },
-				x2_400{ tableOfRates[(static_cast<u16>(sVector2.vx) + 0x400) & 0xFFF] };
-
-			libgte::MATRIX scratchMatrix;
-
-			scratchMatrix.m[0][0] = (z_400 * y_400) >> 0xC; 
-			scratchMatrix.m[0][1] = ((((z_400 * y_0) >> 0xC) * x_0) >> 0xC) - ((z_0 * x_400) >> 0xC);
-			scratchMatrix.m[0][2] = ((x_0 * z_0) >> 0xC) + ((((z_400 * y_0) >> 0xC) * x_400) >> 0xC);
-			scratchMatrix.m[1][0] = ((((y_400 * z_0) >> 0xC) * x2_400) >> 0xC) + ((y_0 * x2_0) >> 0xC);
-			scratchMatrix.m[1][1] = (((((z_400 * x_400) >> 0xC) + ((((z_0 * y_0) >> 0xC) * x_0) >> 0xC)) * x2_400) >> 0xC) - ((((z_400 * y_0) >> 0xC) * x2_0) >> 0xC);
-			scratchMatrix.m[1][2] = (((((((z_0 * y_0) >> 0xC) * x_400) >> 0xC) - ((z_400 * x_0) >> 0xC)) * x2_400) >> 0xC) - ((((x_400 * y_400) >> 0xC) * x2_0) >> 0xC);
-			scratchMatrix.m[2][0] = ((((y_400 * z_0) >> 0xC) * x2_0) >> 0xC) - ((y_0 * x2_400) >> 0xC);
-			scratchMatrix.m[2][1] = (((((z_400 * x_400) >> 0xC) + ((((z_0 * y_0) >> 0xC) * x_0) >> 0xC)) * x2_0) >> 0xC) + ((((x_0 * y_400) >> 0xC) * x2_400) >> 0xC);
-			scratchMatrix.m[2][2] = (((((((z_0 * y_0) >> 0xC) * x_400) >> 0xC) - ((z_400 * x_0) >> 0xC)) * x2_0) >> 0xC) + ((((x_400 * y_400) >> 0xC) * x2_400) >> 0xC);
-			scratchMatrix.t[0] = 0;
-			scratchMatrix.t[1] = 0;
-			scratchMatrix.t[2] = 0;
-
-			const auto shiftOffset{ sizeof(libgte::MATRIX) * (tableOfBodyParts[i * 8] + 2) };
-			scratchpad.write(scratchMatrix, 0x40 + shiftOffset);
-
-			scratchMatrix = scratchpad.read<libgte::MATRIX>(0x20 + shiftOffset);
-			for (s32 j{}; j < 3; ++j)
-			{
-				sVector1.vx = scratchpad.read<s16>(0x40 + shiftOffset + j * 2);
-				sVector1.vy = scratchpad.read<s16>(0x46 + shiftOffset + j * 2);
-				sVector1.vz = scratchpad.read<s16>(0x4C + shiftOffset + j * 2);
-
-				libgte::ApplyMatrixSV(&scratchMatrix, &sVector1, &sVector2);
-
-				scratchpad.write(sVector2.vx, 0x40 + shiftOffset + j * 2);
-				scratchpad.write(sVector2.vy, 0x46 + shiftOffset + j * 2);
-				scratchpad.write(sVector2.vz, 0x4C + shiftOffset + j * 2);
-			}
-
-			rawModels[0] = 0x1296C;
-			sVector1.vx = rawModels[0].read<s16>(i * 6);
-			sVector1.vy = rawModels[0].read<s16>(2 + i * 6);
-			sVector1.vz = rawModels[0].read<s16>(4 + i * 6);
-
-			libgte::ApplyMatrix(&scratchMatrix, &sVector1, &vectors[i]);
-
-			vectors[i].vx = vectors[i].vx + scratchpad.read<s32>(0x34 + shiftOffset);
-			vectors[i].vy = vectors[i].vy + scratchpad.read<s32>(0x38 + shiftOffset);
-			vectors[i].vz = vectors[i].vz + scratchpad.read<s32>(0x3C + shiftOffset);
-
-			scratchpad.write(vectors[i].vx, 0x54 + shiftOffset);
-			scratchpad.write(vectors[i].vy, 0x58 + shiftOffset);
-			scratchpad.write(vectors[i].vz, 0x5C + shiftOffset);
-			matrixs[i] = scratchpad.read<libgte::MATRIX>(0x40 + shiftOffset);
 		}
 
-		rawModels[0] = 0;
-		rawModels[0] = rawModels[0].read<u32>(8);
-		libgte::SVECTOR sVector3{ rawModels[0].read<libgte::SVECTOR>(0x1AC) };
-		libgte::VECTOR vector1{};
-		libgte::ApplyMatrix(&matrixs[19], &sVector3, &vector1);
-		const auto yCoord{ static_cast<s16>(vectors[19].vy + vector1.vy) };
+		const auto nbModels{ uniqueSources.size() + 1 };
 
-		auto writeYCoord = [yCoord](RawTypeNavigator* raw, u32 offset) 
+		std::vector<Body> body(nbModels);
+		std::vector<RawTypeNavigator> rawModels{ { mainModel->data(), mainModel->size() } };
+
+		for (const Buffer* src : uniqueSources)
 		{
-			*raw = offset;
-			const auto nbFrames{ raw->read<u16>() };
-			*raw += raw->read<u8>(3) & 0x80 ? 0xAA : 0xA6;
+			rawModels.emplace_back(const_cast<Buffer::value_type*>(src->data()), src->size());
+		}
 
-			for (u16 j{}; j < nbFrames; ++j)
+		parseBodies(&body, &rawModels, nbModels);
+
+		auto vec3Interpolation = [](u16* a, const u16* b, s16 interpolation, s32 iteration)
+		{
+			for (s32 i{}; i < iteration; ++i)
 			{
-				const auto yMinionCoord{ raw->read<s16>(j * Model::Minion::Animation::size) };
-				raw->write(s16(yMinionCoord - yCoord), j * Model::Minion::Animation::size);
+				const auto c{ i * 4 };
+				a[0 + c] += libgte::mult(static_cast<s16>(b[0 + c] - a[0 + c]), interpolation);
+				a[1 + c] += libgte::mult(static_cast<s16>(b[1 + c] - a[1 + c]), interpolation);
+				a[2 + c] += libgte::mult(static_cast<s16>(b[2 + c] - a[2 + c]), interpolation);
 			}
 		};
 
-		for (u32 i{ 1 }; i < Model::Minion::Animation::nbPacked; ++i)
+		auto packedInterpolation = [](u16* a, const u16* b, s16 interpolation)
 		{
-			writeYCoord(&rawModels[0], Model::Minion::Animation::begin + packedBegin[i]);
+			for (s32 i{}; i < 4; ++i)
+			{
+				const auto c{ i * 2 };
+				a[0 + c] += libgte::mult(static_cast<s16>(b[0 + c] - a[0 + c]), interpolation);
+				a[1 + c] += libgte::mult(static_cast<s16>(b[1 + c] - a[1 + c]), interpolation);
+			}
+		};
+
+		for (u32 j{}; j < Model::Minion::nbParts; ++j)
+		{
+			const std::size_t src{ partBodyIndex[j] };
+			const s16 interpolation{ parts[j].interpolation % (Merge::maxInterpolation + 1) };
+
+			if (body[0].decompressed[j].three.size() != body[src].decompressed[j].three.size() ||
+				body[0].decompressed[j].four.size() != body[src].decompressed[j].four.size() ||
+				body[0].decompressed[j].shadow.size() != body[src].decompressed[j].shadow.size() ||
+				body[0].decompressed[j].seven.size() != body[src].decompressed[j].seven.size() ||
+				body[0].decompressed[j].nine.size() != body[src].decompressed[j].nine.size())
+			{
+				throw JcrException{ "Incompatible models" };
+			}
+
+			for (std::size_t k{}; k < body[0].decompressed[j].three.size(); ++k)
+			{
+				vec3Interpolation(&body[0].decompressed[j].three[k]._18, &body[src].decompressed[j].three[k]._18, interpolation, 6);
+			}
+
+			for (std::size_t k{}; k < body[0].decompressed[j].four.size(); ++k)
+			{
+				vec3Interpolation(&body[0].decompressed[j].four[k]._4, &body[src].decompressed[j].four[k]._4, interpolation, 5);
+			}
+
+			for (std::size_t k{}; k < body[0].decompressed[j].shadow.size(); ++k)
+			{
+				vec3Interpolation(&body[0].decompressed[j].shadow[k]._10, &body[src].decompressed[j].shadow[k]._10, interpolation, 5);
+			}
+
+			for (std::size_t k{}; k < body[0].decompressed[j].seven.size(); ++k)
+			{
+				vec3Interpolation(&body[0].decompressed[j].seven[k]._1C, &body[src].decompressed[j].seven[k]._1C, interpolation, 8);
+			}
+
+			for (std::size_t k{}; k < body[0].decompressed[j].nine.size(); ++k)
+			{
+				for (std::size_t l{}; l < body[0].decompressed[j].nine[k].size(); ++l)
+				{
+					if (body[0].decompressed[j].nine[k].size() != body[src].decompressed[j].nine[k].size())
+					{
+						throw JcrException{ "Incompatible models" };
+					}
+
+					packedInterpolation(&body[0].decompressed[j].nine[k][l]._4, &body[src].decompressed[j].nine[k][l]._4, interpolation);
+				}
+			}
 		}
 
-		for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
+		recompressBodies(&body);
+		writeBodies(&body, &rawModels[0]);
+
+		auto avgInterpolation = [&](std::size_t srcIdx) -> s16
 		{
-			writeYCoord(&rawModels[0], animations.offset(i));
-		}
+			s32 sum{};
+			s32 count{};
+			for (std::size_t j{}; j < parts.size(); ++j)
+			{
+				if (partBodyIndex[j] == srcIdx)
+				{
+					sum += parts[j].interpolation;
+					++count;
+				}
+			}
+			return count > 0 ? static_cast<s16>(sum / count % (Merge::maxInterpolation + 1)) : s16{};
+		};
+
+		const auto packedBegin{ blendBodyPartsPositionPerPart(&rawModels, animations, nbModels, partBodyIndex, parts) };
+		blendXYZGrowthSize(&rawModels, nbModels, avgInterpolation);
+		blendGlobalPosition(&rawModels, nbModels, avgInterpolation);
+		computeYCoordinate(&rawModels[0], animations, packedBegin);
 	}
 };

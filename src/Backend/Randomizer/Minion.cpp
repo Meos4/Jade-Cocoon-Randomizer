@@ -551,7 +551,7 @@ void Randomizer::minionSpecialMagic(const std::unordered_set<Special_t>& special
 	executable.write(m_game->offset().file.executable.branchSetVatolkaSpecials, branchVatolkaSpecials);
 }
 
-void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state)
+void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state, s32 craziness)
 {
 	std::unordered_map<Model_t, std::unique_ptr<RawFile>> minions;
 
@@ -566,7 +566,7 @@ void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state)
 	{
 		for (const auto& [model, file] : minions)
 		{
-			Helpers::randomizeModelInterp(file.get(), model, m_sharedData, m_game, executable);
+			Helpers::randomizeModelInterp(file.get(), model, m_sharedData, m_game, executable, craziness);
 		}
 	}
 

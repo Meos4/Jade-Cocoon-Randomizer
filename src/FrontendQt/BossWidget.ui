@@ -81,10 +81,52 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
          <item>
-          <widget class="QCheckBox" name="eternalCorridorRandomNewAppearance">
-           <property name="text">
+          <widget class="QGroupBox" name="eternalCorridorCrazinessBox">
+           <property name="title">
             <string>Random New Appearance</string>
            </property>
+           <layout class="QVBoxLayout" name="verticalLayout_ecCraziness">
+            <item>
+             <widget class="QCheckBox" name="eternalCorridorRandomNewAppearance">
+              <property name="text">
+               <string>Enable</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_ecCraziness">
+              <item>
+               <widget class="QSlider" name="eternalCorridorCrazinessSlider">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>100</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="minimum">
+                 <number>0</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="eternalCorridorCrazinessValue">
+                <property name="text">
+                 <string>0%</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
           </widget>
          </item>
          <item>

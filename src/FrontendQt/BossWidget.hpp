@@ -27,8 +27,10 @@ public Q_SLOTS:
 	void updateStoryAppearanceTextureBasedOnElement();
 	void updateStoryAppearanceTextureRandomColor();
 	void updateEternalCorridorElementRandom();
+	void updateECCraziness(s32 value);
 private:
 	Ui::BossWidget m_ui;
 
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
+	std::vector<RandomizerQSlider> m_qSlider;
 };

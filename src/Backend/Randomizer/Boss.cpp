@@ -698,7 +698,7 @@ void Randomizer::bossSpecialMagicEC() const
 	}
 }
 
-void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const
+void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state, s32 craziness) const
 {
 	std::unordered_map<Model_t, std::unique_ptr<RawFile>> minions;
 
@@ -713,7 +713,7 @@ void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state) const
 	{
 		for (const auto& [model, file] : minions)
 		{
-			Helpers::randomizeModelInterp(file.get(), model, m_sharedData, m_game, executable);
+			Helpers::randomizeModelInterp(file.get(), model, m_sharedData, m_game, executable, craziness);
 		}
 	}
 

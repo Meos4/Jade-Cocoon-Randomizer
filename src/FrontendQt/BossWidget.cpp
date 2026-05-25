@@ -25,6 +25,11 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureIncludeCompatible) }
 	};
 
+	m_qSlider =
+	{
+		{ SETTINGS(m_ui.eternalCorridorCrazinessSlider) }
+	};
+
 	const QString _Story{ m_ui.storyBox->title() };
 	const auto _StoryElement{ _Story + " " + m_ui.storyElementBox->title() };
 
@@ -66,9 +71,14 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	);
 
 	const auto _EternalCorridorAppearance{ _EternalCorridor + " " + m_ui.eternalCorridorAppearanceBox->title() };
+	const QString _ECCraziness{ _EternalCorridorAppearance + " " + m_ui.eternalCorridorCrazinessBox->title() };
 
-	helpConsole->addFeature(m_ui.eternalCorridorRandomNewAppearance, _EternalCorridorAppearance,
+	helpConsole->addFeature(m_ui.eternalCorridorRandomNewAppearance, _ECCraziness,
 		"Create new randomly generated appearances."
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorCrazinessSlider, _ECCraziness, "Craziness",
+		"The higher the percentage, the more bizarre the generated appearances will be."
 	);
 
 	const auto _EternalCorridorAppearanceTexture{ _EternalCorridorAppearance + " " + m_ui.eternalCorridorAppearanceTextureBox->title() };
@@ -86,6 +96,7 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	);
 
 	m_ui.eternalCorridorAppearanceTextureIncludeCompatible->setEnabled(false);
+	m_ui.eternalCorridorCrazinessValue->setEnabled(false);
 
 	connect(m_ui.storyElementRandomAll, &QAbstractButton::toggled, this, &BossWidget::updateStoryElement);
 	connect(m_ui.storyElementRandomElemental, &QAbstractButton::toggled, this, &BossWidget::updateStoryElement);
@@ -95,6 +106,9 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.eternalCorridorElementRandom, &QAbstractButton::toggled, this, &BossWidget::updateEternalCorridorElementRandom);
 	connect(m_ui.eternalCorridorSpecialMagicRandom, &QAbstractButton::toggled, this, &BossWidget::updateEternalCorridorElementRandom);
 	connect(m_ui.eternalCorridorAppearanceTextureRandom, &QAbstractButton::toggled, m_ui.eternalCorridorAppearanceTextureIncludeCompatible, &QWidget::setEnabled);
+	connect(m_ui.eternalCorridorRandomNewAppearance, &QAbstractButton::toggled, m_ui.eternalCorridorCrazinessSlider, &QWidget::setEnabled);
+	connect(m_ui.eternalCorridorRandomNewAppearance, &QAbstractButton::toggled, m_ui.eternalCorridorCrazinessValue, &QWidget::setEnabled);
+	connect(m_ui.eternalCorridorCrazinessSlider, &QAbstractSlider::valueChanged, this, &BossWidget::updateECCraziness);
 }
 
 void BossWidget::enableUI(Randomizer* randomizer)
@@ -118,6 +132,13 @@ void BossWidget::loadPresets(const Json::Read& json)
 	{
 		checkBox.load(json);
 	}
+
+	for (auto& slider : m_qSlider)
+	{
+		slider.load(json);
+	}
+
+	updateECCraziness(m_ui.eternalCorridorCrazinessSlider->value());
 }
 
 void BossWidget::savePresets(Json::Write* json)
@@ -125,6 +146,11 @@ void BossWidget::savePresets(Json::Write* json)
 	for (const auto& checkBox : m_qCheckBox)
 	{
 		checkBox.save(json);
+	}
+
+	for (const auto& slider : m_qSlider)
+	{
+		slider.save(json);
 	}
 }
 
@@ -184,6 +210,11 @@ void BossWidget::updateStoryAppearanceTextureRandomColor()
 		m_ui.storyAppearanceTextureColorBasedOnElement->setChecked(false);
 	}
 	m_ui.storyAppearanceTextureColorBasedOnElement->setEnabled(!isChecked);
+}
+
+void BossWidget::updateECCraziness(s32 value)
+{
+	m_ui.eternalCorridorCrazinessValue->setText(QString::number(value) + "%");
 }
 
 void BossWidget::updateEternalCorridorElementRandom()
