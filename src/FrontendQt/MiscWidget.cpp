@@ -16,7 +16,8 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	{
 		{ SETTINGS(m_ui.hudRandom) },
 		{ SETTINGS(m_ui.hudColorCustom) },
-		{ SETTINGS(m_ui.npcsVoiceRandom) }
+		{ SETTINGS(m_ui.npcsVoiceRandom) },
+		{ SETTINGS(m_ui.betaBattleThemeEnable) }
 	};
 
 	const QString _HudColor{ m_ui.hudColorBox->title() };
@@ -31,8 +32,12 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	helpConsole->addFeature(m_ui.hudColorCustom, _HudColor, _Custom, hudCustom);
 	helpConsole->addFeature(m_ui.hudColorCombo, _HudColor, _Custom, hudCustom);
 
-	helpConsole->addFeature(m_ui.npcsVoiceRandom, m_ui.npcsVoiceBox->title(), 
+	helpConsole->addFeature(m_ui.npcsVoiceRandom, m_ui.npcsVoiceBox->title(),
 		"Randomize NPCs voices."
+	);
+
+	helpConsole->addFeature(m_ui.betaBattleThemeEnable, m_ui.betaBattleThemeBox->title(),
+		"Replace the battle theme with the beta version."
 	);
 
 	m_ui.hudColorCombo->setStyleSheet("font-weight: normal;");

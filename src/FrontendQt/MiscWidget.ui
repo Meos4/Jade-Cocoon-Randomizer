@@ -216,6 +216,22 @@
     </widget>
    </item>
    <item row="2" column="0">
+    <widget class="QGroupBox" name="betaBattleThemeBox">
+     <property name="title">
+      <string>Beta Battle Theme</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_betaBattleTheme">
+      <item>
+       <widget class="QCheckBox" name="betaBattleThemeEnable">
+        <property name="text">
+         <string>Enable</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

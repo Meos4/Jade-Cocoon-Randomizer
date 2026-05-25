@@ -363,6 +363,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->miscNPCsVoice();
 	}
 
+	if (miscUi.betaBattleThemeEnable->isChecked())
+	{
+		randomizer->miscBetaBattleTheme();
+	}
+
     // Addons
 	const auto& addonsUi{ m_addons->Ui() };
 

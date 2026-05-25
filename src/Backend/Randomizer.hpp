@@ -193,6 +193,7 @@ public:
 	void miscHudColor() const;
 	void miscHudColor(const Randomizer::HudColorArray& hud) const;
 	void miscNPCsVoice() const;
+	void miscBetaBattleTheme() const;
 	void addonsSkipTutorial(bool skipKoris) const;
 	void addonsX2Framerate() const;
 	void addonsItemQuantityLimit(u8 limit) const;

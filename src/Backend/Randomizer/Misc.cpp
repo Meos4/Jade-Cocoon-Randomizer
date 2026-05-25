@@ -1,6 +1,7 @@
 #include "Backend/Randomizer.hpp"
 
 #include "Backend/File.hpp"
+#include "Backend/Resource.hpp"
 
 #include <numeric>
 #include <limits>
@@ -153,4 +154,10 @@ void Randomizer::miscNPCsVoice() const
 			voices.erase(voices.begin() + rngVoice);
 		}
 	}
+}
+
+void Randomizer::miscBetaBattleTheme() const
+{
+	m_game->file(File::SOUND_PUBLIC_SND)->write(0, Resource::publicSnd);
+	m_game->file(File::SOUND_PUBLIC2_SND)->write(0, Resource::public2Snd);
 }
