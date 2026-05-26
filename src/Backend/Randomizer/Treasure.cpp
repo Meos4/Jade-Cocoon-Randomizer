@@ -113,6 +113,58 @@ private:
 	std::unordered_map<Chapter_t, std::vector<std::vector<TreasureInfo>>> m_treasuresInfo;
 };
 
+void Randomizer::treasureEquipments(Randomizer::TreasureEquipments state) const
+{
+	TreasureRandomizer treasureR{ m_game };
+
+	const auto& offsetF{ m_game->offset().file };
+
+	const FileOffset
+		aquazor{ File::SCENE_FIELD1_FOREST1_SCE06_SBH, offsetF.scene_field1_forest1_sce06_sbh.aquazor },
+		aquazorP{ File::SCENE_FIELD1_FOREST1_SCE06A_SBH, offsetF.scene_field1_forest1_sce06a_sbh.aquazor },
+		whiteHorn{ File::SCENE_FIELD1_FOREST3_SCE01_SBH, offsetF.scene_field1_forest3_sce01_sbh.whiteHorn },
+		whiteHornP{ File::SCENE_FIELD1_FOREST3_SCE22_SBH, offsetF.scene_field1_forest3_sce22_sbh.whiteHorn },
+		whistler{ File::SCENE_FIELD1_FOREST4_SCE04_SBH, offsetF.scene_field1_forest4_sce04_sbh.whistler },
+		thunderBolt{ File::SCENE_FIELD2_FOREST2_SCE13_SBH, offsetF.scene_field2_forest2_sce13_sbh.thunderbolt },
+		ironHeadband{ File::SCENE_FIELD1_FOREST1_SCE02_SBH, offsetF.scene_field1_forest1_sce02_sbh.chest_metaMugwort + 0x10 },
+		silverCrown{ File::SCENE_FIELD1_FOREST2_SCE12_SBH, offsetF.scene_field1_forest2_sce12_sbh.chest_agnisSeal1 + 0x10 },
+		stoneChoker{ File::SCENE_FIELD1_FOREST3_SCE05_SBH, offsetF.scene_field1_forest3_sce05_sbh.chest_stoneChoker },
+		stoneChokerP{ File::SCENE_FIELD1_FOREST3_SCE26_SBH, offsetF.scene_field1_forest3_sce26_sbh.chest_stoneChoker },
+		yellowBead{ File::SCENE_FIELD1_FOREST3_SCE17_SBH, offsetF.scene_field1_forest3_sce17_sbh.chest_yellowBead },
+		yellowBeadP{ File::SCENE_FIELD1_FOREST3_SCE38_SBH, offsetF.scene_field1_forest3_sce38_sbh.chest_yellowBead },
+		sparrowRuff{ File::SCENE_FIELD1_FOREST4_SCE08_SBH, offsetF.scene_field1_forest4_sce08_sbh.chest_urvysBlessing + 8 },
+		hawkRuff{ File::SCENE_FIELD2_FOREST1_SCE02_SBH, offsetF.scene_field2_forest1_sce02_sbh.chest_varysBlessing + 0x10 },
+		nagiBelt{ File::SCENE_PSYRUS1_LOOKOUT_SCE01_SBH, offsetF.scene_psyrus1_lookout_sce01_sbh.gift_nagiBelt },
+		lifeStealer{ File::SCENE_PSYRUS1_KAJIYA_SCE00B_SBH, offsetF.scene_psyrus1_kajiya_sce00b_sbh.gift_lifeStealer },
+		riketzGarb{ File::SCENE_PSYRUS2_GARAI_SCE03_SBH ,offsetF.scene_psyrus2_garai_sce03_sbh.gift_riketzGarb };
+
+	// Collectable
+	treasureR.append({ aquazor, aquazorP }, CHAPTER_BEETLE);
+	treasureR.append({ whiteHorn, whiteHornP }, CHAPTER_SPIDER);
+	treasureR.append({ whistler }, CHAPTER_MOTH);
+	treasureR.append({ thunderBolt }, CHAPTER_NETHERWORLD);
+	// Chest
+	treasureR.append({ ironHeadband }, CHAPTER_BEETLE);
+	treasureR.append({ silverCrown }, CHAPTER_DRAGONFLY);
+	treasureR.append({ stoneChoker, stoneChokerP }, CHAPTER_SPIDER);
+	treasureR.append({ yellowBead, yellowBeadP }, CHAPTER_SPIDER_2);
+	treasureR.append({ sparrowRuff }, CHAPTER_MOTH);
+	treasureR.append({ hawkRuff }, CHAPTER_NETHERWORLD);
+	// Dialogue
+	treasureR.append({ nagiBelt }, CHAPTER_SPIDER, true);
+	treasureR.append({ lifeStealer }, CHAPTER_SPIDER, true);
+	treasureR.append({ riketzGarb }, CHAPTER_MOTH, true);
+
+	if (state == Randomizer::TreasureEquipments::Random)
+	{
+		treasureR.random();
+	}
+	else // Random By Category
+	{
+		treasureR.randomByCategory();
+	}
+}
+
 void Randomizer::treasureItems(Randomizer::TreasureItems state, bool randomSkeletonKeys) const
 {
 	TreasureRandomizer treasureR{ m_game };
@@ -332,58 +384,6 @@ void Randomizer::treasureValuables(Randomizer::TreasureValuables state, bool ran
 	}
 
 	if (state == Randomizer::TreasureValuables::Random)
-	{
-		treasureR.random();
-	}
-	else // Random By Category
-	{
-		treasureR.randomByCategory();
-	}
-}
-
-void Randomizer::treasureEquipments(Randomizer::TreasureEquipments state) const
-{
-	TreasureRandomizer treasureR{ m_game };
-
-	const auto& offsetF{ m_game->offset().file };
-
-	const FileOffset
-		aquazor{ File::SCENE_FIELD1_FOREST1_SCE06_SBH, offsetF.scene_field1_forest1_sce06_sbh.aquazor },
-		aquazorP{ File::SCENE_FIELD1_FOREST1_SCE06A_SBH, offsetF.scene_field1_forest1_sce06a_sbh.aquazor },
-		whiteHorn{ File::SCENE_FIELD1_FOREST3_SCE01_SBH, offsetF.scene_field1_forest3_sce01_sbh.whiteHorn },
-		whiteHornP{ File::SCENE_FIELD1_FOREST3_SCE22_SBH, offsetF.scene_field1_forest3_sce22_sbh.whiteHorn },
-		whistler{ File::SCENE_FIELD1_FOREST4_SCE04_SBH, offsetF.scene_field1_forest4_sce04_sbh.whistler },
-		thunderBolt{ File::SCENE_FIELD2_FOREST2_SCE13_SBH, offsetF.scene_field2_forest2_sce13_sbh.thunderbolt },
-		ironHeadband{ File::SCENE_FIELD1_FOREST1_SCE02_SBH, offsetF.scene_field1_forest1_sce02_sbh.chest_metaMugwort + 0x10 },
-		silverCrown{ File::SCENE_FIELD1_FOREST2_SCE12_SBH, offsetF.scene_field1_forest2_sce12_sbh.chest_agnisSeal1 + 0x10 },
-		stoneChoker{ File::SCENE_FIELD1_FOREST3_SCE05_SBH, offsetF.scene_field1_forest3_sce05_sbh.chest_stoneChoker },
-		stoneChokerP{ File::SCENE_FIELD1_FOREST3_SCE26_SBH, offsetF.scene_field1_forest3_sce26_sbh.chest_stoneChoker },
-		yellowBead{ File::SCENE_FIELD1_FOREST3_SCE17_SBH, offsetF.scene_field1_forest3_sce17_sbh.chest_yellowBead },
-		yellowBeadP{ File::SCENE_FIELD1_FOREST3_SCE38_SBH, offsetF.scene_field1_forest3_sce38_sbh.chest_yellowBead },
-		sparrowRuff{ File::SCENE_FIELD1_FOREST4_SCE08_SBH, offsetF.scene_field1_forest4_sce08_sbh.chest_urvysBlessing + 8 },
-		hawkRuff{ File::SCENE_FIELD2_FOREST1_SCE02_SBH, offsetF.scene_field2_forest1_sce02_sbh.chest_varysBlessing + 0x10 },
-		nagiBelt{ File::SCENE_PSYRUS1_LOOKOUT_SCE01_SBH, offsetF.scene_psyrus1_lookout_sce01_sbh.gift_nagiBelt },
-		lifeStealer{ File::SCENE_PSYRUS1_KAJIYA_SCE00B_SBH, offsetF.scene_psyrus1_kajiya_sce00b_sbh.gift_lifeStealer },
-		riketzGarb{ File::SCENE_PSYRUS2_GARAI_SCE03_SBH ,offsetF.scene_psyrus2_garai_sce03_sbh.gift_riketzGarb };
-
-	// Collectable
-	treasureR.append({ aquazor, aquazorP }, CHAPTER_BEETLE);
-	treasureR.append({ whiteHorn, whiteHornP }, CHAPTER_SPIDER);
-	treasureR.append({ whistler }, CHAPTER_MOTH);
-	treasureR.append({ thunderBolt }, CHAPTER_NETHERWORLD);
-	// Chest
-	treasureR.append({ ironHeadband }, CHAPTER_BEETLE);
-	treasureR.append({ silverCrown }, CHAPTER_DRAGONFLY);
-	treasureR.append({ stoneChoker, stoneChokerP }, CHAPTER_SPIDER);
-	treasureR.append({ yellowBead, yellowBeadP }, CHAPTER_SPIDER_2);
-	treasureR.append({ sparrowRuff }, CHAPTER_MOTH);
-	treasureR.append({ hawkRuff }, CHAPTER_NETHERWORLD);
-	// Dialogue
-	treasureR.append({ nagiBelt }, CHAPTER_SPIDER, true);
-	treasureR.append({ lifeStealer }, CHAPTER_SPIDER, true);
-	treasureR.append({ riketzGarb }, CHAPTER_MOTH, true);
-
-	if (state == Randomizer::TreasureEquipments::Random)
 	{
 		treasureR.random();
 	}

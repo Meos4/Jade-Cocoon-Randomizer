@@ -12,57 +12,21 @@ TreasureWidget::TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	m_qCheckBox =
 	{
+		{ SETTINGS(m_ui.equipmentsRandom) },
+		{ SETTINGS(m_ui.equipmentsRandomByCategory) },
 		{ SETTINGS(m_ui.itemsRandom) },
 		{ SETTINGS(m_ui.itemsRandomByCategory) },
 		{ SETTINGS(m_ui.itemsRandomSkeletonKeys) },
 		{ SETTINGS(m_ui.valuablesRandom) },
 		{ SETTINGS(m_ui.valuablesRandomByCategory) },
 		{ SETTINGS(m_ui.valuablesRandomUsableValuables) },
-		{ SETTINGS(m_ui.equipmentsRandom) },
-		{ SETTINGS(m_ui.equipmentsRandomByCategory) },
 		{ SETTINGS(m_ui.battleShuffle) },
 		{ SETTINGS(m_ui.battleShuffleSkeletonKeys) }
 	};
 
-	const QString _Items{ m_ui.itemsBox->title() };
-
-	helpConsole->addFeature(m_ui.itemsRandom, _Items, 
-		"Randomize items to any treasure."
-		"\n\nMugwort from the Koris tutorial is not random."
-		"\nTreasures are randomized by chapter pool."
-	);
-
-	helpConsole->addFeature(m_ui.itemsRandomByCategory, _Items, 
-		"Randomize items to other items."
-		"\n\nMugwort from the Koris tutorial is not random."
-		"\nTreasures are randomized by chapter pool."
-	);
-
-	helpConsole->addFeature(m_ui.itemsRandomSkeletonKeys, _Items, 
-		"Randomize skeleton keys."
-	);
-
-	const QString _Valuables{ m_ui.valuablesBox->title() };
-
-	helpConsole->addFeature(m_ui.valuablesRandom, _Valuables, 
-		"Randomize valuables to any treasures."
-		"\n\nValuables needed to progress the game are not randomized."
-		"\nTreasures are randomized by chapter pool."
-	);
-
-	helpConsole->addFeature(m_ui.valuablesRandomByCategory, _Valuables, 
-		"Randomize valuables to other valuables."
-		"\n\nValuables needed to progress the game are not randomized."
-		"\nTreasures are randomized by chapter pool."
-	);
-
-	helpConsole->addFeature(m_ui.valuablesRandomUsableValuables, _Valuables, 
-		"Include forest warp keys and Kikinak ocarina in the pool."
-	);
-
 	const QString _Equipments{ m_ui.equipmentsBox->title() };
 
-	helpConsole->addFeature(m_ui.equipmentsRandom, _Equipments, 
+	helpConsole->addFeature(m_ui.equipmentsRandom, _Equipments,
 		"Randomize equipments to any treasure."
 		"\n\nTreasures are randomized by chapter pool."
 	);
@@ -70,6 +34,42 @@ TreasureWidget::TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	helpConsole->addFeature(m_ui.equipmentsRandomByCategory, _Equipments,
 		"Randomize equipments to other equipments."
 		"\n\nTreasures are randomized by chapter pool."
+	);
+
+	const QString _Items{ m_ui.itemsBox->title() };
+
+	helpConsole->addFeature(m_ui.itemsRandom, _Items,
+		"Randomize items to any treasure."
+		"\n\nMugwort from the Koris tutorial is not random."
+		"\nTreasures are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.itemsRandomByCategory, _Items,
+		"Randomize items to other items."
+		"\n\nMugwort from the Koris tutorial is not random."
+		"\nTreasures are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.itemsRandomSkeletonKeys, _Items,
+		"Randomize skeleton keys."
+	);
+
+	const QString _Valuables{ m_ui.valuablesBox->title() };
+
+	helpConsole->addFeature(m_ui.valuablesRandom, _Valuables,
+		"Randomize valuables to any treasures."
+		"\n\nValuables needed to progress the game are not randomized."
+		"\nTreasures are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.valuablesRandomByCategory, _Valuables,
+		"Randomize valuables to other valuables."
+		"\n\nValuables needed to progress the game are not randomized."
+		"\nTreasures are randomized by chapter pool."
+	);
+
+	helpConsole->addFeature(m_ui.valuablesRandomUsableValuables, _Valuables,
+		"Include forest warp keys and Kikinak ocarina in the pool."
 	);
 
 	const QString _Battle{ m_ui.battleBox->title() };

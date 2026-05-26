@@ -90,6 +90,12 @@ public:
 		EQUIPMENT_ARMORS_RANDOM_APPEARANCE = 1 << 1
 	};
 
+	enum class TreasureEquipments
+	{
+		Random,
+		RandomByCategory
+	};
+
 	enum class TreasureItems
 	{
 		Random,
@@ -97,12 +103,6 @@ public:
 	};
 
 	enum class TreasureValuables
-	{
-		Random,
-		RandomByCategory
-	};
-
-	enum class TreasureEquipments
 	{
 		Random,
 		RandomByCategory
@@ -181,9 +181,9 @@ public:
 	void equipmentArmors(Randomizer::EquipmentArmors_t state) const;
 	void equipmentOthers() const;
 	static void setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect);
+	void treasureEquipments(Randomizer::TreasureEquipments state) const;
 	void treasureItems(Randomizer::TreasureItems state, bool randomSkeletonKeys) const;
 	void treasureValuables(Randomizer::TreasureValuables state, bool randomUsableValuables) const;
-	void treasureEquipments(Randomizer::TreasureEquipments state) const;
 	void treasureBattle(bool shuffleSkeletonKeys) const;
 	void shopWeapon() const;
 	void shopArmor() const;

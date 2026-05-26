@@ -286,7 +286,16 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
     // Treasure
 	const auto& treasureUi{ m_treasure->Ui() };
 
-    if (treasureUi.itemsRandom->isChecked())
+    if (treasureUi.equipmentsRandom->isChecked())
+	{
+		randomizer->treasureEquipments(Randomizer::TreasureEquipments::Random);
+	}
+	else if (treasureUi.equipmentsRandomByCategory->isChecked())
+	{
+		randomizer->treasureEquipments(Randomizer::TreasureEquipments::RandomByCategory);
+	}
+
+	if (treasureUi.itemsRandom->isChecked())
 	{
 		randomizer->treasureItems(Randomizer::TreasureItems::Random, treasureUi.itemsRandomSkeletonKeys->isChecked());
 	}
@@ -302,15 +311,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	else if (treasureUi.valuablesRandomByCategory->isChecked())
 	{
 		randomizer->treasureValuables(Randomizer::TreasureValuables::RandomByCategory, treasureUi.valuablesRandomUsableValuables->isChecked());
-	}
-
-	if (treasureUi.equipmentsRandom->isChecked())
-	{
-		randomizer->treasureEquipments(Randomizer::TreasureEquipments::Random);
-	}
-	else if (treasureUi.equipmentsRandomByCategory->isChecked())
-	{
-		randomizer->treasureEquipments(Randomizer::TreasureEquipments::RandomByCategory);
 	}
 
 	if (treasureUi.battleShuffle->isChecked())

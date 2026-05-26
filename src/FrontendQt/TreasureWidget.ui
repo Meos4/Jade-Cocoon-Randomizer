@@ -39,6 +39,29 @@
       <number>0</number>
      </property>
      <item>
+      <widget class="QGroupBox" name="equipmentsBox">
+       <property name="title">
+        <string>Equipments</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
+        <item>
+         <widget class="QCheckBox" name="equipmentsRandom">
+          <property name="text">
+           <string>Random</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="equipmentsRandomByCategory">
+          <property name="text">
+           <string>Random By Category</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
       <widget class="QGroupBox" name="itemsBox">
        <property name="title">
         <string>Items</string>
@@ -119,29 +142,6 @@
          <widget class="QCheckBox" name="valuablesRandomUsableValuables">
           <property name="text">
            <string>+Random Usable Valuables</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item>
-      <widget class="QGroupBox" name="equipmentsBox">
-       <property name="title">
-        <string>Equipments</string>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
-        <item>
-         <widget class="QCheckBox" name="equipmentsRandom">
-          <property name="text">
-           <string>Random</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="equipmentsRandomByCategory">
-          <property name="text">
-           <string>Random By Category</string>
           </property>
          </widget>
         </item>
