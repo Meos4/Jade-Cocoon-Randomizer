@@ -155,6 +155,18 @@ void Randomizer::addonsX2Framerate() const
 	executable.write(m_game->offset().file.executable.afterFramerateLimiter, Mips::j(toggleX2FramerateOffset.game));
 }
 
+void Randomizer::addonsSkipOpeningLogos() const
+{
+	if (m_game->isNtscJ())
+	{
+		m_game->executable().write(m_game->offset().file.executable.openingBehaviorFn + 8, Mips_t(0x00000000));
+	}
+	else
+	{
+		m_game->executable().write(m_game->offset().file.executable.mainLoopFn + 0x5C, Mips_t(0x10000019)); // b +0x19
+	}
+}
+
 void Randomizer::addonsItemQuantityLimit(u8 limit) const
 {
 	const auto

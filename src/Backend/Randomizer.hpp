@@ -196,6 +196,7 @@ public:
 	void miscBetaBattleTheme() const;
 	void addonsSkipTutorial(bool skipKoris) const;
 	void addonsX2Framerate() const;
+	void addonsSkipOpeningLogos() const;
 	void addonsItemQuantityLimit(u8 limit) const;
 	void addonsLevelCapEC(u8 levelCap) const;
 	void addonsShowHiddenStats() const;

@@ -107,7 +107,7 @@
     </spacer>
    </item>
    <item row="0" column="0">
-    <layout class="QHBoxLayout" name="fastLayout" stretch="1,1">
+    <layout class="QHBoxLayout" name="fastLayout" stretch="1,1,1">
      <property name="spacing">
       <number>6</number>
      </property>
@@ -172,6 +172,22 @@
           <property name="toolTip">
            <string/>
           </property>
+          <property name="text">
+           <string>Enable</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="skipOpeningLogosBox">
+       <property name="title">
+        <string>Skip Opening Logos</string>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="skipOpeningLogosEnable">
           <property name="text">
            <string>Enable</string>
           </property>

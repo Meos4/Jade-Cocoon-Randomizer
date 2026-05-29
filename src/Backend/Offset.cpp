@@ -36,7 +36,9 @@ fileNtscJ1
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00014004,
 		.tableOfLevantFluteStylingsId = 0x0006A774,
-		.mainSceneBehaviorFn = 0x000228C8
+		.mainSceneBehaviorFn = 0x000228C8,
+		.mainLoopFn = 0x0003977C,
+		.openingBehaviorFn = 0x00039B4C
 	},
 	.over_battle_bin
 	{
@@ -753,7 +755,9 @@ fileNtscJ2
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00014064,
 		.tableOfLevantFluteStylingsId = 0x00069D50,
-		.mainSceneBehaviorFn = 0x00022CF0
+		.mainSceneBehaviorFn = 0x00022CF0,
+		.mainLoopFn = 0x00039A78,
+		.openingBehaviorFn = 0x00039E54
 	},
 	.over_battle_bin
 	{
@@ -1470,7 +1474,9 @@ fileNtscU
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D2C0,
-		.mainSceneBehaviorFn = 0x000184F8
+		.mainSceneBehaviorFn = 0x000184F8,
+		.mainLoopFn = 0x00030C7C,
+		.openingBehaviorFn = 0x00031500
 	},
 	.over_battle_bin
 	{
@@ -2188,6 +2194,8 @@ filePalEn
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D1E4,
 		.mainSceneBehaviorFn = 0x00018560,
+		.mainLoopFn = 0x000328C8,
+		.openingBehaviorFn = 0x0003314C
 	},
 	.over_battle_bin
 	{
@@ -2905,6 +2913,8 @@ filePalFr
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D458,
 		.mainSceneBehaviorFn = 0x00018560,
+		.mainLoopFn = 0x0002FAC8,
+		.openingBehaviorFn = 0x0003034C
 	},
 	.over_battle_bin
 	{
@@ -3622,6 +3632,8 @@ filePalDe
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D314,
 		.mainSceneBehaviorFn = 0x00018560,
+		.mainLoopFn = 0x0002FA6C,
+		.openingBehaviorFn = 0x000302F0
 	},
 	.over_battle_bin
 	{
@@ -4339,6 +4351,8 @@ filePalEs
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D578,
 		.mainSceneBehaviorFn = 0x00018560,
+		.mainLoopFn = 0x0002FA84,
+		.openingBehaviorFn = 0x00030308
 	},
 	.over_battle_bin
 	{
@@ -5056,7 +5070,9 @@ filePalIt
 		.mainFn = 0x00000800,
 		.branchSetVatolkaSpecials = 0x00009E2C,
 		.tableOfLevantFluteStylingsId = 0x0006D55C,
-		.mainSceneBehaviorFn = 0x00018560
+		.mainSceneBehaviorFn = 0x00018560,
+		.mainLoopFn = 0x00030CE8,
+		.openingBehaviorFn = 0x0003156C
 	},
 	.over_battle_bin
 	{

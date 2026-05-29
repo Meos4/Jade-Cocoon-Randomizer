@@ -37,7 +37,9 @@ public:
 				mainFn,
 				branchSetVatolkaSpecials,
 				tableOfLevantFluteStylingsId,
-				mainSceneBehaviorFn;
+				mainSceneBehaviorFn,
+				mainLoopFn,
+				openingBehaviorFn;
 		} executable;
 
 		struct

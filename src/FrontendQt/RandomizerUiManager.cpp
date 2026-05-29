@@ -381,6 +381,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->addonsX2Framerate();
 	}
 
+	if (addonsUi.skipOpeningLogosEnable->isChecked())
+	{
+		randomizer->addonsSkipOpeningLogos();
+	}
+
 	if (addonsUi.showHiddenStatsEnable->isChecked())
 	{
 		randomizer->addonsShowHiddenStats();
