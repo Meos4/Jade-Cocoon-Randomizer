@@ -327,7 +327,7 @@ void Randomizer::minionSpecialMagic(const std::unordered_set<Special_t>& special
 	const std::unordered_map<Element_t, Magic_t> magicsAllowed
 	{
 		{ ELEMENT_FIRE, MAGIC_AGNI | MAGIC_AGNIS | MAGIC_AGNIA },
-		{ ELEMENT_AIR, MAGIC_MALTI | MAGIC_MALTI | MAGIC_MALTIA },
+		{ ELEMENT_AIR, MAGIC_MALTI | MAGIC_MALTIS | MAGIC_MALTIA },
 		{ ELEMENT_EARTH, MAGIC_ULVI | MAGIC_ULVIS | MAGIC_ULVIA },
 		{ ELEMENT_WATER, MAGIC_VAHLI | MAGIC_VAHLIS | MAGIC_VAHLIA }
 	};
