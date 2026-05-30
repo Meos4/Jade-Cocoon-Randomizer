@@ -56,28 +56,37 @@ const char* Game::filePathByIndex(File file) const
 	return m_data001FilesPath[static_cast<File_t>(fileByVersion(file))];
 }
 
-void Game::expandExecutable()
+void Game::expandTo(u32 newAllocatedSize)
 {
-	m_ccShift = 0;
-	auto executable{ this->executable() };
-	const auto offsetGHvb{ m_offset.game.heapVanillaBegin };
+	const auto fileHeapVanillaBegin{ (m_offset.game.heapVanillaBegin - gameToFileTextSectionShift()) & ~0x80000000 };
+	auto requiredFileSize{ fileHeapVanillaBegin + newAllocatedSize };
 
-	const auto heapShift{ heapRandomizerBegin() - offsetGHvb };
-	auto newExecutableSize{ (offsetGHvb + heapShift - gameToFileTextSectionShift()) & ~0x80000000 };
-	const auto sectorRemainer{ newExecutableSize % Iso::sectorSize };
-	if (sectorRemainer)
+	const auto sectorRemainder{ requiredFileSize % Iso::sectorSize };
+	if (sectorRemainder)
 	{
-		newExecutableSize += Iso::sectorSize - sectorRemainer;
+		requiredFileSize += Iso::sectorSize - sectorRemainder;
 	}
 
-	executable.write(0x1C, newExecutableSize - Iso::sectorSize);
-	std::filesystem::resize_file(m_builderTree.exePath(), newExecutableSize);
+	const auto currentFileSize{ std::filesystem::file_size(m_builderTree.exePath()) };
+	auto newFileSize{ requiredFileSize };
+	if (newFileSize < currentFileSize)
+	{
+		newFileSize = static_cast<u32>(currentFileSize);
+	}
+
+	auto executable{ this->executable() };
+
+	executable.write(0x1C, requiredFileSize - Iso::sectorSize);
+	if (newFileSize > currentFileSize)
+	{
+		std::filesystem::resize_file(m_builderTree.exePath(), newFileSize);
+	}
 
 	const auto offsetFMFn{ m_offset.file.executable.mainFn };
 	auto instructions{ executable.read<std::array<Mips_t, 2>>(offsetFMFn + 0x34) };
 	auto& [luiHeap, addiuHeap]{ instructions };
 
-	const u32 newBeginHeap{ (luiHeap << 16) + static_cast<s16>(addiuHeap) + heapShift };
+	const u32 newBeginHeap{ m_offset.game.heapVanillaBegin + newAllocatedSize };
 	const bool isLower16Positive{ static_cast<s16>(newBeginHeap) >= 0 };
 
 	luiHeap = ((luiHeap >> 16) << 16);
@@ -89,6 +98,17 @@ void Game::expandExecutable()
 
 Game::CustomCodeOffset Game::customCodeOffset(u32 size)
 {
+	const auto allocatedSize{ (m_ccShift + Iso::sectorSize - 1) / Iso::sectorSize * Iso::sectorSize };
+	if (m_ccShift + size > allocatedSize)
+	{
+		auto newAllocatedSize{ allocatedSize };
+		do
+		{
+			newAllocatedSize += Iso::sectorSize;
+		} while (m_ccShift + size > newAllocatedSize);
+		expandTo(newAllocatedSize);
+	}
+
 	const auto fileHeapVanillaBegin{ (m_offset.game.heapVanillaBegin - gameToFileTextSectionShift()) & ~0x80000000 };
 	const Game::CustomCodeOffset ccOffset
 	{
@@ -98,44 +118,6 @@ Game::CustomCodeOffset Game::customCodeOffset(u32 size)
 	m_ccShift += size;
 
 	return ccOffset;
-}
-
-u32 Game::heapRandomizerBegin() const
-{
-	static constexpr u32 customCodeSize
-	{
-		sizeof(MipsFn::GenerateValidMinion) + // Story
-		sizeof(MipsFn::GenerateValidMinion) + // EC
-
-		sizeof(MipsFn::RandomEternalCorridorOst) +
-
-		sizeof(MipsFn::NuzlockeDefinitiveDeath) +
-		sizeof(MipsFn::WriteUsedMapEOBData) +
-		sizeof(MipsFn::WriteUsedMapEOB) +
-		sizeof(MipsFn::WriteUsedMapCapture) +
-		sizeof(MipsFn::ReadUsedMap) +
-		sizeof(MipsFn::ResetFromNowhere) +
-
-		sizeof(MipsFn::DifficultyModeStats) +
-
-		sizeof(MipsFn::AfterTutorialStateData) +
-		sizeof(MipsFn::WriteAfterTutorialState) +
-
-		sizeof(MipsFn::DrawHiddenStats) +
-		sizeof(MipsFn::CriticalRateFromStats) +
-		sizeof(MipsFn::DrawCriticalRate) +
-		sizeof(MipsFn::DrawCriticalRateMerge) +
-
-		sizeof(MipsFn::ToggleX2Framerate) +
-
-		sizeof(MipsFn::SetChestNewItemQuantityLimit) +
-
-		sizeof(MipsFn::FixEntityEnhancement) +
-		
-		sizeof(MipsFn::PreviewHeal)
-	};
-
-	return m_offset.game.heapVanillaBegin + customCodeSize;
 }
 
 u32 Game::gameToFileTextSectionShift() const
@@ -155,8 +137,10 @@ bool Game::removeStaticDirectory() const
 	return m_staticTree.remove();
 }
 
-void Game::createBuilderDirectory() const
+void Game::createBuilderDirectory()
 {
+	m_ccShift = 0;
+
 	if (m_builderTree.exists() && !m_builderTree.remove())
 	{
 		throw JcrException{ "\"{}\" directory cannot be removed", m_builderTree.directory().string() };

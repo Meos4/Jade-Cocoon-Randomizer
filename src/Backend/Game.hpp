@@ -31,13 +31,11 @@ public:
 	RawFileReadOnly staticExecutable() const;
 	const char* filePathByIndex(File file) const;
 
-	void expandExecutable();
 	Game::CustomCodeOffset customCodeOffset(u32 size);
-	u32 heapRandomizerBegin() const;
 	u32 gameToFileTextSectionShift() const;
 	bool isVanilla() const;
 	bool removeStaticDirectory() const;
-	void createBuilderDirectory() const;
+	void createBuilderDirectory();
 
 	template <SameAs<Version>... Args>
 	bool isVersion(Args... versions) const
@@ -58,6 +56,7 @@ public:
 	static std::unique_ptr<Game> createGame(std::filesystem::path&& gameDirectory);
 private:
 	File fileByVersion(File file) const;
+	void expandTo(u32 newAllocatedSize);
 
 	GameTree m_staticTree;
 	GameTree m_builderTree;

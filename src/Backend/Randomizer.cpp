@@ -7,7 +7,6 @@ Randomizer::Randomizer(Game* game)
 
 void Randomizer::init()
 {
-    m_game->expandExecutable();
     m_sharedData.read();
 }
 
