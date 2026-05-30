@@ -14,157 +14,6 @@
    <string>BossWidget</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="eternalCorridorBox">
-     <property name="title">
-      <string>Eternal Corridor</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_6">
-      <item>
-       <layout class="QHBoxLayout" name="eternalCorridorCharacteristicLayout" stretch="1,1">
-        <item>
-         <widget class="QGroupBox" name="eternalCorridorElementBox">
-          <property name="title">
-           <string>Element</string>
-          </property>
-          <layout class="QFormLayout" name="formLayout">
-           <property name="formAlignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-           <property name="leftMargin">
-            <number>9</number>
-           </property>
-           <property name="topMargin">
-            <number>9</number>
-           </property>
-           <property name="rightMargin">
-            <number>9</number>
-           </property>
-           <item row="0" column="0">
-            <widget class="QCheckBox" name="eternalCorridorElementRandom">
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="text">
-              <string>Random</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item>
-         <widget class="QGroupBox" name="eternalCorridorSpecialMagicBox">
-          <property name="title">
-           <string>Special / Magic</string>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_10">
-           <item>
-            <widget class="QCheckBox" name="eternalCorridorSpecialMagicRandom">
-             <property name="toolTip">
-              <string/>
-             </property>
-             <property name="text">
-              <string>Random</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QGroupBox" name="eternalCorridorAppearanceBox">
-        <property name="title">
-         <string>Appearance</string>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
-         <item>
-          <widget class="QGroupBox" name="eternalCorridorCrazinessBox">
-           <property name="title">
-            <string>Random New Appearance</string>
-           </property>
-           <layout class="QVBoxLayout" name="verticalLayout_ecCraziness">
-            <item>
-             <widget class="QCheckBox" name="eternalCorridorRandomNewAppearance">
-              <property name="text">
-               <string>Enable</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_ecCraziness">
-              <item>
-               <widget class="QSlider" name="eternalCorridorCrazinessSlider">
-                <property name="enabled">
-                 <bool>false</bool>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>100</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="minimum">
-                 <number>0</number>
-                </property>
-                <property name="maximum">
-                 <number>100</number>
-                </property>
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel" name="eternalCorridorCrazinessValue">
-                <property name="text">
-                 <string>0%</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item>
-          <widget class="QGroupBox" name="eternalCorridorAppearanceTextureBox">
-           <property name="title">
-            <string>Texture</string>
-           </property>
-           <layout class="QFormLayout" name="formLayout_3">
-            <item row="1" column="0">
-             <widget class="QCheckBox" name="eternalCorridorAppearanceTextureRandom">
-              <property name="text">
-               <string>Random</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QCheckBox" name="eternalCorridorAppearanceTextureRandomColor">
-              <property name="text">
-               <string>Random Color</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QCheckBox" name="eternalCorridorAppearanceTextureIncludeCompatible">
-              <property name="text">
-               <string>+Include Compatible</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QGroupBox" name="storyBox">
      <property name="title">
@@ -172,7 +21,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="storyCharacteristicLayout" stretch="1,1">
+       <layout class="QHBoxLayout" name="storyCharacteristicLayout" stretch="1,1,1">
         <item>
          <widget class="QGroupBox" name="storyElementBox">
           <property name="title">
@@ -236,30 +85,181 @@
           </layout>
          </widget>
         </item>
+        <item>
+         <widget class="QGroupBox" name="storyAppearanceTextureBox">
+          <property name="title">
+           <string>Appearance Texture</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QCheckBox" name="storyAppearanceTextureColorBasedOnElement">
+             <property name="text">
+              <string>Color Based On Element</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="storyAppearanceTextureRandomColor">
+             <property name="text">
+              <string>Random Color</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="eternalCorridorBox">
+     <property name="title">
+      <string>Eternal Corridor</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
-       <widget class="QGroupBox" name="storyAppearanceTextureBox">
-        <property name="title">
-         <string>Appearance Texture</string>
-        </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QCheckBox" name="storyAppearanceTextureColorBasedOnElement">
-           <property name="text">
-            <string>Color Based On Element</string>
+       <layout class="QHBoxLayout" name="eternalCorridorCharacteristicLayout" stretch="1,1,2">
+        <item>
+         <widget class="QGroupBox" name="eternalCorridorElementBox">
+          <property name="title">
+           <string>Element</string>
+          </property>
+          <layout class="QFormLayout" name="formLayout">
+           <property name="formAlignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QCheckBox" name="storyAppearanceTextureRandomColor">
-           <property name="text">
-            <string>Random Color</string>
+           <property name="leftMargin">
+            <number>9</number>
            </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
+           <property name="topMargin">
+            <number>9</number>
+           </property>
+           <property name="rightMargin">
+            <number>9</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QCheckBox" name="eternalCorridorElementRandom">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="text">
+              <string>Random</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="eternalCorridorSpecialMagicBox">
+          <property name="title">
+           <string>Special / Magic</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_10">
+           <item>
+            <widget class="QCheckBox" name="eternalCorridorSpecialMagicRandom">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="text">
+              <string>Random</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="eternalCorridorAppearanceBox">
+          <property name="title">
+           <string>Appearance</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+           <item>
+            <widget class="QGroupBox" name="eternalCorridorCrazinessBox">
+             <property name="title">
+              <string>Random New Appearance</string>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_ecCraziness">
+              <item>
+               <widget class="QCheckBox" name="eternalCorridorRandomNewAppearance">
+                <property name="text">
+                 <string>Enable</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_ecCraziness">
+                <item>
+                 <widget class="QSlider" name="eternalCorridorCrazinessSlider">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>100</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="minimum">
+                   <number>0</number>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="eternalCorridorCrazinessValue">
+                  <property name="text">
+                   <string>0%</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="eternalCorridorAppearanceTextureBox">
+             <property name="title">
+              <string>Texture</string>
+             </property>
+             <layout class="QFormLayout" name="formLayout_3">
+              <item row="1" column="0">
+               <widget class="QCheckBox" name="eternalCorridorAppearanceTextureRandom">
+                <property name="text">
+                 <string>Random</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QCheckBox" name="eternalCorridorAppearanceTextureRandomColor">
+                <property name="text">
+                 <string>Random Color</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QCheckBox" name="eternalCorridorAppearanceTextureIncludeCompatible">
+                <property name="text">
+                 <string>+Include Compatible</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
