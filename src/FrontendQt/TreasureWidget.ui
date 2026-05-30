@@ -151,20 +151,20 @@
     </layout>
    </item>
    <item row="1" column="0">
-    <widget class="QGroupBox" name="battleBox">
+    <widget class="QGroupBox" name="battleDropsBox">
      <property name="title">
-      <string>Battle</string>
+      <string>Battle Drops</string>
      </property>
      <layout class="QFormLayout" name="formLayout_2">
       <item row="0" column="0">
-       <widget class="QCheckBox" name="battleShuffle">
+       <widget class="QCheckBox" name="battleDropsShuffle">
         <property name="text">
          <string>Shuffle</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="battleShuffleSkeletonKeys">
+       <widget class="QCheckBox" name="battleDropsShuffleSkeletonKeys">
         <property name="enabled">
          <bool>true</bool>
         </property>

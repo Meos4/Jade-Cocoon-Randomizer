@@ -20,8 +20,8 @@ TreasureWidget::TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.valuablesRandom) },
 		{ SETTINGS(m_ui.valuablesRandomByCategory) },
 		{ SETTINGS(m_ui.valuablesRandomUsableValuables) },
-		{ SETTINGS(m_ui.battleShuffle) },
-		{ SETTINGS(m_ui.battleShuffleSkeletonKeys) }
+		{ SETTINGS(m_ui.battleDropsShuffle) },
+		{ SETTINGS(m_ui.battleDropsShuffleSkeletonKeys) }
 	};
 
 	const QString _Equipments{ m_ui.equipmentsBox->title() };
@@ -72,19 +72,19 @@ TreasureWidget::TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		"Include forest warp keys and Kikinak ocarina in the pool."
 	);
 
-	const QString _Battle{ m_ui.battleBox->title() };
+	const QString _BattleDrops{ m_ui.battleDropsBox->title() };
 
-	helpConsole->addFeature(m_ui.battleShuffle, _Battle, 
-		"Shuffle battle treasures."
+	helpConsole->addFeature(m_ui.battleDropsShuffle, _BattleDrops, 
+		"Shuffle battle drops."
 	);
 
-	helpConsole->addFeature(m_ui.battleShuffleSkeletonKeys, _Battle, 
-		"Include battle skeleton keys."
+	helpConsole->addFeature(m_ui.battleDropsShuffleSkeletonKeys, _BattleDrops, 
+		"Include battle drops skeleton keys."
 	);
 
 	m_ui.itemsRandomSkeletonKeys->setEnabled(false);
 	m_ui.valuablesRandomUsableValuables->setEnabled(false);
-	m_ui.battleShuffleSkeletonKeys->setEnabled(false);
+	m_ui.battleDropsShuffleSkeletonKeys->setEnabled(false);
 
 	connect(m_ui.itemsRandom, &QAbstractButton::toggled, this, &TreasureWidget::updateItems);
 	connect(m_ui.itemsRandomByCategory, &QAbstractButton::toggled, this, &TreasureWidget::updateItems);
@@ -92,7 +92,7 @@ TreasureWidget::TreasureWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.valuablesRandomByCategory, &QAbstractButton::toggled, this, &TreasureWidget::updateValuables);
 	connect(m_ui.equipmentsRandom, &QAbstractButton::toggled, this, &TreasureWidget::updateEquipmentsRandom);
 	connect(m_ui.equipmentsRandomByCategory, &QAbstractButton::toggled, this, &TreasureWidget::updateEquipmentsRandomByCategory);
-	connect(m_ui.battleShuffle, &QAbstractButton::toggled, m_ui.battleShuffleSkeletonKeys, &QWidget::setEnabled);
+	connect(m_ui.battleDropsShuffle, &QAbstractButton::toggled, m_ui.battleDropsShuffleSkeletonKeys, &QWidget::setEnabled);
 }
 
 void TreasureWidget::enableUI(Randomizer* randomizer)

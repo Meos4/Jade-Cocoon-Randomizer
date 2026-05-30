@@ -184,7 +184,7 @@ public:
 	void treasureEquipments(Randomizer::TreasureEquipments state) const;
 	void treasureItems(Randomizer::TreasureItems state, bool randomSkeletonKeys) const;
 	void treasureValuables(Randomizer::TreasureValuables state, bool randomUsableValuables) const;
-	void treasureBattle(bool shuffleSkeletonKeys) const;
+	void treasureBattleDrops(bool shuffleSkeletonKeys) const;
 	void shopWeapon() const;
 	void shopArmor() const;
 	void shopOther() const;

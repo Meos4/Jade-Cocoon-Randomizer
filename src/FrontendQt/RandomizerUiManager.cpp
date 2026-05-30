@@ -313,9 +313,9 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->treasureValuables(Randomizer::TreasureValuables::RandomByCategory, treasureUi.valuablesRandomUsableValuables->isChecked());
 	}
 
-	if (treasureUi.battleShuffle->isChecked())
+	if (treasureUi.battleDropsShuffle->isChecked())
 	{
-		randomizer->treasureBattle(treasureUi.battleShuffleSkeletonKeys->isChecked());
+		randomizer->treasureBattleDrops(treasureUi.battleDropsShuffleSkeletonKeys->isChecked());
 	}
 
     // Shop

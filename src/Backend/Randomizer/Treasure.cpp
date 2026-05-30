@@ -393,7 +393,7 @@ void Randomizer::treasureValuables(Randomizer::TreasureValuables state, bool ran
 	}
 }
 
-void Randomizer::treasureBattle(bool shuffleSkeletonKeys) const
+void Randomizer::treasureBattleDrops(bool shuffleSkeletonKeys) const
 {
 	struct EntityTreasure
 	{
