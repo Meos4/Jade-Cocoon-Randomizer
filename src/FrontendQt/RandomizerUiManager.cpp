@@ -421,7 +421,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
     // Fixes
 	const auto& fixesUi{ m_fixes->Ui() };
 
-	randomizer->fixesHpMpBarsSize(static_cast<u16>(fixesUi.hpMpBarsSizeSlider->value()));
+	if (fixesUi.hpMpBarsFix->isChecked())
+	{
+		randomizer->fixesHpMpBars();
+	}
 
 	// Default
 	const auto& defaultUi{ m_default->Ui() };

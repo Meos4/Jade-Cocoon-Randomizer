@@ -200,7 +200,7 @@ public:
 	void addonsPalToNtsc() const;
 	void challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const;
 	void challengeDifficulty(Randomizer::ChallengeDifficulty state) const;
-	void fixesHpMpBarsSize(u16 value) const;
+	void fixesHpMpBars() const;
 	void defaultX2Framerate() const;
 	void defaultSkipOpeningLogos() const;
 	void defaultShowHiddenStats() const;

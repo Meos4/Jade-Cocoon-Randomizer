@@ -10,19 +10,14 @@ FixesWidget::FixesWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	setStyleSheet("font-weight: bold;");
 
-	m_qSlider =
+	m_qCheckBox =
 	{
-		{ SETTINGS(m_ui.hpMpBarsSizeSlider) },
+		{ SETTINGS(m_ui.hpMpBarsFix) },
 	};
 
-	m_ui.hpMpBarsSizeValue->setStyleSheet("font-weight: normal;");
-
-	helpConsole->addFeature(m_ui.hpMpBarsSizeSlider, m_ui.hpMpBarsSizeBox->title(), "Slider", 
-		"Bug may occur on hp / mp bars when playing on unofficial hardware, this will reduce its size."
-		"\n\nMost of the time, reducing the size to 24 or 23 is fine, but it can differ and needs to be gauged."
+	helpConsole->addFeature(m_ui.hpMpBarsFix, m_ui.hpMpBarsBox->title(),
+		"Bug may occur on hp / mp bars when playing on unofficial hardware, this fixes the issue."
 	);
-
-	connect(m_ui.hpMpBarsSizeSlider, &QSlider::valueChanged, this, &FixesWidget::setHpMpBarsSizeText);
 }
 
 void FixesWidget::enableUI(Randomizer* randomizer)
@@ -42,26 +37,21 @@ const char* FixesWidget::name() const
 
 void FixesWidget::loadPresets(const Json::Read& json)
 {
-	for (auto& slider : m_qSlider)
+	for (auto& checkBox : m_qCheckBox)
 	{
-		slider.load(json);
+		checkBox.load(json);
 	}
 }
 
 void FixesWidget::savePresets(Json::Write* json)
 {
-	for (const auto& slider : m_qSlider)
+	for (const auto& checkBox : m_qCheckBox)
 	{
-		slider.save(json);
+		checkBox.save(json);
 	}
 }
 
 const Ui::FixesWidget& FixesWidget::Ui() const
 {
 	return m_ui;
-}
-
-void FixesWidget::setHpMpBarsSizeText(s32 value)
-{
-	m_ui.hpMpBarsSizeValue->setText(QString::number(value));
 }

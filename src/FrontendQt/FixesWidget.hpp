@@ -22,10 +22,8 @@ public:
 	void savePresets(Json::Write* json) override;
 
 	const Ui::FixesWidget& Ui() const;
-public Q_SLOTS:
-	void setHpMpBarsSizeText(s32 value);
 private:
 	Ui::FixesWidget m_ui;
 
-	std::vector<RandomizerQSlider> m_qSlider;
+	std::vector<RandomizerQCheckBox> m_qCheckBox;
 };
