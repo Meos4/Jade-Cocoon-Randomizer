@@ -41,6 +41,7 @@ public Q_SLOTS:
 	void onFileOpen();
 	void onFileSaveAs();
 	void onThemeChanged();
+	void onSettingsDefault();
 	void onHelpAbout();
 private:
 	void dragEnterEvent(QDragEnterEvent* event) override;

@@ -8,6 +8,7 @@
 #include "FrontendQt/AboutDialog.hpp"
 #include "FrontendQt/ExtractGameDialog.hpp"
 #include "FrontendQt/GuiPath.hpp"
+#include "FrontendQt/WelcomeDialog.hpp"
 #include "FrontendQt/HelpConsoleWidget.hpp"
 #include "FrontendQt/RandomizerTabWidget.hpp"
 #include "FrontendQt/SaveGameDialog.hpp"
@@ -19,6 +20,7 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QFileDialog>
+#include <QDialog>
 #include <QMessageBox>
 #include <QMimeData>
 
@@ -55,6 +57,7 @@ MainWindow::MainWindow(QWidget* parent)
 	connect(m_ui.actionFileSaveAs, &QAction::triggered, this, &MainWindow::onFileSaveAs);
 	connect(m_ui.actionFileExit, &QAction::triggered, this, &QWidget::close);
 
+	connect(m_ui.actionSettingsDefault, &QAction::triggered, this, &MainWindow::onSettingsDefault);
 	connect(m_ui.actionSettingsThemeDark, &QAction::toggled, this, &MainWindow::onThemeChanged);
 	connect(m_ui.actionSettingsThemeLight, &QAction::toggled, this, &MainWindow::onThemeChanged);
 
@@ -85,12 +88,17 @@ MainWindow::MainWindow(QWidget* parent)
 			if (json.has_value())
 			{
 				m_guiSettings.loadSettings(json.value());
-			}		
+			}
 		}
 		catch (const Json::Exception& e)
 		{
 			QMessageBox::critical(this, "Error", QtUtil::jsonErrorMessage(guiSettingsPath, e));
 		}
+	}
+	else
+	{
+		WelcomeDialog welcome;
+		welcome.exec();
 	}
 
 	m_themeActions[static_cast<std::size_t>(m_guiSettings.theme())]->setChecked(true);
@@ -236,6 +244,11 @@ void MainWindow::saveSettings()
 	Json::Write json;
 	m_guiSettings.saveSettings(&json);
 	Json::overwrite(json, GuiPath::jcrGuiSettingsFilename);
+}
+
+void MainWindow::onSettingsDefault()
+{
+	m_randomizerTabWidget->openDefaultDialog();
 }
 
 void MainWindow::loadPresets()

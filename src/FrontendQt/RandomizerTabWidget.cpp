@@ -6,6 +6,7 @@
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/BossWidget.hpp"
 #include "FrontendQt/ChallengeWidget.hpp"
+#include "FrontendQt/DefaultDialog.hpp"
 #include "FrontendQt/EquipmentWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
 #include "FrontendQt/ForestWidget.hpp"
@@ -39,11 +40,14 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 	auto* const challengeWidget{ new ChallengeWidget(helpConsole, this) };
 	auto* const fixesWidget{ new FixesWidget(helpConsole, this) };
 
+	m_defaultDialog = new DefaultDialog(this);
+
 	m_randomizerUiManager = std::make_unique<RandomizerUiManager>
 	(
 		levantWidget, minionWidget, bossWidget, forestWidget,
 		equipmentWidget, treasureWidget, shopWidget, miscWidget,
-		addonsWidget, challengeWidget, fixesWidget
+		addonsWidget, challengeWidget, fixesWidget,
+		m_defaultDialog
 	);
 
 	m_randomizerWidgets[TAB_LEVANT] = levantWidget;
@@ -101,6 +105,11 @@ void RandomizerTabWidget::write() const
 	m_randomizerUiManager->write(m_randomizer.get());
 }
 
+void RandomizerTabWidget::openDefaultDialog()
+{
+	m_defaultDialog->exec();
+}
+
 void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 {
 	try
@@ -118,6 +127,12 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 					widget->loadPresets(it.value());
 				}
 			}
+
+			const auto it{ jsonValue.find(m_defaultDialog->name()) };
+			if (it != jsonValue.end())
+			{
+				m_defaultDialog->loadPresets(it.value());
+			}
 		}
 	}
 	catch (const Json::Exception& e)
@@ -134,6 +149,7 @@ void RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
 	{
 		widget->savePresets(&json[widget->name()]);
 	}
+	m_defaultDialog->savePresets(&json[m_defaultDialog->name()]);
 
 	Json::overwrite(json, path);
 }

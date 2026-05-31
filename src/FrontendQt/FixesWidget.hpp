@@ -27,6 +27,5 @@ public Q_SLOTS:
 private:
 	Ui::FixesWidget m_ui;
 
-	std::vector<RandomizerQCheckBox> m_qCheckBox;
 	std::vector<RandomizerQSlider> m_qSlider;
 };

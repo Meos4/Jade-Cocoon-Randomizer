@@ -34,12 +34,25 @@ void HelpConsoleWidget::addFeature(QObject* object, const QString& title, const 
 	addInternal(object, std::move(formatFeature(title, name, description)));
 }
 
+void HelpConsoleWidget::addFeatureTitleOnly(QObject* object, const QString& title, const QString& description)
+{
+	addInternal(object, std::move(formatFeature(title, description)));
+}
+
 QString HelpConsoleWidget::formatFeature(const QString& title, const QString& name, const QString& description) const
 {
 	QString descriptionRichText{ description };
 	descriptionRichText.replace("\n", "<br>");
 
 	return { "<b>" + title + "</b> -> [" + name + "]<hr>" + descriptionRichText };
+}
+
+QString HelpConsoleWidget::formatFeature(const QString& title, const QString& description) const
+{
+	QString descriptionRichText{ description };
+	descriptionRichText.replace("\n", "<br>");
+
+	return { "<b>" + title + "</b><hr>" + descriptionRichText };
 }
 
 void HelpConsoleWidget::addInternal(QObject* object, QString&& formatted)

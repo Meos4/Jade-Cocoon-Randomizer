@@ -195,18 +195,18 @@ public:
 	void miscNPCsVoice() const;
 	void miscBetaBattleTheme() const;
 	void addonsSkipTutorial(bool skipKoris) const;
-	void addonsX2Framerate() const;
-	void addonsSkipOpeningLogos() const;
 	void addonsItemQuantityLimit(u8 limit) const;
 	void addonsLevelCapEC(u8 levelCap) const;
-	void addonsShowHiddenStats() const;
 	void addonsPalToNtsc() const;
 	void challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const;
 	void challengeDifficulty(Randomizer::ChallengeDifficulty state) const;
-	void fixesBodyEnhancement() const;
-	void fixesAutumnMoonEffect() const;
 	void fixesHpMpBarsSize(u16 value) const;
-	void fixesSpecialsModifiers() const;
+	void defaultX2Framerate() const;
+	void defaultSkipOpeningLogos() const;
+	void defaultShowHiddenStats() const;
+	void defaultBugFixesBodyEnhancement() const;
+	void defaultBugFixesAutumnMoonEffect() const;
+	void defaultBugFixesSpecialAttackModifiersDisplay() const;
 private:
 	Game* m_game;
 	SharedData m_sharedData;

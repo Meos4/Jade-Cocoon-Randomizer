@@ -14,9 +14,6 @@ AddonsWidget::AddonsWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	{
 		{ SETTINGS(m_ui.skipTutorialEnable) },
 		{ SETTINGS(m_ui.skipTutorialSkipKoris) },
-		{ SETTINGS(m_ui.x2FramerateEnable) },
-		{ SETTINGS(m_ui.skipOpeningLogosEnable) },
-		{ SETTINGS(m_ui.showHiddenStatsEnable) },
 		{ SETTINGS(m_ui.palToNtscEnable) }
 	};
 	
@@ -34,22 +31,6 @@ AddonsWidget::AddonsWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	helpConsole->addFeature(m_ui.skipTutorialSkipKoris, _SkipTutorial,
 		"Skip Koris tutorial in the Beetle Forest."
-	);
-
-	helpConsole->addFeature(m_ui.x2FramerateEnable, m_ui.x2FramerateBox->title(),
-		"By pressing Select you can switch to a x2 framerate speed, if press again, switch back to x1."
-		"\n\nIt is recommended to use this feature using emulator that supports CPU overclocking, otherwise "
-		"if there are too many 3D models on the screen, the game will not fully support the x2."
-	);
-
-	helpConsole->addFeature(m_ui.skipOpeningLogosEnable, m_ui.skipOpeningLogosBox->title(),
-		"Skip the opening logos."
-	);
-
-	helpConsole->addFeature(m_ui.showHiddenStatsEnable, m_ui.showHiddenStatsBox->title(),
-		"Show Critical and Body Enhancement of minions in the stats frame."
-		"\n\nBipedal = +10 Special Attack Damage."
-		"\nWinged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack."
 	);
 
 	const QString _Slider{ "Slider" };

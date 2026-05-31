@@ -71,6 +71,8 @@
     <property name="title">
      <string>Settings</string>
     </property>
+    <addaction name="actionSettingsDefault"/>
+    <addaction name="separator"/>
     <widget class="QMenu" name="menuSettingsTheme">
      <property name="title">
       <string>Theme</string>
@@ -179,6 +181,11 @@
   <action name="actionTheme">
    <property name="text">
     <string>Theme</string>
+   </property>
+  </action>
+  <action name="actionSettingsDefault">
+   <property name="text">
+    <string>Default</string>
    </property>
   </action>
   <action name="actionSettingsThemeDark">

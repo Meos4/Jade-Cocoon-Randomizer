@@ -81,7 +81,8 @@ set(SOURCES_BACKEND_RANDOMIZER
     ${BACKEND_DIR}/Randomizer/Minion.cpp
     ${BACKEND_DIR}/Randomizer/Misc.cpp
     ${BACKEND_DIR}/Randomizer/Shop.cpp
-    ${BACKEND_DIR}/Randomizer/Treasure.cpp)
+    ${BACKEND_DIR}/Randomizer/Treasure.cpp
+    ${BACKEND_DIR}/Randomizer/Default.cpp)
 
 set(SOURCES_COMMON
     ${COMMON_DIR}/Buffer.hpp
@@ -175,7 +176,13 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/TopInfoWidget.ui
     ${FRONTENDQT_DIR}/TreasureWidget.cpp
     ${FRONTENDQT_DIR}/TreasureWidget.hpp
-    ${FRONTENDQT_DIR}/TreasureWidget.ui)
+    ${FRONTENDQT_DIR}/TreasureWidget.ui
+    ${FRONTENDQT_DIR}/WelcomeDialog.cpp
+    ${FRONTENDQT_DIR}/WelcomeDialog.hpp
+    ${FRONTENDQT_DIR}/WelcomeDialog.ui
+    ${FRONTENDQT_DIR}/DefaultDialog.cpp
+    ${FRONTENDQT_DIR}/DefaultDialog.hpp
+    ${FRONTENDQT_DIR}/DefaultDialog.ui)
 
 set(SOURCES_RESOURCEQT ${PROJECT_SOURCE_DIR}/src/FrontendQt/resources/resources.qrc)
 

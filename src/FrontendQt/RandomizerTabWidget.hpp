@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <memory>
 
+class DefaultDialog;
 class Game;
 class HelpConsoleWidget;
 class RandomizerWidget;
@@ -42,10 +43,12 @@ public:
 	void write() const;
 	void loadPresets(const std::filesystem::path& path);
 	void savePresets(const std::filesystem::path& path) const;
+	void openDefaultDialog();
 private:
 	Ui::RandomizerTabWidget m_ui;
 
 	std::array<RandomizerWidget*, TAB_COUNT> m_randomizerWidgets;
 	std::unique_ptr<RandomizerUiManager> m_randomizerUiManager;
 	std::unique_ptr<Randomizer> m_randomizer;
+	DefaultDialog* m_defaultDialog{};
 };

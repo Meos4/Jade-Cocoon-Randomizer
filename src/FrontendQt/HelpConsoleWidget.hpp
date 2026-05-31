@@ -20,6 +20,7 @@ public:
 	bool eventFilter(QObject* object, QEvent* event) override;
 
 	void addFeature(QObject* object, const QString& title, const QString& name, const QString& description);
+	void addFeatureTitleOnly(QObject* object, const QString& title, const QString& description);
 
 	template <QObjectWithText T>
 	void addFeature(T* object, const QString& title, const QString& description)
@@ -28,6 +29,7 @@ public:
 	}
 private:
 	QString formatFeature(const QString& title, const QString& name, const QString& description) const;
+	QString formatFeature(const QString& title, const QString& description) const;
 	void addInternal(QObject* object, QString&& formatted);
 
 	Ui::HelpConsoleWidget m_ui;

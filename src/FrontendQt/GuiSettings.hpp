@@ -2,9 +2,6 @@
 
 #include "Common/Json.hpp"
 
-class QString;
-class QWidget;
-
 enum class Theme
 {
 	Dark,
@@ -18,7 +15,7 @@ public:
 	void setOsTheme();
 	void updateTheme(Theme theme);
 	void loadSettings(const Json::Read& json);
-	void saveSettings(Json::Write* json);
+	void saveSettings(Json::Write* json) const;
 
 	Theme theme() const;
 private:

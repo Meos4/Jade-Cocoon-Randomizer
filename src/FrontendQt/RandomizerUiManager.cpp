@@ -1,9 +1,11 @@
 #include "RandomizerUiManager.hpp"
 
 #include "Backend/Randomizer.hpp"
+#include "Backend/Version.hpp"
 #include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/BossWidget.hpp"
 #include "FrontendQt/ChallengeWidget.hpp"
+#include "FrontendQt/DefaultDialog.hpp"
 #include "FrontendQt/EquipmentWidget.hpp"
 #include "FrontendQt/FixesWidget.hpp"
 #include "FrontendQt/ForestWidget.hpp"
@@ -16,7 +18,8 @@
 
 RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
     EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-    AddonsWidget* addons, ChallengeWidget* challenge, FixesWidget* fixes)
+    AddonsWidget* addons, ChallengeWidget* challenge, FixesWidget* fixes,
+    DefaultDialog* defaultDialog)
     : m_levant(levant),
       m_minion(minion),
       m_boss(boss),
@@ -27,7 +30,8 @@ RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* min
       m_misc(misc),
       m_addons(addons),
 	  m_challenge(challenge),
-      m_fixes(fixes)
+      m_fixes(fixes),
+      m_default(defaultDialog)
 {
 }
 
@@ -376,21 +380,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->addonsSkipTutorial(addonsUi.skipTutorialSkipKoris->isChecked());
 	}
 
-	if (addonsUi.x2FramerateEnable->isChecked())
-	{
-		randomizer->addonsX2Framerate();
-	}
-
-	if (addonsUi.skipOpeningLogosEnable->isChecked())
-	{
-		randomizer->addonsSkipOpeningLogos();
-	}
-
-	if (addonsUi.showHiddenStatsEnable->isChecked())
-	{
-		randomizer->addonsShowHiddenStats();
-	}
-
 	randomizer->addonsItemQuantityLimit(static_cast<u8>(addonsUi.itemQuantityLimitSlider->value()));
 	randomizer->addonsLevelCapEC(static_cast<u8>(addonsUi.eternalCorridorLevelCapSlider->value()));
 
@@ -432,21 +421,38 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
     // Fixes
 	const auto& fixesUi{ m_fixes->Ui() };
 
-    if (fixesUi.bodyEnhancementFix->isChecked())
-	{
-		randomizer->fixesBodyEnhancement();
-	}
-
-	if (fixesUi.autumnMoonEffectFix->isChecked())
-	{
-		randomizer->fixesAutumnMoonEffect();
-	}
-
 	randomizer->fixesHpMpBarsSize(static_cast<u16>(fixesUi.hpMpBarsSizeSlider->value()));
 
-	if (fixesUi.specialAttackModifiersDisplayBox->isEnabled() && 
-		fixesUi.specialAttackModifiersDisplayFix->isChecked())
+	// Default
+	const auto& defaultUi{ m_default->Ui() };
+
+	if (defaultUi.x2Framerate->isChecked())
 	{
-		randomizer->fixesSpecialsModifiers();
+		randomizer->defaultX2Framerate();
+	}
+
+	if (defaultUi.skipOpeningLogos->isChecked())
+	{
+		randomizer->defaultSkipOpeningLogos();
+	}
+
+	if (defaultUi.showHiddenStats->isChecked())
+	{
+		randomizer->defaultShowHiddenStats();
+	}
+
+	if (defaultUi.bugFixesBodyEnhancement->isChecked())
+	{
+		randomizer->defaultBugFixesBodyEnhancement();
+	}
+
+	if (defaultUi.bugFixesAutumnMoonEffect->isChecked())
+	{
+		randomizer->defaultBugFixesAutumnMoonEffect();
+	}
+
+	if (randomizer->game().isVersion(Version::PalFr) && defaultUi.bugFixesSpecialAttackModifiersDisplay->isChecked())
+	{
+		randomizer->defaultBugFixesSpecialAttackModifiersDisplay();
 	}
 }

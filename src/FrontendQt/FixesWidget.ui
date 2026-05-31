@@ -14,7 +14,7 @@
    <string>FixesWidget</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="2" column="0">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="hpMpBarsSizeBox">
      <property name="title">
       <string>Hp Mp Bars Size</string>
@@ -52,7 +52,7 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item row="1" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -64,60 +64,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item row="3" column="0">
-    <widget class="QGroupBox" name="specialAttackModifiersDisplayBox">
-     <property name="title">
-      <string>Special Attack Modifiers Display</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <widget class="QCheckBox" name="specialAttackModifiersDisplayFix">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Fix</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QGroupBox" name="bodyEnhancementBox">
-     <property name="title">
-      <string>Body Enhancement</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QCheckBox" name="bodyEnhancementFix">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Fix</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="autumnMoonEffectBox">
-     <property name="title">
-      <string>Autumn Moon Effect</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QCheckBox" name="autumnMoonEffectFix">
-        <property name="text">
-         <string>Fix</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
    </item>
   </layout>
  </widget>

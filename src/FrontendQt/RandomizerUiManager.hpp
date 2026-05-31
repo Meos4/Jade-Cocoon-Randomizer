@@ -1,10 +1,9 @@
 #pragma once
 
-#include <QCheckBox>
-
 class AddonsWidget;
 class BossWidget;
 class ChallengeWidget;
+class DefaultDialog;
 class EquipmentWidget;
 class FixesWidget;
 class ForestWidget;
@@ -20,7 +19,8 @@ class RandomizerUiManager final
 public:
 	RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
 		EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-		AddonsWidget* addons, ChallengeWidget* challenge, FixesWidget* fixes);
+		AddonsWidget* addons, ChallengeWidget* challenge, FixesWidget* fixes,
+		DefaultDialog* defaultDialog);
 
 	void write(Randomizer* randomizer) const;
 private:
@@ -35,4 +35,5 @@ private:
 	AddonsWidget* m_addons;
 	ChallengeWidget* m_challenge;
 	FixesWidget* m_fixes;
+	DefaultDialog* m_default;
 };

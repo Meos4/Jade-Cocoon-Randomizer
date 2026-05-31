@@ -5,8 +5,6 @@
 #include <QApplication>
 #include <QIcon>
 #include <QPalette>
-#include <QString>
-#include <QWidget>
 
 void GuiSettings::setOsTheme()
 {
@@ -97,7 +95,7 @@ void GuiSettings::loadSettings(const Json::Read& json)
 	}
 }
 
-void GuiSettings::saveSettings(Json::Write* json)
+void GuiSettings::saveSettings(Json::Write* json) const
 {
 	(*json)["theme"] = m_theme;
 }
