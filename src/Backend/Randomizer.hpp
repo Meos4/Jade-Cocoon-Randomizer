@@ -200,10 +200,10 @@ public:
 	void addonsPalToNtsc() const;
 	void challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const;
 	void challengeDifficulty(Randomizer::ChallengeDifficulty state) const;
-	void fixesHpMpBars() const;
 	void defaultX2Framerate() const;
 	void defaultSkipOpeningLogos() const;
 	void defaultShowHiddenStats() const;
+	void defaultBugFixesHpMpBars() const;
 	void defaultBugFixesBodyEnhancement() const;
 	void defaultBugFixesAutumnMoonEffect() const;
 	void defaultBugFixesSpecialAttackModifiersDisplay() const;

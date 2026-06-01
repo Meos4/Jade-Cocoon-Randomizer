@@ -18,6 +18,7 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		{ SETTINGS(m_ui.x2Framerate) },
 		{ SETTINGS(m_ui.skipOpeningLogos) },
 		{ SETTINGS(m_ui.showHiddenStats) },
+		{ SETTINGS(m_ui.bugFixesHpMpBars) },
 		{ SETTINGS(m_ui.bugFixesBodyEnhancement) },
 		{ SETTINGS(m_ui.bugFixesAutumnMoonEffect) },
 		{ SETTINGS(m_ui.bugFixesSpecialAttackModifiersDisplay) },
@@ -45,6 +46,10 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 	);
 
 	const QString bugFixesTitle{ m_ui.fixesGroupBox->title() };
+
+	m_helpConsole->addFeature(m_ui.bugFixesHpMpBars, bugFixesTitle,
+		"Bug may occur on hp / mp bars when playing on unofficial hardware, this fixes the issue."
+	);
 
 	m_helpConsole->addFeature(m_ui.bugFixesBodyEnhancement, bugFixesTitle,
 		"Due to a programming error, body enhancements on Eternal Corridor minions and Eternal Corridor "

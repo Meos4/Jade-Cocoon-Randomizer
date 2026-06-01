@@ -7,7 +7,6 @@
 #include "FrontendQt/ChallengeWidget.hpp"
 #include "FrontendQt/DefaultDialog.hpp"
 #include "FrontendQt/EquipmentWidget.hpp"
-#include "FrontendQt/FixesWidget.hpp"
 #include "FrontendQt/ForestWidget.hpp"
 #include "FrontendQt/LevantWidget.hpp"
 #include "FrontendQt/MinionWidget.hpp"
@@ -18,7 +17,7 @@
 
 RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
     EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-    AddonsWidget* addons, ChallengeWidget* challenge, FixesWidget* fixes,
+    AddonsWidget* addons, ChallengeWidget* challenge,
     DefaultDialog* defaultDialog)
     : m_levant(levant),
       m_minion(minion),
@@ -30,7 +29,6 @@ RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* min
       m_misc(misc),
       m_addons(addons),
 	  m_challenge(challenge),
-      m_fixes(fixes),
       m_default(defaultDialog)
 {
 }
@@ -418,14 +416,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->challengeDifficulty(Randomizer::ChallengeDifficulty::Extreme);
 	}
 
-    // Fixes
-	const auto& fixesUi{ m_fixes->Ui() };
-
-	if (fixesUi.hpMpBarsFix->isChecked())
-	{
-		randomizer->fixesHpMpBars();
-	}
-
 	// Default
 	const auto& defaultUi{ m_default->Ui() };
 
@@ -442,6 +432,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	if (defaultUi.showHiddenStats->isChecked())
 	{
 		randomizer->defaultShowHiddenStats();
+	}
+
+	if (defaultUi.bugFixesHpMpBars->isChecked())
+	{
+		randomizer->defaultBugFixesHpMpBars();
 	}
 
 	if (defaultUi.bugFixesBodyEnhancement->isChecked())

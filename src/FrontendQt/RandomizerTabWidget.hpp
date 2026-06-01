@@ -32,7 +32,6 @@ public:
 		TAB_MISC,
 		TAB_ADDONS,
 		TAB_CHALLENGE,
-		TAB_FIXES,
 		TAB_COUNT
 	};
 

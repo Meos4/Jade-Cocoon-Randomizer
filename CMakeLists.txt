@@ -73,7 +73,6 @@ set(SOURCES_BACKEND_RANDOMIZER
     ${BACKEND_DIR}/Randomizer/Boss.cpp
     ${BACKEND_DIR}/Randomizer/Challenge.cpp
     ${BACKEND_DIR}/Randomizer/Equipment.cpp
-    ${BACKEND_DIR}/Randomizer/Fixes.cpp
     ${BACKEND_DIR}/Randomizer/Forest.cpp
     ${BACKEND_DIR}/Randomizer/Helpers.cpp
     ${BACKEND_DIR}/Randomizer/Helpers.hpp
@@ -122,9 +121,6 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/ExtractGameDialog.cpp
     ${FRONTENDQT_DIR}/ExtractGameDialog.hpp
     ${FRONTENDQT_DIR}/ExtractGameDialog.ui
-    ${FRONTENDQT_DIR}/FixesWidget.cpp
-    ${FRONTENDQT_DIR}/FixesWidget.hpp
-    ${FRONTENDQT_DIR}/FixesWidget.ui
     ${FRONTENDQT_DIR}/ForestWidget.cpp
     ${FRONTENDQT_DIR}/ForestWidget.hpp
     ${FRONTENDQT_DIR}/ForestWidget.ui

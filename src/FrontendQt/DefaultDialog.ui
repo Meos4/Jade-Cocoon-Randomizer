@@ -113,6 +113,16 @@
          </property>
          <layout class="QVBoxLayout" name="fixesLayout">
           <item>
+           <widget class="QCheckBox" name="bugFixesHpMpBars">
+            <property name="text">
+             <string>Hp Mp Bars</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="bugFixesBodyEnhancement">
             <property name="text">
              <string>Body Enhancement</string>
