@@ -5787,7 +5787,8 @@ gameNtscJ1
 	.criticalRateTransformFn = 0x800140F8,
 	.randFn = 0x8004D694,
 	.eternalCorridorCurrentCorridor = 0x800B2A04,
-	.heapVanillaBegin = 0x800C0C78
+	.heapVanillaBegin = 0x800C0C78,
+	.dialogueInputWrapperCallerFn = 0x8003F510
 },
 gameNtscJ2
 {
@@ -5815,7 +5816,8 @@ gameNtscJ2
 	.criticalRateTransformFn = 0x8001C15C,
 	.randFn = 0x80055640,
 	.eternalCorridorCurrentCorridor = 0x800BA6DC,
-	.heapVanillaBegin = 0x800D0164
+	.heapVanillaBegin = 0x800D0164,
+	.dialogueInputWrapperCallerFn = 0x8004763C
 },
 gameNtscU
 {
@@ -5843,7 +5845,8 @@ gameNtscU
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E298,
 	.eternalCorridorCurrentCorridor = 0x800B54CC,
-	.heapVanillaBegin = 0x800CD858
+	.heapVanillaBegin = 0x800CD858,
+	.dialogueInputWrapperCallerFn = 0x800353E8
 },
 gamePalEn
 {
@@ -5871,7 +5874,8 @@ gamePalEn
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E2BC,
 	.eternalCorridorCurrentCorridor = 0x800B569C,
-	.heapVanillaBegin = 0x800CDA28
+	.heapVanillaBegin = 0x800CDA28,
+	.dialogueInputWrapperCallerFn = 0x80035448
 },
 gamePalFr
 {
@@ -5899,7 +5903,8 @@ gamePalFr
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E370,
 	.eternalCorridorCurrentCorridor = 0x800B592C,
-	.heapVanillaBegin = 0x800CE2D0
+	.heapVanillaBegin = 0x800CE2D0,
+	.dialogueInputWrapperCallerFn = 0x80035448
 },
 gamePalDe
 {
@@ -5927,7 +5932,8 @@ gamePalDe
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E314,
 	.eternalCorridorCurrentCorridor = 0x800B57E4,
-	.heapVanillaBegin = 0x800CE330
+	.heapVanillaBegin = 0x800CE330,
+	.dialogueInputWrapperCallerFn = 0x80035448
 },
 gamePalEs
 {
@@ -5955,7 +5961,8 @@ gamePalEs
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E32C,
 	.eternalCorridorCurrentCorridor = 0x800B5A4C,
-	.heapVanillaBegin = 0x800CE878
+	.heapVanillaBegin = 0x800CE878,
+	.dialogueInputWrapperCallerFn = 0x80035448
 },
 gamePalIt
 {
@@ -5983,7 +5990,8 @@ gamePalIt
 	.criticalRateTransformFn = 0x80014164,
 	.randFn = 0x8004E324,
 	.eternalCorridorCurrentCorridor = 0x800B5A34,
-	.heapVanillaBegin = 0x800CE6E0
+	.heapVanillaBegin = 0x800CE6E0,
+	.dialogueInputWrapperCallerFn = 0x80035448
 };
 
 Offset::Offset(Version version)

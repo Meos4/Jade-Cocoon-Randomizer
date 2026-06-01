@@ -107,6 +107,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="turboModeInDialogues">
+         <property name="text">
+          <string>Turbo Mode In Dialogues</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QGroupBox" name="fixesGroupBox">
          <property name="title">
           <string>Bug fixes</string>

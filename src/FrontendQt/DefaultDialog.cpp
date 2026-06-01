@@ -18,6 +18,7 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		{ SETTINGS(m_ui.x2Framerate) },
 		{ SETTINGS(m_ui.skipOpeningLogos) },
 		{ SETTINGS(m_ui.showHiddenStats) },
+		{ SETTINGS(m_ui.turboModeInDialogues) },
 		{ SETTINGS(m_ui.bugFixesHpMpBars) },
 		{ SETTINGS(m_ui.bugFixesBodyEnhancement) },
 		{ SETTINGS(m_ui.bugFixesAutumnMoonEffect) },
@@ -43,6 +44,10 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		"Show Critical and Body Enhancement of minions in the stats frame."
 		"\n\nBipedal = +10 Special Attack Damage."
 		"\nWinged = +10 Magic Damage + Dodge \"All Enemies\" Special Attack."
+	);
+
+	m_helpConsole->addFeatureTitleOnly(m_ui.turboModeInDialogues, QStringLiteral("Turbo Mode In Dialogues"),
+		"Allows holding the confirmation button to skip dialogues."
 	);
 
 	const QString bugFixesTitle{ m_ui.fixesGroupBox->title() };

@@ -434,6 +434,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->defaultShowHiddenStats();
 	}
 
+	if (defaultUi.turboModeInDialogues->isChecked())
+	{
+		randomizer->defaultTurboModeInDialogues();
+	}
+
 	if (defaultUi.bugFixesHpMpBars->isChecked())
 	{
 		randomizer->defaultBugFixesHpMpBars();

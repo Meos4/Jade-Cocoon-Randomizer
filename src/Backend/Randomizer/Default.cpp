@@ -328,6 +328,58 @@ void Randomizer::defaultShowHiddenStats() const
 	}
 }
 
+void Randomizer::defaultTurboModeInDialogues() const
+{
+	const auto callerGame{ m_game->offset().game.dialogueInputWrapperCallerFn };
+
+	if (callerGame == 0)
+	{
+		return;
+	}
+
+	auto executable{ m_game->executable() };
+
+	const auto shift{ m_game->gameToFileTextSectionShift() };
+	const auto callerFile{ callerGame - 0x80000000 - shift };
+	const auto callerInsn{ executable.read<Mips_t>(callerFile) };
+
+	if (((callerInsn >> 26) & 0x3F) != 3)
+	{
+		return;
+	}
+
+	const auto wrapperGame{ ((callerInsn & 0x03FFFFFF) << 2) | 0x80000000 };
+	const auto wrapperFile{ wrapperGame - 0x80000000 - shift };
+	const auto wrapperBlock{ executable.read<std::array<Mips_t, 8>>(wrapperFile) };
+
+	const auto readerGame{ ((wrapperBlock[2] & 0x03FFFFFF) << 2) | 0x80000000 };
+	const auto readerContinueGame{ readerGame + 0xC };
+	const auto readerFile{ readerGame - 0x80000000 - shift };
+	const auto readerEdgeLoad{ executable.read<std::array<Mips_t, 2>>(readerFile + 4) };
+	const auto heldPadHi{ static_cast<u16>(readerEdgeLoad[0]) };
+	const auto edgePadLo{ static_cast<u16>(readerEdgeLoad[1]) };
+	const auto heldPadLo{ static_cast<u16>(static_cast<s16>(edgePadLo) - 0x7C) };
+
+	const auto turboDialogueOffset{ m_game->customCodeOffset(sizeof(MipsFn::TurboDialogueInput)) };
+
+	MipsFn::TurboDialogueInput turboDialogueFn
+	{
+		wrapperBlock[0],
+		wrapperBlock[1],
+		Mips::lui(Mips::Register::v0, heldPadHi),
+		Mips::addiu(Mips::Register::v0, heldPadLo),
+		Mips::j(readerContinueGame),
+		wrapperBlock[3],
+		wrapperBlock[4],
+		wrapperBlock[5],
+		wrapperBlock[6],
+		wrapperBlock[7],
+	};
+
+	executable.write(turboDialogueOffset.file, turboDialogueFn);
+	executable.write(callerFile, Mips::jal(turboDialogueOffset.game));
+}
+
 void Randomizer::defaultBugFixesHpMpBars() const
 {
 	auto executable{ m_game->executable() };

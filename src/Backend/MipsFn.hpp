@@ -48,6 +48,8 @@ namespace MipsFn
 
 	using ToggleX2Framerate = std::array<Mips_t, 20>;
 
+	using TurboDialogueInput = std::array<Mips_t, 10>;
+
 	using SetChestNewItemQuantityLimit = std::array<Mips_t, 6>;
 
 	// Fixes

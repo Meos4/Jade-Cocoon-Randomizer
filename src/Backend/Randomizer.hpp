@@ -203,6 +203,7 @@ public:
 	void defaultX2Framerate() const;
 	void defaultSkipOpeningLogos() const;
 	void defaultShowHiddenStats() const;
+	void defaultTurboModeInDialogues() const;
 	void defaultBugFixesHpMpBars() const;
 	void defaultBugFixesBodyEnhancement() const;
 	void defaultBugFixesAutumnMoonEffect() const;

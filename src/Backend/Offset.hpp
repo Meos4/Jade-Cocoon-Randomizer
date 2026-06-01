@@ -910,7 +910,8 @@ public:
 			criticalRateTransformFn,
 			randFn,
 			eternalCorridorCurrentCorridor,
-			heapVanillaBegin;
+			heapVanillaBegin,
+			dialogueInputWrapperCallerFn;
 	};
 
 	Offset(Version version);
