@@ -23,3 +23,11 @@ Buffer RawFile::readFile()
 	read(0, buffer.data(), fileSize);
 	return buffer;
 }
+
+void RawFile::resize(std::uintmax_t newSize)
+{
+	m_stream.flush();
+	m_stream.close();
+	std::filesystem::resize_file(m_path, newSize);
+	m_stream.open(m_path, openMode);
+}

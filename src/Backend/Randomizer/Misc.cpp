@@ -2,7 +2,11 @@
 
 #include "Backend/File.hpp"
 #include "Backend/Resource.hpp"
+#include "Backend/Mips.hpp"
+#include "Backend/MipsFn.hpp"
+#include "Backend/Version.hpp"
 
+#include <array>
 #include <numeric>
 #include <limits>
 #include <utility>
@@ -158,6 +162,53 @@ void Randomizer::miscNPCsVoice() const
 
 void Randomizer::miscBetaBattleTheme() const
 {
-	m_game->file(File::SOUND_PUBLIC_SND)->write(0, Resource::publicSnd);
-	m_game->file(File::SOUND_PUBLIC2_SND)->write(0, Resource::public2Snd);
+	const auto pubtst2{ m_game->file(File::SOUND_PUBTST2_SND) };
+	pubtst2->write(0, Resource::bBattleSnd);
+	pubtst2->resize(Resource::bBattleSnd.size());
+
+	const auto& game{ m_game->offset().game };
+	const auto& exeOff{ m_game->offset().file.executable };
+	const auto& battleOff{ m_game->offset().file.over_battle_bin };
+
+	const auto fadeOffset{ m_game->customCodeOffset(sizeof(MipsFn::BattleThemeFade)) };
+
+	const u16 sptrHi{ static_cast<u16>((game.soundStatePtr + 0x8000u) >> 16) };
+	const u16 sptrLo{ static_cast<u16>(game.soundStatePtr) };
+	const MipsFn::BattleThemeFade fadeFn
+	{
+		Mips_t(0x27BDFFF8),                          // addiu sp, sp, -8
+		Mips_t(0xAFBF0000),                          // sw    ra, 0(sp)
+		Mips::jal(game.fadeSlotFn),                  // jal   fadeSlotFn
+		Mips_t(0x00000000),                          // nop
+		Mips::lui(Mips::Register::v0, sptrHi),       // lui   v0, HI
+		Mips_t(0x8C420000u | sptrLo),                // lw    v0, LO(v0)
+		Mips_t(0x00000000),                          // nop
+		Mips_t(0x8C420024),                          // lw    v0, 0x24(v0)
+		Mips_t(0x00000000),                          // nop
+		Mips_t(0x8C430004),                          // lw    v1, 4(v0)
+		Mips_t(0x00000000),                          // nop
+		Mips_t(0x84650004),                          // lh    a1, 4(v1)
+		Mips_t(0x8464000C),                          // lh    a0, 0xc(v1)
+		Mips_t(0x04A00003),                          // bltz  a1, +3
+		Mips::li(Mips::Register::a2, 0x7f),          // addiu a2, zero, 0x7f
+		Mips::jal(game.fadeSeqFn),                   // jal   fadeSeqFn
+		Mips::li(Mips::Register::a3, 0x78),          // addiu a3, zero, 0x78
+		Mips_t(0x8FBF0000),                          // lw    ra, 0(sp)
+		Mips_t(0x27BD0008),                          // addiu sp, sp, 8
+		Mips_t(0x03E00008),                          // jr    ra
+		Mips_t(0x00000000)                           // nop
+	};
+
+	auto executable{ m_game->executable() };
+	executable.write(exeOff.ostTable + 65u * 8u + 4u, u8{ 1 });
+	executable.write(fadeOffset.file, fadeFn);
+
+	const auto battleBin{ m_game->file(File::OVER_BATTLE_BIN) };
+	battleBin->write(battleOff.battleMusicPlay, Mips::li(Mips::Register::a0, 65));
+	battleBin->write(battleOff.battleMusicPlay + 4u, Mips::jal(game.playOstFn));
+
+	const auto jalFade{ Mips::jal(fadeOffset.game) };
+	battleBin->write(battleOff.battleExitFade, jalFade);
+	battleBin->write(battleOff.battleExitFade + 0xC0u, jalFade);
+	battleBin->write(battleOff.battleExitFade + 0x1E0u, jalFade);
 }

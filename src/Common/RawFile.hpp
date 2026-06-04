@@ -39,6 +39,7 @@ public:
 
 	std::uintmax_t size() const;
 	Buffer readFile();
+	void resize(std::uintmax_t newSize);
 private:
 	std::fstream m_stream;
 	std::filesystem::path m_path;

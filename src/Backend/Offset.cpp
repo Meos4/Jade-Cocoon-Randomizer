@@ -38,7 +38,8 @@ fileNtscJ1
 		.tableOfLevantFluteStylingsId = 0x0006A774,
 		.mainSceneBehaviorFn = 0x000228C8,
 		.mainLoopFn = 0x0003977C,
-		.openingBehaviorFn = 0x00039B4C
+		.openingBehaviorFn = 0x00039B4C,
+		.ostTable = 0x00070E9C,
 	},
 	.over_battle_bin
 	{
@@ -46,6 +47,8 @@ fileNtscJ1
 		.tableOfBattleWeaponsEffectPtr = 0x000000F4,
 		.setBattleWeaponsEffectFn = 0x00003E78,
 		.endOfBattleSetSceneFn = 0x00000740,
+		.battleMusicPlay = 0x00000C14,
+		.battleExitFade = 0x000002E0,
 		.storyMinionAI = 0,
 		.minionAgniaId = 0,
 		.delfanelEarthBossId = 0,
@@ -55,7 +58,7 @@ fileNtscJ1
 		.tickerUlvi = 0,
 		.kolnaAdMumuls = 0,
 		.captureSuccess = 0,
-		.getFireflyCounterBattle = 0,
+		.getFireflyCounterBattle = 0,	
 	},
 	.over_btend_bin
 	{
@@ -757,7 +760,8 @@ fileNtscJ2
 		.tableOfLevantFluteStylingsId = 0x00069D50,
 		.mainSceneBehaviorFn = 0x00022CF0,
 		.mainLoopFn = 0x00039A78,
-		.openingBehaviorFn = 0x00039E54
+		.openingBehaviorFn = 0x00039E54,
+		.ostTable = 0x000701B0,
 	},
 	.over_battle_bin
 	{
@@ -765,6 +769,8 @@ fileNtscJ2
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x0000791C,
 		.endOfBattleSetSceneFn = 0x00002630,
+		.battleMusicPlay = 0x00002B04,
+		.battleExitFade = 0x000021D0,
 		.storyMinionAI = 0x0000C000,
 		.minionAgniaId = 0x0000D9B0,
 		.delfanelEarthBossId = 0x0000DC38,
@@ -774,7 +780,7 @@ fileNtscJ2
 		.tickerUlvi = 0x0000C22C,
 		.kolnaAdMumuls = 0x0000C2A4,	
 		.captureSuccess = 0x00006544,
-		.getFireflyCounterBattle = 0x0000F050,		
+		.getFireflyCounterBattle = 0x0000F050,	
 	},
 	.over_btend_bin
 	{
@@ -1476,7 +1482,8 @@ fileNtscU
 		.tableOfLevantFluteStylingsId = 0x0006D2C0,
 		.mainSceneBehaviorFn = 0x000184F8,
 		.mainLoopFn = 0x00030C7C,
-		.openingBehaviorFn = 0x00031500
+		.openingBehaviorFn = 0x00031500,
+		.ostTable = 0x0007370C,
 	},
 	.over_battle_bin
 	{
@@ -1484,6 +1491,8 @@ fileNtscU
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x00009438,
 		.endOfBattleSetSceneFn = 0x00004188,
+		.battleMusicPlay = 0x0000465C,
+		.battleExitFade = 0x00003D28,
 		.storyMinionAI = 0x0000DB1C,
 		.minionAgniaId = 0x0000F4CC,
 		.delfanelEarthBossId = 0x0000F754,
@@ -1493,7 +1502,7 @@ fileNtscU
 		.tickerUlvi = 0x0000DD48,
 		.kolnaAdMumuls = 0x0000DDC0,	
 		.captureSuccess = 0x00008060,
-		.getFireflyCounterBattle = 0x00010B6C,		
+		.getFireflyCounterBattle = 0x00010B6C,	
 	},
 	.over_btend_bin
 	{
@@ -2195,7 +2204,8 @@ filePalEn
 		.tableOfLevantFluteStylingsId = 0x0006D1E4,
 		.mainSceneBehaviorFn = 0x00018560,
 		.mainLoopFn = 0x000328C8,
-		.openingBehaviorFn = 0x0003314C
+		.openingBehaviorFn = 0x0003314C,
+		.ostTable = 0x00073630,
 	},
 	.over_battle_bin
 	{
@@ -2203,6 +2213,8 @@ filePalEn
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x00009438,
 		.endOfBattleSetSceneFn = 0x00004188,
+		.battleMusicPlay = 0x0000465C,
+		.battleExitFade = 0x00003D28,
 		.storyMinionAI = 0x0000DB1C,
 		.minionAgniaId = 0x0000F4CC,
 		.delfanelEarthBossId = 0x0000F754,
@@ -2212,7 +2224,7 @@ filePalEn
 		.tickerUlvi = 0x0000DD48,
 		.kolnaAdMumuls = 0x0000DDC0,	
 		.captureSuccess = 0x00008060,
-		.getFireflyCounterBattle = 0x00010B6C,
+		.getFireflyCounterBattle = 0x00010B6C,	
 	},
 	.over_btend_bin
 	{
@@ -2914,7 +2926,8 @@ filePalFr
 		.tableOfLevantFluteStylingsId = 0x0006D458,
 		.mainSceneBehaviorFn = 0x00018560,
 		.mainLoopFn = 0x0002FAC8,
-		.openingBehaviorFn = 0x0003034C
+		.openingBehaviorFn = 0x0003034C,
+		.ostTable = 0x000738A4,
 	},
 	.over_battle_bin
 	{
@@ -2922,6 +2935,8 @@ filePalFr
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x00009738,
 		.endOfBattleSetSceneFn = 0x00004488,
+		.battleMusicPlay = 0x0000495C,
+		.battleExitFade = 0x00004028,
 		.storyMinionAI = 0x0000DE1C,
 		.minionAgniaId = 0x0000F7CC,
 		.delfanelEarthBossId = 0x0000FA54,
@@ -2931,7 +2946,7 @@ filePalFr
 		.tickerUlvi = 0x0000E048,
 		.kolnaAdMumuls = 0x0000E0C0,
 		.captureSuccess = 0x00008360,
-		.getFireflyCounterBattle = 0x00010E6C,
+		.getFireflyCounterBattle = 0x00010E6C,	
 	},
 	.over_btend_bin
 	{
@@ -3633,7 +3648,8 @@ filePalDe
 		.tableOfLevantFluteStylingsId = 0x0006D314,
 		.mainSceneBehaviorFn = 0x00018560,
 		.mainLoopFn = 0x0002FA6C,
-		.openingBehaviorFn = 0x000302F0
+		.openingBehaviorFn = 0x000302F0,
+		.ostTable = 0x00073760,
 	},
 	.over_battle_bin
 	{
@@ -3641,6 +3657,8 @@ filePalDe
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x00009A58,
 		.endOfBattleSetSceneFn = 0x000047A8,
+		.battleMusicPlay = 0x00004C7C,
+		.battleExitFade = 0x00004348,
 		.storyMinionAI = 0x0000E13C,
 		.minionAgniaId = 0x0000FAEC,
 		.delfanelEarthBossId = 0x0000FD74,
@@ -4352,7 +4370,8 @@ filePalEs
 		.tableOfLevantFluteStylingsId = 0x0006D578,
 		.mainSceneBehaviorFn = 0x00018560,
 		.mainLoopFn = 0x0002FA84,
-		.openingBehaviorFn = 0x00030308
+		.openingBehaviorFn = 0x00030308,
+		.ostTable = 0x000739C4,
 	},
 	.over_battle_bin
 	{
@@ -4360,6 +4379,8 @@ filePalEs
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x00009C10,
 		.endOfBattleSetSceneFn = 0x00004960,
+		.battleMusicPlay = 0x00004E34,
+		.battleExitFade = 0x00004500,
 		.storyMinionAI = 0x0000E2F4,
 		.minionAgniaId = 0x0000FCA4,
 		.delfanelEarthBossId = 0x0000FF2C,
@@ -4369,7 +4390,7 @@ filePalEs
 		.tickerUlvi = 0x0000E520,
 		.kolnaAdMumuls = 0x0000E598,		
 		.captureSuccess = 0x00008838,
-		.getFireflyCounterBattle = 0x00011344,		
+		.getFireflyCounterBattle = 0x00011344,	
 	},
 	.over_btend_bin
 	{
@@ -5072,7 +5093,8 @@ filePalIt
 		.tableOfLevantFluteStylingsId = 0x0006D55C,
 		.mainSceneBehaviorFn = 0x00018560,
 		.mainLoopFn = 0x00030CE8,
-		.openingBehaviorFn = 0x0003156C
+		.openingBehaviorFn = 0x0003156C,
+		.ostTable = 0x000739A8,
 	},
 	.over_battle_bin
 	{
@@ -5080,6 +5102,8 @@ filePalIt
 		.tableOfBattleWeaponsEffectPtr = 0x00000134,
 		.setBattleWeaponsEffectFn = 0x00009B38,
 		.endOfBattleSetSceneFn = 0x00004888,
+		.battleMusicPlay = 0x00004D5C,
+		.battleExitFade = 0x00004428,
 		.storyMinionAI = 0x0000E21C,
 		.minionAgniaId = 0x0000FBCC,
 		.delfanelEarthBossId = 0x0000FE54,
@@ -5089,7 +5113,7 @@ filePalIt
 		.tickerUlvi = 0x0000E448,
 		.kolnaAdMumuls = 0x0000E4C0,	
 		.captureSuccess = 0x00008760,
-		.getFireflyCounterBattle = 0x0001126C,
+		.getFireflyCounterBattle = 0x0001126C,	
 	},
 	.over_btend_bin
 	{
@@ -5788,7 +5812,11 @@ gameNtscJ1
 	.randFn = 0x8004D694,
 	.eternalCorridorCurrentCorridor = 0x800B2A04,
 	.heapVanillaBegin = 0x800C0C78,
-	.dialogueInputWrapperCallerFn = 0x8003F510
+	.dialogueInputWrapperCallerFn = 0x8003F510,
+	.playOstFn = 0x8003A508,
+	.soundStatePtr = 0x8008AF70,
+	.fadeSlotFn = 0x8003B7F0,
+	.fadeSeqFn = 0x80061C28,
 },
 gameNtscJ2
 {
@@ -5817,7 +5845,11 @@ gameNtscJ2
 	.randFn = 0x80055640,
 	.eternalCorridorCurrentCorridor = 0x800BA6DC,
 	.heapVanillaBegin = 0x800D0164,
-	.dialogueInputWrapperCallerFn = 0x8004763C
+	.dialogueInputWrapperCallerFn = 0x8004763C,
+	.playOstFn = 0x800424B4,
+	.soundStatePtr = 0x80092620,
+	.fadeSlotFn = 0x8004379C,
+	.fadeSeqFn = 0x80069AC4,
 },
 gameNtscU
 {
@@ -5846,7 +5878,11 @@ gameNtscU
 	.randFn = 0x8004E298,
 	.eternalCorridorCurrentCorridor = 0x800B54CC,
 	.heapVanillaBegin = 0x800CD858,
-	.dialogueInputWrapperCallerFn = 0x800353E8
+	.dialogueInputWrapperCallerFn = 0x800353E8,
+	.playOstFn = 0x800300E0,
+	.soundStatePtr = 0x8008D4A4,
+	.fadeSlotFn = 0x800313C8,
+	.fadeSeqFn = 0x8006281C,
 },
 gamePalEn
 {
@@ -5875,7 +5911,11 @@ gamePalEn
 	.randFn = 0x8004E2BC,
 	.eternalCorridorCurrentCorridor = 0x800B569C,
 	.heapVanillaBegin = 0x800CDA28,
-	.dialogueInputWrapperCallerFn = 0x80035448
+	.dialogueInputWrapperCallerFn = 0x80035448,
+	.playOstFn = 0x8003013C,
+	.soundStatePtr = 0x8008D434,
+	.fadeSlotFn = 0x80031424,
+	.fadeSeqFn = 0x80062740,
 },
 gamePalFr
 {
@@ -5904,7 +5944,11 @@ gamePalFr
 	.randFn = 0x8004E370,
 	.eternalCorridorCurrentCorridor = 0x800B592C,
 	.heapVanillaBegin = 0x800CE2D0,
-	.dialogueInputWrapperCallerFn = 0x80035448
+	.dialogueInputWrapperCallerFn = 0x80035448,
+	.playOstFn = 0x8003013C,
+	.soundStatePtr = 0x8008D6C4,
+	.fadeSlotFn = 0x80031424,
+	.fadeSeqFn = 0x800627F4,
 },
 gamePalDe
 {
@@ -5933,7 +5977,11 @@ gamePalDe
 	.randFn = 0x8004E314,
 	.eternalCorridorCurrentCorridor = 0x800B57E4,
 	.heapVanillaBegin = 0x800CE330,
-	.dialogueInputWrapperCallerFn = 0x80035448
+	.dialogueInputWrapperCallerFn = 0x80035448,
+	.playOstFn = 0x8003013C,
+	.soundStatePtr = 0x8008D57C,
+	.fadeSlotFn = 0x80031424,
+	.fadeSeqFn = 0x80062798,
 },
 gamePalEs
 {
@@ -5962,7 +6010,11 @@ gamePalEs
 	.randFn = 0x8004E32C,
 	.eternalCorridorCurrentCorridor = 0x800B5A4C,
 	.heapVanillaBegin = 0x800CE878,
-	.dialogueInputWrapperCallerFn = 0x80035448
+	.dialogueInputWrapperCallerFn = 0x80035448,
+	.playOstFn = 0x8003013C,
+	.soundStatePtr = 0x8008D7E4,
+	.fadeSlotFn = 0x80031424,
+	.fadeSeqFn = 0x800627B0,
 },
 gamePalIt
 {
@@ -5991,7 +6043,11 @@ gamePalIt
 	.randFn = 0x8004E324,
 	.eternalCorridorCurrentCorridor = 0x800B5A34,
 	.heapVanillaBegin = 0x800CE6E0,
-	.dialogueInputWrapperCallerFn = 0x80035448
+	.dialogueInputWrapperCallerFn = 0x80035448,
+	.playOstFn = 0x8003013C,
+	.soundStatePtr = 0x8008D7CC,
+	.fadeSlotFn = 0x80031424,
+	.fadeSeqFn = 0x800627A8,
 };
 
 Offset::Offset(Version version)

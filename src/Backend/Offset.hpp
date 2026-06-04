@@ -39,7 +39,8 @@ public:
 				tableOfLevantFluteStylingsId,
 				mainSceneBehaviorFn,
 				mainLoopFn,
-				openingBehaviorFn;
+				openingBehaviorFn,
+				ostTable;
 		} executable;
 
 		struct
@@ -47,7 +48,9 @@ public:
 			u32 endOfBattle,
 				tableOfBattleWeaponsEffectPtr,
 				setBattleWeaponsEffectFn,
-				endOfBattleSetSceneFn;
+				endOfBattleSetSceneFn,
+				battleMusicPlay,
+				battleExitFade;
 
 			// not in NTSCJ1
 			u32 storyMinionAI,
@@ -911,7 +914,11 @@ public:
 			randFn,
 			eternalCorridorCurrentCorridor,
 			heapVanillaBegin,
-			dialogueInputWrapperCallerFn;
+			dialogueInputWrapperCallerFn,
+			playOstFn,
+			soundStatePtr,
+			fadeSlotFn,
+			fadeSeqFn;
 	};
 
 	Offset(Version version);
