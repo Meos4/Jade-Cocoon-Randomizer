@@ -531,7 +531,7 @@ void Randomizer::defaultAnalogMode() const
 			0x00831021, // addu v0, a0, v1
 			0x24820100, // addiu v0, a0, 0x100
 			0xA4A207B6, // sh v0, 0x7B6(a1)
-			0x3C037FFF, // lui v1, 0x7FFF
+			0x3C030FFF, // lui v1, 0x0FFF
 			0x8E020004, // lw v0, 4(s0)
 			0x00000000, // nop
 			0x3463FFFF, // ori v1, v1, 0xFFFF
@@ -741,7 +741,7 @@ void Randomizer::defaultAnalogMode() const
 			0x00831021, // addu v0, a0, v1
 			0x24820100, // addiu v0, a0, 0x100
 			0xA4A207B6, // sh v0, 0x7B6(a1)
-			0x3C037FFF, // lui v1, 0x7FFF
+			0x3C030FFF, // lui v1, 0x0FFF
 			0x8E020004, // lw v0, 4(s0)
 			0x00000000, // nop
 			0x3463FFFF, // ori v1, v1, 0xFFFF
