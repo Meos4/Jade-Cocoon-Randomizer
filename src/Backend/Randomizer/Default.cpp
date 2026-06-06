@@ -394,7 +394,7 @@ void Randomizer::defaultAnalogMode() const
 			0x90E20001, // lbu v0, 1(a3)
 			0x24030007, // addiu v1, zero, 7
 			0x00021102, // srl v0, v0, 4
-			0x14430051, // bne v0, v1, padCheckFail
+			0x14430050, // bne v0, v1, dpadFallback
 			0x3C028009, // lui v0, 0x8009
 			0x3C038009, // lui v1, 0x8009
 			0x246318D8, // addiu v1, v1, 0x18D8
@@ -475,7 +475,7 @@ void Randomizer::defaultAnalogMode() const
 			0x3C024000, // lui v0, 0x4000
 			0x0802A0D0, // j 0x800A8340
 			0x00000000, // nop
-			0x0802A0DA, // j 0x800A8368
+			0x3C028009, // lui v0, 0x8009
 			0x0802A083, // j 0x800A820C
 			0x00000000, // nop
 		};
@@ -531,7 +531,7 @@ void Randomizer::defaultAnalogMode() const
 			0x00831021, // addu v0, a0, v1
 			0x24820100, // addiu v0, a0, 0x100
 			0xA4A207B6, // sh v0, 0x7B6(a1)
-			0x3C039FFF, // lui v1, 0x9FFF
+			0x3C037FFF, // lui v1, 0x7FFF
 			0x8E020004, // lw v0, 4(s0)
 			0x00000000, // nop
 			0x3463FFFF, // ori v1, v1, 0xFFFF
@@ -539,7 +539,7 @@ void Randomizer::defaultAnalogMode() const
 			0x0802A6A3, // j 0x800A9A8C
 			0xAE020004, // sw v0, 4(s0)
 			0x0802A67C, // j 0x800A99F0
-			0x00000000, // nop
+			0x8E020004, // lw v0, 4(s0)
 		};
 
 		static constexpr MipsFn::AnalogToDpad analogToDpadFn
@@ -596,7 +596,7 @@ void Randomizer::defaultAnalogMode() const
 			0x90E20001, // lbu v0, 1(a3)
 			0x24030007, // addiu v1, zero, 7
 			0x00021102, // srl v0, v0, 4
-			0x14430057, // bne v0, v1, padCheckFail
+			0x14430055, // bne v0, v1, dpadFallback
 			0x3C038009, // lui v1, 0x8009
 			0x24633D7C, // addiu v1, v1, 0x3D7C
 			0x90620002, // lbu v0, 2(v1)
@@ -682,9 +682,9 @@ void Randomizer::defaultAnalogMode() const
 			0x3C024000, // lui v0, 0x4000
 			0x08029677, // j 0x800A59DC
 			0x00000000, // nop
-			0x00008021, // move s0, zero
-			0x08029677, // j 0x800A59DC
+			0x3C028009, // lui v0, 0x8009
 			0x0802962A, // j 0x800A58A8
+			0x00000000, // nop
 		};
 
 		static constexpr MipsFn::JoystickRotationNtscJ1 rotationFn
@@ -741,7 +741,7 @@ void Randomizer::defaultAnalogMode() const
 			0x00831021, // addu v0, a0, v1
 			0x24820100, // addiu v0, a0, 0x100
 			0xA4A207B6, // sh v0, 0x7B6(a1)
-			0x3C039FFF, // lui v1, 0x9FFF
+			0x3C037FFF, // lui v1, 0x7FFF
 			0x8E020004, // lw v0, 4(s0)
 			0x00000000, // nop
 			0x3463FFFF, // ori v1, v1, 0xFFFF
@@ -749,7 +749,7 @@ void Randomizer::defaultAnalogMode() const
 			0x08029C4A, // j 0x800A7128
 			0xAE020004, // sw v0, 4(s0)
 			0x08029C23, // j 0x800A708C
-			0x00000000, // nop
+			0x8E020004, // lw v0, 4(s0)
 		};
 
 		static constexpr MipsFn::AnalogToDpadNtscJ1 analogToDpadFn
