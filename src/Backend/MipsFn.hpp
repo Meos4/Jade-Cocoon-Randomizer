@@ -52,8 +52,10 @@ namespace MipsFn
 	using BattleThemeFade = std::array<Mips_t, 21>;
 	using AnalogMode = std::array<Mips_t, 89>;
 	using JoystickRotation = std::array<Mips_t, 58>;
+	using AnalogToDpad = std::array<Mips_t, 28>;
 	using AnalogModeNtscJ1 = std::array<Mips_t, 94>;
 	using JoystickRotationNtscJ1 = std::array<Mips_t, 61>;
+	using AnalogToDpadNtscJ1 = std::array<Mips_t, 35>;
 
 	using SetChestNewItemQuantityLimit = std::array<Mips_t, 6>;
 

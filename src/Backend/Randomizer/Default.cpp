@@ -542,14 +542,50 @@ void Randomizer::defaultAnalogMode() const
 			0x00000000, // nop
 		};
 
+		static constexpr MipsFn::AnalogToDpad analogToDpadFn
+		{
+			0x3C088009, // lui t0, 0x8009
+			0x250818D8, // addiu t0, t0, 0x18D8
+			0x00A84823, // subu t1, a1, t0
+			0x00094843, // sra t1, t1, 1
+			0x2508FFF8, // addiu t0, t0, -8
+			0x01094021, // addu t0, t0, t1
+			0x950A0000, // lhu t2, 0(t0)
+			0x80A60002, // lb a2, 2(a1)
+			0x80A70003, // lb a3, 3(a1)
+			0x28C10061, // slti at, a2, 0x61
+			0x14200002, // bnez at, +2
+			0x00000000, // nop
+			0x354A2000, // ori t2, t2, 0x2000          - right
+			0x28C1FFA0, // slti at, a2, -0x60
+			0x10200002, // beqz at, +2
+			0x00000000, // nop
+			0x354A8000, // ori t2, t2, 0x8000          - left
+			0x28E10061, // slti at, a3, 0x61
+			0x14200002, // bnez at, +2
+			0x00000000, // nop
+			0x354A1000, // ori t2, t2, 0x1000          - up
+			0x28E1FFA0, // slti at, a3, -0x60
+			0x10200002, // beqz at, +2
+			0x00000000, // nop
+			0x354A4000, // ori t2, t2, 0x4000          - down
+			0xA50A0000, // sh t2, 0(t0)
+			0x03E00008, // jr ra
+			0x00000000, // nop
+		};
+
 		const auto movementOffset{ m_game->customCodeOffset(sizeof(MipsFn::AnalogMode)) };
 		const auto rotationOffset{ m_game->customCodeOffset(sizeof(MipsFn::JoystickRotation)) };
+		const auto analogToDpadOffset{ m_game->customCodeOffset(sizeof(MipsFn::AnalogToDpad)) };
 
 		executable.write(movementOffset.file, movementFn);
 		gameBin->write(0x00007C68, Mips::j(movementOffset.game));
 
 		executable.write(rotationOffset.file, rotationFn);
 		gameBin->write(0x0000944C, Mips::j(rotationOffset.game));
+
+		executable.write(analogToDpadOffset.file, analogToDpadFn);
+		executable.write(0x0000D4FC, Mips::j(analogToDpadOffset.game));
 	}
 	else if (m_game->isVersion(Version::NtscJ1))
 	{
@@ -716,14 +752,57 @@ void Randomizer::defaultAnalogMode() const
 			0x00000000, // nop
 		};
 
+		static constexpr MipsFn::AnalogToDpadNtscJ1 analogToDpadFn
+		{
+			0x90C80002, // lbu t0, 2(a2)
+			0x90C90003, // lbu t1, 3(a2)
+			0x00084200, // sll t0, t0, 8
+			0x01094027, // nor t0, t0, t1
+			0xA4680000, // sh t0, 0(v1)
+			0x90C80001, // lbu t0, 1(a2)
+			0x24090007, // addiu t1, zero, 7
+			0x00084102, // srl t0, t0, 4
+			0x15090018, // bne t0, t1, done
+			0x00000000, // nop
+			0x90C80006, // lbu t0, 6(a2)
+			0x90C90007, // lbu t1, 7(a2)
+			0x240A0080, // addiu t2, zero, 0x80
+			0x010A4023, // subu t0, t0, t2
+			0x01494823, // subu t1, t2, t1
+			0x946B0000, // lhu t3, 0(v1)
+			0x29010061, // slti at, t0, 0x61
+			0x14200002, // bnez at, +2
+			0x00000000, // nop
+			0x356B2000, // ori t3, t3, 0x2000         - right
+			0x2901FFA0, // slti at, t0, -0x60
+			0x10200002, // beqz at, +2
+			0x00000000, // nop
+			0x356B8000, // ori t3, t3, 0x8000         - left
+			0x29210061, // slti at, t1, 0x61
+			0x14200002, // bnez at, +2
+			0x00000000, // nop
+			0x356B1000, // ori t3, t3, 0x1000         - up
+			0x2921FFA0, // slti at, t1, -0x60
+			0x10200002, // beqz at, +2
+			0x00000000, // nop
+			0x356B4000, // ori t3, t3, 0x4000         - down
+			0xA46B0000, // sh t3, 0(v1)
+			0x08009BAC, // j 0x80026EB0               - back to delay-slot instruction
+			0x00000000, // nop
+		};
+
 		const auto movementOffset{ m_game->customCodeOffset(sizeof(MipsFn::AnalogModeNtscJ1)) };
 		const auto rotationOffset{ m_game->customCodeOffset(sizeof(MipsFn::JoystickRotationNtscJ1)) };
+		const auto analogToDpadOffset{ m_game->customCodeOffset(sizeof(MipsFn::AnalogToDpadNtscJ1)) };
 
 		executable.write(movementOffset.file, movementFn);
 		gameBin->write(0x00007AB4, Mips::j(movementOffset.game));
 
 		executable.write(rotationOffset.file, rotationFn);
 		gameBin->write(0x00009298, Mips::j(rotationOffset.game));
+
+		executable.write(analogToDpadOffset.file, analogToDpadFn);
+		executable.write(0x000176AC, Mips::j(analogToDpadOffset.game));
 	}
 }
 
