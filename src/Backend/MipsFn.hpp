@@ -62,4 +62,5 @@ namespace MipsFn
 	// Fixes
 	using FixEntityEnhancement = std::array<Mips_t, 20>;
 	using HpMpBarsFix = std::array<Mips_t, 27>;
+	using HpMpBarsPreviewHealFix = std::array<Mips_t, 14>;
 }

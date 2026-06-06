@@ -814,7 +814,6 @@ void Randomizer::defaultBugFixesHpMpBars() const
 	const auto hpMpBarsFile{ m_game->offset().file.executable.hpMpBars };
 	const u32 hpMpBarsGame{ hpMpBarsFile + shift + 0x80000000 };
 	const auto drawBlock{ executable.read<std::array<Mips_t, 15>>(hpMpBarsFile + 0x34C) };
-	const auto hpMpBarsFixOffset{ m_game->customCodeOffset(sizeof(MipsFn::HpMpBarsFix)) };
 
 	MipsFn::HpMpBarsFix hpMpBarsFixFn{};
 
@@ -837,8 +836,37 @@ void Randomizer::defaultBugFixesHpMpBars() const
 	hpMpBarsFixFn[25] = Mips::j(hpMpBarsGame + 0x388);  // j
 	hpMpBarsFixFn[26] = 0x00000000;                     // nop
 
+	const auto hpMpBarsFixOffset{ m_game->customCodeOffset(sizeof(MipsFn::HpMpBarsFix)) };
+
 	executable.write(hpMpBarsFixOffset.file, hpMpBarsFixFn);
 	executable.write(hpMpBarsFile + 0x34C, Mips::j(hpMpBarsFixOffset.game));
+
+	const auto hpToPixelsJal{ executable.read<Mips_t>(hpMpBarsFile + 0xC4) };
+	const auto previewFlagLui{ executable.read<Mips_t>(hpMpBarsFile + 0x158) };
+	const auto previewFlagLoad{ executable.read<Mips_t>(hpMpBarsFile + 0x15C) };
+
+	const MipsFn::HpMpBarsPreviewHealFix previewHealFixFn
+	{
+		0x8E280004,                  // lw   t0, 4(s1)
+		0x00000000,                  // nop
+		0x05000007,                  // bltz t0, skip
+		0x00000000,                  // nop
+		0x8E240008,                  // lw   a0, 8(s1)
+		0x8E25000C,                  // lw   a1, 12(s1)
+		0x00882021,                  // addu a0, a0, t0
+		hpToPixelsJal,               // jal  hpToPixels
+		0x02403021,                  // addu a2, s2, zero
+		0x00552823,                  // subu a1, v0, s5
+		previewFlagLui,              // lui  v0, 0xXXXX
+		previewFlagLoad,             // lw   v0, 0xXXXX(v0)
+		Mips::j(hpMpBarsGame + 0x160), // j back
+		0x00000000                   // nop
+	};
+
+	const auto previewHealFixOffset{ m_game->customCodeOffset(sizeof(MipsFn::HpMpBarsPreviewHealFix)) };
+
+	executable.write(previewHealFixOffset.file, previewHealFixFn);
+	executable.write(hpMpBarsFile + 0x15C, Mips::j(previewHealFixOffset.game));
 }
 
 void Randomizer::defaultBugFixesBodyEnhancement() const
