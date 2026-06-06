@@ -439,6 +439,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->defaultTurboModeInDialogues();
 	}
 
+	if (randomizer->game().isVersion(Version::NtscJ1, Version::NtscU) && defaultUi.analogMode->isChecked())
+	{
+		randomizer->defaultAnalogMode();
+	}
+
 	if (defaultUi.bugFixesHpMpBars->isChecked())
 	{
 		randomizer->defaultBugFixesHpMpBars();

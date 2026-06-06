@@ -204,6 +204,7 @@ public:
 	void defaultSkipOpeningLogos() const;
 	void defaultShowHiddenStats() const;
 	void defaultTurboModeInDialogues() const;
+	void defaultAnalogMode() const;
 	void defaultBugFixesHpMpBars() const;
 	void defaultBugFixesBodyEnhancement() const;
 	void defaultBugFixesAutumnMoonEffect() const;

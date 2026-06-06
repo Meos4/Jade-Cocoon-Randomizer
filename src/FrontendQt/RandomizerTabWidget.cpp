@@ -87,7 +87,7 @@ void RandomizerTabWidget::disableUI()
 	{
 		widget->disableUI();
 	}
-	
+
 	m_randomizer.reset();
 }
 

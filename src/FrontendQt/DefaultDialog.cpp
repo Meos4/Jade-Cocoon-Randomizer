@@ -19,6 +19,7 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		{ SETTINGS(m_ui.skipOpeningLogos) },
 		{ SETTINGS(m_ui.showHiddenStats) },
 		{ SETTINGS(m_ui.turboModeInDialogues) },
+		{ SETTINGS(m_ui.analogMode) },
 		{ SETTINGS(m_ui.bugFixesHpMpBars) },
 		{ SETTINGS(m_ui.bugFixesBodyEnhancement) },
 		{ SETTINGS(m_ui.bugFixesAutumnMoonEffect) },
@@ -48,6 +49,12 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 
 	m_helpConsole->addFeatureTitleOnly(m_ui.turboModeInDialogues, QStringLiteral("Turbo Mode In Dialogues"),
 		"Allows holding the confirmation button to skip dialogues."
+	);
+
+	m_helpConsole->addFeatureTitleOnly(m_ui.analogMode, QStringLiteral("Analog Mode"),
+		"Enables 360° movement with the left analog stick."
+		"\n\nThis feature is present by default on the PAL and NTSC-J2 versions, but missing on "
+		"NTSC-U and NTSC-J1. This ports it to those two versions."
 	);
 
 	const QString bugFixesTitle{ m_ui.fixesGroupBox->title() };

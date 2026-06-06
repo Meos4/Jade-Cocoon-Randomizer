@@ -380,6 +380,353 @@ void Randomizer::defaultTurboModeInDialogues() const
 	executable.write(callerFile, Mips::jal(turboDialogueOffset.game));
 }
 
+void Randomizer::defaultAnalogMode() const
+{
+	auto executable{ m_game->executable() };
+	const auto gameBin{ m_game->file(File::OVER_GAME_BIN) };
+
+	if (m_game->isVersion(Version::NtscU))
+	{
+		static constexpr MipsFn::AnalogMode movementFn
+		{
+			0x3C028009, // lui v0, 0x8009
+			0x244718E8, // addiu a3, v0, 0x18E8
+			0x90E20001, // lbu v0, 1(a3)
+			0x24030007, // addiu v1, zero, 7
+			0x00021102, // srl v0, v0, 4
+			0x14430051, // bne v0, v1, padCheckFail
+			0x3C028009, // lui v0, 0x8009
+			0x3C038009, // lui v1, 0x8009
+			0x246318D8, // addiu v1, v1, 0x18D8
+			0x80620002, // lb v0, 2(v1)
+			0x80680003, // lb t0, 3(v1)
+			0x00420018, // mult v0, v0
+			0x00002012, // mflo a0
+			0x01080018, // mult t0, t0
+			0x00001812, // mflo v1
+			0x00839021, // addu s2, a0, v1
+			0x2A422AC9, // slti v0, s2, 0x2AC9
+			0x1440000C, // bnez v0, cardinalPath
+			0x2A420AB3, // slti v0, s2, 0xAB3
+			0x0C02A459, // jal 0x800A9164
+			0x27A40010, // addiu a0, sp, 0x10
+			0x24030001, // addiu v1, zero, 1
+			0x14430013, // bne v0, v1, applySpeed
+			0x24100001, // addiu s0, zero, 1
+			0x8FA20010, // lw v0, 0x10(sp)
+			0x00000000, // nop
+			0x0440000E, // bltz v0, fastForward
+			0x3C106000, // lui s0, 0x6000
+			0x1000000E, // b applySpeed
+			0x2A420AB3, // slti v0, s2, 0xAB3
+			0x1440000B, // bnez v0, applySpeed
+			0x00008021, // move s0, zero
+			0x0C02A459, // jal 0x800A9164
+			0x27A40010, // addiu a0, sp, 0x10
+			0x24030001, // addiu v1, zero, 1
+			0x14430006, // bne v0, v1, applySpeed
+			0x24100004, // addiu s0, zero, 4
+			0x8FA20010, // lw v0, 0x10(sp)
+			0x00000000, // nop
+			0x04410002, // bgez v0, applySpeed
+			0x3C106000, // lui s0, 0x6000
+			0x3C105000, // lui s0, 0x5000
+			0x2A420AB3, // slti v0, s2, 0xAB3
+			0x1440002A, // bnez v0, deadzone
+			0x3C028009, // lui v0, 0x8009
+			0x244218D8, // addiu v0, v0, 0x18D8
+			0x80440002, // lb a0, 2(v0)
+			0x80450003, // lb a1, 3(v0)
+			0x0C00ED52, // jal 0x8003B548
+			0x00000000, // nop
+			0x3C048009, // lui a0, 0x8009
+			0x2484D504, // addiu a0, a0, -0x2AFC
+			0x2485000C, // addiu a1, a0, 0xC
+			0x00026400, // sll t4, v0, 0x10
+			0x0C00EE78, // jal 0x8003B9E0
+			0x000C6403, // sra t4, t4, 0x10
+			0x00021400, // sll v0, v0, 0x10
+			0x00021403, // sra v0, v0, 0x10
+			0x3C038009, // lui v1, 0x8009
+			0x8463BD26, // lh v1, -0x42DA(v1)
+			0x01826021, // addu t4, t4, v0
+			0x01836023, // subu t4, t4, v1
+			0x05810002, // bgez t4, anglePositive
+			0x01801021, // move v0, t4
+			0x25820FFF, // addiu v0, t4, -1
+			0x00021B03, // sra v1, v0, 0xC
+			0x00031300, // sll v0, v1, 0xC
+			0x01821823, // subu v1, t4, v0
+			0x2862F800, // slti v0, v1, -0x800
+			0x10400003, // beqz v0, clampDone
+			0x28620801, // slti v0, v1, 0x801
+			0x24631000, // addiu v1, v1, 0x1000
+			0x28620801, // slti v0, v1, 0x801
+			0x14400002, // bnez v0, setDirectionBits
+			0x00000000, // nop
+			0x2463F000, // addiu v1, v1, -0x1000
+			0x3C018000, // lui at, 0x8000
+			0x02018025, // or s0, s0, at
+			0x0060082A, // slt at, v1, zero
+			0x14200002, // bnez at, setBit2000
+			0x3C022000, // lui v0, 0x2000
+			0x0802A0D0, // j 0x800A8340
+			0x00000000, // nop
+			0x3C024000, // lui v0, 0x4000
+			0x0802A0D0, // j 0x800A8340
+			0x00000000, // nop
+			0x0802A0DA, // j 0x800A8368
+			0x0802A083, // j 0x800A820C
+			0x00000000, // nop
+		};
+
+		static constexpr MipsFn::JoystickRotation rotationFn
+		{
+			0x8E020004, // lw v0, 4(s0)
+			0x3C018000, // lui at, 0x8000
+			0x00411824, // and v1, v0, at
+			0x10600034, // beqz v1, vanillaContinue
+			0x3C028009, // lui v0, 0x8009
+			0x244218D8, // addiu v0, v0, 0x18D8
+			0x80440002, // lb a0, 2(v0)
+			0x80450003, // lb a1, 3(v0)
+			0x0C00ED52, // jal 0x8003B548
+			0x00000000, // nop
+			0x3C048009, // lui a0, 0x8009
+			0x2484D504, // addiu a0, a0, -0x2AFC
+			0x2485000C, // addiu a1, a0, 0xC
+			0x00024400, // sll t0, v0, 0x10
+			0x0C00EE78, // jal 0x8003B9E0
+			0x00084403, // sra t0, t0, 0x10
+			0x00021400, // sll v0, v0, 0x10
+			0x00021403, // sra v0, v0, 0x10
+			0x3C038009, // lui v1, 0x8009
+			0x2465B570, // addiu a1, v1, -0x4A90
+			0x01024021, // addu t0, t0, v0
+			0x84A307B6, // lh v1, 0x7B6(a1)
+			0x94A407B6, // lhu a0, 0x7B6(a1)
+			0x01034023, // subu t0, t0, v1
+			0x05010002, // bgez t0, rotAnglePositive
+			0x01001021, // move v0, t0
+			0x25020FFF, // addiu v0, t0, -1
+			0x00021B03, // sra v1, v0, 0xC
+			0x00031300, // sll v0, v1, 0xC
+			0x01021823, // subu v1, t0, v0
+			0x2862F800, // slti v0, v1, -0x800
+			0x10400003, // beqz v0, rotClampDone
+			0x28620801, // slti v0, v1, 0x801
+			0x24631000, // addiu v1, v1, 0x1000
+			0x28620801, // slti v0, v1, 0x801
+			0x14400002, // bnez v0, rotWriteAngle
+			0x00000000, // nop
+			0x2463F000, // addiu v1, v1, -0x1000
+			0x04610006, // bgez v1, rotWriteAngle
+			0x28620100, // slti v0, v1, 0x100
+			0x2862FF01, // slti v0, v1, -0xFF
+			0x14400006, // bnez v0, rotWriteAngle
+			0x2482FF00, // addiu v0, a0, -0x100
+			0x10000004, // b rotWriteAngle
+			0x00831021, // addu v0, a0, v1
+			0x14400002, // bnez v0, rotWriteAngle
+			0x00831021, // addu v0, a0, v1
+			0x24820100, // addiu v0, a0, 0x100
+			0xA4A207B6, // sh v0, 0x7B6(a1)
+			0x3C039FFF, // lui v1, 0x9FFF
+			0x8E020004, // lw v0, 4(s0)
+			0x00000000, // nop
+			0x3463FFFF, // ori v1, v1, 0xFFFF
+			0x00431024, // and v0, v0, v1
+			0x0802A6A3, // j 0x800A9A8C
+			0xAE020004, // sw v0, 4(s0)
+			0x0802A67C, // j 0x800A99F0
+			0x00000000, // nop
+		};
+
+		const auto movementOffset{ m_game->customCodeOffset(sizeof(MipsFn::AnalogMode)) };
+		const auto rotationOffset{ m_game->customCodeOffset(sizeof(MipsFn::JoystickRotation)) };
+
+		executable.write(movementOffset.file, movementFn);
+		gameBin->write(0x00007C68, Mips::j(movementOffset.game));
+
+		executable.write(rotationOffset.file, rotationFn);
+		gameBin->write(0x0000944C, Mips::j(rotationOffset.game));
+	}
+	else if (m_game->isVersion(Version::NtscJ1))
+	{
+		static constexpr MipsFn::AnalogModeNtscJ1 movementFn
+		{
+			0x3C028009, // lui v0, 0x8009
+			0x24473D78, // addiu a3, v0, 0x3D78
+			0x90E20001, // lbu v0, 1(a3)
+			0x24030007, // addiu v1, zero, 7
+			0x00021102, // srl v0, v0, 4
+			0x14430057, // bne v0, v1, padCheckFail
+			0x3C038009, // lui v1, 0x8009
+			0x24633D7C, // addiu v1, v1, 0x3D7C
+			0x90620002, // lbu v0, 2(v1)
+			0x90680003, // lbu t0, 3(v1)
+			0x24090080, // addiu t1, zero, 0x80
+			0x01221023, // subu v0, t1, v0
+			0x00420018, // mult v0, v0
+			0x00002012, // mflo a0
+			0x01091023, // subu v0, t0, t1
+			0x00420018, // mult v0, v0
+			0x00001812, // mflo v1
+			0x00839021, // addu s2, a0, v1
+			0x2A422AC9, // slti v0, s2, 0x2AC9
+			0x1440000C, // bnez v0, cardinalPath
+			0x2A420AB3, // slti v0, s2, 0xAB3
+			0x0C029A00, // jal 0x800A6800
+			0x27A40010, // addiu a0, sp, 0x10
+			0x24030001, // addiu v1, zero, 1
+			0x14430013, // bne v0, v1, applySpeed
+			0x24100001, // addiu s0, zero, 1
+			0x8FA20010, // lw v0, 0x10(sp)
+			0x00000000, // nop
+			0x0440000E, // bltz v0, fastForward
+			0x3C106000, // lui s0, 0x6000
+			0x1000000E, // b applySpeed
+			0x2A420AB3, // slti v0, s2, 0xAB3
+			0x1440000B, // bnez v0, applySpeed
+			0x00008021, // move s0, zero
+			0x0C029A00, // jal 0x800A6800
+			0x27A40010, // addiu a0, sp, 0x10
+			0x24030001, // addiu v1, zero, 1
+			0x14430006, // bne v0, v1, applySpeed
+			0x24100004, // addiu s0, zero, 4
+			0x8FA20010, // lw v0, 0x10(sp)
+			0x00000000, // nop
+			0x04410002, // bgez v0, applySpeed
+			0x3C106000, // lui s0, 0x6000
+			0x3C105000, // lui s0, 0x5000
+			0x2A420AB3, // slti v0, s2, 0xAB3
+			0x1440002D, // bnez v0, deadzone
+			0x3C028009, // lui v0, 0x8009
+			0x24423D7C, // addiu v0, v0, 0x3D7C
+			0x90440002, // lbu a0, 2(v0)
+			0x90480003, // lbu t0, 3(v0)
+			0x24090080, // addiu t1, zero, 0x80
+			0x00892023, // subu a0, a0, t1
+			0x01282823, // subu a1, t1, t0
+			0x0C011445, // jal 0x80045114
+			0x00000000, // nop
+			0x3C048009, // lui a0, 0x8009
+			0x2484AFD4, // addiu a0, a0, -0x502C
+			0x2485000C, // addiu a1, a0, 0xC
+			0x00026400, // sll t4, v0, 0x10
+			0x0C01156B, // jal 0x800455AC
+			0x000C6403, // sra t4, t4, 0x10
+			0x00021400, // sll v0, v0, 0x10
+			0x00021403, // sra v0, v0, 0x10
+			0x3C038009, // lui v1, 0x8009
+			0x84639A06, // lh v1, -0x65FA(v1)
+			0x01826021, // addu t4, t4, v0
+			0x01836023, // subu t4, t4, v1
+			0x05810002, // bgez t4, anglePositive
+			0x01801021, // move v0, t4
+			0x25820FFF, // addiu v0, t4, -1
+			0x00021B03, // sra v1, v0, 0xC
+			0x00031300, // sll v0, v1, 0xC
+			0x01821823, // subu v1, t4, v0
+			0x2862F800, // slti v0, v1, -0x800
+			0x10400003, // beqz v0, clampDone
+			0x28620801, // slti v0, v1, 0x801
+			0x24631000, // addiu v1, v1, 0x1000
+			0x28620801, // slti v0, v1, 0x801
+			0x14400002, // bnez v0, setDirectionBits
+			0x00000000, // nop
+			0x2463F000, // addiu v1, v1, -0x1000
+			0x3C018000, // lui at, 0x8000
+			0x02018025, // or s0, s0, at
+			0x0060082A, // slt at, v1, zero
+			0x14200002, // bnez at, setBit2000
+			0x3C022000, // lui v0, 0x2000
+			0x08029677, // j 0x800A59DC
+			0x00000000, // nop
+			0x3C024000, // lui v0, 0x4000
+			0x08029677, // j 0x800A59DC
+			0x00000000, // nop
+			0x00008021, // move s0, zero
+			0x08029677, // j 0x800A59DC
+			0x0802962A, // j 0x800A58A8
+		};
+
+		static constexpr MipsFn::JoystickRotationNtscJ1 rotationFn
+		{
+			0x8E020004, // lw v0, 4(s0)
+			0x3C018000, // lui at, 0x8000
+			0x00411824, // and v1, v0, at
+			0x10600037, // beqz v1, vanillaContinue
+			0x3C028009, // lui v0, 0x8009
+			0x24423D7C, // addiu v0, v0, 0x3D7C
+			0x90440002, // lbu a0, 2(v0)
+			0x90480003, // lbu t0, 3(v0)
+			0x24090080, // addiu t1, zero, 0x80
+			0x00892023, // subu a0, a0, t1
+			0x01282823, // subu a1, t1, t0
+			0x0C011445, // jal 0x80045114
+			0x00000000, // nop
+			0x3C048009, // lui a0, 0x8009
+			0x2484AFD4, // addiu a0, a0, -0x502C
+			0x2485000C, // addiu a1, a0, 0xC
+			0x00024400, // sll t0, v0, 0x10
+			0x0C01156B, // jal 0x800455AC
+			0x00084403, // sra t0, t0, 0x10
+			0x00021400, // sll v0, v0, 0x10
+			0x00021403, // sra v0, v0, 0x10
+			0x3C038009, // lui v1, 0x8009
+			0x24659250, // addiu a1, v1, -0x6DB0
+			0x01024021, // addu t0, t0, v0
+			0x84A307B6, // lh v1, 0x7B6(a1)
+			0x94A407B6, // lhu a0, 0x7B6(a1)
+			0x01034023, // subu t0, t0, v1
+			0x05010002, // bgez t0, rotAnglePositive
+			0x01001021, // move v0, t0
+			0x25020FFF, // addiu v0, t0, -1
+			0x00021B03, // sra v1, v0, 0xC
+			0x00031300, // sll v0, v1, 0xC
+			0x01021823, // subu v1, t0, v0
+			0x2862F800, // slti v0, v1, -0x800
+			0x10400003, // beqz v0, rotClampDone
+			0x28620801, // slti v0, v1, 0x801
+			0x24631000, // addiu v1, v1, 0x1000
+			0x28620801, // slti v0, v1, 0x801
+			0x14400002, // bnez v0, rotWriteAngle
+			0x00000000, // nop
+			0x2463F000, // addiu v1, v1, -0x1000
+			0x04610006, // bgez v1, rotWriteAngle
+			0x28620100, // slti v0, v1, 0x100
+			0x2862FF01, // slti v0, v1, -0xFF
+			0x14400006, // bnez v0, rotWriteAngle
+			0x2482FF00, // addiu v0, a0, -0x100
+			0x10000004, // b rotWriteAngle
+			0x00831021, // addu v0, a0, v1
+			0x14400002, // bnez v0, rotWriteAngle
+			0x00831021, // addu v0, a0, v1
+			0x24820100, // addiu v0, a0, 0x100
+			0xA4A207B6, // sh v0, 0x7B6(a1)
+			0x3C039FFF, // lui v1, 0x9FFF
+			0x8E020004, // lw v0, 4(s0)
+			0x00000000, // nop
+			0x3463FFFF, // ori v1, v1, 0xFFFF
+			0x00431024, // and v0, v0, v1
+			0x08029C4A, // j 0x800A7128
+			0xAE020004, // sw v0, 4(s0)
+			0x08029C23, // j 0x800A708C
+			0x00000000, // nop
+		};
+
+		const auto movementOffset{ m_game->customCodeOffset(sizeof(MipsFn::AnalogModeNtscJ1)) };
+		const auto rotationOffset{ m_game->customCodeOffset(sizeof(MipsFn::JoystickRotationNtscJ1)) };
+
+		executable.write(movementOffset.file, movementFn);
+		gameBin->write(0x00007AB4, Mips::j(movementOffset.game));
+
+		executable.write(rotationOffset.file, rotationFn);
+		gameBin->write(0x00009298, Mips::j(rotationOffset.game));
+	}
+}
+
 void Randomizer::defaultBugFixesHpMpBars() const
 {
 	auto executable{ m_game->executable() };
