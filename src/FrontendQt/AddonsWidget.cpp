@@ -50,8 +50,8 @@ AddonsWidget::AddonsWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		"\n\nDoes not work on some emulators."
 	);
 
-	m_ui.itemQuantityLimitValue->setStyleSheet("font-weight: normal;");
-	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: normal;");
+	m_ui.itemQuantityLimitValue->setStyleSheet("font-weight: bold;");
+	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: bold;");
 
 	m_ui.skipTutorialSkipKoris->setEnabled(false);
 
