@@ -335,7 +335,7 @@
   <widget class="QWidget" name="miscTab">
    <attribute name="icon">
     <iconset resource="resources/resources.qrc">
-     <normaloff>:/icons/GreenCursor16.png</normaloff>:/icons/GreenCursor16.png</iconset>
+     <normaloff>:/icons/BetaLoading16.png</normaloff>:/icons/BetaLoading16.png</iconset>
    </attribute>
    <attribute name="title">
     <string>Misc</string>
