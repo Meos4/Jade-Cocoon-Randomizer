@@ -14,12 +14,12 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	m_qCheckBox =
 	{
+		{ SETTINGS(m_ui.skipTutorialEnable) },
+		{ SETTINGS(m_ui.skipTutorialSkipKoris) },
 		{ SETTINGS(m_ui.hudRandom) },
 		{ SETTINGS(m_ui.hudColorCustom) },
 		{ SETTINGS(m_ui.npcsVoiceRandom) },
 		{ SETTINGS(m_ui.betaBattleThemeEnable) },
-		{ SETTINGS(m_ui.skipTutorialEnable) },
-		{ SETTINGS(m_ui.skipTutorialSkipKoris) },
 		{ SETTINGS(m_ui.palToNtscEnable) }
 	};
 
@@ -28,6 +28,16 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.itemQuantityLimitSlider) },
 		{ SETTINGS(m_ui.eternalCorridorLevelCapSlider) }
 	};
+
+	const QString _SkipTutorial{ m_ui.skipTutorialBox->title() };
+
+	helpConsole->addFeature(m_ui.skipTutorialEnable, _SkipTutorial,
+		"Skip the new game tutorial."
+	);
+
+	helpConsole->addFeature(m_ui.skipTutorialSkipKoris, _SkipTutorial,
+		"Skip Koris tutorial in the Beetle Forest."
+	);
 
 	const QString _HudColor{ m_ui.hudColorBox->title() };
 
@@ -47,16 +57,6 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	helpConsole->addFeature(m_ui.betaBattleThemeEnable, m_ui.betaBattleThemeBox->title(),
 		"Replace the battle theme with the beta version."
-	);
-
-	const QString _SkipTutorial{ m_ui.skipTutorialBox->title() };
-
-	helpConsole->addFeature(m_ui.skipTutorialEnable, _SkipTutorial,
-		"Skip the new game tutorial."
-	);
-
-	helpConsole->addFeature(m_ui.skipTutorialSkipKoris, _SkipTutorial,
-		"Skip Koris tutorial in the Beetle Forest."
 	);
 
 	const QString _Slider{ "Slider" };

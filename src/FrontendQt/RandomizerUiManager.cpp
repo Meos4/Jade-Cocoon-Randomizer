@@ -348,6 +348,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
     // Misc
 	const auto& miscUi{ m_misc->Ui() };
 
+	if (miscUi.skipTutorialEnable->isChecked())
+	{
+		randomizer->miscSkipTutorial(miscUi.skipTutorialSkipKoris->isChecked());
+	}
+
     if (miscUi.hudRandom->isChecked())
 	{
 		randomizer->miscHudColor();
@@ -365,11 +370,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	if (miscUi.betaBattleThemeEnable->isChecked())
 	{
 		randomizer->miscBetaBattleTheme();
-	}
-
-	if (miscUi.skipTutorialEnable->isChecked())
-	{
-		randomizer->miscSkipTutorial(miscUi.skipTutorialSkipKoris->isChecked());
 	}
 
 	randomizer->miscItemQuantityLimit(static_cast<u8>(miscUi.itemQuantityLimitSlider->value()));

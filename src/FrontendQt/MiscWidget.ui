@@ -15,6 +15,50 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
+    <widget class="QGroupBox" name="skipTutorialBox">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Skip Tutorial</string>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="skipTutorialEnable">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>Enable</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="skipTutorialSkipKoris">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string>+Skip Koris</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="hudColorBox">
      <property name="title">
       <string>Hud Color</string>
@@ -199,7 +243,7 @@
      </layout>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_betaBattleNpcs">
      <item>
       <widget class="QGroupBox" name="betaBattleThemeBox">
@@ -234,50 +278,6 @@
       </widget>
      </item>
     </layout>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="skipTutorialBox">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="font">
-      <font>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="title">
-      <string>Skip Tutorial</string>
-     </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="skipTutorialEnable">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Enable</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="skipTutorialSkipKoris">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string>+Skip Koris</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
    </item>
    <item row="3" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout_itemQuantityEternalCorridor">
