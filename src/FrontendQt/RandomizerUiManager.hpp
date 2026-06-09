@@ -1,6 +1,5 @@
 #pragma once
 
-class AddonsWidget;
 class BossWidget;
 class ChallengeWidget;
 class DefaultDialog;
@@ -18,7 +17,7 @@ class RandomizerUiManager final
 public:
 	RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
 		EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-		AddonsWidget* addons, ChallengeWidget* challenge,
+		ChallengeWidget* challenge,
 		DefaultDialog* defaultDialog);
 
 	void write(Randomizer* randomizer) const;
@@ -31,7 +30,6 @@ private:
 	TreasureWidget* m_treasure;
 	ShopWidget* m_shop;
 	MiscWidget* m_misc;
-	AddonsWidget* m_addons;
 	ChallengeWidget* m_challenge;
 	DefaultDialog* m_default;
 };

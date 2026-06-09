@@ -30,7 +30,6 @@ public:
 		TAB_TREASURE,
 		TAB_SHOP,
 		TAB_MISC,
-		TAB_ADDONS,
 		TAB_CHALLENGE,
 		TAB_COUNT
 	};

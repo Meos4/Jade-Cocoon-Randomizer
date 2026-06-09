@@ -17,7 +17,16 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.hudRandom) },
 		{ SETTINGS(m_ui.hudColorCustom) },
 		{ SETTINGS(m_ui.npcsVoiceRandom) },
-		{ SETTINGS(m_ui.betaBattleThemeEnable) }
+		{ SETTINGS(m_ui.betaBattleThemeEnable) },
+		{ SETTINGS(m_ui.skipTutorialEnable) },
+		{ SETTINGS(m_ui.skipTutorialSkipKoris) },
+		{ SETTINGS(m_ui.palToNtscEnable) }
+	};
+
+	m_qSlider =
+	{
+		{ SETTINGS(m_ui.itemQuantityLimitSlider) },
+		{ SETTINGS(m_ui.eternalCorridorLevelCapSlider) }
 	};
 
 	const QString _HudColor{ m_ui.hudColorBox->title() };
@@ -39,6 +48,38 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	helpConsole->addFeature(m_ui.betaBattleThemeEnable, m_ui.betaBattleThemeBox->title(),
 		"Replace the battle theme with the beta version."
 	);
+
+	const QString _SkipTutorial{ m_ui.skipTutorialBox->title() };
+
+	helpConsole->addFeature(m_ui.skipTutorialEnable, _SkipTutorial,
+		"Skip the new game tutorial."
+	);
+
+	helpConsole->addFeature(m_ui.skipTutorialSkipKoris, _SkipTutorial,
+		"Skip Koris tutorial in the Beetle Forest."
+	);
+
+	const QString _Slider{ "Slider" };
+
+	helpConsole->addFeature(m_ui.itemQuantityLimitSlider, m_ui.itemQuantityLimitBox->title(), _Slider,
+		"Changes item quantity limit."
+		"\n\nDefault = 20"
+	);
+
+	helpConsole->addFeature(m_ui.eternalCorridorLevelCapSlider, m_ui.eternalCorridorLevelCapBox->title(), _Slider,
+		"Change the level cap of the Eternal Corridor."
+		"\n\nDefault = 26"
+	);
+
+	helpConsole->addFeature(m_ui.palToNtscEnable, m_ui.palToNtscBox->title(),
+		"Turn pal versions in ntsc."
+		"\n\nDoes not work on some emulators."
+	);
+
+	m_ui.itemQuantityLimitValue->setStyleSheet("font-weight: bold;");
+	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: bold;");
+
+	m_ui.skipTutorialSkipKoris->setEnabled(false);
 
 	m_ui.hudColorCombo->setStyleSheet("font-weight: normal;");
 	m_ui.hudColorLabel->setStyleSheet("font-weight: normal;");
@@ -87,6 +128,9 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.hudHighlightR, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 	connect(m_ui.hudHighlightG, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 	connect(m_ui.hudHighlightB, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
+	connect(m_ui.skipTutorialEnable, &QAbstractButton::toggled, m_ui.skipTutorialSkipKoris, &QWidget::setEnabled);
+	connect(m_ui.itemQuantityLimitSlider, &QAbstractSlider::valueChanged, this, &MiscWidget::setItemQuantityText);
+	connect(m_ui.eternalCorridorLevelCapSlider, &QAbstractSlider::valueChanged, this, &MiscWidget::setEternalCorridorLevelCapText);
 }
 
 void MiscWidget::enableUI(Randomizer* randomizer)
@@ -99,6 +143,7 @@ void MiscWidget::enableUI(Randomizer* randomizer)
 		m_isFirstEnableUI = false;
 	}
 
+	m_ui.palToNtscBox->setEnabled(!randomizer->game().isNtsc());
 	setEnabled(true);
 }
 
@@ -119,6 +164,11 @@ void MiscWidget::loadPresets(const Json::Read& json)
 		checkBox.load(json);
 	}
 
+	for (auto& slider : m_qSlider)
+	{
+		slider.load(json);
+	}
+
 	for (std::size_t i{}; i < m_colors.size(); ++i)
 	{
 		Json::set<u8>(json["colors"][i], "red", [&](auto v) { m_colors[i].red = v; });
@@ -133,6 +183,11 @@ void MiscWidget::savePresets(Json::Write* json)
 	for (const auto& checkBox : m_qCheckBox)
 	{
 		checkBox.save(json);
+	}
+
+	for (const auto& slider : m_qSlider)
+	{
+		slider.save(json);
 	}
 
 	UIToColor(m_previousThemeIndex);
@@ -258,4 +313,14 @@ void MiscWidget::updateHudColorRGBHighlight()
 			m_ui.hudHighlightR->value(), m_ui.hudHighlightG->value(), m_ui.hudHighlightB->value())
 	};
 	m_ui.hudHighlightLabelResult->setStyleSheet(QString::fromStdString(highlightRGB));
+}
+
+void MiscWidget::setItemQuantityText(s32 value)
+{
+	m_ui.itemQuantityLimitValue->setText(QString::number(value));
+}
+
+void MiscWidget::setEternalCorridorLevelCapText(s32 value)
+{
+	m_ui.eternalCorridorLevelCapValue->setText(QString::number(value));
 }

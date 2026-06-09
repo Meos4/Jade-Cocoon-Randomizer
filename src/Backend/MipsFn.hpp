@@ -28,26 +28,20 @@ namespace MipsFn
 	static_assert(sizeof(RandomEternalCorridorOst) % 4 == 0, "Bad Padding");
 #pragma pack(pop)
 
-	// Addons
 	using NuzlockeDefinitiveDeath = std::array<Mips_t, 23>;
 	using WriteUsedMapEOBData = std::array<u8, 20>;
 	using WriteUsedMapEOB = std::array<Mips_t, 44>;
 	using WriteUsedMapCapture = std::array<Mips_t, 8>;
 	using ReadUsedMap = std::array<Mips_t, 52>;
 	using ResetFromNowhere = std::array<Mips_t, 16>;
-
 	using DifficultyModeStats = std::array<Mips_t, 33>;
-
 	using AfterTutorialStateData = std::array<u8, 360>;
 	using WriteAfterTutorialState = std::array<Mips_t, 36>;
-
 	using DrawHiddenStats = std::array<Mips_t, 62>;
 	using CriticalRateFromStats = std::array<Mips_t, 13>;
 	using DrawCriticalRate = std::array<Mips_t, 15>;
 	using DrawCriticalRateMerge = std::array<Mips_t, 14>;
-
 	using ToggleX2Framerate = std::array<Mips_t, 20>;
-
 	using TurboDialogueInput = std::array<Mips_t, 10>;
 	using BattleThemeFade = std::array<Mips_t, 21>;
 	using AnalogMode = std::array<Mips_t, 89>;
@@ -56,10 +50,7 @@ namespace MipsFn
 	using AnalogModeNtscJ1 = std::array<Mips_t, 94>;
 	using JoystickRotationNtscJ1 = std::array<Mips_t, 61>;
 	using AnalogToDpadNtscJ1 = std::array<Mips_t, 35>;
-
 	using SetChestNewItemQuantityLimit = std::array<Mips_t, 6>;
-
-	// Fixes
 	using FixEntityEnhancement = std::array<Mips_t, 20>;
 	using HpMpBarsFix = std::array<Mips_t, 27>;
 	using HpMpBarsPreviewHealFix = std::array<Mips_t, 14>;

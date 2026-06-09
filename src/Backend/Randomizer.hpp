@@ -194,10 +194,10 @@ public:
 	void miscHudColor(const Randomizer::HudColorArray& hud) const;
 	void miscNPCsVoice() const;
 	void miscBetaBattleTheme() const;
-	void addonsSkipTutorial(bool skipKoris) const;
-	void addonsItemQuantityLimit(u8 limit) const;
-	void addonsLevelCapEC(u8 levelCap) const;
-	void addonsPalToNtsc() const;
+	void miscSkipTutorial(bool skipKoris) const;
+	void miscItemQuantityLimit(u8 limit) const;
+	void miscLevelCapEC(u8 levelCap) const;
+	void miscPalToNtsc() const;
 	void challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const;
 	void challengeDifficulty(Randomizer::ChallengeDifficulty state) const;
 	void defaultX2Framerate() const;

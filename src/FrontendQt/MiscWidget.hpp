@@ -31,6 +31,8 @@ public Q_SLOTS:
 	void updateHudColorRGBColor();
 	void updateHudColorRGBSelected();
 	void updateHudColorRGBHighlight();
+	void setItemQuantityText(s32 value);
+	void setEternalCorridorLevelCapText(s32 value);
 private:
 	void colorToUI(s32 theme);
 	void UIToColor(s32 theme);
@@ -42,4 +44,5 @@ private:
 	bool m_isFirstEnableUI{ true };
 
 	std::vector<RandomizerQCheckBox> m_qCheckBox;
+	std::vector<RandomizerQSlider> m_qSlider;
 };

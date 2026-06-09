@@ -212,3 +212,193 @@ void Randomizer::miscBetaBattleTheme() const
 	battleBin->write(battleOff.battleExitFade + 0xC0u, jalFade);
 	battleBin->write(battleOff.battleExitFade + 0x1E0u, jalFade);
 }
+
+void Randomizer::miscSkipTutorial(bool skipKoris) const
+{
+	static constexpr MipsFn::AfterTutorialStateData afterTutorialStateData
+	{
+		0xC8, 0x00, 0x00, 0x00, 0x00, 0x03, 0x0E, 0x01, 0x0C, 0x00, 0x00, 0x00, 0x0F, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x02, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x66, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 0x02, 0x00,
+		0x00, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x22, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x43, 0x00,
+		0x02, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x02, 0x00, 0x02, 0x00, 0x00, 0x00, 0xFF, 0xFF,
+		0x02, 0x00, 0x03, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x02, 0x00, 0x04, 0x00, 0x00, 0x00, 0x4E, 0x00,
+		0x02, 0x00, 0x05, 0x00, 0x00, 0x00, 0x53, 0x00, 0x02, 0x00, 0x06, 0x00, 0x00, 0x00, 0xFF, 0xFF,
+		0x02, 0x00, 0x07, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x02, 0x00, 0x08, 0x00, 0x00, 0x00, 0xFF, 0xFF,
+		0x02, 0x00, 0x09, 0x00, 0x00, 0x00, 0x5E, 0x00, 0x02, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x60, 0x00,
+		0x02, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x62, 0x00, 0x02, 0x00, 0x04, 0x00, 0x01, 0x00, 0x50, 0x00,
+		0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x03, 0x00, 0x01, 0x00, 0x01, 0x00, 0x00, 0x00, 0x0A, 0x00,
+		0x01, 0x00, 0x02, 0x00, 0x00, 0x00, 0x10, 0x00, 0x01, 0x00, 0x03, 0x00, 0x00, 0x00, 0x14, 0x00,
+		0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0x18, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x20, 0x00,
+		0x01, 0x00, 0x06, 0x00, 0x00, 0x00, 0x25, 0x00, 0x01, 0x00, 0x07, 0x00, 0x00, 0x00, 0x32, 0x00,
+		0x01, 0x00, 0x08, 0x00, 0x00, 0x00, 0x36, 0x00, 0x01, 0x00, 0x09, 0x00, 0x00, 0x00, 0x3A, 0x00,
+		0x01, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x3E, 0x00, 0x01, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x42, 0x00,
+		0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x65, 0x00, 0x04, 0x00, 0x01, 0x00, 0x00, 0x00, 0xFF, 0xFF,
+		0x04, 0x00, 0x02, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x04, 0x00, 0x03, 0x00, 0x00, 0x00, 0xFF, 0xFF,
+		0x04, 0x00, 0x04, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x01, 0x00, 0x04, 0x00, 0x01, 0x00, 0x1C, 0x00,
+		0x01, 0x00, 0x06, 0x00, 0x03, 0x00, 0x29, 0x00, 0x01, 0x00, 0x06, 0x00, 0x04, 0x00, 0x2D, 0x00,
+		0x04, 0x00, 0x01, 0x00, 0x06, 0x00, 0x71, 0x00
+	};
+	
+	const auto afterTutorialStateOffset{ m_game->customCodeOffset(sizeof(MipsFn::AfterTutorialStateData)) };
+
+	const auto
+		li32_afterTutorialState{ Mips::li32(Mips::Register::a0, afterTutorialStateOffset.game) },
+		li32_gameStateStruct{ Mips::li32(Mips::Register::a1, m_game->offset().game.gameStateStruct) };
+
+	const MipsFn::WriteAfterTutorialState writeAfterTutorialStateFn
+	{
+		0x27BDFFF0, // addiu sp, -0x10
+		0xAFA2000C, // sw v0, 0xC(sp)
+		0xAFA30008, // sw v1, 8(sp)
+		0xAFA40004, // sw a0, 4(sp)
+		0xAFA50000, // sw a1, 0(sp)
+
+		li32_afterTutorialState[0], // lui a0, 0xXXXX
+		li32_gameStateStruct[0], // lui a1, 0xXXXX
+		li32_afterTutorialState[1], // ori a0, 0xXXXX
+		li32_gameStateStruct[1], // ori a1, 0xXXXX
+
+		// Give 200 Yan, 3 Mugwort and 1 Valerian Podwer
+		0x00001821, // move v1, zero
+		0x8C8B0000, // lw t3, 0(a0)
+		0x24630001, // addiu v1, 1
+		0xACAB0000, // sw t3, 0(a1)
+		0x24840004, // addiu a0, 4
+		0x2C680002, // sltiu t0, v1, 2
+		0x1500FFFA, // bnez t0, -6
+		0x24A50004, // addiu a1, 4
+
+		// Give Dagger
+		0x24A5007C, // addiu a1, 0x7C
+		0x3C0900FF, // lui t1, 0x00FF
+		0x35290101, // ori t1, 0x0101
+		0xACA90000, // sw t1, 0(a1)
+
+		// Set Story Flags and Events
+		0x24A50200, // addiu a1, 0x200
+		0x00001821, // move v1, zero
+		0x8C8B0000, // lw t3, 0(a0)
+		0x24630001, // addiu v1, 1
+		0xACAB0000, // sw t3, 0(a1)
+		0x24840004, // addiu a0, 4
+		0x2C680058, // sltiu t0, v1, 58
+		0x1500FFFA, // bnez t0, -6
+		0x24A50004, // addiu a1, 4
+
+		0x8FA2000C, // lw v0, 0xC(sp)
+		0x8FA30008, // lw v1, 8(sp)
+		0x8FA40004, // lw a0, 4(sp)
+		0x8FA50000, // lw a1, 0(sp)
+		0x03E00008, // jr ra
+		0x27BD0010  // addiu sp, 0x10
+	};
+
+	auto executable{ m_game->executable() };
+
+	const auto writeAfterTutorialStateOffset{ m_game->customCodeOffset(sizeof(MipsFn::WriteAfterTutorialState)) };
+
+	executable.write(afterTutorialStateOffset.file, afterTutorialStateData);
+	executable.write(writeAfterTutorialStateOffset.file, writeAfterTutorialStateFn);
+
+	if (skipKoris)
+	{
+		executable.write(afterTutorialStateOffset.file + 0x16, u8(1));
+		executable.write(afterTutorialStateOffset.file + 0xCE, u8(0x0B));
+		executable.write(afterTutorialStateOffset.file + 0x126, u8(0x64));
+		executable.write(afterTutorialStateOffset.file + 0x12E, u8(0x6A));
+		executable.write(afterTutorialStateOffset.file + 0x12F, u8(0));
+	}
+
+	const auto over_title_bin{ m_game->file(File::OVER_TITLE_BIN) };
+
+	const auto
+		sb_setLevantGarb{ m_game->isNtscJ() ? Mips_t(0xA04007DD) : Mips_t(0xA04007E5)}; // sb zero, 0x7DD/0x7E5(v0)
+
+	over_title_bin->write(m_game->offset().file.over_title_bin.initMapNewGame, Mips::jal(writeAfterTutorialStateOffset.game));
+	over_title_bin->write(m_game->offset().file.over_title_bin.initMapNewGame - 8, Mips_t(0));
+	over_title_bin->write(m_game->offset().file.over_title_bin.setLevantGarb, sb_setLevantGarb);
+}
+
+void Randomizer::miscItemQuantityLimit(u8 limit) const
+{
+	const auto
+		over_game_bin{ m_game->file(File::OVER_GAME_BIN) },
+		over_wpnshop_bin{ m_game->file(File::OVER_WPNSHOP_BIN) };
+
+	const auto
+		slti_v0_v0{ Mips_t(0x28420000 + limit + 1) },
+		slti_v1_v1{ Mips_t(0x28630000 + limit) },
+		slti_v0_s0{ Mips_t(0x2A020000 + limit + 1) },
+		li_s0{ Mips_t(0x24100000 + limit) },
+		li_v0{ Mips_t(0x24020000 + limit) },
+		li_v1{ Mips_t(0x24030000 + limit) };
+
+	over_game_bin->write(m_game->offset().file.over_game_bin.isQuantityLimitReachedFn + 8, slti_v0_v0);
+	over_game_bin->write(m_game->offset().file.over_game_bin.itemShopBuyFn + 0x74, slti_v1_v1);
+
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.itemShopQuantityLimitFn + 0x58, slti_v0_s0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.itemShopQuantityLimitFn + 0x64, li_s0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.itemShopQuantityLimitFn + 0x6C, slti_v0_v0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.itemShopQuantityLimitFn + 0x78, li_v0);
+
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0x88, slti_v0_s0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0x94, li_s0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0x9C, slti_v0_v0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0xA8, li_v0);
+	over_wpnshop_bin->write(m_game->offset().file.over_wpnshop_bin.equipmentShopQuantityLimitFn + 0xF4, li_v1);
+
+	const MipsFn::SetChestNewItemQuantityLimit setChestNewItemQuantityLimitFn
+	{
+		// If quantity is > than the limit
+		0x2C620000 + limit + 1u, // sltiu v0, v1, limit + 1
+		0x14400002, // bnez v0, +2
+		0x00000000, // nop
+
+		// Set quantity to limit
+		Mips::li(Mips::Register::v1, limit),
+
+		0x03E00008, // jr ra
+		0xA0900000  // sb s0, 0(a0)
+	};
+
+	const auto setChestNewItemQuantityLimitOffset{ m_game->customCodeOffset(sizeof(MipsFn::SetChestNewItemQuantityLimit)) };
+
+	m_game->executable().write(setChestNewItemQuantityLimitOffset.file, setChestNewItemQuantityLimitFn);
+	over_game_bin->write(m_game->offset().file.over_game_bin.setItemQuantityFromChestFn + 0x34, Mips::jal(setChestNewItemQuantityLimitOffset.game));
+}
+
+void Randomizer::miscLevelCapEC(u8 levelCap) const
+{
+	if (levelCap != 26 && levelCap >= 19 && levelCap < 64)
+	{
+		const auto
+			slti_v0_v1{ Mips_t(0x28620000 + levelCap - 18) },
+			li_v1{ Mips_t(0x24030000 + levelCap - 19) };
+
+		const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
+
+		over_game_bin->write(m_game->offset().file.over_game_bin.levelCapEC, slti_v0_v1);
+		over_game_bin->write(m_game->offset().file.over_game_bin.levelCapEC + 0xC, li_v1);
+
+		const auto shift{ m_game->isVersion(Version::NtscJ1) ? 0x238 : 0x250 };
+
+		over_game_bin->write(m_game->offset().file.over_game_bin.levelCapEC - shift, slti_v0_v1);
+		over_game_bin->write(m_game->offset().file.over_game_bin.levelCapEC - shift + 0xC, li_v1);
+	}
+}
+
+void Randomizer::miscPalToNtsc() const
+{
+	if (!m_game->isNtsc())
+	{
+		auto executable{ m_game->executable() };
+
+		static constexpr auto move_a0_zero{ Mips_t(0x00002021) };
+
+		executable.write(m_game->offset().file.executable.setVideoModeArgument, move_a0_zero);
+		executable.write(m_game->offset().file.executable.stretchingY, move_a0_zero);
+	}
+}

@@ -2,7 +2,6 @@
 
 #include "Backend/Randomizer.hpp"
 #include "Backend/Version.hpp"
-#include "FrontendQt/AddonsWidget.hpp"
 #include "FrontendQt/BossWidget.hpp"
 #include "FrontendQt/ChallengeWidget.hpp"
 #include "FrontendQt/DefaultDialog.hpp"
@@ -17,8 +16,7 @@
 
 RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
     EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-    AddonsWidget* addons, ChallengeWidget* challenge,
-    DefaultDialog* defaultDialog)
+    ChallengeWidget* challenge, DefaultDialog* defaultDialog)
     : m_levant(levant),
       m_minion(minion),
       m_boss(boss),
@@ -27,7 +25,6 @@ RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* min
       m_treasure(treasure),
       m_shop(shop),
       m_misc(misc),
-      m_addons(addons),
 	  m_challenge(challenge),
       m_default(defaultDialog)
 {
@@ -370,20 +367,17 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->miscBetaBattleTheme();
 	}
 
-    // Addons
-	const auto& addonsUi{ m_addons->Ui() };
-
-	if (addonsUi.skipTutorialEnable->isChecked())
+	if (miscUi.skipTutorialEnable->isChecked())
 	{
-		randomizer->addonsSkipTutorial(addonsUi.skipTutorialSkipKoris->isChecked());
+		randomizer->miscSkipTutorial(miscUi.skipTutorialSkipKoris->isChecked());
 	}
 
-	randomizer->addonsItemQuantityLimit(static_cast<u8>(addonsUi.itemQuantityLimitSlider->value()));
-	randomizer->addonsLevelCapEC(static_cast<u8>(addonsUi.eternalCorridorLevelCapSlider->value()));
+	randomizer->miscItemQuantityLimit(static_cast<u8>(miscUi.itemQuantityLimitSlider->value()));
+	randomizer->miscLevelCapEC(static_cast<u8>(miscUi.eternalCorridorLevelCapSlider->value()));
 
-	if (addonsUi.palToNtscBox->isEnabled() && addonsUi.palToNtscEnable->isChecked())
+	if (miscUi.palToNtscBox->isEnabled() && miscUi.palToNtscEnable->isChecked())
 	{
-		randomizer->addonsPalToNtsc();
+		randomizer->miscPalToNtsc();
 	}
 
 	// Challenge
