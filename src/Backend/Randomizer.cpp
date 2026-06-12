@@ -14,3 +14,8 @@ const Game& Randomizer::game() const
 {
     return *m_game;
 }
+
+void Randomizer::writeFrameFns() const
+{
+	m_game->writeFrameFns();
+}

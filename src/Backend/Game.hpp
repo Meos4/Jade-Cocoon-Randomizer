@@ -32,6 +32,8 @@ public:
 	const char* filePathByIndex(File file) const;
 
 	Game::CustomCodeOffset customCodeOffset(u32 size);
+	void addFrameFn(u32 fnGameOffset);
+	void writeFrameFns();
 	u32 gameToFileTextSectionShift() const;
 	bool isVanilla() const;
 	bool removeStaticDirectory() const;
@@ -65,4 +67,5 @@ private:
 	Version m_version;
 	Offset m_offset;
 	u32 m_ccShift{};
+	std::vector<u32> m_frameFns;
 };

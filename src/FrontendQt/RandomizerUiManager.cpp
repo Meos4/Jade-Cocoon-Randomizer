@@ -418,6 +418,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->defaultX2Framerate();
 	}
 
+	if (defaultUi.autoHealInSafeArea->isChecked())
+	{
+		randomizer->defaultAutoHealInSafeArea();
+	}
+
 	if (defaultUi.skipOpeningLogos->isChecked())
 	{
 		randomizer->defaultSkipOpeningLogos();
@@ -457,4 +462,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	{
 		randomizer->defaultBugFixesSpecialAttackModifiersDisplay();
 	}
+
+	randomizer->writeFrameFns();
 }

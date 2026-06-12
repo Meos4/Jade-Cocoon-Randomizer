@@ -145,6 +145,7 @@ public:
 
 	void init();
 	const Game& game() const;
+	void writeFrameFns() const;
 
 	Id_Entity_t dreamMinion() const;
 	Id_Entity_t korisMinion() const;
@@ -203,6 +204,7 @@ public:
 	void defaultX2Framerate() const;
 	void defaultSkipOpeningLogos() const;
 	void defaultShowHiddenStats() const;
+	void defaultAutoHealInSafeArea() const;
 	void defaultTurboModeInDialogues() const;
 	void defaultAnalogMode() const;
 	void defaultBugFixesHpMpBars() const;

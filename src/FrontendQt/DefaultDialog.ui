@@ -107,6 +107,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="autoHealInSafeArea">
+         <property name="text">
+          <string>Auto Heal In Safe Area</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="turboModeInDialogues">
          <property name="text">
           <string>Turbo Mode In Dialogues</string>

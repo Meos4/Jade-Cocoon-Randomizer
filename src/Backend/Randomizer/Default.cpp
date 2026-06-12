@@ -6,14 +6,15 @@
 #include "Backend/Version.hpp"
 #include "Common/TemplateTypes.hpp"
 
-#include <array>
 #include <utility>
 
 void Randomizer::defaultX2Framerate() const
 {
+	const auto& game{ m_game->offset().game };
+	const auto codeOffset{ m_game->customCodeOffset(sizeof(MipsFn::ToggleX2Framerate)) };
 	const auto
-		li32_controllerTemp{ Mips::li32(Mips::Register::t0, m_game->offset().game.controllerTemp) },
-		li32_frameLimiter{ Mips::li32(Mips::Register::t3, m_game->offset().game.frameLimiter) };
+		li32_controllerTemp{ Mips::li32(Mips::Register::t0, game.controllerTemp) },
+		li32_frameLimiter{ Mips::li32(Mips::Register::t3, game.frameLimiter) };
 
 	const MipsFn::ToggleX2Framerate toggleX2FramerateFn
 	{
@@ -35,16 +36,12 @@ void Randomizer::defaultX2Framerate() const
 		0xA10A0014, // sb t2, 0x14(t0)
 		0x254A0001, // addiu t2, 1
 		0xA16A0000, // sb t2, 0(t3)
-		Mips::j(m_game->offset().game.frameLimiter + 0x14),
+		0x03E00008, // jr ra
 		0x00000000  // nop
 	};
 
-	auto executable{ m_game->executable() };
-
-	const auto toggleX2FramerateOffset{ m_game->customCodeOffset(sizeof(MipsFn::ToggleX2Framerate)) };
-
-	executable.write(toggleX2FramerateOffset.file, toggleX2FramerateFn);
-	executable.write(m_game->offset().file.executable.afterFramerateLimiter, Mips::j(toggleX2FramerateOffset.game));
+	m_game->executable().write(codeOffset.file, toggleX2FramerateFn);
+	m_game->addFrameFn(codeOffset.game);
 }
 
 void Randomizer::defaultSkipOpeningLogos() const
@@ -326,6 +323,124 @@ void Randomizer::defaultShowHiddenStats() const
 		// Remove growth rate tim text
 		executable.write(m_game->offset().file.executable.drawMinionTIMStatsFrameFn + 0x11C, Mips_t(0));
 	}
+}
+
+void Randomizer::defaultAutoHealInSafeArea() const
+{
+	const auto& game{ m_game->offset().game };
+	const auto codeOffset{ m_game->customCodeOffset(sizeof(MipsFn::AutoHealInSafeArea)) };
+	const bool isNtscJ{ m_game->isNtscJ() };
+	const auto
+		li32_mapId{ Mips::li32(Mips::Register::s0, game.mapId) },
+		li32_levantStats{ Mips::li32(Mips::Register::a0, game.levantStats) },
+		li32_minion1State{ Mips::li32(Mips::Register::s4, game.minion1State) };
+
+	const MipsFn::AutoHealInSafeArea autoHealFn
+	{
+		0x27BDFFD0, // addiu sp, sp, -0x30
+		0xAFA2002C, // sw v0, 0x2C(sp)
+		0xAFA40028, // sw a0, 0x28(sp)
+		0xAFBF0024, // sw ra, 0x24(sp)
+		0xAFB00020, // sw s0, 0x20(sp)
+		0xAFB1001C, // sw s1, 0x1C(sp)
+		0xAFB20018, // sw s2, 0x18(sp)
+		0xAFB30014, // sw s3, 0x14(sp)
+		0xAFB40010, // sw s4, 0x10(sp)
+		0xAFB5000C, // sw s5, 0x0C(sp)
+		0xAFB60008, // sw s6, 0x08(sp)
+		li32_mapId[0], // lui s0, 0xXXXX
+		li32_mapId[1], // ori s0, 0xXXXX
+		0x96110000, // lhu s1, 0(s0)
+		0x96120004, // lhu s2, 4(s0)
+		0x96130008, // lhu s3, 8(s0)
+		0x02324025, // or t0, s1, s2
+		0x01134025, // or t0, t0, s3
+		0x11000033, // beq t0, zero, exit
+		0x24080001, // li t0, 1
+		0x16280002, // bne s1, t0, rule_4_0_X
+		0x00000000, // nop
+		0x1000003C, // beq zero, zero, heal
+		0x24080004, // li t0, 4
+		0x16280005, // bne s1, t0, rule_2_1_0
+		0x24080000, // li t0, 0
+		0x16480003, // bne s2, t0, rule_2_1_0
+		0x2A680004, // slti t0, s3, 4
+		0x15000036, // bne t0, zero, heal
+		0x00000000, // nop
+		0x24080002, // li t0, 2
+		0x16280006, // bne s1, t0, rule_4_4_17
+		0x24080001, // li t0, 1
+		0x16480004, // bne s2, t0, rule_4_4_17
+		0x24080000, // li t0, 0
+		0x16680002, // bne s3, t0, rule_4_4_17
+		0x00000000, // nop
+		0x1000002D, // beq zero, zero, heal
+		0x24080004, // li t0, 4
+		0x16280006, // bne s1, t0, rule_4_4_18
+		0x24080004, // li t0, 4
+		0x16480004, // bne s2, t0, rule_4_4_18
+		0x24080011, // li t0, 17
+		0x16680002, // bne s3, t0, rule_4_4_18
+		0x00000000, // nop
+		0x10000025, // beq zero, zero, heal
+		0x24080004, // li t0, 4
+		0x16280006, // bne s1, t0, rule_4_4_19
+		0x24080004, // li t0, 4
+		0x16480004, // bne s2, t0, rule_4_4_19
+		0x24080012, // li t0, 18
+		0x16680002, // bne s3, t0, rule_4_4_19
+		0x00000000, // nop
+		0x1000001D, // beq zero, zero, heal
+		0x24080004, // li t0, 4
+		0x16280006, // bne s1, t0, rule_0_4_1
+		0x24080004, // li t0, 4
+		0x16480004, // bne s2, t0, rule_0_4_1
+		0x24080013, // li t0, 19
+		0x16680002, // bne s3, t0, rule_0_4_1
+		0x00000000, // nop
+		0x10000015, // beq zero, zero, heal
+		0x24080000, // li t0, 0
+		0x16280006, // bne s1, t0, exit
+		0x24080004, // li t0, 4
+		0x16480004, // bne s2, t0, exit
+		0x24080001, // li t0, 1
+		0x16680002, // bne s3, t0, exit
+		0x00000000, // nop
+		0x1000000D, // beq zero, zero, heal
+		0x8FA2002C, // lw v0, 0x2C(sp)
+		0x8FA40028, // lw a0, 0x28(sp)
+		0x8FBF0024, // lw ra, 0x24(sp)
+		0x8FB00020, // lw s0, 0x20(sp)
+		0x8FB1001C, // lw s1, 0x1C(sp)
+		0x8FB20018, // lw s2, 0x18(sp)
+		0x8FB30014, // lw s3, 0x14(sp)
+		0x8FB40010, // lw s4, 0x10(sp)
+		0x8FB5000C, // lw s5, 0x0C(sp)
+		0x8FB60008, // lw s6, 0x08(sp)
+		0x27BD0030, // addiu sp, sp, 0x30
+		0x03E00008, // jr ra
+		0x00000000, // nop
+		li32_levantStats[0], // lui a0, 0xXXXX
+		li32_levantStats[1], // ori a0, 0xXXXX
+		Mips::jal(game.healFn),
+		0x00000000, // nop
+		li32_minion1State[0], // lui s4, 0xXXXX
+		li32_minion1State[1], // ori s4, 0xXXXX
+		Mips::li(Mips::Register::s5, 0),
+		0x02802021, // move a0, s4
+		Mips::jal(game.healFn),
+		0x00000000, // nop
+		isNtscJ ? Mips_t(0x269400DC) : Mips_t(0x269400F8), // addiu s4, s4, 0xDC/0xF8
+		0x26B50001, // addiu s5, s5, 1
+		0x2AB60003, // slti s6, s5, 3
+		0x16C0FFF9, // bne s6, zero, minionLoop
+		0x00000000, // nop
+		0x1000FFE3, // beq zero, zero, exit
+		0x00000000  // nop
+	};
+
+	m_game->executable().write(codeOffset.file, autoHealFn);
+	m_game->addFrameFn(codeOffset.game);
 }
 
 void Randomizer::defaultTurboModeInDialogues() const

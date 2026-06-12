@@ -41,7 +41,9 @@ namespace MipsFn
 	using CriticalRateFromStats = std::array<Mips_t, 13>;
 	using DrawCriticalRate = std::array<Mips_t, 15>;
 	using DrawCriticalRateMerge = std::array<Mips_t, 14>;
+	using FrameFnsDispatcher = std::array<Mips_t, 52>;
 	using ToggleX2Framerate = std::array<Mips_t, 20>;
+	using AutoHealInSafeArea = std::array<Mips_t, 100>;
 	using TurboDialogueInput = std::array<Mips_t, 10>;
 	using BattleThemeFade = std::array<Mips_t, 21>;
 	using AnalogMode = std::array<Mips_t, 89>;

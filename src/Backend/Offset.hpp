@@ -908,6 +908,7 @@ public:
 			writeNewFirefly,
 			getEntityEnhancement,
 			mapId,
+			healFn,
 			setBattleWeaponsEffectFn,
 			drawLargeTextOnScreenFn,
 			criticalRateTransformFn,
