@@ -164,7 +164,9 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 
 		const auto destPath{ std::filesystem::path{ QtUtil::qStrToPlatformStr(filePath) } };
 		m_game->builderTree().createIso(&destPath);
+#ifndef JCR_DEBUG
 		m_game->builderTree().remove();
+#endif
 
 		emit saveGameDialog->progressBarChanged(100);
 		emit saveGameDialog->onStateChanged("Done");
@@ -173,7 +175,9 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 	}
 	catch (const std::exception& e)
 	{
+#ifndef JCR_DEBUG
 		m_game->builderTree().remove();
+#endif
 		emit saveGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
 		emit saveGameDialog->taskCompleted();
 		return false;
