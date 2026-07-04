@@ -4,3 +4,4 @@ CLAUDE.MD
 IMPROVEMENTS.MD
 *.txt
 JCR*
+/tools/*
