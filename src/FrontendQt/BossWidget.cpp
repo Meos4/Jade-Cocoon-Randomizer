@@ -20,9 +20,7 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorElementRandom) },
 		{ SETTINGS(m_ui.eternalCorridorSpecialMagicRandom) },
 		{ SETTINGS(m_ui.eternalCorridorRandomNewAppearance) },
-		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureRandom) },
-		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureRandomColor) },
-		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureIncludeCompatible) }
+		{ SETTINGS(m_ui.eternalCorridorAppearanceTextureRandomColor) }
 	};
 
 	m_qSlider =
@@ -83,19 +81,10 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	const auto _EternalCorridorAppearanceTexture{ _EternalCorridorAppearance + " " + m_ui.eternalCorridorAppearanceTextureBox->title() };
 
-	helpConsole->addFeature(m_ui.eternalCorridorAppearanceTextureRandom, _EternalCorridorAppearanceTexture,
-		"Randomize the texture of Eternal Corridor bosses."
-	);
-
 	helpConsole->addFeature(m_ui.eternalCorridorAppearanceTextureRandomColor, _EternalCorridorAppearanceTexture,
 		"Randomize the texture colors of Eternal Corridor bosses."
 	);
 
-	helpConsole->addFeature(m_ui.eternalCorridorAppearanceTextureIncludeCompatible, _EternalCorridorAppearanceTexture,
-		"Includes minions + Minion (Dark Arpatron) textures in the pool."
-	);
-
-	m_ui.eternalCorridorAppearanceTextureIncludeCompatible->setEnabled(false);
 	m_ui.eternalCorridorCrazinessValue->setEnabled(false);
 
 	connect(m_ui.storyElementRandomAll, &QAbstractButton::toggled, this, &BossWidget::updateStoryElement);
@@ -105,7 +94,6 @@ BossWidget::BossWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.storyAppearanceTextureRandomColor, &QAbstractButton::toggled, this, &BossWidget::updateStoryAppearanceTextureRandomColor);
 	connect(m_ui.eternalCorridorElementRandom, &QAbstractButton::toggled, this, &BossWidget::updateEternalCorridorElementRandom);
 	connect(m_ui.eternalCorridorSpecialMagicRandom, &QAbstractButton::toggled, this, &BossWidget::updateEternalCorridorElementRandom);
-	connect(m_ui.eternalCorridorAppearanceTextureRandom, &QAbstractButton::toggled, m_ui.eternalCorridorAppearanceTextureIncludeCompatible, &QWidget::setEnabled);
 	connect(m_ui.eternalCorridorRandomNewAppearance, &QAbstractButton::toggled, m_ui.eternalCorridorCrazinessSlider, &QWidget::setEnabled);
 	connect(m_ui.eternalCorridorRandomNewAppearance, &QAbstractButton::toggled, m_ui.eternalCorridorCrazinessValue, &QWidget::setEnabled);
 	connect(m_ui.eternalCorridorCrazinessSlider, &QAbstractSlider::valueChanged, this, &BossWidget::updateECCraziness);

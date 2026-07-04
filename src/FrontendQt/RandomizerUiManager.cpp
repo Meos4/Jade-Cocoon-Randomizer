@@ -197,15 +197,6 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	{
 		appearanceEC |= Randomizer::BOSS_APPEARANCE_EC_RANDOM_NEW_APPEARANCE;
 	}
-	if (bossUi.eternalCorridorAppearanceTextureRandom->isChecked())
-	{
-		appearanceEC |= Randomizer::BOSS_APPEARANCE_EC_TEXTURE_RANDOM;
-
-		if (bossUi.eternalCorridorAppearanceTextureIncludeCompatible->isChecked())
-		{
-			appearanceEC |= Randomizer::BOSS_APPEARANCE_EC_TEXTURE_INCLUDE_COMPATIBLE;
-		}
-	}
 	if (bossUi.eternalCorridorAppearanceTextureRandomColor->isChecked())
 	{
 		appearanceEC |= Randomizer::BOSS_APPEARANCE_EC_TEXTURE_RANDOM_COLOR;

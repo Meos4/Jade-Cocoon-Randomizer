@@ -231,25 +231,17 @@
              <property name="title">
               <string>Texture</string>
              </property>
-             <layout class="QFormLayout" name="formLayout_3">
-              <item row="1" column="0">
-               <widget class="QCheckBox" name="eternalCorridorAppearanceTextureRandom">
-                <property name="text">
-                 <string>Random</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
+             <layout class="QVBoxLayout" name="verticalLayout_ecTexture">
+              <item>
                <widget class="QCheckBox" name="eternalCorridorAppearanceTextureRandomColor">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>56</height>
+                 </size>
+                </property>
                 <property name="text">
                  <string>Random Color</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QCheckBox" name="eternalCorridorAppearanceTextureIncludeCompatible">
-                <property name="text">
-                 <string>+Include Compatible</string>
                 </property>
                </widget>
               </item>
