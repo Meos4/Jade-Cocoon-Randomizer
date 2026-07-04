@@ -40,6 +40,7 @@ fileNtscJ1
 		.mainLoopFn = 0x0003977C,
 		.openingBehaviorFn = 0x00039B4C,
 		.ostTable = 0x00070E9C,
+		.canPauseRenderCallJal = 0x00015F64,
 	},
 	.over_battle_bin
 	{
@@ -94,6 +95,7 @@ fileNtscJ1
 		.itemShopBuyFn = 0x0000CD84,
 		.tableOfMapsBehavior = 0x0000E4F0,
 		.setItemQuantityFromChestFn = 0x0000CA30,
+		.canPauseHookJal = 0x000067F8,
 		.readFlagRotateSpawn = 0,
 	},
 	.over_menu_bin
@@ -762,6 +764,7 @@ fileNtscJ2
 		.mainLoopFn = 0x00039A78,
 		.openingBehaviorFn = 0x00039E54,
 		.ostTable = 0x000701B0,
+		.canPauseRenderCallJal = 0x00015F84,
 	},
 	.over_battle_bin
 	{
@@ -816,6 +819,7 @@ fileNtscJ2
 		.itemShopBuyFn = 0x0000D048,
 		.tableOfMapsBehavior = 0x0000E7B4,
 		.setItemQuantityFromChestFn = 0x0000CCF4,
+		.canPauseHookJal = 0x0000687C,
 		.readFlagRotateSpawn = 0,
 	},
 	.over_menu_bin
@@ -1484,6 +1488,7 @@ fileNtscU
 		.mainLoopFn = 0x00030C7C,
 		.openingBehaviorFn = 0x00031500,
 		.ostTable = 0x0007370C,
+		.canPauseRenderCallJal = 0x0000B7E8,
 	},
 	.over_battle_bin
 	{
@@ -1538,6 +1543,7 @@ fileNtscU
 		.itemShopBuyFn = 0x0000CF38,
 		.tableOfMapsBehavior = 0x0000E6A4,
 		.setItemQuantityFromChestFn = 0x0000CBE4,
+		.canPauseHookJal = 0x000069AC,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -2206,6 +2212,7 @@ filePalEn
 		.mainLoopFn = 0x000328C8,
 		.openingBehaviorFn = 0x0003314C,
 		.ostTable = 0x00073630,
+		.canPauseRenderCallJal = 0x0000B7E8,
 	},
 	.over_battle_bin
 	{
@@ -2260,6 +2267,7 @@ filePalEn
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
+		.canPauseHookJal = 0x000069AC,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -2928,6 +2936,7 @@ filePalFr
 		.mainLoopFn = 0x0002FAC8,
 		.openingBehaviorFn = 0x0003034C,
 		.ostTable = 0x000738A4,
+		.canPauseRenderCallJal = 0x0000B7E8,
 	},
 	.over_battle_bin
 	{
@@ -2982,6 +2991,7 @@ filePalFr
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
+		.canPauseHookJal = 0x000069AC,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -3650,6 +3660,7 @@ filePalDe
 		.mainLoopFn = 0x0002FA6C,
 		.openingBehaviorFn = 0x000302F0,
 		.ostTable = 0x00073760,
+		.canPauseRenderCallJal = 0x0000B7E8,
 	},
 	.over_battle_bin
 	{
@@ -3704,6 +3715,7 @@ filePalDe
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
+		.canPauseHookJal = 0x000069AC,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -4372,6 +4384,7 @@ filePalEs
 		.mainLoopFn = 0x0002FA84,
 		.openingBehaviorFn = 0x00030308,
 		.ostTable = 0x000739C4,
+		.canPauseRenderCallJal = 0x0000B7E8,
 	},
 	.over_battle_bin
 	{
@@ -4426,6 +4439,7 @@ filePalEs
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
+		.canPauseHookJal = 0x000069AC,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -5095,6 +5109,7 @@ filePalIt
 		.mainLoopFn = 0x00030CE8,
 		.openingBehaviorFn = 0x0003156C,
 		.ostTable = 0x000739A8,
+		.canPauseRenderCallJal = 0x0000B7E8,
 	},
 	.over_battle_bin
 	{
@@ -5149,6 +5164,7 @@ filePalIt
 		.itemShopBuyFn = 0x0000D178,
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
+		.canPauseHookJal = 0x000069AC,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -5796,6 +5812,13 @@ gameNtscJ1
 	.minion1State = 0x80089AC8,
 	.bossStatsEC = 0x800B27A0,
 	.gameStateStruct = 0x80089274,
+	.canPauseFsmExitFn = 0x800A475C,
+	.canPauseFsmGateFn = 0x800A3504,
+	.canPauseRenderCallFn = 0x800264F0,
+	.commandManager = 0x8008AF3C,
+	.objectDispatchHalt = 0x80089228,
+	.startMenuState = 0x800ADD4C,
+	.musicStreamDeadline = 0x8008AF20,
 	.fnInitMapNewGame = 0x8009F7D0,
 	.afterGetStats = 0x80011F3C,
 	.controllerTemp = 0x80093DDC,
@@ -5830,6 +5853,13 @@ gameNtscJ2
 	.minion1State = 0x80091178,
 	.bossStatsEC = 0x800BA478,
 	.gameStateStruct = 0x80090924,
+	.canPauseFsmExitFn = 0x800AC110,
+	.canPauseFsmGateFn = 0x800AAEB8,
+	.canPauseRenderCallFn = 0x8002E72C,
+	.commandManager = 0x800925EC,
+	.objectDispatchHalt = 0x800908D8,
+	.startMenuState = 0x800B5940,
+	.musicStreamDeadline = 0x800925D0,
 	.fnInitMapNewGame = 0x800A74B0,
 	.afterGetStats = 0x80019F3C,
 	.controllerTemp = 0x8009B48C,
@@ -5864,6 +5894,13 @@ gameNtscU
 	.minion1State = 0x8008BF7C,
 	.bossStatsEC = 0x800B5268,
 	.gameStateStruct = 0x8008B594,
+	.canPauseFsmExitFn = 0x800A70C0,
+	.canPauseFsmGateFn = 0x800A5E68,
+	.canPauseRenderCallFn = 0x8001BF90,
+	.commandManager = 0x8008D46C,
+	.objectDispatchHalt = 0x8008B540,
+	.startMenuState = 0x800B06B0,
+	.musicStreamDeadline = 0x8008D450,
 	.fnInitMapNewGame = 0x800A242C,
 	.afterGetStats = 0x80011F44,
 	.controllerTemp = 0x8009194C,
@@ -5898,6 +5935,13 @@ gamePalEn
 	.minion1State = 0x8008BF0C,
 	.bossStatsEC = 0x800B5438,
 	.gameStateStruct = 0x8008B524,
+	.canPauseFsmExitFn = 0x800A7050,
+	.canPauseFsmGateFn = 0x800A5DF8,
+	.canPauseRenderCallFn = 0x8001BF9C,
+	.commandManager = 0x8008D3FC,
+	.objectDispatchHalt = 0x8008B4D0,
+	.startMenuState = 0x800B0880,
+	.musicStreamDeadline = 0x8008D3E0,
 	.fnInitMapNewGame = 0x800A2800,
 	.afterGetStats = 0x80011F44,
 	.controllerTemp = 0x800918DC,
@@ -5932,6 +5976,13 @@ gamePalFr
 	.minion1State = 0x8008C19C,
 	.bossStatsEC = 0x800B56C8,
 	.gameStateStruct = 0x8008B7B4,
+	.canPauseFsmExitFn = 0x800A72E0,
+	.canPauseFsmGateFn = 0x800A6088,
+	.canPauseRenderCallFn = 0x8001BF9C,
+	.commandManager = 0x8008D68C,
+	.objectDispatchHalt = 0x8008B760,
+	.startMenuState = 0x800B0B10,
+	.musicStreamDeadline = 0x8008D670,
 	.fnInitMapNewGame = 0x800A2AE8,
 	.afterGetStats = 0x80011F44,
 	.controllerTemp = 0x80091B6C,
@@ -5966,6 +6017,13 @@ gamePalDe
 	.minion1State = 0x8008C054,
 	.bossStatsEC = 0x800B5580,
 	.gameStateStruct = 0x8008B66C,
+	.canPauseFsmExitFn = 0x800A7198,
+	.canPauseFsmGateFn = 0x800A5F40,
+	.canPauseRenderCallFn = 0x8001BF9C,
+	.commandManager = 0x8008D544,
+	.objectDispatchHalt = 0x8008B618,
+	.startMenuState = 0x800B09C8,
+	.musicStreamDeadline = 0x8008D528,
 	.fnInitMapNewGame = 0x800A294C,
 	.afterGetStats = 0x80011F44,
 	.controllerTemp = 0x80091A24,
@@ -6000,6 +6058,13 @@ gamePalEs
 	.minion1State = 0x8008C2BC,
 	.bossStatsEC = 0x800B57E8,
 	.gameStateStruct = 0x8008B8D4,
+	.canPauseFsmExitFn = 0x800A7400,
+	.canPauseFsmGateFn = 0x800A61A8,
+	.canPauseRenderCallFn = 0x8001BF9C,
+	.commandManager = 0x8008D7AC,
+	.objectDispatchHalt = 0x8008B880,
+	.startMenuState = 0x800B0C30,
+	.musicStreamDeadline = 0x8008D790,
 	.fnInitMapNewGame = 0x800A2AD4,
 	.afterGetStats = 0x80011F44,
 	.controllerTemp = 0x80091C8C,
@@ -6034,6 +6099,13 @@ gamePalIt
 	.minion1State = 0x8008C2A4,
 	.bossStatsEC = 0x800B57D0,
 	.gameStateStruct = 0x8008B8BC,
+	.canPauseFsmExitFn = 0x800A73E8,
+	.canPauseFsmGateFn = 0x800A6190,
+	.canPauseRenderCallFn = 0x8001BF9C,
+	.commandManager = 0x8008D794,
+	.objectDispatchHalt = 0x8008B868,
+	.startMenuState = 0x800B0C18,
+	.musicStreamDeadline = 0x8008D778,
 	.fnInitMapNewGame = 0x800A2ABC,
 	.afterGetStats = 0x80011F44,
 	.controllerTemp = 0x80091C74,

@@ -43,6 +43,9 @@ namespace MipsFn
 	using DrawCriticalRateMerge = std::array<Mips_t, 14>;
 	using FrameFnsDispatcher = std::array<Mips_t, 52>;
 	using ToggleX2Framerate = std::array<Mips_t, 20>;
+	using CanPauseFsmTrigger = std::array<Mips_t, 48>;
+	using CanPauseUnpauseNet = std::array<Mips_t, 32>;
+	using CanPauseRenderWrap = std::array<Mips_t, 27>;
 	using AutoHealInSafeArea = std::array<Mips_t, 100>;
 	using TurboDialogueInput = std::array<Mips_t, 10>;
 	using BattleThemeFade = std::array<Mips_t, 21>;

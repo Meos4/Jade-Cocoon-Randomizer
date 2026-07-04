@@ -44,6 +44,171 @@ void Randomizer::defaultX2Framerate() const
 	m_game->addFrameFn(codeOffset.game);
 }
 
+void Randomizer::defaultCanPauseTheGame() const
+{
+	u32 text0;
+	u16 text1;
+
+	if (m_game->isNtscJ())
+	{
+		text0 = 0x3234212F; // P A U S
+		text1 = 0x0025; // E
+	}
+	else
+	{
+		text0 = 0x4142313E; // P A U S
+		text1 = 0x0035; // E
+	}
+
+	const auto& game{ m_game->offset().game };
+	const auto triggerOffset{ m_game->customCodeOffset(sizeof(MipsFn::CanPauseFsmTrigger)) };
+	const u32
+		pausedFlag{ triggerOffset.game + 47 * sizeof(Mips_t) },
+		previousStart{ pausedFlag + 1 },
+		netPrevious{ pausedFlag + 2 };
+
+	auto hi{ [](u32 addr) { return static_cast<u16>((addr + 0x8000) >> 16); } };
+	auto lo{ [](u32 addr) { return static_cast<u16>(addr); } };
+
+	const MipsFn::CanPauseFsmTrigger fsmTriggerFn
+	{
+		Mips::lui(Mips::Register::v0, hi(pausedFlag)),
+		static_cast<Mips_t>(0x90430000 | lo(pausedFlag)), // lbu v1, pausedFlag(v0)
+		0x00000000, // nop
+		0x14600029, // bnez v1, 0x29
+		0x00000000, // nop
+		Mips::lui(Mips::Register::v0, hi(game.controllerTemp)),
+		static_cast<Mips_t>(0x94420000 | lo(game.controllerTemp)), // lhu v0, controllerTemp(v0)
+		0x00000000, // nop
+		0x30420800, // andi v0, v0, 0x800
+		0x0002102B, // sltu v0, zero, v0
+		Mips::lui(Mips::Register::v1, hi(previousStart)),
+		static_cast<Mips_t>(0x90640000 | lo(previousStart)), // lbu a0, previousStart(v1)
+		static_cast<Mips_t>(0xA0620000 | lo(previousStart)), // sb v0, previousStart(v1)
+		0x00442825, // or a1, v0, a0
+		0x10A00003, // beqz a1, 3
+		0x00000000, // nop
+		Mips::lui(Mips::Register::a1, hi(game.startMenuState)),
+		static_cast<Mips_t>(0xACA00000 | lo(game.startMenuState)), // sw zero, startMenuState(a1)
+		0x10400018, // beqz v0, 0x18
+		0x00000000, // nop
+		0x14800016, // bnez a0, 0x16
+		0x00000000, // nop
+		Mips::lui(Mips::Register::v0, hi(game.commandManager)),
+		static_cast<Mips_t>(0x8C420000 | lo(game.commandManager)), // lw v0, commandManager(v0)
+		0x00000000, // nop
+		0x8C420024, // lw v0, 0x24(v0)
+		0x00000000, // nop
+		0x8C430000, // lw v1, 0(v0)
+		0x00000000, // nop
+		0x2464FFFF, // addiu a0, v1, -1
+		0x2C840002, // sltiu a0, a0, 2
+		0x1080000B, // beqz a0, 0xB
+		0x00000000, // nop
+		0x24020007, // li v0, 7
+		0xAE220000, // sw v0, 0(s1)
+		0x24020001, // li v0, 1
+		0xAE22000C, // sw v0, 0xC(s1)
+		0xAE220010, // sw v0, 0x10(s1)
+		Mips::lui(Mips::Register::v1, hi(pausedFlag)),
+		static_cast<Mips_t>(0xA0620000 | lo(pausedFlag)), // sb v0, pausedFlag(v1)
+		static_cast<Mips_t>(0xA0620000 | lo(netPrevious)), // sb v0, netPrevious(v1)
+		Mips::j(game.canPauseFsmExitFn),
+		0x00000000, // nop
+		Mips::j(game.canPauseFsmGateFn),
+		0x00000000, // nop
+		Mips::j(game.canPauseFsmExitFn),
+		0x00000000, // nop
+		0x00000000 // data
+	};
+
+	const MipsFn::CanPauseUnpauseNet unpauseNetFn
+	{
+		Mips::lui(Mips::Register::v0, hi(pausedFlag)),
+		static_cast<Mips_t>(0x90430000 | lo(pausedFlag)), // lbu v1, pausedFlag(v0)
+		0x00000000, // nop
+		0x1060001A, // beqz v1, 0x1A
+		0x00000000, // nop
+		Mips::lui(Mips::Register::v0, hi(game.controllerTemp)),
+		static_cast<Mips_t>(0x94420000 | lo(game.controllerTemp)), // lhu v0, controllerTemp(v0)
+		0x00000000, // nop
+		0x30420800, // andi v0, v0, 0x800
+		0x0002102B, // sltu v0, zero, v0
+		Mips::lui(Mips::Register::v1, hi(netPrevious)),
+		static_cast<Mips_t>(0x90640000 | lo(netPrevious)), // lbu a0, netPrevious(v1)
+		static_cast<Mips_t>(0xA0620000 | lo(netPrevious)), // sb v0, netPrevious(v1)
+		0x1040000D, // beqz v0, 0xD
+		0x00000000, // nop
+		0x1480000B, // bnez a0, 0xB
+		0x00000000, // nop
+		Mips::lui(Mips::Register::v0, hi(game.objectDispatchHalt)),
+		static_cast<Mips_t>(0xAC400000 | lo(game.objectDispatchHalt)), // sw zero, objectDispatchHalt(v0)
+		Mips::lui(Mips::Register::v0, hi(game.musicStreamDeadline)),
+		static_cast<Mips_t>(0xAC400000 | lo(game.musicStreamDeadline)), // sw zero, musicStreamDeadline(v0)
+		Mips::lui(Mips::Register::v0, hi(pausedFlag)),
+		static_cast<Mips_t>(0xA0400000 | lo(pausedFlag)), // sb zero, pausedFlag(v0)
+		0x24030001, // li v1, 1
+		static_cast<Mips_t>(0xA0430000 | lo(previousStart)), // sb v1, previousStart(v0)
+		0x10000004, // b 4
+		0x00000000, // nop
+		Mips::lui(Mips::Register::v0, hi(game.objectDispatchHalt)),
+		0x24030001, // li v1, 1
+		static_cast<Mips_t>(0xAC430000 | lo(game.objectDispatchHalt)), // sw v1, objectDispatchHalt(v0)
+		0x03E00008, // jr ra
+		0x00000000 // nop
+	};
+
+	static constexpr u16 pauseX{ 50 }, pauseY{ 128 };
+
+	const auto
+		li32_xy{ Mips::li32(Mips::Register::v0, (pauseY << 16) | pauseX) },
+		li32_text0{ Mips::li32(Mips::Register::v0, text0) };
+
+	const MipsFn::CanPauseRenderWrap renderWrapFn
+	{
+		0x27BDFFD8, // addiu sp, sp, -0x28
+		0xAFBF0020, // sw ra, 0x20(sp)
+		Mips::jal(game.canPauseRenderCallFn),
+		0x00000000, // nop
+		Mips::lui(Mips::Register::v0, hi(pausedFlag)),
+		static_cast<Mips_t>(0x90430000 | lo(pausedFlag)), // lbu v1, pausedFlag(v0)
+		0x00000000, // nop
+		0x1060000F, // beqz v1, 0xF
+		0x00000000, // nop
+		li32_xy[0], // lui v0, 0xXXXX
+		li32_xy[1], // ori v0, 0xXXXX
+		0xAFA20010, // sw v0, 0x10(sp)
+		li32_text0[0], // lui v0, 0xXXXX
+		li32_text0[1], // ori v0, 0xXXXX
+		0xAFA20014, // sw v0, 0x14(sp)
+		Mips::li(Mips::Register::v0, text1), // li v0, 0xXXXX
+		0xAFA20018, // sw v0, 0x18(sp)
+		0xAFA0001C, // sw zero, 0x1C(sp)
+		0x24040002, // li a0, 2
+		0x27A50010, // addiu a1, sp, 0x10
+		0x27A60014, // addiu a2, sp, 0x14
+		Mips::jal(game.drawLargeTextOnScreenFn),
+		0x00003821, // move a3, zero
+		0x8FBF0020, // lw ra, 0x20(sp)
+		0x00000000, // nop
+		0x03E00008, // jr ra
+		0x27BD0028 // addiu sp, sp, 0x28
+	};
+
+	auto executable{ m_game->executable() };
+	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
+
+	const auto netOffset{ m_game->customCodeOffset(sizeof(MipsFn::CanPauseUnpauseNet)) };
+	const auto drawOffset{ m_game->customCodeOffset(sizeof(MipsFn::CanPauseRenderWrap)) };
+
+	executable.write(triggerOffset.file, fsmTriggerFn);
+	executable.write(netOffset.file, unpauseNetFn);
+	executable.write(drawOffset.file, renderWrapFn);
+	executable.write(m_game->offset().file.executable.canPauseRenderCallJal, Mips::jal(drawOffset.game));
+	over_game_bin->write(m_game->offset().file.over_game_bin.canPauseHookJal, Mips::jal(triggerOffset.game));
+	m_game->addFrameFn(netOffset.game);
+}
+
 void Randomizer::defaultSkipOpeningLogos() const
 {
 	if (m_game->isNtscJ())

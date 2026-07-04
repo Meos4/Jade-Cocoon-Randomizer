@@ -87,6 +87,16 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="canPauseTheGame">
+         <property name="text">
+          <string>Can Pause The Game</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="skipOpeningLogos">
          <property name="text">
           <string>Skip Opening Logos</string>

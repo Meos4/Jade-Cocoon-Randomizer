@@ -418,6 +418,11 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->defaultX2Framerate();
 	}
 
+	if (defaultUi.canPauseTheGame->isChecked())
+	{
+		randomizer->defaultCanPauseTheGame();
+	}
+
 	if (defaultUi.autoHealInSafeArea->isChecked())
 	{
 		randomizer->defaultAutoHealInSafeArea();

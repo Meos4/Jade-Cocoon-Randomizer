@@ -40,7 +40,8 @@ public:
 				mainSceneBehaviorFn,
 				mainLoopFn,
 				openingBehaviorFn,
-				ostTable;
+				ostTable,
+				canPauseRenderCallJal;
 		} executable;
 
 		struct
@@ -104,7 +105,8 @@ public:
 				isQuantityLimitReachedFn,
 				itemShopBuyFn,
 				tableOfMapsBehavior,
-				setItemQuantityFromChestFn;
+				setItemQuantityFromChestFn,
+				canPauseHookJal;
 
 			// not in NTSCJ
 			u32 readFlagRotateSpawn;
@@ -897,6 +899,13 @@ public:
 			minion1State,
 			bossStatsEC,
 			gameStateStruct,
+			canPauseFsmExitFn,
+			canPauseFsmGateFn,
+			canPauseRenderCallFn,
+			commandManager,
+			objectDispatchHalt,
+			startMenuState,
+			musicStreamDeadline,
 			fnInitMapNewGame,
 			afterGetStats,
 			controllerTemp,

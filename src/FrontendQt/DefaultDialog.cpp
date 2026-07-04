@@ -16,6 +16,7 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 	m_qCheckBox =
 	{
 		{ SETTINGS(m_ui.x2Framerate) },
+		{ SETTINGS(m_ui.canPauseTheGame) },
 		{ SETTINGS(m_ui.skipOpeningLogos) },
 		{ SETTINGS(m_ui.showHiddenStats) },
 		{ SETTINGS(m_ui.autoHealInSafeArea) },
@@ -36,6 +37,10 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		"By pressing Select you can switch to a x2 framerate speed, if press again, switch back to x1."
 		"\n\nIt is recommended to use this feature using emulator that supports CPU overclocking, otherwise "
 		"if there are too many 3D models on the screen, the game will not fully support the x2."
+	);
+
+	m_helpConsole->addFeatureTitleOnly(m_ui.canPauseTheGame, QStringLiteral("Can Pause The Game"),
+		"Press Start to pause the game, press again to resume."
 	);
 
 	m_helpConsole->addFeatureTitleOnly(m_ui.skipOpeningLogos, QStringLiteral("Skip Opening Logos"),

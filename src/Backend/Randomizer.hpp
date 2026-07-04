@@ -202,6 +202,7 @@ public:
 	void challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const;
 	void challengeDifficulty(Randomizer::ChallengeDifficulty state) const;
 	void defaultX2Framerate() const;
+	void defaultCanPauseTheGame() const;
 	void defaultSkipOpeningLogos() const;
 	void defaultShowHiddenStats() const;
 	void defaultAutoHealInSafeArea() const;
