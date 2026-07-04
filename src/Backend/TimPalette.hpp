@@ -3,6 +3,7 @@
 #include "Common/Types.hpp"
 
 #include <algorithm>
+#include <bitset>
 #include <span>
 
 namespace TimPalette
@@ -28,6 +29,7 @@ namespace TimPalette
 	};
 
 	inline constexpr auto clutRotationLimit{ 360 };
+	inline constexpr auto clutSize{ 0x100u };
 
 	constexpr TimPalette::RGBF rgbf(u16 clr)
 	{
@@ -194,5 +196,6 @@ namespace TimPalette
 	}
 
 	void rotateCLUT(std::span<u16> clut, s32 rotation);
+	void rotateCLUT(std::span<u16> clut, s32 rotation, const std::bitset<TimPalette::clutSize>& skip);
 	void blackAndWhiteCLUT(std::span<u16> clut, TimPalette::BlackAndWhiteMethod method);
 };

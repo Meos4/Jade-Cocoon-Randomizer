@@ -2,6 +2,7 @@
 
 #include "Backend/Entity.hpp"
 #include "Backend/File.hpp"
+#include "Backend/SkinZones.hpp"
 #include "Backend/TimPalette.hpp"
 #include "Backend/Merge.hpp"
 #include "Backend/Mips.hpp"
@@ -404,12 +405,11 @@ void Randomizer::bossSpecialMagic() const
 
 void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 {
-	auto rotate = [](RawFile* file, u32 offset, s32 rotation)
+	auto rotate = [](RawFile* file, Model_t model, u32 offset, s32 rotation)
 	{
-		static constexpr auto clutSize{ 0x100u };
-		auto clut{ file->read<std::array<u16, clutSize>>(offset) };
-		TimPalette::rotateCLUT(clut, rotation);
-		file->write(offset, clut);
+		auto rearrangement{ SkinZones::rearrangeCLUT(file, model, offset) };
+		TimPalette::rotateCLUT(rearrangement.palette, rotation, rearrangement.protectedSlots);
+		file->write(offset, rearrangement.palette);
 	};
 
 	struct ModelFileOffset
@@ -470,11 +470,11 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 				const auto file{ m_game->file(mfo[i].fileOffset.first) };
 				const auto rotation{ static_cast<s32>(modelsRotation.at(mfo[i].model).rotation.at(elements[i])) * 2 };
 
-				rotate(file.get(), mfo[i].fileOffset.second, rotation);
+				rotate(file.get(), mfo[i].model, mfo[i].fileOffset.second, rotation);
 
 				if (portraits.contains(mfo[i].model))
 				{
-					rotate(file.get(), mfo[i].fileOffset.second - 0x1220, rotation);
+					rotate(file.get(), mfo[i].model, mfo[i].fileOffset.second - 0x1220, rotation);
 				}
 			}
 		}
@@ -496,7 +496,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 		// Cushidra
 		const auto rngElement{ m_game->random()->generate(Element_t(ELEMENT_COUNT - 1)) };
 		const auto cushidraRotation{ static_cast<s32>(modelsRotation.at(mfoCushidra.model).rotation[rngElement]) * 2 };
-		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, cushidraRotation);
+		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.model, mfoCushidra.fileOffset.second, cushidraRotation);
 	}
 	else // Random Color
 	{
@@ -506,11 +506,11 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 			const auto file{ m_game->file(fileoffset.first) };
 			const auto rng{ m_game->random()->generate(TimPalette::clutRotationLimit) };
 
-			rotate(file.get(), fileoffset.second, rng);
+			rotate(file.get(), model, fileoffset.second, rng);
 
 			if (portraits.contains(model))
 			{
-				rotate(file.get(), fileoffset.second - 0x1220, rng);
+				rotate(file.get(), model, fileoffset.second - 0x1220, rng);
 			}
 		}
 
@@ -521,7 +521,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 		}
 
 		// Cushidra
-		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.fileOffset.second, m_game->random()->generate(TimPalette::clutRotationLimit));
+		rotate(m_game->file(mfoCushidra.fileOffset.first).get(), mfoCushidra.model, mfoCushidra.fileOffset.second, m_game->random()->generate(TimPalette::clutRotationLimit));
 	}
 
 	executable.write(goatModelsBehaviorOffset, goatModelsBehavior);

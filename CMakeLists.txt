@@ -57,6 +57,10 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Randomizer.hpp
     ${BACKEND_DIR}/SharedData.cpp
     ${BACKEND_DIR}/SharedData.hpp
+    ${BACKEND_DIR}/SkinZones.cpp
+    ${BACKEND_DIR}/SkinZones.hpp
+    ${BACKEND_DIR}/SkinZonesMask.cpp
+    ${BACKEND_DIR}/SkinZonesMask.hpp
     ${BACKEND_DIR}/Tim.cpp
     ${BACKEND_DIR}/Tim.hpp
     ${BACKEND_DIR}/TimPalette.cpp
