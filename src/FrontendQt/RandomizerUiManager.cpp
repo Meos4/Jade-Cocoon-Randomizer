@@ -339,9 +339,9 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
     // Misc
 	const auto& miscUi{ m_misc->Ui() };
 
-	if (miscUi.skipTutorialEnable->isChecked())
+	if (miscUi.skipPrologueEnable->isChecked())
 	{
-		randomizer->miscSkipTutorial(miscUi.skipTutorialSkipKoris->isChecked());
+		randomizer->miscSkipPrologue(miscUi.skipPrologueSkipKoris->isChecked());
 	}
 
     if (miscUi.hudRandom->isChecked())

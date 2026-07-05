@@ -213,7 +213,7 @@ void Randomizer::miscBetaBattleTheme() const
 	battleBin->write(battleOff.battleExitFade + 0x1E0u, jalFade);
 }
 
-void Randomizer::miscSkipTutorial(bool skipKoris) const
+void Randomizer::miscSkipPrologue(bool skipKoris) const
 {
 	static constexpr MipsFn::AfterTutorialStateData afterTutorialStateData
 	{

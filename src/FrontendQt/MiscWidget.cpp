@@ -14,8 +14,8 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	m_qCheckBox =
 	{
-		{ SETTINGS(m_ui.skipTutorialEnable) },
-		{ SETTINGS(m_ui.skipTutorialSkipKoris) },
+		{ SETTINGS(m_ui.skipPrologueEnable) },
+		{ SETTINGS(m_ui.skipPrologueSkipKoris) },
 		{ SETTINGS(m_ui.hudRandom) },
 		{ SETTINGS(m_ui.hudColorCustom) },
 		{ SETTINGS(m_ui.npcsVoiceRandom) },
@@ -29,13 +29,13 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.eternalCorridorLevelCapSlider) }
 	};
 
-	const QString _SkipTutorial{ m_ui.skipTutorialBox->title() };
+	const QString _SkipPrologue{ m_ui.skipPrologueBox->title() };
 
-	helpConsole->addFeature(m_ui.skipTutorialEnable, _SkipTutorial,
-		"Skip the new game tutorial."
+	helpConsole->addFeature(m_ui.skipPrologueEnable, _SkipPrologue,
+		"Skip the new game prologue."
 	);
 
-	helpConsole->addFeature(m_ui.skipTutorialSkipKoris, _SkipTutorial,
+	helpConsole->addFeature(m_ui.skipPrologueSkipKoris, _SkipPrologue,
 		"Skip Koris tutorial in the Beetle Forest."
 	);
 
@@ -79,7 +79,7 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	m_ui.itemQuantityLimitValue->setStyleSheet("font-weight: bold;");
 	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: bold;");
 
-	m_ui.skipTutorialSkipKoris->setEnabled(false);
+	m_ui.skipPrologueSkipKoris->setEnabled(false);
 
 	m_ui.hudColorCombo->setStyleSheet("font-weight: normal;");
 	m_ui.hudColorLabel->setStyleSheet("font-weight: normal;");
@@ -128,7 +128,7 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.hudHighlightR, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 	connect(m_ui.hudHighlightG, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 	connect(m_ui.hudHighlightB, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
-	connect(m_ui.skipTutorialEnable, &QAbstractButton::toggled, m_ui.skipTutorialSkipKoris, &QWidget::setEnabled);
+	connect(m_ui.skipPrologueEnable, &QAbstractButton::toggled, m_ui.skipPrologueSkipKoris, &QWidget::setEnabled);
 	connect(m_ui.itemQuantityLimitSlider, &QAbstractSlider::valueChanged, this, &MiscWidget::setItemQuantityText);
 	connect(m_ui.eternalCorridorLevelCapSlider, &QAbstractSlider::valueChanged, this, &MiscWidget::setEternalCorridorLevelCapText);
 }

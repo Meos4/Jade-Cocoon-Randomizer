@@ -193,7 +193,7 @@ public:
 	void miscHudColor(const Randomizer::HudColorArray& hud) const;
 	void miscNPCsVoice() const;
 	void miscBetaBattleTheme() const;
-	void miscSkipTutorial(bool skipKoris) const;
+	void miscSkipPrologue(bool skipKoris) const;
 	void miscItemQuantityLimit(u8 limit) const;
 	void miscLevelCapEC(u8 levelCap) const;
 	void miscPalToNtsc() const;

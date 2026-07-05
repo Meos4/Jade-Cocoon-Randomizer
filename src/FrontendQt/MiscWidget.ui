@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="skipTutorialBox">
+    <widget class="QGroupBox" name="skipPrologueBox">
      <property name="minimumSize">
       <size>
        <width>0</width>
@@ -29,11 +29,11 @@
       </font>
      </property>
      <property name="title">
-      <string>Skip Tutorial</string>
+      <string>Skip Prologue</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
       <item row="0" column="0">
-       <widget class="QCheckBox" name="skipTutorialEnable">
+       <widget class="QCheckBox" name="skipPrologueEnable">
         <property name="toolTip">
          <string/>
         </property>
@@ -43,7 +43,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="skipTutorialSkipKoris">
+       <widget class="QCheckBox" name="skipPrologueSkipKoris">
         <property name="enabled">
          <bool>true</bool>
         </property>
