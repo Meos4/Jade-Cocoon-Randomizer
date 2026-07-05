@@ -449,9 +449,9 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->defaultBugFixesBodyEnhancement();
 	}
 
-	if (defaultUi.bugFixesAutumnMoonEffect->isChecked())
+	if (defaultUi.bugFixesAutumnMoonVisualAttackEffect->isChecked())
 	{
-		randomizer->defaultBugFixesAutumnMoonEffect();
+		randomizer->defaultBugFixesAutumnMoonVisualAttackEffect();
 	}
 
 	if (randomizer->game().isVersion(Version::PalFr) && defaultUi.bugFixesSpecialAttackModifiersDisplay->isChecked())

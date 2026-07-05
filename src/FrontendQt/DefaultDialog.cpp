@@ -24,7 +24,7 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		{ SETTINGS(m_ui.analogMode) },
 		{ SETTINGS(m_ui.bugFixesHpMpBars) },
 		{ SETTINGS(m_ui.bugFixesBodyEnhancement) },
-		{ SETTINGS(m_ui.bugFixesAutumnMoonEffect) },
+		{ SETTINGS(m_ui.bugFixesAutumnMoonVisualAttackEffect) },
 		{ SETTINGS(m_ui.bugFixesSpecialAttackModifiersDisplay) },
 	};
 
@@ -80,8 +80,8 @@ DefaultDialog::DefaultDialog(QWidget* parent)
 		"and Eternal Corridor bosses will use their supposed body enhancements."
 	);
 
-	m_helpConsole->addFeature(m_ui.bugFixesAutumnMoonEffect, bugFixesTitle,
-		"Autumn Moon was supposed to have a unique attack effect. Unfortunately due to an oversight "
+	m_helpConsole->addFeature(m_ui.bugFixesAutumnMoonVisualAttackEffect, bugFixesTitle,
+		"Autumn Moon was supposed to have a unique visual attack effect. Unfortunately due to an oversight "
 		"from the developers, the weapon file does not include the effect and use none, this solves this issue."
 	);
 

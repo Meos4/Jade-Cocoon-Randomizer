@@ -1200,7 +1200,7 @@ void Randomizer::defaultBugFixesBodyEnhancement() const
 	executable.write(fixEntityEnhancementOffset.file, fixEntityEnhancementFn);
 }
 
-void Randomizer::defaultBugFixesAutumnMoonEffect() const
+void Randomizer::defaultBugFixesAutumnMoonVisualAttackEffect() const
 {
 	Randomizer::setDamageEffectFromWeaponIdFn(*m_game, true);
 }

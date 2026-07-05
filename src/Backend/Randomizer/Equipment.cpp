@@ -239,7 +239,7 @@ void Randomizer::equipmentOthers() const
 	executable.write(statsOffset, stats);
 }
 
-void Randomizer::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect)
+void Randomizer::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonVisualAttackEffect)
 {
 	const auto over_battle_bin{ game.file(File::OVER_BATTLE_BIN) };
 
@@ -281,7 +281,7 @@ void Randomizer::setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnM
 
 	for (Item_t i{}; i < WEAPON_COUNT; ++i)
 	{
-		if (setAutumnMoonEffect && weaponsCharacteristic[i].critical == 90)
+		if (setAutumnMoonVisualAttackEffect && weaponsCharacteristic[i].critical == 90)
 		{
 			animationsId[i] = WEAPON_ANIMATION_CRITICAL;
 		}

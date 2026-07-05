@@ -179,7 +179,7 @@ public:
 	void equipmentWeapons(Randomizer::EquipmentWeapons_t state) const;
 	void equipmentArmors(Randomizer::EquipmentArmors_t state) const;
 	void equipmentOthers() const;
-	static void setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonEffect);
+	static void setDamageEffectFromWeaponIdFn(const Game& game, bool setAutumnMoonVisualAttackEffect);
 	void treasureEquipments(Randomizer::TreasureEquipments state) const;
 	void treasureItems(Randomizer::TreasureItems state, bool randomSkeletonKeys) const;
 	void treasureValuables(Randomizer::TreasureValuables state, bool randomUsableValuables) const;
@@ -208,7 +208,7 @@ public:
 	void defaultAnalogMode() const;
 	void defaultBugFixesHpMpBars() const;
 	void defaultBugFixesBodyEnhancement() const;
-	void defaultBugFixesAutumnMoonEffect() const;
+	void defaultBugFixesAutumnMoonVisualAttackEffect() const;
 	void defaultBugFixesSpecialAttackModifiersDisplay() const;
 private:
 	Game* m_game;

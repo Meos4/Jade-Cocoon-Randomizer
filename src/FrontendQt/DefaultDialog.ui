@@ -173,9 +173,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="bugFixesAutumnMoonEffect">
+           <widget class="QCheckBox" name="bugFixesAutumnMoonVisualAttackEffect">
             <property name="text">
-             <string>Autumn Moon Effect</string>
+             <string>Autumn Moon Visual Attack Effect</string>
             </property>
             <property name="checked">
              <bool>true</bool>
