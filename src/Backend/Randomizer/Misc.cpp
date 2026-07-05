@@ -306,11 +306,60 @@ void Randomizer::miscSkipTutorial(bool skipKoris) const
 	if (skipKoris)
 	{
 		executable.write(afterTutorialStateOffset.file + 0x16, u8(1));
+
+		// Set the "Koris in the Beetle Forest" as already played, (event bit 59)
+		executable.write(afterTutorialStateOffset.file + 0x1B, u8(8));
+
+		// Reset the previous map triple (4,1,0) != (-1,-1,-1) otherwise
+		// it considers the zone unchanged and keeps the minions spawn pool empty
+		executable.write(afterTutorialStateOffset.file + 0x46, u16(0xFFFF));
+		executable.write(afterTutorialStateOffset.file + 0x4A, u16(0xFFFF));
+		executable.write(afterTutorialStateOffset.file + 0x4E, u16(0xFFFF));
+		executable.write(afterTutorialStateOffset.file + 0x52, u16(0xFFFF));
+
 		executable.write(afterTutorialStateOffset.file + 0xCE, u8(0x0B));
 		executable.write(afterTutorialStateOffset.file + 0x126, u8(0x64));
 		executable.write(afterTutorialStateOffset.file + 0x12E, u8(0x6A));
 		executable.write(afterTutorialStateOffset.file + 0x12F, u8(0));
+
+		// Spawn at the Beetle Forest, (4,1,0)
+		m_game->file(File::OVER_CHAPTER_BIN)->write(m_game->offset().file.over_chapter_bin.chapter2StartMapId, u16(0x6A));
 	}
+	else
+	{
+		// Spawn at the Gate, (4,0,1)
+		m_game->file(File::OVER_CHAPTER_BIN)->write(m_game->offset().file.over_chapter_bin.chapter2StartMapId, u16(0x65));
+	}
+
+	static constexpr u32 chapterFsmStatesTable{ 4 };
+
+	const auto
+		state0Fn{ m_game->staticFile(File::OVER_CHAPTER_BIN)->read<u32>(chapterFsmStatesTable) },
+		lastStateFn{ m_game->staticFile(File::OVER_CHAPTER_BIN)->read<u32>(chapterFsmStatesTable + 0x14) };
+
+	const u32 currentChapter{ m_game->offset().game.gameStateStruct + 0x2B8 };
+
+	const u16
+		currentChapterHi{ static_cast<u16>((currentChapter + 0x8000) >> 16) },
+		currentChapterLo{ static_cast<u16>(currentChapter) };
+
+	const MipsFn::SkipChapter2Cinematic skipChapter2CinematicFn
+	{
+		Mips::lui(Mips::Register::v0, currentChapterHi),
+		Mips_t(0x84430000 | currentChapterLo), // lh v1, currentChapter(v0)
+		Mips::li(Mips::Register::v0, 1),
+		Mips_t(0x14620003), // bne v1, v0, +3
+		Mips_t(0x00000000), // nop
+		Mips::j(lastStateFn),
+		Mips_t(0xAE400004), // sw zero, 4(s2), the NTSC-J entry does not initialize the last state timer
+		Mips::j(state0Fn),
+		Mips_t(0x00000000)  // nop
+	};
+
+	const auto skipChapter2CinematicOffset{ m_game->customCodeOffset(sizeof(MipsFn::SkipChapter2Cinematic)) };
+
+	executable.write(skipChapter2CinematicOffset.file, skipChapter2CinematicFn);
+	m_game->file(File::OVER_CHAPTER_BIN)->write(chapterFsmStatesTable, skipChapter2CinematicOffset.game);
 
 	const auto over_title_bin{ m_game->file(File::OVER_TITLE_BIN) };
 

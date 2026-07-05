@@ -112,6 +112,10 @@ fileNtscJ1
 		.setLevantGarb = 0x000016C0,
 		.initMapNewGame = 0x000011B0,
 	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x0000093C,
+	},
 	.over_wpnshop_bin
 	{
 		.items = 0x0000669C,
@@ -835,6 +839,10 @@ fileNtscJ2
 		.levantStats = 0x000020B0,
 		.setLevantGarb = 0x00001A58,
 		.initMapNewGame = 0x00001554,
+	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x0000093C,
 	},
 	.over_wpnshop_bin
 	{
@@ -1560,6 +1568,10 @@ fileNtscU
 		.setLevantGarb = 0x00001B64,
 		.initMapNewGame = 0x00001660,
 	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x00000940,
+	},
 	.over_wpnshop_bin
 	{
 		.items = 0x00008B2C,
@@ -2283,6 +2295,10 @@ filePalEn
 		.levantStats = 0x00002600,
 		.setLevantGarb = 0x00001F94,
 		.initMapNewGame = 0x00001AFC,
+	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x00000940,
 	},
 	.over_wpnshop_bin
 	{
@@ -3008,6 +3024,10 @@ filePalFr
 		.setLevantGarb = 0x00001FEC,
 		.initMapNewGame = 0x00001B54,
 	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x00000940,
+	},
 	.over_wpnshop_bin
 	{
 		.items = 0x00008624,
@@ -3731,6 +3751,10 @@ filePalDe
 		.levantStats = 0x00002604,
 		.setLevantGarb = 0x00001F98,
 		.initMapNewGame = 0x00001B00,
+	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x00000940,
 	},
 	.over_wpnshop_bin
 	{
@@ -4456,6 +4480,10 @@ filePalEs
 		.setLevantGarb = 0x00001EB8,
 		.initMapNewGame = 0x00001A20,
 	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x00000940,
+	},
 	.over_wpnshop_bin
 	{
 		.items = 0x00009190,
@@ -5180,6 +5208,10 @@ filePalIt
 		.levantStats = 0x00002524,
 		.setLevantGarb = 0x00001EB8,
 		.initMapNewGame = 0x00001A20,
+	},
+	.over_chapter_bin
+	{
+		.chapter2StartMapId = 0x00000940,
 	},
 	.over_wpnshop_bin
 	{

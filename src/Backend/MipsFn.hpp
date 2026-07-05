@@ -37,6 +37,7 @@ namespace MipsFn
 	using DifficultyModeStats = std::array<Mips_t, 33>;
 	using AfterTutorialStateData = std::array<u8, 360>;
 	using WriteAfterTutorialState = std::array<Mips_t, 36>;
+	using SkipChapter2Cinematic = std::array<Mips_t, 9>;
 	using DrawHiddenStats = std::array<Mips_t, 62>;
 	using CriticalRateFromStats = std::array<Mips_t, 13>;
 	using DrawCriticalRate = std::array<Mips_t, 15>;

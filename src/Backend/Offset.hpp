@@ -133,6 +133,11 @@ public:
 
 		struct
 		{
+			u32 chapter2StartMapId;
+		} over_chapter_bin;
+
+		struct
+		{
 			u32 items,
 				itemShopQuantityLimitFn,
 				equipmentShopQuantityLimitFn,
