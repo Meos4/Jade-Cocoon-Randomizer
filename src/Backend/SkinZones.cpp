@@ -156,40 +156,22 @@ namespace SkinZones
 		return survivors;
 	}
 
-	Rearrangement rearrangeCLUT(RawFile* file, Model_t model, u32 clutOffset)
+	Rearrangement rearrangeTextures(RawFile* file, u32 clutOffset, std::span<const MaskedTexture> textures)
 	{
 		Rearrangement result;
 		const auto original{ file->read<std::array<u16, TimPalette::clutSize>>(clutOffset) };
 		result.palette = original;
 
-		const ClutZone* zone{};
-
-		for (const auto& candidate : clutZones)
-		{
-			if (candidate.model == model && candidate.clutOffset == clutOffset)
-			{
-				zone = &candidate;
-				break;
-			}
-		}
-
-		if (!zone)
-		{
-			return result; // No mask: palette untouched, everything rotates
-		}
-
 		std::array<u32, TimPalette::clutSize> protPx{}, rotPx{};
-		std::vector<std::vector<u8>> texPixels(zone->textures.size());
-		std::vector<const u8*> texMasks(zone->textures.size());
+		std::vector<std::vector<u8>> texPixels(textures.size());
 		bool hasTransparent{};
 
-		for (std::size_t t{}; t < zone->textures.size(); ++t)
+		for (std::size_t t{}; t < textures.size(); ++t)
 		{
-			const auto& texture{ zone->textures[t] };
+			const auto& texture{ textures[t] };
 			auto& pixels{ texPixels[t] };
 			pixels.resize(static_cast<std::size_t>(texture.width) * texture.height);
 			file->read(texture.pixelsOffset, pixels.data(), pixels.size());
-			texMasks[t] = SkinZonesMask::protectMask(model, clutOffset, static_cast<u32>(t));
 
 			for (std::size_t i{}; i < pixels.size(); ++i)
 			{
@@ -200,7 +182,7 @@ namespace SkinZones
 					hasTransparent = true;
 				}
 
-				(maskBit(texMasks[t], i) ? protPx : rotPx)[idx]++;
+				(maskBit(texture.mask, i) ? protPx : rotPx)[idx]++;
 			}
 		}
 
@@ -232,18 +214,51 @@ namespace SkinZones
 			}
 		}
 
-		for (std::size_t t{}; t < zone->textures.size(); ++t)
+		for (std::size_t t{}; t < textures.size(); ++t)
 		{
 			auto& pixels{ texPixels[t] };
 
 			for (std::size_t i{}; i < pixels.size(); ++i)
 			{
-				pixels[i] = maskBit(texMasks[t], i) ? remapProt[pixels[i]] : remapRot[pixels[i]];
+				pixels[i] = maskBit(textures[t].mask, i) ? remapProt[pixels[i]] : remapRot[pixels[i]];
 			}
 
-			file->write(zone->textures[t].pixelsOffset, *pixels.data(), pixels.size());
+			file->write(textures[t].pixelsOffset, *pixels.data(), pixels.size());
 		}
 
 		return result;
+	}
+
+	Rearrangement rearrangeCLUT(RawFile* file, Model_t model, u32 clutOffset)
+	{
+		const ClutZone* zone{};
+
+		for (const auto& candidate : clutZones)
+		{
+			if (candidate.model == model && candidate.clutOffset == clutOffset)
+			{
+				zone = &candidate;
+				break;
+			}
+		}
+
+		if (!zone)
+		{
+			Rearrangement result;
+			result.palette = file->read<std::array<u16, TimPalette::clutSize>>(clutOffset);
+			return result; // No mask: palette untouched, everything rotates
+		}
+
+		std::vector<MaskedTexture> textures;
+		textures.reserve(zone->textures.size());
+
+		for (std::size_t t{}; t < zone->textures.size(); ++t)
+		{
+			const auto& tex{ zone->textures[t] };
+			textures.push_back({ tex.pixelsOffset, tex.width, tex.height,
+				SkinZonesMask::protectMask(model, clutOffset, static_cast<u32>(t)) });
+		}
+
+		return rearrangeTextures(file, clutOffset, textures);
 	}
 }

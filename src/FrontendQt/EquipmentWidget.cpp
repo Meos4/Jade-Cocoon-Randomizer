@@ -16,6 +16,7 @@ EquipmentWidget::EquipmentWidget(HelpConsoleWidget* helpConsole, QWidget* parent
 		{ SETTINGS(m_ui.weaponsRandomAppearance) },
 		{ SETTINGS(m_ui.armorsRandomStats) },
 		{ SETTINGS(m_ui.armorsRandomAppearance) },
+		{ SETTINGS(m_ui.armorsRandomColors) },
 		{ SETTINGS(m_ui.othersRandomStats) }
 	};
 
@@ -40,6 +41,10 @@ EquipmentWidget::EquipmentWidget(HelpConsoleWidget* helpConsole, QWidget* parent
 
 	helpConsole->addFeature(m_ui.armorsRandomAppearance, _Armors,
 		"Randomize the appearance of armors."
+	);
+
+	helpConsole->addFeature(m_ui.armorsRandomColors, _Armors,
+		"Randomize the colors of armors."
 	);
 
 	helpConsole->addFeature(m_ui.othersRandomStats, m_ui.othersBox->title(),

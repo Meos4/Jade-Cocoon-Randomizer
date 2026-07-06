@@ -85,7 +85,8 @@ public:
 	enum : EquipmentArmors_t
 	{
 		EQUIPMENT_ARMORS_RANDOM_STATS = 1 << 0,
-		EQUIPMENT_ARMORS_RANDOM_APPEARANCE = 1 << 1
+		EQUIPMENT_ARMORS_RANDOM_APPEARANCE = 1 << 1,
+		EQUIPMENT_ARMORS_RANDOM_COLORS = 1 << 2
 	};
 
 	enum class TreasureEquipments

@@ -34,6 +34,13 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QCheckBox" name="armorsRandomColors">
+        <property name="text">
+         <string>Random Colors</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

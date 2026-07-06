@@ -263,6 +263,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	{
 		equipmentArmors |= Randomizer::EQUIPMENT_ARMORS_RANDOM_APPEARANCE;
 	}
+	if (equipmentUi.armorsRandomColors->isChecked())
+	{
+		equipmentArmors |= Randomizer::EQUIPMENT_ARMORS_RANDOM_COLORS;
+	}
 	if (equipmentArmors)
 	{
 		randomizer->equipmentArmors(equipmentArmors);

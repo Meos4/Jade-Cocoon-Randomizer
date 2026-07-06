@@ -4,14 +4,19 @@
 #include "Backend/Item.hpp"
 #include "Backend/MipsFn.hpp"
 #include "Backend/Path.hpp"
+#include "Backend/SkinZones.hpp"
+#include "Backend/SkinZonesMask.hpp"
+#include "Backend/TimPalette.hpp"
 #include "Common/JcrException.hpp"
 
 #include <array>
 #include <cstdlib>
+#include <cstring>
 #include <filesystem>
 #include <format>
 #include <type_traits>
 #include <utility>
+#include <vector>
 
 struct EquipmentStatsPoint
 {
@@ -214,6 +219,129 @@ void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 		}
 
 		executable.write(m_game->offset().file.executable.tableOfArmorsAppearanceId, armorsAppearanceId);
+	}
+
+	if (state & Randomizer::EQUIPMENT_ARMORS_RANDOM_COLORS)
+	{
+		struct LevantGroup
+		{
+			u32 clut;
+			std::vector<SkinZones::MaskedTexture> textures;
+		};
+
+		auto scanGroups = [](const Buffer& bytes)
+		{
+			std::vector<LevantGroup> groups;
+
+			for (std::size_t p{}; p + 12 <= bytes.size(); )
+			{
+				u32 size;
+				s16 vx, vy;
+				u16 w, h;
+				std::memcpy(&size, &bytes[p], 4);
+				std::memcpy(&vx, &bytes[p + 4], 2);
+				std::memcpy(&vy, &bytes[p + 6], 2);
+				std::memcpy(&w, &bytes[p + 8], 2);
+				std::memcpy(&h, &bytes[p + 10], 2);
+
+				if (w > 0 && h > 0 && vx >= 0 && vx < 1024 && vy >= 0 && vy < 512
+					&& size == 12u + u32(w) * h * 2 && size < 0x20000u)
+				{
+					if (h == 1 && w == 256)
+					{
+						groups.push_back({ static_cast<u32>(p) + 12, {} });
+					}
+					else if (h > 2 && !groups.empty() && w * 2 >= 64) // skips the 12-wide shadow
+					{
+						groups.back().textures.push_back({ static_cast<u32>(p) + 12, static_cast<u16>(w * 2), h, nullptr });
+					}
+
+					p += size;
+				}
+				else
+				{
+					p += 2;
+				}
+			}
+
+			return groups;
+		};
+
+		auto recolorGroup = [](RawFile* file, LevantGroup& group, Model_t model, u32 shape, s32 hue)
+		{
+			u32 bodySlot{};
+
+			for (auto& texture : group.textures)
+			{
+				u32 slot;
+
+				if (texture.width == 64)
+				{
+					slot = 3;
+				}
+				else if (texture.width >= 128)
+				{
+					slot = bodySlot++;
+				}
+				else
+				{
+					continue;
+				}
+
+				const u8* mask{ SkinZonesMask::levantMask(model, shape, slot) };
+
+				if (!mask && shape != 0)
+				{
+					mask = SkinZonesMask::levantMask(model, 0, slot);
+				}
+
+				texture.mask = mask;
+			}
+
+			auto result{ SkinZones::rearrangeTextures(file, group.clut, group.textures) };
+			TimPalette::rotateCLUT(result.palette, hue, result.protectedSlots);
+			file->write(group.clut, result.palette);
+		};
+
+		auto random{ m_game->random() };
+
+		{
+			const auto file{ m_game->file(File::MODEL_LEBANT_MDL) };
+			auto groups{ scanGroups(file->readFile()) };
+			const auto hue{ random->generate(TimPalette::clutRotationLimit) };
+
+			for (std::size_t gi{}; gi < groups.size(); ++gi)
+			{
+				// Variant #13 (group 14) has a different skin layout.
+				recolorGroup(file.get(), groups[gi], MODEL_LEBANT, gi == 14 ? 1u : 0u, hue);
+			}
+		}
+
+		{
+			const auto file{ m_game->file(File::MODEL_LEB2_MDL) };
+			auto groups{ scanGroups(file->readFile()) };
+			std::array<s32, 8> hues;
+
+			for (auto& h : hues)
+			{
+				h = random->generate(TimPalette::clutRotationLimit);
+			}
+
+			for (std::size_t gi{}; gi < groups.size(); ++gi)
+			{
+				u32 shape{};
+				s32 hue{ hues[0] };
+
+				if (gi >= 2)
+				{
+					const u32 position{ (static_cast<u32>(gi) - 2) % 9 };
+					hue = hues[position == 0 ? 0 : position - 1];
+					shape = (position == 6 || position == 8) ? 1u : 0u;
+				}
+
+				recolorGroup(file.get(), groups[gi], MODEL_LEB2, shape, hue);
+			}
+		}
 	}
 }
 
