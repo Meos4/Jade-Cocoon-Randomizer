@@ -14,6 +14,7 @@
 #include <cstring>
 #include <filesystem>
 #include <format>
+#include <span>
 #include <type_traits>
 #include <utility>
 #include <vector>
@@ -267,7 +268,14 @@ void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 			return groups;
 		};
 
-		auto recolorGroup = [](RawFile* file, LevantGroup& group, Model_t model, u32 shape, s32 hue)
+		struct Recolor
+		{
+			bool blackAndWhite;
+			TimPalette::BlackAndWhiteMethod method;
+			s32 hue;
+		};
+
+		auto recolorGroup = [](RawFile* file, LevantGroup& group, Model_t model, u32 shape, const Recolor& recolor)
 		{
 			u32 bodySlot{};
 
@@ -299,47 +307,99 @@ void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 			}
 
 			auto result{ SkinZones::rearrangeTextures(file, group.clut, group.textures) };
-			TimPalette::rotateCLUT(result.palette, hue, result.protectedSlots);
+
+			if (recolor.blackAndWhite)
+			{
+				TimPalette::blackAndWhiteCLUT(result.palette, recolor.method, result.protectedSlots);
+			}
+			else
+			{
+				TimPalette::rotateCLUT(result.palette, recolor.hue, result.protectedSlots);
+			}
+
 			file->write(group.clut, result.palette);
 		};
 
-		auto random{ m_game->random() };
+		const auto random{ m_game->random() };
+
+		auto rollRecolor = [&](const auto& allowedMethods)
+		{
+			Recolor recolor{};
+			static constexpr auto blackAndWhiteChance{ 12.5f };
+			
+			if (random->generateProba(blackAndWhiteChance))
+			{
+				recolor.blackAndWhite = true;
+				recolor.method = allowedMethods[random->generate(allowedMethods.size() - 1)];
+			}
+			else
+			{
+				recolor.hue = random->generate(TimPalette::clutRotationLimit);
+			}
+
+			return recolor;
+		};
+
+		using Method = TimPalette::BlackAndWhiteMethod;
 
 		{
+			static constexpr std::array<Method, 4> lebantMethods
+			{
+				Method::Red, Method::Green, Method::Maximum, Method::Lightness
+			};
+
 			const auto file{ m_game->file(File::MODEL_LEBANT_MDL) };
 			auto groups{ scanGroups(file->readFile()) };
-			const auto hue{ random->generate(TimPalette::clutRotationLimit) };
+			const auto recolor{ rollRecolor(lebantMethods) };
 
 			for (std::size_t gi{}; gi < groups.size(); ++gi)
 			{
 				// Variant #13 (group 14) has a different skin layout.
-				recolorGroup(file.get(), groups[gi], MODEL_LEBANT, gi == 14 ? 1u : 0u, hue);
+				recolorGroup(file.get(), groups[gi], MODEL_LEBANT, gi == 14 ? 1u : 0u, recolor);
 			}
 		}
 
 		{
+			static constexpr Method redMaxLight[]{ Method::Red, Method::Maximum, Method::Lightness };
+			static constexpr Method maxLight[]{ Method::Maximum, Method::Lightness };
+			static constexpr Method redMaxAvgLight[]{ Method::Red, Method::Maximum, Method::Average, Method::Lightness };
+			static constexpr Method redGreenMaxAvgLight[]{ Method::Red, Method::Green, Method::Maximum, Method::Average, Method::Lightness };
+
+			static constexpr std::array<std::span<const Method>, 8> slotMethods
+			{
+				redMaxLight,          // variant 1 & 2
+				redMaxLight,          // variant 3
+				maxLight,             // variant 4
+				redMaxLight,          // variant 5
+				redGreenMaxAvgLight,  // variant 6
+				redMaxAvgLight,       // variant 7
+				redMaxAvgLight,       // variant 8
+				redMaxLight           // variant 9
+			};
+
+			std::array<Recolor, slotMethods.size()> slotRecolor;
+
+			for (std::size_t s{}; s < slotRecolor.size(); ++s)
+			{
+				slotRecolor[s] = rollRecolor(slotMethods[s]);
+			}
+
 			const auto file{ m_game->file(File::MODEL_LEB2_MDL) };
 			auto groups{ scanGroups(file->readFile()) };
-			std::array<s32, 8> hues;
-
-			for (auto& h : hues)
-			{
-				h = random->generate(TimPalette::clutRotationLimit);
-			}
 
 			for (std::size_t gi{}; gi < groups.size(); ++gi)
 			{
+				std::size_t slot{};
 				u32 shape{};
-				s32 hue{ hues[0] };
 
 				if (gi >= 2)
 				{
 					const u32 position{ (static_cast<u32>(gi) - 2) % 9 };
-					hue = hues[position == 0 ? 0 : position - 1];
+					slot = position == 0 ? 0 : position - 1;
 					shape = (position == 6 || position == 8) ? 1u : 0u;
 				}
 
-				recolorGroup(file.get(), groups[gi], MODEL_LEB2, shape, hue);
+				recolorGroup(file.get(), groups[gi], MODEL_LEB2, shape, slotRecolor[slot]);
 			}
 		}
 	}

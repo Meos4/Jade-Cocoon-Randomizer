@@ -28,4 +28,15 @@ namespace TimPalette
 			clr = TimPalette::blackAndWhiteClr(clr, method);
 		}
 	}
+
+	void blackAndWhiteCLUT(std::span<u16> clut, TimPalette::BlackAndWhiteMethod method, const std::bitset<TimPalette::clutSize>& skip)
+	{
+		for (std::size_t i{}; i < clut.size(); ++i)
+		{
+			if (!skip[i])
+			{
+				clut[i] = TimPalette::blackAndWhiteClr(clut[i], method);
+			}
+		}
+	}
 }
