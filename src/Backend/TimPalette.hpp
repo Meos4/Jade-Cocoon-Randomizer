@@ -199,4 +199,5 @@ namespace TimPalette
 	void rotateCLUT(std::span<u16> clut, s32 rotation, const std::bitset<TimPalette::clutSize>& skip);
 	void blackAndWhiteCLUT(std::span<u16> clut, TimPalette::BlackAndWhiteMethod method);
 	void blackAndWhiteCLUT(std::span<u16> clut, TimPalette::BlackAndWhiteMethod method, const std::bitset<TimPalette::clutSize>& skip);
+	void setBlackOpaque(std::span<u16> clut, std::span<const u16> original);
 };

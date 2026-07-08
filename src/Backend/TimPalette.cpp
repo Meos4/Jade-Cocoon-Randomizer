@@ -39,4 +39,15 @@ namespace TimPalette
 			}
 		}
 	}
+
+	void setBlackOpaque(std::span<u16> clut, std::span<const u16> original)
+	{
+		for (std::size_t i{}; i < clut.size(); ++i)
+		{
+			if (clut[i] == 0 && original[i] != 0)
+			{
+				clut[i] = 0x8000;
+			}
+		}
+	}
 }

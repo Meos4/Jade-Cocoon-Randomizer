@@ -278,6 +278,7 @@ void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 		auto recolorGroup = [](RawFile* file, LevantGroup& group, Model_t model, u32 shape, const Recolor& recolor)
 		{
 			u32 bodySlot{};
+			bool isPortrait{};
 
 			for (auto& texture : group.textures)
 			{
@@ -286,6 +287,7 @@ void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 				if (texture.width == 64)
 				{
 					slot = 3;
+					isPortrait = true;
 				}
 				else if (texture.width >= 128)
 				{
@@ -310,7 +312,13 @@ void Randomizer::equipmentArmors(Randomizer::EquipmentArmors_t state) const
 
 			if (recolor.blackAndWhite)
 			{
+				const auto originalPalette{ result.palette };
 				TimPalette::blackAndWhiteCLUT(result.palette, recolor.method, result.protectedSlots);
+
+				if (isPortrait)
+				{
+					TimPalette::setBlackOpaque(result.palette, originalPalette);
+				}
 			}
 			else
 			{
