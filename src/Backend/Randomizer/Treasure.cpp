@@ -432,14 +432,22 @@ void Randomizer::treasureBattleDrops(bool shuffleSkeletonKeys) const
 
 	if (!shuffleSkeletonKeys)
 	{
+		std::vector<EntityTreasure> shufflePool;
+		shufflePool.reserve(treasuresList.size());
+
 		for (std::size_t i{}; i < treasuresList.size(); ++i)
 		{
 			if (isASkeletonKey(treasuresList[i].one.content))
 			{
 				treasures[i] = treasuresList[i];
-				treasuresList.erase(treasuresList.begin() + i);
+			}
+			else
+			{
+				shufflePool.emplace_back(treasuresList[i]);
 			}
 		}
+
+		treasuresList = std::move(shufflePool);
 	}
 
 	for (auto& treasure : treasures)
