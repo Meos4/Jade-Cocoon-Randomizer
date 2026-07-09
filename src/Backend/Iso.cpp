@@ -1,7 +1,7 @@
 #include "Iso.hpp"
 
 #include "Backend/Path.hpp"
-#include "Common/RawFile.hpp"
+#include "Common/RawFileReadOnly.hpp"
 
 #include "dumpsxiso/dumpsxiso.h"
 #include "mkpsxiso/mkpsxiso.h"
@@ -37,7 +37,12 @@ namespace Iso
 			return std::nullopt;
 		}
 
-		RawFile iso{ isoPath };
+		RawFileReadOnly iso{ isoPath };
+
+		if (!iso.isOpen())
+		{
+			return std::nullopt;
+		}
 
 		using OffsetPattern = std::pair<u32, SBuffer<11>>;
 		static constexpr std::array<OffsetPattern, static_cast<std::size_t>(Version::Count)> ver

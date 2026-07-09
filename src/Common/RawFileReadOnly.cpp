@@ -11,6 +11,11 @@ RawFileReadOnly::RawFileReadOnly(const std::string& pathFile)
 RawFileReadOnly::RawFileReadOnly(const std::filesystem::path& pathFile)
 	: m_stream(pathFile, openMode), m_path(pathFile) {};
 
+bool RawFileReadOnly::isOpen() const
+{
+	return m_stream.is_open();
+}
+
 std::uintmax_t RawFileReadOnly::size() const
 {
 	return std::filesystem::file_size(m_path);

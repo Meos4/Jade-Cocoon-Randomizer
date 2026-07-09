@@ -30,6 +30,7 @@ public:
 		m_stream.read((char*)store, size);
 	}
 
+	bool isOpen() const;
 	std::uintmax_t size() const;
 	Buffer readFile();
 private:
