@@ -64,7 +64,7 @@ public:
 			std::vector<T> availableBits;
 			for (T i{}; i < std::numeric_limits<T>::digits; ++i)
 			{
-				const T binaryBit{ bits & (1 << i) };
+				const T binaryBit{ bits & (T{ 1 } << i) };
 				if (binaryBit)
 				{
 					availableBits.emplace_back(binaryBit);

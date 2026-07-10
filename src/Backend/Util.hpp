@@ -13,7 +13,7 @@ namespace Util
 	{
 		for (T i{}; i < std::numeric_limits<T>::digits; ++i)
 		{
-			if (T(1 << i) == bit)
+			if ((T{ 1 } << i) == bit)
 			{
 				return i;
 			}
