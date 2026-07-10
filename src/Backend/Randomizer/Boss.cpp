@@ -56,7 +56,7 @@ static void setDamageModifiers(DamageModifiers* damageModifiers, Element_t eleme
 
 	auto mid{ min };
 	
-	auto setMid = [min, &mid, max](u8 elem)
+	auto setMid = [min, &mid, max](s8 elem)
 	{
 		if (elem != min && elem != max)
 		{
