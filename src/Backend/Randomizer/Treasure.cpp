@@ -18,7 +18,7 @@ public:
 	TreasureRandomizer(Game* game)
 		: m_game(game)
 	{
-		static constexpr std::array<Chapter_t, 7> chapters
+		static constexpr std::array<Chapter_t, 6> chapters
 		{
 			CHAPTER_BEETLE, CHAPTER_DRAGONFLY, CHAPTER_SPIDER, CHAPTER_SPIDER_2,
 			CHAPTER_MOTH, CHAPTER_NETHERWORLD
