@@ -1052,9 +1052,11 @@ void Randomizer::forestRandomEternalCorridorOstPerCorridor() const
 	using OstType = decltype(ostsIdWithoutDuplicate)::value_type;
 	const auto ostsSize{ ostsIdWithoutDuplicate.size() };
 
-	if (ostsSize * sizeof(OstType) > sizeof(ArrayType))
+	static constexpr auto ostsCapacity{ sizeof(ArrayType) / sizeof(OstType) };
+
+	if (ostsSize != ostsCapacity - 1)
 	{
-		throw JcrException{ "Invalid number of osts: {}, max: {}", ostsSize, sizeof(ArrayType) / sizeof(OstType) };
+		throw JcrException{ "Ost count desync: {} osts, expected {}", ostsSize, ostsCapacity - 1};
 	}
 
 	ArrayType availableOsts{};
@@ -1111,7 +1113,7 @@ void Randomizer::forestRandomEternalCorridorOstPerCorridor() const
 			// Generate random ost
 			Mips::jal(m_game->offset().game.randFn),
 			0xAD020000, // sw v0, 0(t0)
-			0x2409002A, // li t1, 0x2A
+			Mips::li(Mips::Register::t1, static_cast<u16>(ostsSize)), // li t1, ostsSize
 			0x0049001A, // div v0, t1
 			0x00001010, // mfhi v0
 			li32_osts[0],
