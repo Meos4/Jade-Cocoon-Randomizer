@@ -132,7 +132,7 @@ void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 	}
 }
 
-void RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
+bool RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
 {
 	Json::Write json;
 
@@ -142,5 +142,5 @@ void RandomizerTabWidget::savePresets(const std::filesystem::path& path) const
 	}
 	m_defaultDialog->savePresets(&json[m_defaultDialog->name()]);
 
-	Json::overwrite(json, path);
+	return Json::overwrite(json, path);
 }

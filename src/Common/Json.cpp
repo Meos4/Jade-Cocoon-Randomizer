@@ -28,7 +28,6 @@ namespace Json
 		}
 
 		std::ofstream jsonFile{ path };
-		jsonFile << std::setw(4) << json;
-		return true;
+		return jsonFile.is_open() && (jsonFile << std::setw(4) << json).good();
 	}
 }

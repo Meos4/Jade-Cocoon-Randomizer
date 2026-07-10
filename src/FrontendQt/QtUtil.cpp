@@ -53,4 +53,14 @@ namespace QtUtil
 		errorMessage += QString::fromStdString(std::format("Reason:\n{}", e.what()));
 		return errorMessage;
 	}
+
+	QString fileSaveErrorMessage(const std::filesystem::path& path)
+	{
+		return
+		#ifdef _WIN32
+			QString::fromStdWString(std::format(L"\"{}\" could not be saved.\nMake sure the location is writable and the file is not in use.", path.wstring()));
+		#else
+			QString::fromStdString(std::format("\"{}\" could not be saved.\nMake sure the location is writable and the file is not in use.", path.string()));
+		#endif
+	}
 }

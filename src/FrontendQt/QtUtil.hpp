@@ -27,4 +27,5 @@ namespace QtUtil
 
 	void qStrU64Filter(QString* qStr);
 	QString jsonErrorMessage(const std::filesystem::path& path, const Json::Exception& e);
+	QString fileSaveErrorMessage(const std::filesystem::path& path);
 }

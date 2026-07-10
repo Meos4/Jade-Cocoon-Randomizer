@@ -247,7 +247,12 @@ void MainWindow::saveSettings()
 {
 	Json::Write json;
 	m_guiSettings.saveSettings(&json);
-	Json::overwrite(json, GuiPath::jcrGuiSettingsFilename);
+
+	const std::filesystem::path guiSettingsPath{ GuiPath::jcrGuiSettingsFilename };
+	if (!Json::overwrite(json, guiSettingsPath))
+	{
+		QMessageBox::critical(this, "Error", QtUtil::fileSaveErrorMessage(guiSettingsPath));
+	}
 }
 
 void MainWindow::onSettingsDefault()
@@ -271,7 +276,10 @@ void MainWindow::savePresets()
 	if (!presetsPathQStr.isEmpty())
 	{
 		const std::filesystem::path presetsPath{ QtUtil::qStrToPlatformStr(presetsPathQStr) };
-		m_randomizerTabWidget->savePresets(presetsPath);
+		if (!m_randomizerTabWidget->savePresets(presetsPath))
+		{
+			QMessageBox::critical(this, "Error", QtUtil::fileSaveErrorMessage(presetsPath));
+		}
 	}
 }
 

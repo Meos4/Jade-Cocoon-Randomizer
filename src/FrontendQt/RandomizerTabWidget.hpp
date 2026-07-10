@@ -40,7 +40,7 @@ public:
 	void disableUI();
 	void write() const;
 	void loadPresets(const std::filesystem::path& path);
-	void savePresets(const std::filesystem::path& path) const;
+	bool savePresets(const std::filesystem::path& path) const;
 	void openDefaultDialog();
 private:
 	Ui::RandomizerTabWidget m_ui;
