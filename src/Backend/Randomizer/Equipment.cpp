@@ -72,9 +72,14 @@ static void setEquipmentStatsByPattern(EquipmentStats* stats, const EquipmentSta
 	stats->magicDefense = 0;
 	stats->speed = 0;
 
+	if (totalPattern == 0)
+	{
+		return;
+	}
+
 	for (s32 i{}; i < totalStats; ++i)
 	{
-		const auto rng{ random->generate(totalPattern) };
+		const auto rng{ random->generate(totalPattern - 1) };
 
 		if (rng < step1)
 		{
