@@ -433,6 +433,9 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 		MODEL_NAGK, { File::MODEL_NAGK_MDL, 0x2248 }
 	};
 
+	static constexpr std::size_t nbBossesBeforeGoat{ 11 };
+	static_assert(nbBossesBeforeGoat == mfo.size(), "mfo must list exactly the story bosses preceding the goats");
+
 	const std::unordered_set<Model_t> portraits
 	{
 		MODEL_YUME, MODEL_BSGE, MODEL_BSFE, MODEL_BSWE,
@@ -446,7 +449,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 	const u32 goatModelsBehaviorOffset
 	{
 		m_game->offset().file.executable.entityModelsBehavior +
-		(Entity::totalStoryMinions + static_cast<u32>(mfo.size())) * sizeof(ModelBehavior)
+		(Entity::totalStoryMinions + static_cast<u32>(nbBossesBeforeGoat)) * sizeof(ModelBehavior)
 	};
 	auto goatModelsBehavior{ executable.read<std::array<ModelBehavior, 3>>(goatModelsBehaviorOffset) };
 
@@ -483,7 +486,7 @@ void Randomizer::bossAppearance(Randomizer::BossAppearance state) const
 		const auto goatTextureModelId{ m_sharedData.goatTextureModelId() };
 		for (std::size_t i{}; i < goatModelsBehavior.size(); ++i)
 		{
-			const auto element{ elements[11 + i] };
+			const auto element{ elements[nbBossesBeforeGoat + i] };
 			const auto rotation
 			{
 				element == ELEMENT_NONE ?

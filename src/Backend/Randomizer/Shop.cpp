@@ -23,6 +23,16 @@ enum : Shop_t
 	SHOP_DEBUG = 1 << 15
 };
 
+static constexpr std::array<Item_t, 14> invalidShopItems
+{
+	ITEM_GREAT_WALNUT, ITEM_CHESTNUT_OIL, ITEM_SHISHIUDO_OIL, ITEM_KUKUMIRA_OIL,
+	ITEM_BLETILLA_OIL, ITEM_ICHISHI_OIL, ITEM_CLOUD_SILK, ITEM_THUNDER_SILK,
+	ITEM_LILY_SILK, ITEM_PEARL_SILK, ITEM_FIRST_SNOW_SILK, ITEM_ANGELWING_SILK,
+	ITEM_MOONLIGHT_SILK, ITEM_SKELETON_KEY
+};
+
+static constexpr auto nbInvalidShopItems{ invalidShopItems.size() };
+
 template <Item::Category_t Category, std::size_t Size>
 static void monoShopRandomizer(std::array<Shop_t, Size>* items, Shop_t shop, s32 size, Random* random)
 {
@@ -39,17 +49,9 @@ static void monoShopRandomizer(std::array<Shop_t, Size>* items, Shop_t shop, s32
 
 	if constexpr (Category == Item::CATEGORY_ITEM)
 	{
-		static constexpr std::array<Item_t, 14> invalidItems
-		{
-			ITEM_GREAT_WALNUT, ITEM_CHESTNUT_OIL, ITEM_SHISHIUDO_OIL, ITEM_KUKUMIRA_OIL,
-			ITEM_BLETILLA_OIL, ITEM_ICHISHI_OIL, ITEM_CLOUD_SILK, ITEM_THUNDER_SILK,
-			ITEM_LILY_SILK, ITEM_PEARL_SILK, ITEM_FIRST_SNOW_SILK, ITEM_ANGELWING_SILK,
-			ITEM_MOONLIGHT_SILK, ITEM_SKELETON_KEY
-		};
-
 		auto isAnInvalidItem = [](auto item)
 		{
-			for (const auto& invalidItem : invalidItems)
+			for (const auto& invalidItem : invalidShopItems)
 			{
 				if (item == invalidItem)
 				{
@@ -120,7 +122,7 @@ void Randomizer::shopEternalCorridorUnlockAll() const
 	auto writeShop = [&]<Item_t Size, Item::Category_t Category>(u32 offset)
 	{
 		auto items{ over_wpnshop_bin->read<std::array<Shop_t, Size>>(offset) };
-		monoShopRandomizer<Category>(&items, SHOP_ETERNAL_CORRIDOR, Category == Item::CATEGORY_ITEM ? Size - 14 : Size, m_game->random());
+		monoShopRandomizer<Category>(&items, SHOP_ETERNAL_CORRIDOR, Category == Item::CATEGORY_ITEM ? static_cast<s32>(Size - nbInvalidShopItems) : Size, m_game->random());
 		over_wpnshop_bin->write(offset, items);
 	};
 
