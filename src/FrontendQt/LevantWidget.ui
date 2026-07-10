@@ -28,6 +28,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="animationBetaSummon">
+        <property name="text">
+         <string>Beta Summon</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="animationRandomWeaponsPosture">
         <property name="text">
          <string>Random Weapons Posture</string>

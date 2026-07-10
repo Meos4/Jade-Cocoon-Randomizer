@@ -50,6 +50,7 @@ namespace MipsFn
 	using AutoHealInSafeArea = std::array<Mips_t, 100>;
 	using TurboDialogueInput = std::array<Mips_t, 10>;
 	using BattleThemeFade = std::array<Mips_t, 21>;
+	using BetaSummonBehavior = std::array<Mips_t, 35>;
 	using AnalogMode = std::array<Mips_t, 89>;
 	using JoystickRotation = std::array<Mips_t, 58>;
 	using AnalogToDpad = std::array<Mips_t, 28>;

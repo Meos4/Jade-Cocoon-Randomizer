@@ -41,6 +41,7 @@ fileNtscJ1
 		.openingBehaviorFn = 0x00039B4C,
 		.ostTable = 0x00070E9C,
 		.canPauseRenderCallJal = 0x00015F64,
+		.tableOfEffectBehaviorFns = 0x00062578,
 	},
 	.over_battle_bin
 	{
@@ -769,6 +770,7 @@ fileNtscJ2
 		.openingBehaviorFn = 0x00039E54,
 		.ostTable = 0x000701B0,
 		.canPauseRenderCallJal = 0x00015F84,
+		.tableOfEffectBehaviorFns = 0x00061C04,
 	},
 	.over_battle_bin
 	{
@@ -1497,6 +1499,7 @@ fileNtscU
 		.openingBehaviorFn = 0x00031500,
 		.ostTable = 0x0007370C,
 		.canPauseRenderCallJal = 0x0000B7E8,
+		.tableOfEffectBehaviorFns = 0x00062938,
 	},
 	.over_battle_bin
 	{
@@ -2225,6 +2228,7 @@ filePalEn
 		.openingBehaviorFn = 0x0003314C,
 		.ostTable = 0x00073630,
 		.canPauseRenderCallJal = 0x0000B7E8,
+		.tableOfEffectBehaviorFns = 0x0006285C,
 	},
 	.over_battle_bin
 	{
@@ -2953,6 +2957,7 @@ filePalFr
 		.openingBehaviorFn = 0x0003034C,
 		.ostTable = 0x000738A4,
 		.canPauseRenderCallJal = 0x0000B7E8,
+		.tableOfEffectBehaviorFns = 0x00062910,
 	},
 	.over_battle_bin
 	{
@@ -3681,6 +3686,7 @@ filePalDe
 		.openingBehaviorFn = 0x000302F0,
 		.ostTable = 0x00073760,
 		.canPauseRenderCallJal = 0x0000B7E8,
+		.tableOfEffectBehaviorFns = 0x000628B4,
 	},
 	.over_battle_bin
 	{
@@ -4409,6 +4415,7 @@ filePalEs
 		.openingBehaviorFn = 0x00030308,
 		.ostTable = 0x000739C4,
 		.canPauseRenderCallJal = 0x0000B7E8,
+		.tableOfEffectBehaviorFns = 0x000628CC,
 	},
 	.over_battle_bin
 	{
@@ -5138,6 +5145,7 @@ filePalIt
 		.openingBehaviorFn = 0x0003156C,
 		.ostTable = 0x000739A8,
 		.canPauseRenderCallJal = 0x0000B7E8,
+		.tableOfEffectBehaviorFns = 0x000628C4,
 	},
 	.over_battle_bin
 	{
@@ -5873,6 +5881,13 @@ gameNtscJ1
 	.soundStatePtr = 0x8008AF70,
 	.fadeSlotFn = 0x8003B7F0,
 	.fadeSeqFn = 0x80061C28,
+	.spawnEffectComponentFn = 0x800BB364,
+	.spawnEffectMdecFn = 0x80021C50,
+	.effectBehaviorContinue = 0x80020DA8,
+	.effectBehaviorSummonEnd = 0x8001FADC,
+	.effectMdecSchedule = 0x80094090,
+	.effectMdecVlcBuffer = 0x8008AEFC,
+	.effectMdecScratchBuffer = 0x80089190,
 },
 gameNtscJ2
 {
@@ -5914,6 +5929,13 @@ gameNtscJ2
 	.soundStatePtr = 0x80092620,
 	.fadeSlotFn = 0x8004379C,
 	.fadeSeqFn = 0x80069AC4,
+	.spawnEffectComponentFn = 0x800C69B8,
+	.spawnEffectMdecFn = 0x80029C3C,
+	.effectBehaviorContinue = 0x80028D94,
+	.effectBehaviorSummonEnd = 0x80027AC8,
+	.effectMdecSchedule = 0x8009B740,
+	.effectMdecVlcBuffer = 0x800925AC,
+	.effectMdecScratchBuffer = 0x80090840,
 },
 gameNtscU
 {
@@ -5955,6 +5977,13 @@ gameNtscU
 	.soundStatePtr = 0x8008D4A4,
 	.fadeSlotFn = 0x800313C8,
 	.fadeSeqFn = 0x8006281C,
+	.spawnEffectComponentFn = 0x800C32DC,
+	.spawnEffectMdecFn = 0x80017A6C,
+	.effectBehaviorContinue = 0x80016BC4,
+	.effectBehaviorSummonEnd = 0x800158F8,
+	.effectMdecSchedule = 0x80091C00,
+	.effectMdecVlcBuffer = 0x8008D42C,
+	.effectMdecScratchBuffer = 0x8008B4A0,
 },
 gamePalEn
 {
@@ -5996,6 +6025,13 @@ gamePalEn
 	.soundStatePtr = 0x8008D434,
 	.fadeSlotFn = 0x80031424,
 	.fadeSeqFn = 0x80062740,
+	.spawnEffectComponentFn = 0x800C34AC,
+	.spawnEffectMdecFn = 0x80017A6C,
+	.effectBehaviorContinue = 0x80016BC4,
+	.effectBehaviorSummonEnd = 0x800158F8,
+	.effectMdecSchedule = 0x80091B90,
+	.effectMdecVlcBuffer = 0x8008D3BC,
+	.effectMdecScratchBuffer = 0x8008B430,
 },
 gamePalFr
 {
@@ -6037,6 +6073,13 @@ gamePalFr
 	.soundStatePtr = 0x8008D6C4,
 	.fadeSlotFn = 0x80031424,
 	.fadeSeqFn = 0x800627F4,
+	.spawnEffectComponentFn = 0x800C3A3C,
+	.spawnEffectMdecFn = 0x80017A6C,
+	.effectBehaviorContinue = 0x80016BC4,
+	.effectBehaviorSummonEnd = 0x800158F8,
+	.effectMdecSchedule = 0x80091E20,
+	.effectMdecVlcBuffer = 0x8008D64C,
+	.effectMdecScratchBuffer = 0x8008B6C0,
 },
 gamePalDe
 {
@@ -6078,6 +6121,13 @@ gamePalDe
 	.soundStatePtr = 0x8008D57C,
 	.fadeSlotFn = 0x80031424,
 	.fadeSeqFn = 0x80062798,
+	.spawnEffectComponentFn = 0x800C3C14,
+	.spawnEffectMdecFn = 0x80017A6C,
+	.effectBehaviorContinue = 0x80016BC4,
+	.effectBehaviorSummonEnd = 0x800158F8,
+	.effectMdecSchedule = 0x80091CD8,
+	.effectMdecVlcBuffer = 0x8008D504,
+	.effectMdecScratchBuffer = 0x8008B578,
 },
 gamePalEs
 {
@@ -6119,6 +6169,13 @@ gamePalEs
 	.soundStatePtr = 0x8008D7E4,
 	.fadeSlotFn = 0x80031424,
 	.fadeSeqFn = 0x800627B0,
+	.spawnEffectComponentFn = 0x800C4034,
+	.spawnEffectMdecFn = 0x80017A6C,
+	.effectBehaviorContinue = 0x80016BC4,
+	.effectBehaviorSummonEnd = 0x800158F8,
+	.effectMdecSchedule = 0x80091F40,
+	.effectMdecVlcBuffer = 0x8008D76C,
+	.effectMdecScratchBuffer = 0x8008B7E0,
 },
 gamePalIt
 {
@@ -6160,6 +6217,13 @@ gamePalIt
 	.soundStatePtr = 0x8008D7CC,
 	.fadeSlotFn = 0x80031424,
 	.fadeSeqFn = 0x800627A8,
+	.spawnEffectComponentFn = 0x800C3F3C,
+	.spawnEffectMdecFn = 0x80017A6C,
+	.effectBehaviorContinue = 0x80016BC4,
+	.effectBehaviorSummonEnd = 0x800158F8,
+	.effectMdecSchedule = 0x80091F28,
+	.effectMdecVlcBuffer = 0x8008D754,
+	.effectMdecScratchBuffer = 0x8008B7C8,
 };
 
 Offset::Offset(Version version)

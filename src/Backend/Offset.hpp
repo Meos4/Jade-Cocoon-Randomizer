@@ -41,7 +41,8 @@ public:
 				mainLoopFn,
 				openingBehaviorFn,
 				ostTable,
-				canPauseRenderCallJal;
+				canPauseRenderCallJal,
+				tableOfEffectBehaviorFns;
 		} executable;
 
 		struct
@@ -933,7 +934,14 @@ public:
 			playOstFn,
 			soundStatePtr,
 			fadeSlotFn,
-			fadeSeqFn;
+			fadeSeqFn,
+			spawnEffectComponentFn,
+			spawnEffectMdecFn,
+			effectBehaviorContinue,
+			effectBehaviorSummonEnd,
+			effectMdecSchedule,
+			effectMdecVlcBuffer,
+			effectMdecScratchBuffer;
 	};
 
 	Offset(Version version);

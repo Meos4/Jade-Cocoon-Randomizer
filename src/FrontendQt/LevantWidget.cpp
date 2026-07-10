@@ -14,6 +14,7 @@ LevantWidget::LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	{
 		{ SETTINGS(m_ui.baseStatsRandom) },
 		{ SETTINGS(m_ui.animationBetaUsingItem) },
+		{ SETTINGS(m_ui.animationBetaSummon) },
 		{ SETTINGS(m_ui.animationRandomWeaponsPosture) },
 		{ SETTINGS(m_ui.fluteStylingShuffle) }
 	};
@@ -27,6 +28,10 @@ LevantWidget::LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 
 	helpConsole->addFeature(m_ui.animationBetaUsingItem, _Animation,
 		"Replaces the item use animation with a beta/unused magic animation."
+	);
+
+	helpConsole->addFeature(m_ui.animationBetaSummon, _Animation,
+		"Replaces the minion summon animation with the beta/unused one."
 	);
 
 	helpConsole->addFeature(m_ui.animationRandomWeaponsPosture, _Animation,

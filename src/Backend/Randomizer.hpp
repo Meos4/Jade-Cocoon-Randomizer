@@ -16,7 +16,8 @@ public:
 	enum : LevantAnimation_t
 	{
 		LEVANT_ANIMATION_BETA_USING_ITEM = 1 << 0,
-		LEVANT_ANIMATION_RANDOM_WEAPONS_POSTURE = 1 << 1
+		LEVANT_ANIMATION_RANDOM_WEAPONS_POSTURE = 1 << 1,
+		LEVANT_ANIMATION_BETA_SUMMON = 1 << 2
 	};
 
 	enum class MinionSpawnStory
