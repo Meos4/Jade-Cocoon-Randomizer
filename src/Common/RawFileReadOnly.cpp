@@ -1,5 +1,7 @@
 #include "RawFileReadOnly.hpp"
 
+#include "Common/JcrException.hpp"
+
 static constexpr auto openMode{ std::ifstream::binary };
 
 RawFileReadOnly::RawFileReadOnly(const char* pathFile)
@@ -14,6 +16,14 @@ RawFileReadOnly::RawFileReadOnly(const std::filesystem::path& pathFile)
 bool RawFileReadOnly::isOpen() const
 {
 	return m_stream.is_open();
+}
+
+void RawFileReadOnly::throwOnError() const
+{
+	if (!m_stream)
+	{
+		throw JcrException{ "RawFileReadOnly read failed: {}", m_path.string() };
+	}
 }
 
 std::uintmax_t RawFileReadOnly::size() const

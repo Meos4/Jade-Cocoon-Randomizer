@@ -199,7 +199,21 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 		return;
 	}
 
-	if (!game->isVanilla())
+	bool vanilla{};
+
+	try
+	{
+		vanilla = game->isVanilla();
+	}
+	catch (const std::exception& e)
+	{
+		game->removeStaticDirectory();
+		QMessageBox::critical(this, "Error", QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+		disableUI();
+		return;
+	}
+
+	if (!vanilla)
 	{
 		game->removeStaticDirectory();
 		QMessageBox::critical(this, "Error", "This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");

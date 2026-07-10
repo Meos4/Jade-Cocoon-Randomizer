@@ -13,13 +13,14 @@ public:
 	explicit RawFile(const char* pathFile);
 	explicit RawFile(const std::string& pathFile);
 	explicit RawFile(const std::filesystem::path& pathFile);
-	
+
 	template <typename T>
 	T read(u64 offset, std::size_t size = sizeof(T))
 	{
 		T hook;
 		m_stream.seekg(offset);
 		m_stream.read((char*)&hook, size);
+		throwOnError("read");
 		return hook;
 	}
 
@@ -28,6 +29,7 @@ public:
 	{
 		m_stream.seekg(offset);
 		m_stream.read((char*)store, size);
+		throwOnError("read");
 	}
 
 	template <typename T>
@@ -35,12 +37,15 @@ public:
 	{
 		m_stream.seekp(offset);
 		m_stream.write((const char*)&content, size);
+		throwOnError("write");
 	}
 
 	std::uintmax_t size() const;
 	Buffer readFile();
 	void resize(std::uintmax_t newSize);
 private:
+	void throwOnError(const char* operation) const;
+
 	std::fstream m_stream;
 	std::filesystem::path m_path;
 };

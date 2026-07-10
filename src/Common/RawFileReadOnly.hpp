@@ -13,13 +13,14 @@ public:
 	explicit RawFileReadOnly(const char* pathFile);
 	explicit RawFileReadOnly(const std::string& pathFile);
 	explicit RawFileReadOnly(const std::filesystem::path& pathFile);
-	
+
 	template <typename T>
 	T read(u64 offset, std::size_t size = sizeof(T))
 	{
 		T hook;
 		m_stream.seekg(offset);
 		m_stream.read((char*)&hook, size);
+		throwOnError();
 		return hook;
 	}
 
@@ -28,12 +29,15 @@ public:
 	{
 		m_stream.seekg(offset);
 		m_stream.read((char*)store, size);
+		throwOnError();
 	}
 
 	bool isOpen() const;
 	std::uintmax_t size() const;
 	Buffer readFile();
 private:
+	void throwOnError() const;
+
 	std::ifstream m_stream;
 	std::filesystem::path m_path;
 };
