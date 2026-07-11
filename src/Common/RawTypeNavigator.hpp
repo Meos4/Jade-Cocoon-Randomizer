@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 
 class RawTypeNavigator final
 {
@@ -12,28 +13,36 @@ public:
 	T read() const
 	{
 		ptrThrowIfInvalid((char*)m_ptr + sizeof(T) - 1);
-		return *(T*)m_ptr;
+		T val;
+		std::memcpy(&val, m_ptr, sizeof(T));
+		return val;
 	}
 
 	template <typename T>
 	T read(std::intptr_t shift) const
 	{
-		ptrThrowIfInvalid((char*)m_ptr + shift + sizeof(T) - 1);
-		return *(T*)((char*)m_ptr + shift);
+		const auto ptr{ (char*)m_ptr + shift };
+		ptrThrowIfInvalid(ptr);
+		ptrThrowIfInvalid(ptr + sizeof(T) - 1);
+		T val;
+		std::memcpy(&val, ptr, sizeof(T));
+		return val;
 	}
 
 	template <typename T>
 	void write(const T& val) const
 	{
 		ptrThrowIfInvalid((char*)m_ptr + sizeof(T) - 1);
-		*(T*)m_ptr = val;
+		std::memcpy(m_ptr, &val, sizeof(T));
 	}
 
 	template <typename T>
 	void write(const T& val, std::intptr_t shift) const
 	{
-		ptrThrowIfInvalid((char*)m_ptr + shift + sizeof(T) - 1);
-		*(T*)((char*)m_ptr + shift) = val;
+		const auto ptr{ (char*)m_ptr + shift };
+		ptrThrowIfInvalid(ptr);
+		ptrThrowIfInvalid(ptr + sizeof(T) - 1);
+		std::memcpy(ptr, &val, sizeof(T));
 	}
 
 	void resetPtr();
