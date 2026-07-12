@@ -61,6 +61,11 @@ namespace Tim
 			throw JcrException{ "Invalid 16BPP TIM file" };
 		}
 
+		if (header.offset < 0xC)
+		{
+			throw JcrException{ "Invalid 16BPP TIM clut offset: {}", header.offset };
+		}
+
 		const auto clutSize{ header.offset - 0xC };
 
 		if (clutSizeLimit.has_value() && clutSize > clutSizeLimit.value())
