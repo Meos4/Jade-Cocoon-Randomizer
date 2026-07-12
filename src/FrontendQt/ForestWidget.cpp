@@ -122,7 +122,12 @@ void ForestWidget::enableUI(Randomizer* randomizer)
 		const auto nbOst{ m_ui.ostCustomChoiceCombo->count() };
 		for (std::size_t i{}; i < forestOst.size(); ++i)
 		{
-			const auto forestStr{ Ost::names.at(forestOst[i]) };
+			const auto ostIt{ Ost::names.find(forestOst[i]) };
+			if (ostIt == Ost::names.end())
+			{
+				throw JcrException{ "Unknown forest OST id: {}", forestOst[i] };
+			}
+			const auto forestStr{ ostIt->second };
 			for (s32 j{}; j < nbOst; ++j)
 			{
 				const auto choiceStr{ m_ui.ostCustomChoiceCombo->itemText(j).toStdString() };
