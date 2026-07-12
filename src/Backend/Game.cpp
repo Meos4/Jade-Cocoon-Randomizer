@@ -291,7 +291,11 @@ std::unique_ptr<Game> Game::createGame(const std::filesystem::path& isoPath, std
 		configXmlPath{ Path::configXmlPath(gameDirectory) },
 		filesDirectoryPath{ Path::filesDirectoryPath(gameDirectory) };
 
-	Iso::dump(&isoPath, &configXmlPath, &filesDirectoryPath);
+	if (!Iso::dump(&isoPath, &configXmlPath, &filesDirectoryPath))
+	{
+		throw JcrException{ "Failed to extract the ISO" };
+	}
+
 	JCTools::unpacker(filesDirectoryPath, Path::dataDirectoryPath(filesDirectoryPath), gameDirectory);
 
 	const auto exeInfo{ JCExe::findFilenamePathAndVersion(filesDirectoryPath) };

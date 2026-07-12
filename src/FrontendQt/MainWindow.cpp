@@ -343,7 +343,10 @@ void MainWindow::onFileSaveAs()
 		if (!std::filesystem::is_regular_file(filePathCue) &&
 			QMessageBox::question(this, "Save", "Generate the associated .cue file?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes)
 		{
-			Iso::generateCue(filePath);
+			if (!Iso::generateCue(filePath))
+			{
+				QMessageBox::critical(this, "Error", "Could not generate the .cue file.");
+			}
 		}
 	}
 }

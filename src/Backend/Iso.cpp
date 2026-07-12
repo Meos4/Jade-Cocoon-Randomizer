@@ -18,7 +18,7 @@ namespace Iso
 		{
 			std::ofstream stream{ cue };
 			stream << "FILE " << isoPath.filename() << " BINARY\n  TRACK 01 MODE2/2352\n    INDEX 01 00:00:00\n";
-			return true;
+			return stream.good();
 		}
 		catch ([[maybe_unused]] const std::exception&) // Using some chars catches an exception
 		{
@@ -77,7 +77,7 @@ namespace Iso
 		return std::nullopt;
 	}
 
-	void dump(const std::filesystem::path* iso, const std::filesystem::path* configXml, const std::filesystem::path* files)
+	bool dump(const std::filesystem::path* iso, const std::filesystem::path* configXml, const std::filesystem::path* files)
 	{
 		const std::array<Path::CStringPlatform, 7> dumpArgs
 		{
@@ -100,7 +100,7 @@ namespace Iso
 		#endif
 		};
 
-		dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data());
+		return dumpsxiso(static_cast<int>(dumpArgs.size()), (Path::CStringPlatformPtr)dumpArgs.data()) != EXIT_FAILURE;
 	}
 
 	bool make(const std::filesystem::path* iso, const std::filesystem::path* configXml)

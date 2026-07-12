@@ -1,32 +1,41 @@
 #include "FileSystem.hpp"
 
+#include "Common/JcrException.hpp"
+
 namespace FileSystem
 {
 	void copyTree(const std::filesystem::path& src, const std::filesystem::path& dst)
 	{
-		std::filesystem::create_directories(dst);
-
-		for (const auto& entry : std::filesystem::recursive_directory_iterator(src))
+		try
 		{
-			const auto& srcPath{ entry.path() };
-			const auto srcRelative{ std::filesystem::relative(srcPath, src) };
-			const auto destPath{ dst / srcRelative };
+			std::filesystem::create_directories(dst);
 
-			if (std::filesystem::is_directory(entry.status()))
+			for (const auto& entry : std::filesystem::recursive_directory_iterator(src))
 			{
-				std::filesystem::create_directories(destPath);
+				const auto& srcPath{ entry.path() };
+				const auto srcRelative{ std::filesystem::relative(srcPath, src) };
+				const auto destPath{ dst / srcRelative };
+
+				if (std::filesystem::is_directory(entry.status()))
+				{
+					std::filesystem::create_directories(destPath);
+				}
+				else
+				{
+					std::filesystem::copy(srcPath, destPath, std::filesystem::copy_options::overwrite_existing);
+				}
 			}
-			else
-			{
-				std::filesystem::copy(srcPath, destPath, std::filesystem::copy_options::overwrite_existing);
-			}
+		}
+		catch (const std::filesystem::filesystem_error& e)
+		{
+			throw JcrException{ "Failed to copy files: {}", e.what() };
 		}
 	}
 
 	bool remove(const std::filesystem::path& path)
 	{
 		std::error_code err;
-		const auto nbRemoved{ std::filesystem::remove_all(path, err) };
-		return nbRemoved != -1 ? true : false;
+		std::filesystem::remove_all(path, err);
+		return !err;
 	}
 }
