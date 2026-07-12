@@ -7,6 +7,7 @@
 #include "Common/TemplateTypes.hpp"
 
 #include <array>
+#include <map>
 #include <stdexcept>
 #include <unordered_map>
 #include <utility>
@@ -110,7 +111,7 @@ private:
 	Game* m_game;
 
 	std::unordered_map<Chapter_t, ChapterPoolArray> m_chaptersPool;
-	std::unordered_map<Chapter_t, std::vector<std::vector<TreasureInfo>>> m_treasuresInfo;
+	std::map<Chapter_t, std::vector<std::vector<TreasureInfo>>> m_treasuresInfo;
 };
 
 void Randomizer::treasureEquipments(Randomizer::TreasureEquipments state) const

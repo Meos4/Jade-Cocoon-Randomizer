@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <bit>
 #include <cstring>
+#include <map>
 #include <type_traits>
 #include <ranges>
 #include <unordered_set>
@@ -703,7 +704,7 @@ void Randomizer::bossSpecialMagicEC() const
 
 void Randomizer::bossAppearanceEC(Randomizer::BossAppearanceEC_t state, s32 craziness) const
 {
-	std::unordered_map<Model_t, std::unique_ptr<RawFile>> minions;
+	std::map<Model_t, std::unique_ptr<RawFile>> minions;
 
 	for (std::size_t i{}; i < Model::Minion::modelsEC.size(); ++i)
 	{

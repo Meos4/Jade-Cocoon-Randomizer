@@ -553,7 +553,7 @@ void Randomizer::minionSpecialMagic(const std::unordered_set<Special_t>& special
 
 void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state, s32 craziness)
 {
-	std::unordered_map<Model_t, std::unique_ptr<RawFile>> minions;
+	std::map<Model_t, std::unique_ptr<RawFile>> minions;
 
 	for (std::size_t i{}; i < Model::Minion::models.size(); ++i)
 	{
