@@ -12,7 +12,17 @@ namespace QtUtil
 {
 	consteval auto m_uiName(const char* var)
 	{
-		return var + 5;
+		constexpr char prefix[]{ "m_ui." };
+
+		for (const char* p{ prefix }; *p != '\0'; ++p, ++var)
+		{
+			if (*var != *p)
+			{
+				throw "UI_NAME expects an \"m_ui.\" prefixed variable";
+			}
+		}
+
+		return var;
 	}
 
 	inline auto qStrToPlatformStr(const QString& qStr)
