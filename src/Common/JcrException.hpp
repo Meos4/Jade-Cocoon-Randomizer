@@ -21,7 +21,14 @@ private:
 
 		if constexpr (sizeof...(Args))
 		{
-			return std::vformat(message + debugInfo, std::make_format_args(args...));
+			try
+			{
+				return std::vformat(message + debugInfo, std::make_format_args(args...));
+			}
+			catch (const std::format_error&)
+			{
+				return message + debugInfo;
+			}
 		}
 		else
 		{
@@ -36,7 +43,14 @@ private:
 	{
 		if constexpr (sizeof...(Args))
 		{
-			return std::vformat(message, std::make_format_args(args...));
+			try
+			{
+				return std::vformat(message, std::make_format_args(args...));
+			}
+			catch (const std::format_error&)
+			{
+				return std::string{ message };
+			}
 		}
 		else
 		{
