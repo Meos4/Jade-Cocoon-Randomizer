@@ -42,7 +42,8 @@ public:
 				openingBehaviorFn,
 				ostTable,
 				canPauseRenderCallJal,
-				tableOfEffectBehaviorFns;
+				tableOfEffectBehaviorFns,
+				captureChargeFlareGates;
 		} executable;
 
 		struct
@@ -52,7 +53,9 @@ public:
 				setBattleWeaponsEffectFn,
 				endOfBattleSetSceneFn,
 				battleMusicPlay,
-				battleExitFade;
+				battleExitFade,
+				captureHaloColor,
+				captureOrbiterOutcomeBranch;
 
 			// not in NTSCJ1
 			u32 storyMinionAI,
@@ -939,6 +942,11 @@ public:
 			spawnEffectMdecFn,
 			effectBehaviorContinue,
 			effectBehaviorSummonEnd,
+			effectBehaviorKill,
+			effectOutcomeFlag,
+			captureOrbiterOutcomeBranch,
+			playSfxFn,
+			gameOptions,
 			effectMdecSchedule,
 			effectMdecVlcBuffer,
 			effectMdecScratchBuffer;

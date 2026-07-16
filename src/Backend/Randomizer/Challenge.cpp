@@ -128,11 +128,15 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0X27BD0010  // addiu sp, -0x10
 		};
 
+		const auto currentCaptureSuccessJal{ m_game->isVersion(Version::NtscJ1)
+			? m_game->file(File::OVER_BTLEXEC_BIN)->read<Mips_t>(m_game->offset().file.over_btlexec_bin.captureSuccess)
+			: over_battle_bin->read<Mips_t>(m_game->offset().file.over_battle_bin.captureSuccess) };
+
 		const MipsFn::WriteUsedMapCapture writeUsedMapCaptureFn
 		{
 			0x27BDFFF0, // addiu sp, -0x10
 			0xAFBF0000, // sw ra, 0(sp)
-			Mips::jal(m_game->offset().game.writeNewFirefly),
+			Mips::jal(0x80000000u | ((currentCaptureSuccessJal & 0x03FFFFFFu) << 2)),
 			0x00000000, // nop
 			0x8FBF0000, // lw ra, 0(sp)
 			0xAFA20000, // sw v0, 0(sp)

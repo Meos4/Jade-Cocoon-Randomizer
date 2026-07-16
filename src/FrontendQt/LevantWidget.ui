@@ -35,6 +35,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QCheckBox" name="animationBetaCapture">
+        <property name="text">
+         <string>Beta Capture</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QCheckBox" name="animationRandomWeaponsPosture">
         <property name="text">
          <string>Random Weapons Posture</string>

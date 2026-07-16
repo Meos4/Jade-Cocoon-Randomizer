@@ -51,6 +51,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	{
 		levantAnimation |= Randomizer::LEVANT_ANIMATION_BETA_SUMMON;
 	}
+	if (levantUi.animationBetaCapture->isChecked())
+	{
+		levantAnimation |= Randomizer::LEVANT_ANIMATION_BETA_CAPTURE;
+	}
 	if (levantUi.animationRandomWeaponsPosture->isChecked())
 	{
 		levantAnimation |= Randomizer::LEVANT_ANIMATION_RANDOM_WEAPONS_POSTURE;
