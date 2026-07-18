@@ -733,7 +733,7 @@ void Randomizer::defaultAnalogMode() const
 			0x01836023, // subu t4, t4, v1
 			0x05810002, // bgez t4, anglePositive
 			0x01801021, // move v0, t4
-			0x25820FFF, // addiu v0, t4, -1
+			0x25820FFF, // addiu v0, t4, 0xFFF
 			0x00021B03, // sra v1, v0, 0xC
 			0x00031300, // sll v0, v1, 0xC
 			0x01821823, // subu v1, t4, v0
@@ -788,7 +788,7 @@ void Randomizer::defaultAnalogMode() const
 			0x01034023, // subu t0, t0, v1
 			0x05010002, // bgez t0, rotAnglePositive
 			0x01001021, // move v0, t0
-			0x25020FFF, // addiu v0, t0, -1
+			0x25020FFF, // addiu v0, t0, 0xFFF
 			0x00021B03, // sra v1, v0, 0xC
 			0x00031300, // sll v0, v1, 0xC
 			0x01021823, // subu v1, t0, v0
@@ -940,7 +940,7 @@ void Randomizer::defaultAnalogMode() const
 			0x01836023, // subu t4, t4, v1
 			0x05810002, // bgez t4, anglePositive
 			0x01801021, // move v0, t4
-			0x25820FFF, // addiu v0, t4, -1
+			0x25820FFF, // addiu v0, t4, 0xFFF
 			0x00021B03, // sra v1, v0, 0xC
 			0x00031300, // sll v0, v1, 0xC
 			0x01821823, // subu v1, t4, v0
@@ -998,7 +998,7 @@ void Randomizer::defaultAnalogMode() const
 			0x01034023, // subu t0, t0, v1
 			0x05010002, // bgez t0, rotAnglePositive
 			0x01001021, // move v0, t0
-			0x25020FFF, // addiu v0, t0, -1
+			0x25020FFF, // addiu v0, t0, 0xFFF
 			0x00021B03, // sra v1, v0, 0xC
 			0x00031300, // sll v0, v1, 0xC
 			0x01021823, // subu v1, t0, v0
@@ -1189,7 +1189,7 @@ void Randomizer::defaultBugFixesBodyEnhancement() const
 		li32_bossStatsEC[1], // ori v0, 0xXXXX
 		0x2484FF37, // addiu a0, -0xC9 
 		0x000420C0, // sll a0, 3
-		0x00822021, // move a0, v0
+		0x00822021, // addu a0, v0
 		Mips::j(m_game->offset().game.getEntityEnhancement + 0x10),
 		0x90820007 // lbu v0, 7(a0)
 	};

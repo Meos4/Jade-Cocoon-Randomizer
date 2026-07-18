@@ -125,7 +125,7 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x8FA30004, // lw v1, 4(sp)
 			0x8FA20000, // lw v0, 0(sp)
 			0x03E00008, // jr ra
-			0X27BD0010  // addiu sp, -0x10
+			0X27BD0010  // addiu sp, 0x10
 		};
 
 		const auto currentCaptureSuccessJal{ m_game->isVersion(Version::NtscJ1)
@@ -174,7 +174,7 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x00000000, // nop
 			0x112C0013, // beq t1, t4, 0x13
 			0x25290001, // addiu t1, 1
-			0x144AFFF9, // bne t0, t2, -6
+			0x144AFFF9, // bne v0, t2, -6
 			0x25080002, // addiu t0, 2
 			0x146BFFF7, // bne v1, t3, -8
 			0x00000000, // nop
@@ -295,7 +295,7 @@ void Randomizer::challengeDifficulty(Randomizer::ChallengeDifficulty state) cons
 		0x00005010, // mfhi t2
 		0x0043001A, // div v0, v1
 		0x00004012, // mflo t0
-		0x00481021, // move v0, t0
+		0x00481021, // addu v0, t0
 		m_game->isNtscJ() ? Mips_t(0xA0A20028) : Mips_t(0xA0A2002C), // sb v0, 0x28/0x2C
 		0x000A20C2, // srl a0, t2, 3
 		0x00801821, // move v1, a0

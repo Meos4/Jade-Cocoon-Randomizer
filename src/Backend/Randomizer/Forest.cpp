@@ -1097,7 +1097,7 @@ void Randomizer::forestRandomEternalCorridorOstPerCorridor() const
 			// Load current ost
 			li32_currentOst[0],
 			li32_currentOst[1],
-			0x85500000, // lh s0, 0(t0)
+			0x85500000, // lh s0, 0(t2)
 
 			// If the current corridor is different than the corridor
 			li32_eternalCorridorCurrentCorridor[0],
