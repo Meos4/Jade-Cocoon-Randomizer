@@ -1,7 +1,8 @@
 /build*
 /.vscode
-CLAUDE.MD
-IMPROVEMENTS.MD
+/*.md
+!/README.md
+!/CHANGELOG.md
 *.txt
 JCR*
 /tools/*
