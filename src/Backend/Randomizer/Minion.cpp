@@ -308,7 +308,7 @@ void Randomizer::minionStats(Randomizer::MinionStats_t state) const
 
 void Randomizer::minionSpecialMagic(const std::unordered_set<Special_t>& special, Magic_t magic) const
 {
-	const std::unordered_map<Element_t, std::unordered_set<Special_t>> specialsAllowed
+	const std::unordered_map<Element_t, std::vector<Special_t>> specialsAllowed
 	{
 		{
 			ELEMENT_NONE,

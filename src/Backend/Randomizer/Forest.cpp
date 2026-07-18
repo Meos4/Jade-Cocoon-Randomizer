@@ -853,7 +853,7 @@ void Randomizer::forestBattleMaps() const
 	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
 	auto mapsIdRaw{ over_game_bin->read<std::array<u16, 250>>(m_game->offset().file.over_game_bin.battleMaps) };
 
-	std::unordered_set<u16> mapsId;
+	std::set<u16> mapsId;
 	std::array<std::set<u16>, nbBattleMaps> battleMaps;
 
 	for (const auto& map : mapsIdRaw)
