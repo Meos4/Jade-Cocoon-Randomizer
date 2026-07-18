@@ -7,6 +7,8 @@
 #include "Common/FileSystem.hpp"
 #include "Common/JcrException.hpp"
 
+#include <utility>
+
 static void checkRegularFile(const std::filesystem::path& file)
 {
 	static constexpr auto fileExceptionFormat{ "\"{}\" file doesn't exist in \"{}\"" };
@@ -18,7 +20,7 @@ static void checkRegularFile(const std::filesystem::path& file)
 }
 
 GameTree::GameTree(std::filesystem::path&& directory, const std::filesystem::path& exeFilename)
-	: m_directory(directory), m_exePath(Path::executablePath(m_directory, exeFilename))
+	: m_directory(std::move(directory)), m_exePath(Path::executablePath(m_directory, exeFilename))
 {
 }
 
