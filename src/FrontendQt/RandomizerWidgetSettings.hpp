@@ -43,7 +43,7 @@ class RandomizerQCheckBox final : public RandomizerWidgetSettings<bool>
 {
 public:
 	RandomizerQCheckBox(QCheckBox* widget, const char* name)
-		: m_widget(widget), RandomizerWidgetSettings<bool>(name)
+		: RandomizerWidgetSettings<bool>(name), m_widget(widget)
 	{
 		m_widget->setStyleSheet("font-weight: normal;");
 	};
@@ -65,7 +65,7 @@ class RandomizerQSlider final : public RandomizerWidgetSettings<s32>
 {
 public:
 	RandomizerQSlider(QSlider* widget, const char* name)
-		: m_widget(widget), RandomizerWidgetSettings<s32>(name)
+		: RandomizerWidgetSettings<s32>(name), m_widget(widget)
 	{
 		m_widget->setStyleSheet("font-weight: normal;");
 	};
@@ -87,7 +87,7 @@ class RandomizerQComboBox final : public RandomizerWidgetSettings<s32>
 {
 public:
 	RandomizerQComboBox(QComboBox* widget, const char* name)
-		: m_widget(widget), RandomizerWidgetSettings<s32>(name)
+		: RandomizerWidgetSettings<s32>(name), m_widget(widget)
 	{
 		m_widget->setStyleSheet("font-weight: normal;");
 	};
