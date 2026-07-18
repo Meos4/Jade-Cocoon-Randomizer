@@ -7,10 +7,10 @@
 
 namespace Iso
 {
-    inline constexpr auto sectorSize{ 2048u };
+	inline constexpr auto sectorSize{ 2048u };
 
-    bool generateCue(const std::filesystem::path& isoPath);
+	bool generateCue(const std::filesystem::path& isoPath);
 	std::optional<Version> findVersion(const std::filesystem::path& isoPath);
-    bool dump(const std::filesystem::path* iso, const std::filesystem::path* configXml, const std::filesystem::path* files);
-    bool make(const std::filesystem::path* iso, const std::filesystem::path* configXml);
+	bool dump(const std::filesystem::path* iso, const std::filesystem::path* configXml, const std::filesystem::path* files);
+	bool make(const std::filesystem::path* iso, const std::filesystem::path* configXml);
 }

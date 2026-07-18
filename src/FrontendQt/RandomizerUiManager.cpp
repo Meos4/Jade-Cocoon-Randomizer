@@ -15,18 +15,18 @@
 #include "FrontendQt/TreasureWidget.hpp"
 
 RandomizerUiManager::RandomizerUiManager(LevantWidget* levant, MinionWidget* minion, BossWidget* boss, ForestWidget* forest,
-    EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
-    ChallengeWidget* challenge, DefaultDialog* defaultDialog)
-    : m_levant(levant),
-      m_minion(minion),
-      m_boss(boss),
-      m_equipment(equipment),
-      m_forest(forest),
-      m_treasure(treasure),
-      m_shop(shop),
-      m_misc(misc),
-	  m_challenge(challenge),
-      m_default(defaultDialog)
+	EquipmentWidget* equipment, TreasureWidget* treasure, ShopWidget* shop, MiscWidget* misc,
+	ChallengeWidget* challenge, DefaultDialog* defaultDialog)
+	: m_levant(levant),
+	m_minion(minion),
+	m_boss(boss),
+	m_equipment(equipment),
+	m_forest(forest),
+	m_treasure(treasure),
+	m_shop(shop),
+	m_misc(misc),
+	m_challenge(challenge),
+	m_default(defaultDialog)
 {
 }
 
@@ -34,10 +34,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 {
 	randomizer->init();
 
-    // Levant
-    const auto& levantUi{ m_levant->Ui() };
+	// Levant
+	const auto& levantUi{ m_levant->Ui() };
 
-    if (levantUi.baseStatsRandom->isChecked())
+	if (levantUi.baseStatsRandom->isChecked())
 	{
 		randomizer->levantBaseStats();
 	}
@@ -69,10 +69,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->levantFluteStyling();
 	}
 
-    // Minion
-    const auto& minionUi{ m_minion->Ui() };
+	// Minion
+	const auto& minionUi{ m_minion->Ui() };
 
-    auto getMinionFromCombobox = [](s32 id) -> Id_Entity_t
+	auto getMinionFromCombobox = [](s32 id) -> Id_Entity_t
 	{
 		return id >= ID_DREAM_MAN ? id + Entity::totalStoryBosses : id;
 	};
@@ -125,7 +125,7 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 
 	if (minionUi.specialMagicRandom->isChecked())
 	{
-        const auto& specialMagicDialog{ m_minion->specialMagicDialog() };
+		const auto& specialMagicDialog{ m_minion->specialMagicDialog() };
 		randomizer->minionSpecialMagic(specialMagicDialog.specials(), specialMagicDialog.magics());
 	}
 
@@ -164,10 +164,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->minionAppearance(appearance, minionUi.appearanceCrazinessSlider->value());
 	}
 
-    // Boss
+	// Boss
 	const auto& bossUi{ m_boss->Ui() };
 
-    if (bossUi.storyElementRandomAll->isChecked())
+	if (bossUi.storyElementRandomAll->isChecked())
 	{
 		randomizer->bossElement(Randomizer::BossElement::RandomAll);
 	}
@@ -214,10 +214,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->bossAppearanceEC(appearanceEC, bossUi.eternalCorridorCrazinessSlider->value());
 	}
 
-    // Forest
+	// Forest
 	const auto& forestUi{ m_forest->Ui() };
 
-    if (forestUi.paletteColorRandom->isChecked())
+	if (forestUi.paletteColorRandom->isChecked())
 	{
 		randomizer->forestPaletteColor();
 	}
@@ -245,10 +245,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->forestRandomEternalCorridorOstPerCorridor();
 	}
 
-    // Equipment
+	// Equipment
 	const auto& equipmentUi{ m_equipment->Ui() };
 
-    Randomizer::EquipmentWeapons_t equipmentWeapons{};
+	Randomizer::EquipmentWeapons_t equipmentWeapons{};
 	if (equipmentUi.weaponsRandomStatsAndElement->isChecked())
 	{
 		equipmentWeapons |= Randomizer::EQUIPMENT_WEAPONS_RANDOM_STATS_AND_ELEMENT;
@@ -285,10 +285,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->equipmentOthers();
 	}
 
-    // Treasure
+	// Treasure
 	const auto& treasureUi{ m_treasure->Ui() };
 
-    if (treasureUi.equipmentsRandom->isChecked())
+	if (treasureUi.equipmentsRandom->isChecked())
 	{
 		randomizer->treasureEquipments(Randomizer::TreasureEquipments::Random);
 	}
@@ -320,10 +320,10 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->treasureBattleDrops(treasureUi.battleDropsShuffleSkeletonKeys->isChecked());
 	}
 
-    // Shop
+	// Shop
 	const auto& shopUi{ m_shop->Ui() };
 
-    if (shopUi.weaponRandom->isChecked())
+	if (shopUi.weaponRandom->isChecked())
 	{
 		randomizer->shopWeapon();
 	}
@@ -347,8 +347,8 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 	{
 		randomizer->shopEternalCorridorUnlockAll();
 	}
-    
-    // Misc
+	
+	// Misc
 	const auto& miscUi{ m_misc->Ui() };
 
 	if (miscUi.skipPrologueEnable->isChecked())
@@ -356,7 +356,7 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->miscSkipPrologue(miscUi.skipPrologueSkipKoris->isChecked());
 	}
 
-    if (miscUi.hudRandom->isChecked())
+	if (miscUi.hudRandom->isChecked())
 	{
 		randomizer->miscHudColor();
 	}
