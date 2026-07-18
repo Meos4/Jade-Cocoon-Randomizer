@@ -185,7 +185,7 @@ namespace TimPalette
 		{
 		case BlackAndWhiteMethod::Red: g = r; b = r; break;
 		case BlackAndWhiteMethod::Green: r = g; b = g; break;
-		case BlackAndWhiteMethod::Blue: r = b, g = b; break;
+		case BlackAndWhiteMethod::Blue: r = b; g = b; break;
 		case BlackAndWhiteMethod::Minimum: r = g = b = std::min(r, std::min(g, b)); break;
 		case BlackAndWhiteMethod::Maximum: r = g = b = std::max(r, std::max(g, b)); break;
 		case BlackAndWhiteMethod::Average: r = g = b = (r + g + b) / 3; break;
