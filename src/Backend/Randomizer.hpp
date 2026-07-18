@@ -147,6 +147,7 @@ public:
 	void init();
 	const Game& game() const;
 	void writeFrameFns() const;
+	void expandPacketArena() const;
 
 	Id_Entity_t dreamMinion() const;
 	Id_Entity_t korisMinion() const;

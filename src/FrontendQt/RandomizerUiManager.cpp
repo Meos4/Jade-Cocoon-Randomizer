@@ -471,5 +471,8 @@ void RandomizerUiManager::write(Randomizer* randomizer) const
 		randomizer->defaultBugFixesSpecialAttackModifiersDisplay();
 	}
 
+	// Without this, the game crashes during the slowdown in boss fights that occurs when
+	// unsummoning in the Netherworld forests while using the Hp Mp Bars fix / Beta Summon
+	randomizer->expandPacketArena();
 	randomizer->writeFrameFns();
 }

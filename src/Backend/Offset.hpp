@@ -19,6 +19,7 @@ public:
 				afterGetStatsJump,
 				afterFramerateLimiter,
 				hpMpBars,
+				packetArenaCeiling,
 				bodyEnhancementFn,
 				setVideoModeArgument,
 				stretchingY,
