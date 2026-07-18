@@ -27,9 +27,7 @@ set(FRONTENDQT_DIR ${PROJECT_SOURCE_DIR}/src/FrontendQt)
 
 set(SOURCES_BACKEND
     ${BACKEND_DIR}/Behavior.hpp
-    ${BACKEND_DIR}/Entity.cpp
     ${BACKEND_DIR}/Entity.hpp
-    ${BACKEND_DIR}/File.cpp
     ${BACKEND_DIR}/File.hpp
     ${BACKEND_DIR}/Game.cpp
     ${BACKEND_DIR}/Game.hpp
@@ -65,9 +63,7 @@ set(SOURCES_BACKEND
     ${BACKEND_DIR}/Tim.hpp
     ${BACKEND_DIR}/TimPalette.cpp
     ${BACKEND_DIR}/TimPalette.hpp
-    ${BACKEND_DIR}/Util.cpp
     ${BACKEND_DIR}/Util.hpp
-    ${BACKEND_DIR}/Version.cpp
     ${BACKEND_DIR}/Version.hpp
     ${BACKEND_DIR}/VersionUtil.cpp
     ${BACKEND_DIR}/VersionUtil.hpp)
@@ -156,7 +152,6 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/RandomizerUiManager.hpp
     ${FRONTENDQT_DIR}/RandomizerWidget.cpp
     ${FRONTENDQT_DIR}/RandomizerWidget.hpp
-    ${FRONTENDQT_DIR}/RandomizerWidgetSettings.cpp
     ${FRONTENDQT_DIR}/RandomizerWidgetSettings.hpp
     ${FRONTENDQT_DIR}/SaveGameDialog.cpp
     ${FRONTENDQT_DIR}/SaveGameDialog.hpp
