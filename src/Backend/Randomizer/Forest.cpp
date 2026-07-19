@@ -13,8 +13,8 @@
 #include <algorithm>
 #include <array>
 #include <set>
-#include <unordered_set>
 #include <utility>
+#include <vector>
 
 struct MapsShift
 {
@@ -780,7 +780,7 @@ void Randomizer::forestPaletteColor() const
 	struct FileOffsets
 	{
 		File file;
-		std::unordered_set<u32> offsets;
+		std::vector<u32> offsets;
 	};
 
 	static constexpr auto nbElementsEC{ 5u }; // None - Fire - Air - Earth - Water
@@ -839,9 +839,11 @@ void Randomizer::forestPaletteColor() const
 		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE13_SCE, 0x128, 0x2011C);
 		rotateBPP8ShadeAndLight(File::SCENE_OTHER_HUNTING_SCE14_SCE, 0x124);
 
+		const auto battleFile{ m_game->file(fileBattleOffsets[i].file) };
+
 		for (const auto& offset : fileBattleOffsets[i].offsets)
 		{
-			Tim::rotateBPP8(m_game->file(fileBattleOffsets[i].file).get(), rng, offset);
+			Tim::rotateBPP8(battleFile.get(), rng, offset);
 		}
 	}
 }
