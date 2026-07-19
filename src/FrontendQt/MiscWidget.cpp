@@ -169,12 +169,20 @@ void MiscWidget::loadPresets(const Json::Read& json)
 		slider.load(json);
 	}
 
-	for (std::size_t i{}; i < m_colors.size(); ++i)
+	if (json.contains("colors"))
 	{
-		Json::set<u8>(json["colors"][i], "red", [&](auto v) { m_colors[i].red = v; });
-		Json::set<u8>(json["colors"][i], "green", [&](auto v) { m_colors[i].green = v; });
-		Json::set<u8>(json["colors"][i], "blue", [&](auto v) { m_colors[i].blue = v; });
+		const auto& colors{ json.at("colors") };
+		if (colors.is_array())
+		{
+			for (std::size_t i{}; i < m_colors.size() && i < colors.size(); ++i)
+			{
+				Json::set<u8>(colors[i], "red", [&](auto v) { m_colors[i].red = v; });
+				Json::set<u8>(colors[i], "green", [&](auto v) { m_colors[i].green = v; });
+				Json::set<u8>(colors[i], "blue", [&](auto v) { m_colors[i].blue = v; });
+			}
+		}
 	}
+	
 	colorToUI(m_ui.hudColorCombo->currentIndex());
 }
 
