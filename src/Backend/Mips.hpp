@@ -20,9 +20,9 @@ namespace Mips
 		gp, sp, fp, ra
 	};
 
-	constexpr Mips_t li(Mips::Register rgt, u16 value)
+	constexpr Mips_t li(Mips::Register rgt, s16 value)
 	{
-		return 0x24000000 + (static_cast<u8>(rgt) << 16) + value;
+		return 0x24000000 + (static_cast<u8>(rgt) << 16) + static_cast<u16>(value);
 	}
 
 	constexpr Mips_t lui(Mips::Register rgt, u16 value)
