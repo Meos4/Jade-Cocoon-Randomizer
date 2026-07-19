@@ -7,7 +7,7 @@ Random::Random()
 
 bool Random::generateProba(float percent)
 {
-	return percent >= 100.f || generatePercent() <= percent;
+	return percent >= 100.f || generatePercent() < percent;
 }
 
 float Random::generatePercent()
