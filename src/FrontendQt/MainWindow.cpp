@@ -10,6 +10,7 @@
 #include "FrontendQt/GuiPath.hpp"
 #include "FrontendQt/WelcomeDialog.hpp"
 #include "FrontendQt/HelpConsoleWidget.hpp"
+#include "FrontendQt/RandomizerConfig.hpp"
 #include "FrontendQt/RandomizerTabWidget.hpp"
 #include "FrontendQt/SaveGameDialog.hpp"
 #include "FrontendQt/TopInfoWidget.hpp"
@@ -144,7 +145,7 @@ std::unique_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, Ex
 	}
 }
 
-bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialog)
+bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialog, const RandomizerConfig& config)
 {
 	try
 	{
@@ -152,8 +153,8 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 		m_game->createBuilderDirectory();
 
 		emit saveGameDialog->progressBarChanged(25);
-		emit saveGameDialog->onStateChanged("Randomizing game...");	
-		m_randomizerTabWidget->write();
+		emit saveGameDialog->onStateChanged("Randomizing game...");
+		m_randomizerTabWidget->apply(config);
 
 		emit saveGameDialog->progressBarChanged(50);
 		emit saveGameDialog->onStateChanged("Repack game files...");
@@ -323,8 +324,10 @@ void MainWindow::onFileSaveAs()
 
 	m_game->random()->setSeed(firstSeed);
 
+	const auto config{ m_randomizerTabWidget->snapshot() };
+
 	SaveGameDialog saveGameDialog(&m_uiRandom, this);
-	auto future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog) };
+	auto future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog, config) };
 	saveGameDialog.exec();
 
 	future.wait();

@@ -86,14 +86,19 @@ void RandomizerTabWidget::disableUI()
 	m_randomizer.reset();
 }
 
-void RandomizerTabWidget::write() const
+RandomizerConfig RandomizerTabWidget::snapshot() const
+{
+	return m_randomizerUiManager->snapshot();
+}
+
+void RandomizerTabWidget::apply(const RandomizerConfig& config) const
 {
 	if (!m_randomizer)
 	{
 		throw JcrException{ "Randomizer is uninitialized" };
 	}
 
-	m_randomizerUiManager->write(m_randomizer.get());
+	m_randomizerUiManager->apply(config, m_randomizer.get());
 }
 
 void RandomizerTabWidget::openDefaultDialog()

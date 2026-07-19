@@ -146,6 +146,7 @@ set(SOURCES_FRONTENDQT
     ${FRONTENDQT_DIR}/MiscWidget.ui
     ${FRONTENDQT_DIR}/QtUtil.cpp
     ${FRONTENDQT_DIR}/QtUtil.hpp
+    ${FRONTENDQT_DIR}/RandomizerConfig.hpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.cpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.hpp
     ${FRONTENDQT_DIR}/RandomizerTabWidget.ui

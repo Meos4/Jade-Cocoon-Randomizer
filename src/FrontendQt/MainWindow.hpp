@@ -17,6 +17,7 @@ class HelpConsoleWidget;
 class RandomizerTabWidget;
 class SaveGameDialog;
 class TopInfoWidget;
+struct RandomizerConfig;
 class QAction;
 class QActionGroup;
 class QDragEnterEvent;
@@ -30,7 +31,7 @@ public:
 
 	bool createGameFromDirectory(std::filesystem::path&& gameDirectory);
 	std::unique_ptr<Game> extractGame(std::filesystem::path* isoPath, ExtractGameDialog* extractGameDialog);
-	bool saveGame(const QString& filePath, SaveGameDialog* saveGameDialog);
+	bool saveGame(const QString& filePath, SaveGameDialog* saveGameDialog, const RandomizerConfig& config);
 	void enableUI(std::filesystem::path* isoPath);
 	void enableUI(std::unique_ptr<Game> game);
 	void disableUI();

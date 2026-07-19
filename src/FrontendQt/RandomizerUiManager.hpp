@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FrontendQt/RandomizerConfig.hpp"
+
 class BossWidget;
 class ChallengeWidget;
 class DefaultDialog;
@@ -20,7 +22,8 @@ public:
 		ChallengeWidget* challenge,
 		DefaultDialog* defaultDialog);
 
-	void write(Randomizer* randomizer) const;
+	RandomizerConfig snapshot() const;
+	void apply(const RandomizerConfig& config, Randomizer* randomizer) const;
 private:
 	LevantWidget* m_levant;
 	MinionWidget* m_minion;

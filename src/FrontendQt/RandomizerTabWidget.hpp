@@ -38,7 +38,8 @@ public:
 
 	void enableUI(Game* game);
 	void disableUI();
-	void write() const;
+	RandomizerConfig snapshot() const;
+	void apply(const RandomizerConfig& config) const;
 	void loadPresets(const std::filesystem::path& path);
 	bool savePresets(const std::filesystem::path& path) const;
 	void openDefaultDialog();
