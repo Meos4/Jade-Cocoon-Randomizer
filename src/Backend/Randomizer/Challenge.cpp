@@ -89,7 +89,7 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x2C430039, // sltiu v1, v0, 0x39
 			0x1C60001D, // bgtz v1, 0x1D
 			0x2C4300C9, // sltiu v1, v0, 0xC9
-			0x0460001B, // bltz v1, 0x1B
+			0x1860001B, // blez v1, 0x1B
 
 			// Find capture id of this map
 			0x2409FFFF, // li t1, -1
@@ -157,7 +157,7 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x2C430039, // sltiu v1 v0, 0x39
 			0x1C600024, // bgtz v1, 0x24
 			0x2C4300C9, // sltiu v1 v0, 0xC9
-			0x04600022, // bltz v1, 0x22
+			0x18600022, // blez v1, 0x22
 			0x2409FFFF, // addiu t1, -1
 			li32_mapId[0], // lui t0, 0xXXXX
 			li32_mapId[1], // ori t0, 0xXXXX
