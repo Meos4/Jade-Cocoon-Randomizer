@@ -27,7 +27,7 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x31290400, // andi t1, 0x0400
 			0x15200005, // bnez t1, 5
 			0x254A0001, // addiu t2, 1
-			0x154BFFFA, // bne t2, t3, -5
+			0x154BFFFA, // bne t2, t3, -6
 			isNtscJ ? Mips_t(0x250800DC) : Mips_t(0x250800F8), // addiu t0, 0xDC/0xF8
 			0x10000006, // b, +6
 			0x00000000, // nop
@@ -108,9 +108,9 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x00000000, // nop
 			0x112C000C, // beq t1, t4, 0xC
 			0x25290001, // addiu t1, 1
-			0x144AFFF9, // bne v0, t2, -6
+			0x144AFFF9, // bne v0, t2, -7
 			0x25080002, // addiu t0, 2
-			0x146BFFF7, // bne v1, t3, -8
+			0x146BFFF7, // bne v1, t3, -9
 			0x00000000, // nop
 
 			// Add actual capture id on the Levant Max MP
@@ -174,9 +174,9 @@ void Randomizer::challengeNuzlocke(Randomizer::ChallengeNuzlocke_t state) const
 			0x00000000, // nop
 			0x112C0013, // beq t1, t4, 0x13
 			0x25290001, // addiu t1, 1
-			0x144AFFF9, // bne v0, t2, -6
+			0x144AFFF9, // bne v0, t2, -7
 			0x25080002, // addiu t0, 2
-			0x146BFFF7, // bne v1, t3, -8
+			0x146BFFF7, // bne v1, t3, -9
 			0x00000000, // nop
 			li32_levantStats[0], // lui t0, 0xXXXX
 			li32_levantStats[1], // ori t0, 0xXXXX

@@ -798,7 +798,7 @@ MipsFn::GenerateValidMinion Randomizer::generateValidMinionFn() const
 		0x2C430039, // sltiu v1, v0, 0x39
 		0x1C60FFF2, // bgtz v1, -14
 		0X2C4300C9, // sltiu v1, v0, 0xC9
-		0x1860FFF0, // bgtz v1, -16
+		0x1860FFF0, // blez v1, -16
 		0x00000000, // nop
 		0x03E00008, // jr ra
 		0x00000000  // nop
