@@ -1,5 +1,6 @@
 #include "ExtractGameDialog.hpp"
 
+#include <QKeyEvent>
 #include <QString>
 
 ExtractGameDialog::ExtractGameDialog(QWidget* parent)
@@ -32,7 +33,19 @@ void ExtractGameDialog::setStateLabelError(const QString& text)
 
 void ExtractGameDialog::enableOkButton()
 {
+	m_taskCompleted = true;
 	m_ui.okButton->setEnabled(true);
+}
+
+void ExtractGameDialog::keyPressEvent(QKeyEvent* event)
+{
+	if (event->key() == Qt::Key_Escape && !m_taskCompleted)
+	{
+		event->accept();
+		return;
+	}
+	
+	QDialog::keyPressEvent(event);
 }
 
 void ExtractGameDialog::setOkButtonVisibility(bool enable)

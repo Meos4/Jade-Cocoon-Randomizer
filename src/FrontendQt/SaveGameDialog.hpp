@@ -9,6 +9,7 @@
 class ImageAnimator;
 class QString;
 class Random;
+class QKeyEvent;
 
 class SaveGameDialog final : public QDialog
 {
@@ -25,7 +26,10 @@ Q_SIGNALS:
 	void onStateChanged(const QString&);
 	void onStateError(const QString&);
 	void taskCompleted();
+protected:
+	void keyPressEvent(QKeyEvent* event) override;
 private:
 	Ui::SaveGameDialog m_ui;
 	ImageAnimator* m_animator;
+	bool m_taskCompleted{ false };
 };

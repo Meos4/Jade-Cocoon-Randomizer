@@ -5,6 +5,7 @@
 #include <QDialog>
 
 class QString;
+class QKeyEvent;
 
 class ExtractGameDialog final : public QDialog
 {
@@ -22,6 +23,9 @@ Q_SIGNALS:
 	void taskCompleted();
 	void shouldClose();
 	void onOkButtonVisibilityChanged(bool);
+protected:
+	void keyPressEvent(QKeyEvent* event) override;
 private:
 	Ui::ExtractGameDialog m_ui;
+	bool m_taskCompleted{ false };
 };

@@ -4,6 +4,8 @@
 #include "FrontendQt/ImageAnimator.hpp"
 #include "FrontendQt/ImageAnimatorFactory.hpp"
 
+#include <QKeyEvent>
+
 SaveGameDialog::SaveGameDialog(Random* random, QWidget* parent)
 	: QDialog(parent)
 {
@@ -39,5 +41,17 @@ void SaveGameDialog::setStateLabelError(const QString& text)
 
 void SaveGameDialog::enableOkButton()
 {
+	m_taskCompleted = true;
 	m_ui.okButton->setEnabled(true);
+}
+
+void SaveGameDialog::keyPressEvent(QKeyEvent* event)
+{
+	if (event->key() == Qt::Key_Escape && !m_taskCompleted)
+	{
+		event->accept();
+		return;
+	}
+
+	QDialog::keyPressEvent(event);
 }
