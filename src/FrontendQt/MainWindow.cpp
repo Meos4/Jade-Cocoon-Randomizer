@@ -3,6 +3,7 @@
 #include "Backend/Iso.hpp"
 #include "Backend/Path.hpp"
 #include "Backend/Util.hpp"
+#include "Common/FileSystem.hpp"
 #include "Common/JcrException.hpp"
 #include "Common/Json.hpp"
 #include "FrontendQt/AboutDialog.hpp"
@@ -130,7 +131,7 @@ std::unique_ptr<Game> MainWindow::extractGame(std::filesystem::path* isoPath, Ex
 			isoPath->replace_extension(".bin");
 		}
 
-		auto game{ Game::createGame(*isoPath, Path::defaultGameDirectory) };
+		auto game{ Game::createGame(*isoPath, Path::stagingGameDirectory) };
 
 		emit extractGameDialog->shouldClose();
 
@@ -192,37 +193,58 @@ void MainWindow::enableUI(std::filesystem::path* isoPath)
 	extractGameDialog.exec();
 
 	future.wait();
-	auto game{ future.get() };
+	auto stagingGame{ future.get() };
 
-	if (!game)
+	auto rejectStaging = [this, &stagingGame]
 	{
-		disableUI();
+		stagingGame.reset();
+		FileSystem::remove(Path::stagingGameDirectory);
+		if (!m_game)
+		{
+			disableUI();
+		}
+	};
+
+	if (!stagingGame)
+	{
+		rejectStaging();
 		return;
 	}
-
-	bool vanilla{};
 
 	try
 	{
-		vanilla = game->isVanilla();
+		if (!stagingGame->isVanilla())
+		{
+			QMessageBox::critical(this, "Error", "This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");
+			rejectStaging();
+			return;
+		}
 	}
 	catch (const std::exception& e)
 	{
-		game->removeStaticDirectory();
 		QMessageBox::critical(this, "Error", QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
-		disableUI();
+		rejectStaging();
 		return;
 	}
 
-	if (!vanilla)
+	stagingGame.reset();
+	m_game.reset();
+	FileSystem::remove(Path::defaultGameDirectory);
+
+	std::error_code renameError;
+	std::filesystem::rename(Path::stagingGameDirectory, Path::defaultGameDirectory, renameError);
+	if (renameError)
 	{
-		game->removeStaticDirectory();
-		QMessageBox::critical(this, "Error", "This iso is already randomized, it is not allowed to re-randomize it,\nuse a vanilla iso instead.");
+		FileSystem::remove(Path::stagingGameDirectory);
+		QMessageBox::critical(this, "Error", "Failed to finalize the extracted game.");
 		disableUI();
 		return;
 	}
 
-	enableUI(std::move(game));
+	if (!createGameFromDirectory(Path::defaultGameDirectory))
+	{
+		disableUI();
+	}
 }
 
 void MainWindow::enableUI(std::unique_ptr<Game> game)
