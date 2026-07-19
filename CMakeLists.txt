@@ -91,6 +91,7 @@ set(SOURCES_COMMON
     ${COMMON_DIR}/Json.hpp
     ${COMMON_DIR}/Random.cpp
     ${COMMON_DIR}/Random.hpp
+    ${COMMON_DIR}/RawFileBase.hpp
     ${COMMON_DIR}/RawFile.cpp
     ${COMMON_DIR}/RawFile.hpp
     ${COMMON_DIR}/RawFileReadOnly.cpp
