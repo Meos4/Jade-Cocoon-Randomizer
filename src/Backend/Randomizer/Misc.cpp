@@ -307,8 +307,8 @@ void Randomizer::miscSkipPrologue(bool skipKoris) const
 	{
 		executable.write(afterTutorialStateOffset.file + 0x16, u8(1));
 
-		// Set the "Koris in the Beetle Forest" as already played, (event bit 59)
-		executable.write(afterTutorialStateOffset.file + 0x1B, u8(8));
+		// Set the FOREST1/SCE00 entry event script as already played, (event bit 2 + base bit 1)
+		executable.write(afterTutorialStateOffset.file + 0x14, u8(6));
 
 		// Reset the previous map triple (4,1,0) != (-1,-1,-1) otherwise
 		// it considers the zone unchanged and keeps the minions spawn pool empty
@@ -316,6 +316,11 @@ void Randomizer::miscSkipPrologue(bool skipKoris) const
 		executable.write(afterTutorialStateOffset.file + 0x4A, u16(0xFFFF));
 		executable.write(afterTutorialStateOffset.file + 0x4E, u16(0xFFFF));
 		executable.write(afterTutorialStateOffset.file + 0x52, u16(0xFFFF));
+
+		// Entry door index = -1 to match the engine "no door transition" state,
+		// otherwise the scene object spawner never runs on the arrival map
+		// and its doors + Knowledge 1 pickup don't spawn
+		executable.write(afterTutorialStateOffset.file + 0x50, u16(0xFFFF));
 
 		executable.write(afterTutorialStateOffset.file + 0xCE, u8(0x0B));
 		executable.write(afterTutorialStateOffset.file + 0x126, u8(0x64));
