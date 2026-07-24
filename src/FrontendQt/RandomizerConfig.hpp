@@ -34,7 +34,7 @@ struct RandomizerConfig
 	bool minionAppearanceRandomNewMinion;
 	bool minionAppearanceModelRandom;
 	bool minionAppearanceTextureRandom;
-	bool minionAppearanceTextureIncludeCompatible;
+	bool minionAppearanceTextureIncludeECSkins;
 	bool minionAppearanceTextureRandomColor;
 	bool minionAppearanceGrowthSizeShuffle;
 	bool minionAppearanceGrowthSizeInvert;

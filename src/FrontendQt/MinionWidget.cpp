@@ -29,7 +29,7 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.appearanceRandomNewMinion) },
 		{ SETTINGS(m_ui.appearanceModelRandom) },
 		{ SETTINGS(m_ui.appearanceTextureRandom) },
-		{ SETTINGS(m_ui.appearanceTextureIncludeCompatible) },
+		{ SETTINGS(m_ui.appearanceTextureIncludeECSkins) },
 		{ SETTINGS(m_ui.appearanceTextureRandomColor) },
 		{ SETTINGS(m_ui.appearanceGrowthSizeShuffle) },
 		{ SETTINGS(m_ui.appearanceGrowthSizeInvert) }
@@ -129,8 +129,8 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		"Randomize minions texture."
 	);
 
-	helpConsole->addFeature(m_ui.appearanceTextureIncludeCompatible, _AppearanceTexture, 
-		"Include Eternal Corridor Bosses + Minion (Dark Arpatron) textures in the pool."
+	helpConsole->addFeature(m_ui.appearanceTextureIncludeECSkins, _AppearanceTexture,
+		"Include Eternal Corridor Bosses textures in the pool."
 	);
 
 	helpConsole->addFeature(m_ui.appearanceTextureRandomColor, _AppearanceTexture, 
@@ -156,7 +156,7 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	m_ui.spawnDreamCombo->setEnabled(false);
 	m_ui.spawnKorisCombo->setEnabled(false);
 	m_ui.specialMagicPool->setEnabled(false);
-	m_ui.appearanceTextureIncludeCompatible->setEnabled(false);
+	m_ui.appearanceTextureIncludeECSkins->setEnabled(false);
 	m_ui.appearanceCrazinessValue->setEnabled(false);
 
 	m_specialMagicDialog = new SpecialMagicDialog(this);
@@ -187,7 +187,7 @@ MinionWidget::MinionWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.spawnKorisCustom, &QAbstractButton::toggled, this, &MinionWidget::updateSpawnKorisCustom);
 	connect(m_ui.specialMagicRandom, &QAbstractButton::toggled, m_ui.specialMagicPool, &QWidget::setEnabled);
 	connect(m_ui.specialMagicPool, &QAbstractButton::clicked, m_specialMagicDialog, &QDialog::exec);
-	connect(m_ui.appearanceTextureRandom, &QAbstractButton::toggled, m_ui.appearanceTextureIncludeCompatible, &QWidget::setEnabled);
+	connect(m_ui.appearanceTextureRandom, &QAbstractButton::toggled, m_ui.appearanceTextureIncludeECSkins, &QWidget::setEnabled);
 	connect(m_ui.appearanceGrowthSizeShuffle, &QAbstractButton::toggled, this, &MinionWidget::updateAppearanceGrowthSizeShuffle);
 	connect(m_ui.appearanceGrowthSizeInvert, &QAbstractButton::toggled, this, &MinionWidget::updateAppearanceGrowthSizeInvert);
 	connect(m_ui.appearanceRandomNewMinion, &QAbstractButton::toggled, m_ui.appearanceCrazinessSlider, &QWidget::setEnabled);

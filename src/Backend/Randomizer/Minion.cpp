@@ -682,12 +682,12 @@ void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state, s32 craz
 
 		if (state & Randomizer::MINION_APPEARANCE_TEXTURE_RANDOM)
 		{
-			const auto includeCompatible{ state & Randomizer::MINION_APPEARANCE_TEXTURE_INCLUDE_COMPATIBLE };
+			const auto includeECSkins{ state & Randomizer::MINION_APPEARANCE_TEXTURE_INCLUDE_EC_SKINS };
 			const auto totalTextures
 			{
-				includeCompatible ?
+				includeECSkins ?
 				Model::Minion::models.size() + Model::Minion::modelsEC.size() + 1 :
-				Model::Minion::models.size()
+				Model::Minion::models.size() + 1
 			};
 
 			std::vector<Model_t> texturesModels;
@@ -697,14 +697,14 @@ void Randomizer::minionAppearance(Randomizer::MinionAppearance_t state, s32 craz
 			{
 				texturesModels.emplace_back(model);
 			}
+			texturesModels.emplace_back(MODEL_DMYB);
 
-			if (includeCompatible)
+			if (includeECSkins)
 			{
 				for (const auto& model : Model::Minion::modelsEC)
 				{
 					texturesModels.emplace_back(model);
 				}
-				texturesModels.emplace_back(MODEL_DMYB);
 			}
 
 			for (const auto& [model, file] : minions)

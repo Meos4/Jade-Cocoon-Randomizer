@@ -65,7 +65,7 @@ RandomizerConfig RandomizerUiManager::snapshot() const
 	config.minionAppearanceRandomNewMinion = minionUi.appearanceRandomNewMinion->isChecked();
 	config.minionAppearanceModelRandom = minionUi.appearanceModelRandom->isChecked();
 	config.minionAppearanceTextureRandom = minionUi.appearanceTextureRandom->isChecked();
-	config.minionAppearanceTextureIncludeCompatible = minionUi.appearanceTextureIncludeCompatible->isChecked();
+	config.minionAppearanceTextureIncludeECSkins = minionUi.appearanceTextureIncludeECSkins->isChecked();
 	config.minionAppearanceTextureRandomColor = minionUi.appearanceTextureRandomColor->isChecked();
 	config.minionAppearanceGrowthSizeShuffle = minionUi.appearanceGrowthSizeShuffle->isChecked();
 	config.minionAppearanceGrowthSizeInvert = minionUi.appearanceGrowthSizeInvert->isChecked();
@@ -270,9 +270,9 @@ void RandomizerUiManager::apply(const RandomizerConfig& config, Randomizer* rand
 	{
 		appearance |= Randomizer::MINION_APPEARANCE_TEXTURE_RANDOM;
 
-		if (config.minionAppearanceTextureIncludeCompatible)
+		if (config.minionAppearanceTextureIncludeECSkins)
 		{
-			appearance |= Randomizer::MINION_APPEARANCE_TEXTURE_INCLUDE_COMPATIBLE;
+			appearance |= Randomizer::MINION_APPEARANCE_TEXTURE_INCLUDE_EC_SKINS;
 		}
 	}
 	if (config.minionAppearanceTextureRandomColor)
