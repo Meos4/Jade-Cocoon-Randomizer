@@ -21,11 +21,15 @@ private Q_SLOTS:
 	void setStateLabel(const QString& text);
 	void setStateLabelError(const QString& text);
 	void enableOkButton();
+	void setRetryButtonVisibility(bool enable);
+	void onRetryButtonClicked();
 Q_SIGNALS:
 	void progressBarChanged(s32);
 	void onStateChanged(const QString&);
 	void onStateError(const QString&);
 	void taskCompleted();
+	void onRetryButtonVisibilityChanged(bool);
+	void retryRequested();
 protected:
 	void keyPressEvent(QKeyEvent* event) override;
 private:

@@ -104,6 +104,19 @@
     <string>Ok</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="retryButton">
+   <property name="geometry">
+    <rect>
+     <x>203</x>
+     <y>66</y>
+     <width>81</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Retry</string>
+   </property>
+  </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

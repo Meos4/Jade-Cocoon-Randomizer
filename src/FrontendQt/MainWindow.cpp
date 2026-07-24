@@ -160,7 +160,24 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 		emit saveGameDialog->progressBarChanged(50);
 		emit saveGameDialog->onStateChanged("Repack game files...");
 		m_game->builderTree().repackDATA001();
+	}
+	catch (const std::exception& e)
+	{
+#ifndef JCR_DEBUG
+		m_game->builderTree().remove();
+#endif
+		emit saveGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
+		emit saveGameDialog->taskCompleted();
+		return false;
+	}
 
+	return saveGameIso(filePath, saveGameDialog);
+}
+
+bool MainWindow::saveGameIso(const QString& filePath, SaveGameDialog* saveGameDialog)
+{
+	try
+	{
 		emit saveGameDialog->progressBarChanged(75);
 		emit saveGameDialog->onStateChanged("Repack iso...");
 
@@ -177,11 +194,9 @@ bool MainWindow::saveGame(const QString& filePath, SaveGameDialog* saveGameDialo
 	}
 	catch (const std::exception& e)
 	{
-#ifndef JCR_DEBUG
-		m_game->builderTree().remove();
-#endif
 		emit saveGameDialog->onStateError(QString::fromStdString(std::format("An error occured, Reason: {}", e.what())));
 		emit saveGameDialog->taskCompleted();
+		emit saveGameDialog->onRetryButtonVisibilityChanged(true);
 		return false;
 	}
 }
@@ -350,10 +365,26 @@ void MainWindow::onFileSaveAs()
 
 	SaveGameDialog saveGameDialog(&m_uiRandom, this);
 	auto future{ std::async(std::launch::async, &MainWindow::saveGame, this, filePathQStr, &saveGameDialog, config) };
+
+	connect(&saveGameDialog, &SaveGameDialog::retryRequested, this, [&]
+	{
+		future.wait();
+		future = std::async(std::launch::async, &MainWindow::saveGameIso, this, filePathQStr, &saveGameDialog);
+	});
+
 	saveGameDialog.exec();
 
 	future.wait();
-	if (future.get())
+	const bool isSaved{ future.get() };
+
+#ifndef JCR_DEBUG
+	if (!isSaved)
+	{
+		m_game->builderTree().remove();
+	}
+#endif
+
+	if (isSaved)
 	{
 		const std::filesystem::path filePath{ QtUtil::qStrToPlatformStr(filePathQStr) };
 
