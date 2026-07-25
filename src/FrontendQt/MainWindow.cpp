@@ -77,6 +77,11 @@ MainWindow::MainWindow(QWidget* parent)
 
 	connect(m_ui.actionHelpAbout, &QAction::triggered, this, &MainWindow::onHelpAbout);
 
+#ifdef JCR_DEBUG
+	connect(m_ui.menuBar->addAction("Debug"), &QAction::triggered, this,
+		[this]() { m_randomizerTabWidget->openDebugWindow(); });
+#endif
+
 	disableUI();
 
 	m_guiSettings.setOsTheme();

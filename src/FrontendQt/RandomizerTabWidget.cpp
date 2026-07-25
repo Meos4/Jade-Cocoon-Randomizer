@@ -6,6 +6,9 @@
 #include "FrontendQt/BossWidget.hpp"
 #include "FrontendQt/ChallengeWidget.hpp"
 #include "FrontendQt/DefaultDialog.hpp"
+#ifdef JCR_DEBUG
+#include "FrontendQt/DebugWindow.hpp"
+#endif
 #include "FrontendQt/EquipmentWidget.hpp"
 #include "FrontendQt/ForestWidget.hpp"
 #include "FrontendQt/HelpConsoleWidget.hpp"
@@ -37,6 +40,9 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 	auto* const challengeWidget{ new ChallengeWidget(helpConsole, this) };
 
 	m_defaultDialog = new DefaultDialog(this);
+#ifdef JCR_DEBUG
+	m_debugWindow = new DebugWindow;
+#endif
 
 	m_randomizerUiManager = std::make_unique<RandomizerUiManager>
 	(
@@ -66,6 +72,13 @@ RandomizerTabWidget::RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget
 	m_ui.challengeScroll->setWidget(m_randomizerWidgets[TAB_CHALLENGE]);
 }
 
+RandomizerTabWidget::~RandomizerTabWidget()
+{
+#ifdef JCR_DEBUG
+	delete m_debugWindow;
+#endif
+}
+
 void RandomizerTabWidget::enableUI(Game* game)
 {
 	m_randomizer = std::make_unique<Randomizer>(game);
@@ -74,6 +87,10 @@ void RandomizerTabWidget::enableUI(Game* game)
 	{
 		widget->enableUI(m_randomizer.get());
 	}
+
+#ifdef JCR_DEBUG
+	m_debugWindow->enableUI();
+#endif
 }
 
 void RandomizerTabWidget::disableUI()
@@ -82,6 +99,10 @@ void RandomizerTabWidget::disableUI()
 	{
 		widget->disableUI();
 	}
+
+#ifdef JCR_DEBUG
+	m_debugWindow->disableUI();
+#endif
 
 	m_randomizer.reset();
 }
@@ -99,12 +120,24 @@ void RandomizerTabWidget::apply(const RandomizerConfig& config) const
 	}
 
 	m_randomizerUiManager->apply(config, m_randomizer.get());
+
+#ifdef JCR_DEBUG
+	m_debugWindow->apply(m_randomizer.get());
+#endif
 }
 
 void RandomizerTabWidget::openDefaultDialog()
 {
 	m_defaultDialog->exec();
 }
+
+#ifdef JCR_DEBUG
+void RandomizerTabWidget::openDebugWindow()
+{
+	m_debugWindow->show();
+	m_debugWindow->raise();
+}
+#endif
 
 void RandomizerTabWidget::loadPresets(const std::filesystem::path& path)
 {

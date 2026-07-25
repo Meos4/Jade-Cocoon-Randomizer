@@ -214,6 +214,9 @@ public:
 	void defaultBugFixesBodyEnhancement() const;
 	void defaultBugFixesAutumnMoonVisualAttackEffect() const;
 	void defaultBugFixesSpecialAttackModifiersDisplay() const;
+#ifdef JCR_DEBUG
+	void debugStageSelect() const;
+#endif
 private:
 	Game* m_game;
 	SharedData m_sharedData;

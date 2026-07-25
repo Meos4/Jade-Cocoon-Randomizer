@@ -187,12 +187,19 @@ else()
     add_executable(${PROJECT_NAME})
 endif()
 
-target_sources(${PROJECT_NAME} PRIVATE  
+set(SOURCES_DEBUG
+    ${BACKEND_DIR}/Randomizer/Debug.cpp
+    ${FRONTENDQT_DIR}/DebugWindow.cpp
+    ${FRONTENDQT_DIR}/DebugWindow.hpp
+    ${FRONTENDQT_DIR}/DebugWindow.ui)
+
+target_sources(${PROJECT_NAME} PRIVATE
     ${SOURCES_BACKEND}
     ${SOURCES_BACKEND_RANDOMIZER}
     ${SOURCES_COMMON}
     ${SOURCES_FRONTENDQT}
-    ${SOURCES_RESOURCEQT})
+    ${SOURCES_RESOURCEQT}
+    $<$<CONFIG:Debug>:${SOURCES_DEBUG}>)
 
 source_group(Backend FILES ${SOURCES_BACKEND})
 source_group(Backend/Randomizer FILES ${SOURCES_BACKEND_RANDOMIZER})

@@ -15,6 +15,9 @@ class DefaultDialog;
 class Game;
 class HelpConsoleWidget;
 class RandomizerWidget;
+#ifdef JCR_DEBUG
+class DebugWindow;
+#endif
 
 class RandomizerTabWidget final : public QTabWidget
 {
@@ -35,6 +38,7 @@ public:
 	};
 
 	RandomizerTabWidget(HelpConsoleWidget* helpConsole, QWidget* parent = nullptr);
+	~RandomizerTabWidget();
 
 	void enableUI(Game* game);
 	void disableUI();
@@ -43,6 +47,9 @@ public:
 	void loadPresets(const std::filesystem::path& path);
 	bool savePresets(const std::filesystem::path& path) const;
 	void openDefaultDialog();
+#ifdef JCR_DEBUG
+	void openDebugWindow();
+#endif
 private:
 	Ui::RandomizerTabWidget m_ui;
 
@@ -50,4 +57,7 @@ private:
 	std::unique_ptr<RandomizerUiManager> m_randomizerUiManager;
 	std::unique_ptr<Randomizer> m_randomizer;
 	DefaultDialog* m_defaultDialog{};
+#ifdef JCR_DEBUG
+	DebugWindow* m_debugWindow{};
+#endif
 };
