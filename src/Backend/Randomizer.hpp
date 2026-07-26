@@ -216,6 +216,7 @@ public:
 	void defaultBugFixesSpecialAttackModifiersDisplay() const;
 #ifdef JCR_DEBUG
 	void debugStageSelect() const;
+	void debugTitleDebug() const;
 #endif
 private:
 	Game* m_game;

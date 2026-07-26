@@ -203,4 +203,22 @@ void Randomizer::debugStageSelect() const
 	over_map_bin->write(offset.mapFileConfirm, confirmHookFn);
 }
 
+void Randomizer::debugTitleDebug() const
+{
+	static constexpr std::array<u32, static_cast<std::size_t>(Version::Count)> titleFileMenuOffsets
+	{
+		0x00000810,
+		0x000009D0,
+		0x00000A38,
+		0x00000A38,
+		0x00000A90,
+		0x00000A3C,
+		0x000009A4,
+		0x000009A4
+	};
+
+	const auto offset{ titleFileMenuOffsets[static_cast<std::size_t>(m_game->version())] };
+	m_game->file(File::OVER_TITLE_BIN)->write(offset, Mips::li(Mips::Register::v0, 8));
+}
+
 #endif
