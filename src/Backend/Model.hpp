@@ -261,10 +261,25 @@ namespace Model
 		namespace Animation
 		{
 			inline constexpr auto
-				begin{ 0x12800u }, 
-				nbPacked{ 8u }, 
-				nbUnpacked{ 21u }, 
-				size{ 0xA2u };
+				begin{ 0x12800u },
+				nbPacked{ 8u },
+				nbUnpacked{ 21u },
+				size{ 0xA2u },
+				vectorSize{ 6u },
+				nbPosition{ Model::Minion::nbParts },
+				rootPosition{ 1u },
+				rootVector{ 1u },
+				rotationVector{ 2u };
+
+			inline constexpr u32 positionBegin(u8 flag)
+			{
+				return flag & 0x80 ? 0xCu : 0x8u;
+			}
+
+			inline constexpr u32 frameBegin(u8 flag)
+			{
+				return positionBegin(flag) + nbPosition * vectorSize;
+			}
 
 			class UnpackedOffsetSize
 			{

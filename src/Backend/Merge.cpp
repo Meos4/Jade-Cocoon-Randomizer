@@ -721,6 +721,51 @@ static void writeBodies(std::vector<Body>* body, RawTypeNavigator* nav)
 	}
 }
 
+using BodyPartsPosition = std::array<s16, Model::Minion::Animation::nbPosition * 3>;
+
+static u8 recordFlag(RawTypeNavigator* nav, u32 record)
+{
+	*nav = record;
+	return nav->read<u8>(3);
+}
+
+static BodyPartsPosition readBodyPartsPosition(RawTypeNavigator* nav, u32 record)
+{
+	const auto flag{ recordFlag(nav, record) };
+	*nav = record + Model::Minion::Animation::positionBegin(flag);
+	return nav->read<BodyPartsPosition>();
+}
+
+static void writeBodyPartsPosition(RawTypeNavigator* nav, u32 record, const BodyPartsPosition& position)
+{
+	const auto flag{ recordFlag(nav, record) };
+	*nav = record + Model::Minion::Animation::positionBegin(flag);
+	nav->write(position);
+}
+
+static u32 firstPackedRecord(RawTypeNavigator* nav)
+{
+	*nav = Model::Minion::Animation::begin;
+	return Model::Minion::Animation::begin + nav->read<u32>(4);
+}
+
+static void writeEveryBodyPartsPosition(
+	RawTypeNavigator* nav,
+	const Model::Minion::Animation::UnpackedOffsetSize& animations,
+	const std::array<u32, Model::Minion::Animation::nbPacked>& packedBegin,
+	const BodyPartsPosition& position)
+{
+	for (u32 i{}; i < Model::Minion::Animation::nbPacked; ++i)
+	{
+		writeBodyPartsPosition(nav, Model::Minion::Animation::begin + packedBegin[i], position);
+	}
+
+	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
+	{
+		writeBodyPartsPosition(nav, animations.offset(i), position);
+	}
+}
+
 template<typename GetInterp>
 static std::array<u32, Model::Minion::Animation::nbPacked> blendBodyPartsPosition(
 	std::vector<RawTypeNavigator>* rawModels,
@@ -730,32 +775,20 @@ static std::array<u32, Model::Minion::Animation::nbPacked> blendBodyPartsPositio
 {
 	(*rawModels)[0] = Model::Minion::Animation::begin;
 	const auto packedBegin{ (*rawModels)[0].read<std::array<u32, Model::Minion::Animation::nbPacked>>(4) };
-	auto pos0{ (*rawModels)[0].read<std::array<s16, 72>>(0x38) };
+	auto pos0{ readBodyPartsPosition(&(*rawModels)[0], Model::Minion::Animation::begin + packedBegin[0]) };
 
 	for (std::size_t i{ 1 }; i < nbModels; ++i)
 	{
 		const s16 interpolation{ getInterp(i) };
+		const auto posI{ readBodyPartsPosition(&(*rawModels)[i], firstPackedRecord(&(*rawModels)[i])) };
 
-		(*rawModels)[i] = Model::Minion::Animation::begin;
-		const auto posI{ (*rawModels)[i].read<std::array<s16, 72>>(0x38) };
-
-		for (s32 j{}; j < 72; ++j)
+		for (std::size_t j{}; j < pos0.size(); ++j)
 		{
-			pos0[j] += libgte::mult(posI[j] - pos0[j], interpolation);
+			pos0[j] += libgte::mult(static_cast<s16>(posI[j] - pos0[j]), interpolation);
 		}
 	}
 
-	for (u32 i{}; i < Model::Minion::Animation::nbPacked; ++i)
-	{
-		(*rawModels)[0] = Model::Minion::Animation::begin + packedBegin[i];
-		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
-	}
-
-	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
-	{
-		(*rawModels)[0] = animations.offset(i);
-		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
-	}
+	writeEveryBodyPartsPosition(&(*rawModels)[0], animations, packedBegin, pos0);
 
 	return packedBegin;
 }
@@ -769,38 +802,27 @@ static std::array<u32, Model::Minion::Animation::nbPacked> blendBodyPartsPositio
 {
 	(*rawModels)[0] = Model::Minion::Animation::begin;
 	const auto packedBegin{ (*rawModels)[0].read<std::array<u32, Model::Minion::Animation::nbPacked>>(4) };
-	auto pos0{ (*rawModels)[0].read<std::array<s16, 72>>(0x38) };
+	auto pos0{ readBodyPartsPosition(&(*rawModels)[0], Model::Minion::Animation::begin + packedBegin[0]) };
 
-	std::vector<std::array<s16, 72>> posModels(nbModels);
+	std::vector<BodyPartsPosition> posModels(nbModels);
 	posModels[0] = pos0;
 	for (std::size_t i{ 1 }; i < nbModels; ++i)
 	{
-		(*rawModels)[i] = Model::Minion::Animation::begin;
-		posModels[i] = (*rawModels)[i].read<std::array<s16, 72>>(0x38);
+		posModels[i] = readBodyPartsPosition(&(*rawModels)[i], firstPackedRecord(&(*rawModels)[i]));
 	}
 
-	for (s32 j{}; j < static_cast<s32>(Model::Minion::nbParts) - 1; ++j)
+	for (u32 j{}; j < Model::Minion::nbParts; ++j)
 	{
-		const std::size_t src{ partBodyIndex[j + 1] };
-		const s16 interpolation{ parts[j + 1].interpolation % (Merge::maxInterpolation + 1) };
-		for (s32 k{}; k < 3; ++k)
+		const std::size_t src{ partBodyIndex[j] };
+		const s16 interpolation{ parts[j].interpolation % (Merge::maxInterpolation + 1) };
+		for (u32 k{}; k < 3; ++k)
 		{
-			const s32 idx{ j * 3 + k };
-			pos0[idx] += libgte::mult(posModels[src][idx] - pos0[idx], interpolation);
+			const auto idx{ j * 3 + k };
+			pos0[idx] += libgte::mult(static_cast<s16>(posModels[src][idx] - pos0[idx]), interpolation);
 		}
 	}
 
-	for (u32 i{}; i < Model::Minion::Animation::nbPacked; ++i)
-	{
-		(*rawModels)[0] = Model::Minion::Animation::begin + packedBegin[i];
-		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
-	}
-
-	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
-	{
-		(*rawModels)[0] = animations.offset(i);
-		(*rawModels)[0].write(pos0, (*rawModels)[0].read<u8>(3) & 0x80 ? 0x18 : 0x14);
-	}
+	writeEveryBodyPartsPosition(&(*rawModels)[0], animations, packedBegin, pos0);
 
 	return packedBegin;
 }
@@ -880,10 +902,37 @@ static void blendGlobalPosition(std::vector<RawTypeNavigator>* rawModels, std::s
 	}
 }
 
-static void computeYCoordinate(
-	RawTypeNavigator* nav,
-	const Model::Minion::Animation::UnpackedOffsetSize& animations,
-	const std::array<u32, Model::Minion::Animation::nbPacked>& packedBegin)
+static constexpr s16 groundAttachId{ 0x26 };
+static constexpr u32
+	attachPointsPtr{ 8u },
+	attachPointsBegin{ 4u },
+	attachPointsSize{ 0xCu },
+	nbAttachPoints{ 0x2Bu };
+
+struct AttachPoint
+{
+	s16 bodyPart;
+	libgte::SVECTOR position;
+};
+
+static AttachPoint findAttachPoint(RawTypeNavigator* nav, s16 id)
+{
+	*nav = attachPointsPtr;
+	const auto begin{ nav->read<u32>() + attachPointsBegin };
+
+	for (u32 i{}; i < nbAttachPoints; ++i)
+	{
+		*nav = begin + i * attachPointsSize;
+		if (nav->read<s16>() == id)
+		{
+			return { nav->read<s16>(2), nav->read<libgte::SVECTOR>(4) };
+		}
+	}
+
+	throw JcrException{ "Missing model attach point" };
+}
+
+static s16 computeYCoordinate(RawTypeNavigator* nav, u32 record, s16 heightDelta)
 {
 	std::array<libgte::MATRIX, Model::Minion::nbParts> matrixs{};
 	std::array<libgte::VECTOR, Model::Minion::nbParts> vectors{};
@@ -897,29 +946,28 @@ static void computeYCoordinate(
 		scratchpad.write(i % 4 == 0 ? s16(0x1000) : s16(0), 0x60 + i * 2);
 	}
 
+	const auto flag{ recordFlag(nav, record) };
+	const auto
+		positionBase{ record + Model::Minion::Animation::positionBegin(flag) },
+		frameBase{ record + Model::Minion::Animation::frameBegin(flag) };
+
 	for (u32 i{}; i < Model::Minion::nbParts; ++i)
 	{
 		const auto desiredVec{ tableOfBodyParts[i * 8 + 2] };
 
-		if (!desiredVec)
+		u16 vecY{}, vecZ{};
+
+		sVector1.vx = 0;
+		sVector2.vx = 0;
+
+		if (desiredVec)
 		{
-			sVector1.vx = 0;
-			sVector2.vx = 0;
+			*nav = frameBase +
+				(desiredVec + Model::Minion::Animation::rotationVector) * Model::Minion::Animation::vectorSize;
+			sVector1.vx = nav->read<s16>();
+			vecY = nav->read<u16>(2);
+			vecZ = nav->read<u16>(4);
 		}
-		else
-		{
-			const auto vecOffset{ (desiredVec + 2) * 6 };
-
-			*nav = 0x128D2;
-			sVector2.vx = nav->read<s16>(vecOffset);
-			sVector1.vx = nav->read<s16>(vecOffset + 0x130);
-		}
-
-		*nav = 0x12A0E;
-
-		const auto
-			vecY{ nav->read<u16>(2 + i * 6) },
-			vecZ{ nav->read<u16>(4 + i * 6) };
 
 		const auto
 			x_0{ tableOfRates[static_cast<u16>(sVector1.vx) & 0xFFF] },
@@ -963,10 +1011,21 @@ static void computeYCoordinate(
 			scratchpad.write(sVector2.vz, 0x4C + shiftOffset + j * 2);
 		}
 
-		*nav = 0x1296C;
-		sVector1.vx = nav->read<s16>(i * 6);
-		sVector1.vy = nav->read<s16>(2 + i * 6);
-		sVector1.vz = nav->read<s16>(4 + i * 6);
+		sVector1 = {};
+		if (i == Model::Minion::Animation::rootPosition)
+		{
+			*nav = frameBase + Model::Minion::Animation::rootVector * Model::Minion::Animation::vectorSize;
+			sVector1.vx = nav->read<s16>();
+			sVector1.vy = static_cast<s16>(nav->read<s16>(2) + heightDelta);
+			sVector1.vz = nav->read<s16>(4);
+		}
+		else if (desiredVec)
+		{
+			*nav = positionBase + desiredVec * Model::Minion::Animation::vectorSize;
+			sVector1.vx = nav->read<s16>();
+			sVector1.vy = nav->read<s16>(2);
+			sVector1.vz = nav->read<s16>(4);
+		}
 
 		libgte::ApplyMatrix(&scratchMatrix, &sVector1, &vectors[i]);
 
@@ -980,34 +1039,56 @@ static void computeYCoordinate(
 		matrixs[i] = scratchpad.read<libgte::MATRIX>(0x40 + shiftOffset);
 	}
 
-	*nav = 0;
-	*nav = nav->read<u32>(8);
-	libgte::SVECTOR sVector3{ nav->read<libgte::SVECTOR>(0x1AC) };
+	auto attachPoint{ findAttachPoint(nav, groundAttachId) };
 	libgte::VECTOR vector1{};
-	libgte::ApplyMatrix(&matrixs[19], &sVector3, &vector1);
-	const auto yCoord{ static_cast<s16>(vectors[19].vy + vector1.vy) };
+	libgte::ApplyMatrix(&matrixs[attachPoint.bodyPart], &attachPoint.position, &vector1);
 
-	auto writeYCoord = [yCoord](RawTypeNavigator* raw, u32 offset)
+	return static_cast<s16>(vectors[attachPoint.bodyPart].vy + vector1.vy);
+}
+
+static void alignToGround(
+	RawTypeNavigator* nav,
+	const Model::Minion::Animation::UnpackedOffsetSize& animations,
+	const std::array<u32, Model::Minion::Animation::nbPacked>& packedBegin)
+{
+	const auto reference{ Model::Minion::Animation::begin + packedBegin[0] };
+	const auto referenceFlag{ recordFlag(nav, reference) };
+
+	*nav = reference + Model::Minion::Animation::positionBegin(referenceFlag) +
+		Model::Minion::Animation::rootPosition * Model::Minion::Animation::vectorSize;
+	const auto mergedHeight{ nav->read<s16>(2) };
+
+	*nav = reference + Model::Minion::Animation::frameBegin(referenceFlag) +
+		Model::Minion::Animation::rootVector * Model::Minion::Animation::vectorSize;
+	const auto originalHeight{ nav->read<s16>(2) };
+
+	const auto heightDelta{ static_cast<s16>(mergedHeight - originalHeight) };
+	const auto record{ Model::Minion::Animation::begin + packedBegin[1] };
+	const auto shift{ static_cast<s16>(heightDelta - computeYCoordinate(nav, record, heightDelta)) };
+
+	auto shiftRoot = [shift](RawTypeNavigator* raw, u32 offset)
 	{
 		*raw = offset;
 		const auto nbFrames{ raw->read<u16>() };
-		*raw += raw->read<u8>(3) & 0x80 ? 0xAA : 0xA6;
+		const auto rootFlag{ raw->read<u8>(3) };
+		*raw += Model::Minion::Animation::frameBegin(rootFlag) +
+			Model::Minion::Animation::rootVector * Model::Minion::Animation::vectorSize + 2;
 
 		for (u16 j{}; j < nbFrames; ++j)
 		{
 			const auto yMinionCoord{ raw->read<s16>(j * Model::Minion::Animation::size) };
-			raw->write(s16(yMinionCoord - yCoord), j * Model::Minion::Animation::size);
+			raw->write(s16(yMinionCoord + shift), j * Model::Minion::Animation::size);
 		}
 	};
 
 	for (u32 i{ 1 }; i < Model::Minion::Animation::nbPacked; ++i)
 	{
-		writeYCoord(nav, Model::Minion::Animation::begin + packedBegin[i]);
+		shiftRoot(nav, Model::Minion::Animation::begin + packedBegin[i]);
 	}
 
 	for (u32 i{}; i < Model::Minion::Animation::nbUnpacked; ++i)
 	{
-		writeYCoord(nav, animations.offset(i));
+		shiftRoot(nav, animations.offset(i));
 	}
 }
 
@@ -1126,7 +1207,7 @@ namespace Merge
 		blendGlobalPosition(&rawModels, nbModels, getInterp);
 		if (!skipYCoord)
 		{
-			computeYCoordinate(&rawModels[0], animations, packedBegin);
+			alignToGround(&rawModels[0], animations, packedBegin);
 		}
 	}
 
@@ -1259,6 +1340,6 @@ namespace Merge
 		const auto packedBegin{ blendBodyPartsPositionPerPart(&rawModels, animations, nbModels, partBodyIndex, parts) };
 		blendXYZGrowthSize(&rawModels, nbModels, avgInterpolation);
 		blendGlobalPosition(&rawModels, nbModels, avgInterpolation);
-		computeYCoordinate(&rawModels[0], animations, packedBegin);
+		alignToGround(&rawModels[0], animations, packedBegin);
 	}
 };
