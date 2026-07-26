@@ -813,8 +813,9 @@ static std::array<u32, Model::Minion::Animation::nbPacked> blendBodyPartsPositio
 
 	for (u32 j{}; j < Model::Minion::nbParts; ++j)
 	{
-		const std::size_t src{ partBodyIndex[j] };
-		const s16 interpolation{ parts[j].interpolation % (Merge::maxInterpolation + 1) };
+		const auto parent{ tableOfBodyParts[j * 8 + 3] };
+		const std::size_t src{ partBodyIndex[parent] };
+		const s16 interpolation{ parts[parent].interpolation % (Merge::maxInterpolation + 1) };
 		for (u32 k{}; k < 3; ++k)
 		{
 			const auto idx{ j * 3 + k };
