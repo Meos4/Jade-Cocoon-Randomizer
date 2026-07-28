@@ -19,6 +19,7 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.hudRandom) },
 		{ SETTINGS(m_ui.hudColorCustom) },
 		{ SETTINGS(m_ui.npcsVoiceRandom) },
+		{ SETTINGS(m_ui.npcsVoiceAnyCharacter) },
 		{ SETTINGS(m_ui.betaBattleThemeEnable) },
 		{ SETTINGS(m_ui.palToNtscEnable) }
 	};
@@ -51,8 +52,14 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	helpConsole->addFeature(m_ui.hudColorCustom, _HudColor, _Custom, hudCustom);
 	helpConsole->addFeature(m_ui.hudColorCombo, _HudColor, _Custom, hudCustom);
 
-	helpConsole->addFeature(m_ui.npcsVoiceRandom, m_ui.npcsVoiceBox->title(),
-		"Randomize NPCs voices."
+	const QString _NpcsVoice{ m_ui.npcsVoiceBox->title() };
+
+	helpConsole->addFeature(m_ui.npcsVoiceRandom, _NpcsVoice,
+		"Randomize NPCs voices. Each character keeps its own voice."
+	);
+
+	helpConsole->addFeature(m_ui.npcsVoiceAnyCharacter, _NpcsVoice,
+		"Swap voices between characters too."
 	);
 
 	helpConsole->addFeature(m_ui.betaBattleThemeEnable, m_ui.betaBattleThemeBox->title(),
@@ -80,6 +87,7 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	m_ui.eternalCorridorLevelCapValue->setStyleSheet("font-weight: bold;");
 
 	m_ui.skipPrologueSkipKoris->setEnabled(false);
+	m_ui.npcsVoiceAnyCharacter->setEnabled(false);
 
 	m_ui.hudColorCombo->setStyleSheet("font-weight: normal;");
 	m_ui.hudColorLabel->setStyleSheet("font-weight: normal;");
@@ -129,6 +137,7 @@ MiscWidget::MiscWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	connect(m_ui.hudHighlightG, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 	connect(m_ui.hudHighlightB, &QSpinBox::valueChanged, this, &MiscWidget::updateHudColorRGBHighlight);
 	connect(m_ui.skipPrologueEnable, &QAbstractButton::toggled, m_ui.skipPrologueSkipKoris, &QWidget::setEnabled);
+	connect(m_ui.npcsVoiceRandom, &QAbstractButton::toggled, m_ui.npcsVoiceAnyCharacter, &QWidget::setEnabled);
 	connect(m_ui.itemQuantityLimitSlider, &QAbstractSlider::valueChanged, this, &MiscWidget::setItemQuantityText);
 	connect(m_ui.eternalCorridorLevelCapSlider, &QAbstractSlider::valueChanged, this, &MiscWidget::setEternalCorridorLevelCapText);
 }

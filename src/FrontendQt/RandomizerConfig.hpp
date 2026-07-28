@@ -95,6 +95,7 @@ struct RandomizerConfig
 	bool miscHudColorCustom;
 	Randomizer::HudColorArray miscHudColor;
 	bool miscNpcsVoiceRandom;
+	bool miscNpcsVoiceAnyCharacter;
 	bool miscBetaBattleThemeEnable;
 	s32 miscItemQuantityLimit;
 	s32 miscEternalCorridorLevelCap;

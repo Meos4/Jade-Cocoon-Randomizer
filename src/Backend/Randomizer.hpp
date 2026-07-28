@@ -195,7 +195,7 @@ public:
 	void shopEternalCorridorUnlockAll() const;
 	void miscHudColor() const;
 	void miscHudColor(const Randomizer::HudColorArray& hud) const;
-	void miscNPCsVoice() const;
+	void miscNPCsVoice(bool anyCharacter) const;
 	void miscBetaBattleTheme() const;
 	void miscSkipPrologue(bool skipKoris) const;
 	void miscItemQuantityLimit(u8 limit) const;

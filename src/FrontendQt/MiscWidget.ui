@@ -266,11 +266,18 @@
        <property name="title">
         <string>NPCs Voice</string>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <item>
+       <layout class="QFormLayout" name="formLayout_npcsVoice">
+        <item row="0" column="0">
          <widget class="QCheckBox" name="npcsVoiceRandom">
           <property name="text">
            <string>Random</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QCheckBox" name="npcsVoiceAnyCharacter">
+          <property name="text">
+           <string>+Any Character</string>
           </property>
          </widget>
         </item>
