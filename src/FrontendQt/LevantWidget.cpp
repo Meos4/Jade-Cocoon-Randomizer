@@ -17,6 +17,7 @@ LevantWidget::LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 		{ SETTINGS(m_ui.animationBetaSummon) },
 		{ SETTINGS(m_ui.animationBetaCapture) },
 		{ SETTINGS(m_ui.animationRandomWeaponsPosture) },
+		{ SETTINGS(m_ui.keepVillageOutfitEnable) },
 		{ SETTINGS(m_ui.fluteStylingShuffle) }
 	};
 
@@ -42,6 +43,10 @@ LevantWidget::LevantWidget(HelpConsoleWidget* helpConsole, QWidget* parent)
 	helpConsole->addFeature(m_ui.animationRandomWeaponsPosture, _Animation,
 		"Random battle weapons postures."
 		"\n\nEx: a dagger can be held like a sword."
+	);
+
+	helpConsole->addFeature(m_ui.keepVillageOutfitEnable, m_ui.keepVillageOutfitBox->title(),
+		"Levant keeps the outfit he wears in the village, armors no longer change his appearance."
 	);
 
 	helpConsole->addFeature(m_ui.fluteStylingShuffle, m_ui.fluteStylingBox->title(),

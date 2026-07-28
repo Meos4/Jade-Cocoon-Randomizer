@@ -14,6 +14,7 @@ struct RandomizerConfig
 	bool levantAnimationBetaSummon;
 	bool levantAnimationBetaCapture;
 	bool levantAnimationRandomWeaponsPosture;
+	bool levantKeepVillageOutfitEnable;
 	bool levantFluteStylingShuffle;
 
 	// Minion

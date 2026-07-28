@@ -159,6 +159,7 @@ public:
 
 	void levantBaseStats() const;
 	void levantAnimation(Randomizer::LevantAnimation_t state) const;
+	void levantKeepVillageOutfit() const;
 	void levantFluteStyling() const;
 	void minionSpawnStory(Randomizer::MinionSpawnStory state) const;
 	void minionSpawnEC() const;

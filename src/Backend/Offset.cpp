@@ -101,6 +101,7 @@ fileNtscJ1
 		.tableOfMapsBehavior = 0x0000E4F0,
 		.setItemQuantityFromChestFn = 0x0000CA30,
 		.canPauseHookJal = 0x000067F8,
+		.setLevantGarbFlag = 0x0000BC34,
 		.readFlagRotateSpawn = 0,
 	},
 	.over_menu_bin
@@ -834,6 +835,7 @@ fileNtscJ2
 		.tableOfMapsBehavior = 0x0000E7B4,
 		.setItemQuantityFromChestFn = 0x0000CCF4,
 		.canPauseHookJal = 0x0000687C,
+		.setLevantGarbFlag = 0x0000BEF8,
 		.readFlagRotateSpawn = 0,
 	},
 	.over_menu_bin
@@ -1567,6 +1569,7 @@ fileNtscU
 		.tableOfMapsBehavior = 0x0000E6A4,
 		.setItemQuantityFromChestFn = 0x0000CBE4,
 		.canPauseHookJal = 0x000069AC,
+		.setLevantGarbFlag = 0x0000BDE8,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -2300,6 +2303,7 @@ filePalEn
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
 		.canPauseHookJal = 0x000069AC,
+		.setLevantGarbFlag = 0x0000C028,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -3033,6 +3037,7 @@ filePalFr
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
 		.canPauseHookJal = 0x000069AC,
+		.setLevantGarbFlag = 0x0000C028,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -3766,6 +3771,7 @@ filePalDe
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
 		.canPauseHookJal = 0x000069AC,
+		.setLevantGarbFlag = 0x0000C028,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -4499,6 +4505,7 @@ filePalEs
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
 		.canPauseHookJal = 0x000069AC,
+		.setLevantGarbFlag = 0x0000C028,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin
@@ -5233,6 +5240,7 @@ filePalIt
 		.tableOfMapsBehavior = 0x0000E8E4,
 		.setItemQuantityFromChestFn = 0x0000CE24,
 		.canPauseHookJal = 0x000069AC,
+		.setLevantGarbFlag = 0x0000C028,
 		.readFlagRotateSpawn = 0x00004BD0,
 	},
 	.over_menu_bin

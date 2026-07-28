@@ -361,6 +361,13 @@ void Randomizer::levantAnimation(Randomizer::LevantAnimation_t state) const
 	}
 }
 
+void Randomizer::levantKeepVillageOutfit() const
+{
+	const auto over_game_bin{ m_game->file(File::OVER_GAME_BIN) };
+	const auto setLevantGarbFlag{ m_game->offset().file.over_game_bin.setLevantGarbFlag };
+	over_game_bin->write(setLevantGarbFlag, Mips_t(over_game_bin->read<Mips_t>(setLevantGarbFlag) & ~0x001F0000u));
+}
+
 void Randomizer::levantFluteStyling() const
 {
 	std::array<u16, 10> stylings;

@@ -41,6 +41,7 @@ RandomizerConfig RandomizerUiManager::snapshot() const
 	config.levantAnimationBetaSummon = levantUi.animationBetaSummon->isChecked();
 	config.levantAnimationBetaCapture = levantUi.animationBetaCapture->isChecked();
 	config.levantAnimationRandomWeaponsPosture = levantUi.animationRandomWeaponsPosture->isChecked();
+	config.levantKeepVillageOutfitEnable = levantUi.keepVillageOutfitEnable->isChecked();
 	config.levantFluteStylingShuffle = levantUi.fluteStylingShuffle->isChecked();
 
 	// Minion
@@ -194,6 +195,11 @@ void RandomizerUiManager::apply(const RandomizerConfig& config, Randomizer* rand
 	if (levantAnimation)
 	{
 		randomizer->levantAnimation(levantAnimation);
+	}
+
+	if (config.levantKeepVillageOutfitEnable)
+	{
+		randomizer->levantKeepVillageOutfit();
 	}
 
 	if (config.levantFluteStylingShuffle)

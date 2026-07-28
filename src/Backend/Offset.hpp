@@ -111,7 +111,8 @@ public:
 				itemShopBuyFn,
 				tableOfMapsBehavior,
 				setItemQuantityFromChestFn,
-				canPauseHookJal;
+				canPauseHookJal,
+				setLevantGarbFlag;
 
 			// not in NTSCJ
 			u32 readFlagRotateSpawn;
