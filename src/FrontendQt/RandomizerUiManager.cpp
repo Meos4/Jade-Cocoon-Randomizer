@@ -133,7 +133,6 @@ RandomizerConfig RandomizerUiManager::snapshot() const
 	config.miscHudColorCustom = miscUi.hudColorCustom->isChecked();
 	config.miscHudColor = m_misc->hudColor();
 	config.miscNpcsVoiceRandom = miscUi.npcsVoiceRandom->isChecked();
-	config.miscNpcsVoiceAnyCharacter = miscUi.npcsVoiceAnyCharacter->isChecked();
 	config.miscBetaBattleThemeEnable = miscUi.betaBattleThemeEnable->isChecked();
 	config.miscItemQuantityLimit = miscUi.itemQuantityLimitSlider->value();
 	config.miscEternalCorridorLevelCap = miscUi.eternalCorridorLevelCapSlider->value();
@@ -490,7 +489,7 @@ void RandomizerUiManager::apply(const RandomizerConfig& config, Randomizer* rand
 
 	if (config.miscNpcsVoiceRandom)
 	{
-		randomizer->miscNPCsVoice(config.miscNpcsVoiceAnyCharacter);
+		randomizer->miscNPCsVoice();
 	}
 
 	if (config.miscBetaBattleThemeEnable)

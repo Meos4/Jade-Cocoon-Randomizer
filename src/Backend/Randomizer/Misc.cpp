@@ -5,12 +5,10 @@
 #include "Backend/Mips.hpp"
 #include "Backend/MipsFn.hpp"
 #include "Backend/Version.hpp"
-#include "Common/JcrException.hpp"
 
-#include <algorithm>
 #include <array>
+#include <numeric>
 #include <limits>
-#include <map>
 #include <utility>
 #include <vector>
 
@@ -34,7 +32,7 @@ void Randomizer::miscHudColor(const Randomizer::HudColorArray& hud) const
 	m_game->executable().write(m_game->offset().file.executable.hudColors, hud);
 }
 
-void Randomizer::miscNPCsVoice(bool anyCharacter) const
+void Randomizer::miscNPCsVoice() const
 {
 	struct VoiceBehavior
 	{
@@ -44,8 +42,6 @@ void Randomizer::miscNPCsVoice(bool anyCharacter) const
 	struct Voice
 	{
 		s16 xaPosition, xaPosition2, duration;
-
-		bool operator==(const Voice& other) const = default;
 	};
 
 	struct FileVoiceInfo
@@ -54,143 +50,6 @@ void Randomizer::miscNPCsVoice(bool anyCharacter) const
 		u32 offset;
 		u32 nbVoices;
 	};
-
-	struct SceneSpeaker
-	{
-		u8 file;
-		u8 dialogue;
-		u16 speaker;
-	};
-
-	static constexpr u16 speakerMuAndRa{ 0x100u };
-
-	static constexpr std::array<SceneSpeaker, 620> sceneSpeakers
-	{{
-		{  0,   0, 0x2Fu }, {  0,   1, 0x2Cu }, {  0,   2, 0x2Fu }, {  0,   3, 0x2Cu }, {  0,   4, 0x2Fu },
-		{  1,   0, 0x2Cu }, {  1,   1, 0x2Cu }, {  2,   0, 0x38u }, {  2,   1, 0x38u }, {  2,   2, 0x38u },
-		{  2,   3, 0x38u }, {  3,   0, 0x2Fu }, {  3,   1, 0x2Cu }, {  3,   2, 0x47u }, {  3,   3, 0x47u },
-		{  4,   0, 0x38u }, {  4,   1, 0x38u }, {  4,   3, 0x38u }, {  4,   4, 0x38u }, {  4,   5, 0x24u },
-		{  5,   0, 0x66u }, {  5,   1, 0x64u }, {  5,   2, 0x16u }, {  5,   3, 0x66u }, {  5,   4, 0x16u },
-		{  5,   5, 0x64u }, {  5,   6, 0x16u }, {  5,   7, 0x64u }, {  5,   8, 0x16u }, {  5,   9, 0x64u },
-		{  5,  10, 0x66u }, {  5,  11, 0x16u }, {  5,  12, 0x64u }, {  5,  13, 0x16u }, {  5,  14, 0x64u },
-		{  5,  15, 0x66u }, {  5,  16, 0x16u }, {  5,  17, 0x66u }, {  6,   0, 0x66u }, {  6,   1, 0x66u },
-		{  6,   2, 0x66u }, {  6,   3, 0x16u }, {  6,   4, 0x16u }, {  6,   5, 0x16u }, {  6,   7, 0x16u },
-		{  6,   8, 0x16u }, {  6,   9, 0x16u }, {  6,  10, 0x16u }, {  6,  11, 0x16u }, {  7,   0, 0x2Fu },
-		{  7,   1, 0x2Fu }, {  7,   2, 0x2Cu }, {  7,   3, 0x2Fu }, {  7,   4, 0x2Cu }, {  7,   5, 0x2Fu },
-		{  7,   6, 0x2Fu }, {  8,   0, 0x47u }, {  8,   1, 0x47u }, {  8,   2, 0x47u }, {  9,   0, 0x38u },
-		{  9,   1, 0x38u }, {  9,   2, 0x38u }, {  9,   3, 0x38u }, {  9,   4, 0x38u }, {  9,   6, 0x38u },
-		{  9,   7, 0x38u }, {  9,   8, 0x38u }, {  9,   9, 0x38u }, {  9,  10, 0x38u }, {  9,  11, 0x38u },
-		{  9,  12, 0x38u }, {  9,  13, 0x38u }, { 10,   0, 0x16u }, { 10,   1, 0x16u }, { 10,   4, 0x16u },
-		{ 10,   5, 0x2Fu }, { 10,   6, 0x2Fu }, { 11,   0, 0x2Fu }, { 11,   1, 0x2Fu }, { 11,   3, 0x2Fu },
-		{ 11,   4, 0x2Fu }, { 12,   0, 0x15u }, { 12,   1, 0x37u }, { 12,   2, 0x37u }, { 12,   3, 0x37u },
-		{ 12,   4, 0x37u }, { 12,   5, 0x37u }, { 12,   6, 0x15u }, { 12,   8, 0x15u }, { 12,   9, 0x15u },
-		{ 12,  10, 0x15u }, { 12,  11, 0x15u }, { 13,   0, 0x2Cu }, { 13,   1, 0x24u }, { 13,   2, 0x24u },
-		{ 13,   3, 0x2Cu }, { 13,   5, 0x2Cu }, { 13,   6, 0x2Cu }, { 13,   7, 0x2Cu }, { 13,   8, 0x24u },
-		{ 13,   9, 0x24u }, { 13,  10, 0x24u }, { 13,  11, 0x24u }, { 13,  12, 0x2Cu }, { 13,  13, 0x2Cu },
-		{ 14,   0, 0x1Eu }, { 14,   2, 0x1Eu }, { 14,   3, 0x1Eu }, { 14,   5, 0x1Eu }, { 14,   6, 0x1Eu },
-		{ 15,   0, 0x2Cu }, { 15,   1, 0x2Cu }, { 15,   2, 0x2Cu }, { 16,   0, 0x26u }, { 16,   1, 0x26u },
-		{ 16,   2, 0x26u }, { 16,   3, 0x26u }, { 16,   5, 0x26u }, { 16,   6, 0x26u }, { 16,   7, 0x26u },
-		{ 16,   8, 0x26u }, { 16,  10, 0x26u }, { 16,  11, 0x26u }, { 16,  12, 0x26u }, { 16,  13, 0x26u },
-		{ 16,  14, 0x26u }, { 16,  15, 0x26u }, { 16,  16, 0x26u }, { 16,  17, 0x26u }, { 16,  18, 0x26u },
-		{ 16,  19, 0x26u }, { 16,  20, 0x26u }, { 16,  21, 0x26u }, { 16,  22, 0x26u }, { 16,  23, 0x26u },
-		{ 17,   0, 0x16u }, { 17,   3, 0x16u }, { 17,   4, 0x16u }, { 17,   5, 0x16u }, { 17,   6, 0x16u },
-		{ 17,   7, 0x16u }, { 17,   8, 0x16u }, { 17,   9, 0x16u }, { 17,  10, 0x16u }, { 17,  11, 0x16u },
-		{ 17,  12, 0x16u }, { 17,  13, 0x16u }, { 17,  14, 0x16u }, { 17,  15, 0x16u }, { 17,  16, 0x16u },
-		{ 17,  17, 0x16u }, { 17,  18, 0x16u }, { 17,  19, 0x2Fu }, { 17,  21, 0x2Fu }, { 17,  22, 0x2Fu },
-		{ 17,  24, 0x2Fu }, { 17,  27, 0x2Fu }, { 17,  29, 0x2Fu }, { 17,  31, 0x2Fu }, { 17,  34, 0x2Fu },
-		{ 18,   0, 0x2Cu }, { 18,   1, 0x2Cu }, { 18,   2, 0x2Cu }, { 18,   3, 0x2Cu }, { 18,   4, 0x2Cu },
-		{ 19,   0, 0x26u }, { 19,   1, 0x26u }, { 19,   3, 0x26u }, { 19,   4, 0x26u }, { 19,   5, 0x26u },
-		{ 19,   6, 0x26u }, { 19,   7, 0x26u }, { 19,   9, 0x26u }, { 19,  10, 0x26u }, { 19,  11, 0x26u },
-		{ 19,  12, 0x26u }, { 19,  13, 0x26u }, { 20,   0, 0x16u }, { 20,   2, 0x16u }, { 20,   3, 0x16u },
-		{ 20,   4, 0x16u }, { 20,   5, 0x16u }, { 20,   6, 0x16u }, { 20,   7, 0x16u }, { 20,   8, 0x16u },
-		{ 20,   9, 0x2Fu }, { 20,  11, 0x2Fu }, { 20,  12, 0x2Fu }, { 20,  13, 0x2Fu }, { 20,  15, 0x2Fu },
-		{ 20,  18, 0x2Fu }, { 20,  20, 0x2Fu }, { 20,  22, 0x2Fu }, { 20,  25, 0x2Fu }, { 21,   0, 0x15u },
-		{ 21,   1, 0x15u }, { 21,   2, 0x15u }, { 21,   3, 0x15u }, { 21,   4, 0x15u }, { 22,   0, 0x2Cu },
-		{ 22,   1, 0x24u }, { 22,   2, 0x2Cu }, { 22,   3, 0x2Cu }, { 22,   4, 0x2Cu }, { 22,   5, 0x2Cu },
-		{ 22,   6, 0x24u }, { 22,   7, 0x24u }, { 22,   8, 0x24u }, { 22,   9, 0x24u }, { 22,  11, 0x24u },
-		{ 23,   0, 0x1Eu }, { 23,   3, 0x1Eu }, { 23,   4, 0x1Eu }, { 23,   5, 0x1Eu }, { 23,   6, 0x1Eu },
-		{ 24,   0, 0x3Eu }, { 24,   1, 0x3Eu }, { 25,   2, 0x25u }, { 25,   3, 0x25u }, { 26,   0, 0x25u },
-		{ 26,   1, 0x25u }, { 26,   3, 0x25u }, { 26,   6, 0x25u }, { 26,   7, 0x25u }, { 26,   8, 0x25u },
-		{ 26,   9, 0x25u }, { 26,  11, 0x25u }, { 26,  12, 0x25u }, { 26,  13, 0x25u }, { 26,  14, 0x25u },
-		{ 26,  15, 0x25u }, { 26,  16, 0x25u }, { 26,  17, 0x25u }, { 26,  18, 0x25u }, { 26,  20, 0x25u },
-		{ 26,  21, 0x25u }, { 27,   0, 0x16u }, { 27,   1, 0x16u }, { 27,   2, 0x16u }, { 27,   3, 0x16u },
-		{ 27,   5, 0x16u }, { 27,   6, 0x16u }, { 27,   7, 0x16u }, { 27,   8, 0x16u }, { 27,   9, 0x16u },
-		{ 27,  10, 0x2Fu }, { 27,  11, 0x2Fu }, { 27,  12, 0x2Fu }, { 27,  14, 0x2Fu }, { 27,  15, 0x2Fu },
-		{ 27,  16, 0x16u }, { 27,  18, 0x16u }, { 27,  19, 0x2Fu }, { 27,  20, 0x2Fu }, { 27,  21, 0x2Fu },
-		{ 27,  22, 0x2Fu }, { 27,  24, 0x2Fu }, { 27,  27, 0x2Fu }, { 27,  29, 0x2Fu }, { 27,  31, 0x2Fu },
-		{ 27,  34, 0x2Fu }, { 28,   0, 0x2Fu }, { 28,   2, 0x2Fu }, { 28,   3, 0x2Fu }, { 28,   4, 0x2Fu },
-		{ 28,   5, 0x2Fu }, { 28,   6, 0x2Fu }, { 28,   7, 0x2Fu }, { 28,   8, 0x2Fu }, { 28,   9, 0x2Fu },
-		{ 28,  10, 0x2Fu }, { 28,  11, 0x2Fu }, { 28,  12, 0x2Fu }, { 28,  13, 0x2Fu }, { 28,  14, 0x2Fu },
-		{ 29,   0, 0x38u }, { 29,   2, 0x38u }, { 29,   3, 0x38u }, { 29,   4, 0x38u }, { 29,   5, 0x38u },
-		{ 29,   6, 0x38u }, { 29,   7, 0x38u }, { 29,   8, 0x38u }, { 29,   9, 0x38u }, { 30,   0, 0x15u },
-		{ 30,   3, 0x15u }, { 30,   4, 0x15u }, { 30,   5, 0x37u }, { 30,   6, 0x37u }, { 30,   7, 0x15u },
-		{ 30,   8, 0x37u }, { 30,   9, 0x37u }, { 30,  10, 0x37u }, { 30,  11, 0x37u }, { 30,  12, 0x37u },
-		{ 30,  13, 0x15u }, { 30,  14, 0x15u }, { 30,  15, 0x15u }, { 31,   0, 0x2Cu }, { 31,   1, 0x24u },
-		{ 31,   2, 0x2Cu }, { 31,   3, 0x2Cu }, { 31,   4, 0x2Cu }, { 31,   5, 0x24u }, { 31,   6, 0x2Cu },
-		{ 31,   7, 0x24u }, { 31,   8, 0x2Cu }, { 31,   9, 0x24u }, { 31,  10, 0x24u }, { 31,  11, 0x24u },
-		{ 32,   4, 0x1Eu }, { 32,   6, 0x1Eu }, { 32,   7, 0x1Eu }, { 32,   8, 0x1Eu }, { 33,   0, 0x5Fu },
-		{ 33,   2, 0x5Fu }, { 33,   3, 0x5Fu }, { 33,   4, 0x5Fu }, { 33,   5, 0x5Fu }, { 33,   7, 0x5Fu },
-		{ 33,   8, 0x5Fu }, { 33,   9, 0x5Fu }, { 33,  10, 0x5Fu }, { 33,  11, 0x5Fu }, { 34,   0, 0x60u },
-		{ 34,   2, 0x60u }, { 34,   3, 0x60u }, { 34,   4, 0x60u }, { 34,   5, 0x60u }, { 34,   7, 0x60u },
-		{ 34,   8, 0x60u }, { 34,   9, 0x60u }, { 34,  10, 0x60u }, { 34,  11, 0x60u }, { 35,   0, 0x3Eu },
-		{ 35,   1, 0x3Eu }, { 36,   0, 0x5Eu }, { 36,   2, 0x5Eu }, { 36,   3, 0x5Eu }, { 36,   4, 0x5Eu },
-		{ 36,   5, 0x5Eu }, { 36,   7, 0x5Eu }, { 36,   8, 0x5Eu }, { 36,   9, 0x5Eu }, { 36,  10, 0x5Eu },
-		{ 36,  11, 0x5Eu }, { 37,   0, 0x61u }, { 37,   2, 0x61u }, { 37,   3, 0x61u }, { 37,   4, 0x61u },
-		{ 37,   5, 0x61u }, { 37,   7, 0x61u }, { 37,   9, 0x61u }, { 37,  10, 0x61u }, { 37,  11, 0x61u },
-		{ 37,  12, 0x61u }, { 37,  13, 0x61u }, { 37,  14, 0x61u }, { 37,  15, 0x61u }, { 37,  16, 0x61u },
-		{ 38,   0, 0x16u }, { 38,   1, 0x16u }, { 38,   2, 0x16u }, { 38,   4, 0x16u }, { 38,   5, 0x16u },
-		{ 38,   6, 0x16u }, { 38,   7, 0x16u }, { 38,   8, 0x16u }, { 38,   9, 0x16u }, { 38,  10, 0x16u },
-		{ 38,  11, 0x16u }, { 38,  12, 0x16u }, { 38,  13, 0x16u }, { 38,  14, 0x2Fu }, { 38,  15, 0x2Fu },
-		{ 38,  16, 0x2Fu }, { 38,  18, 0x2Fu }, { 38,  20, 0x2Fu }, { 38,  23, 0x2Fu }, { 38,  25, 0x2Fu },
-		{ 38,  27, 0x2Fu }, { 38,  30, 0x2Fu }, { 39,   0, 0x64u }, { 39,   1, 0x64u }, { 39,   2, 0x66u },
-		{ 39,   3, 0x64u }, { 39,   4, 0x66u }, { 39,   5, 0x64u }, { 39,   6, 0x66u }, { 40,   0, 0x38u },
-		{ 40,   2, 0x38u }, { 40,   3, 0x38u }, { 40,   4, 0x38u }, { 40,   5, 0x38u }, { 40,   6, 0x38u },
-		{ 40,   7, 0x38u }, { 40,   8, 0x38u }, { 40,   9, 0x38u }, { 40,  10, 0x38u }, { 41,   0, 0x15u },
-		{ 41,   2, 0x15u }, { 41,   3, 0x24u }, { 41,   4, 0x24u }, { 41,   5, 0x15u }, { 41,   6, 0x24u },
-		{ 41,   7, 0x24u }, { 41,   8, 0x24u }, { 41,   9, 0x15u }, { 41,  10, 0x15u }, { 41,  11, 0x15u },
-		{ 42,   0, 0x2Cu }, { 42,   1, 0x2Cu }, { 42,   2, 0x2Cu }, { 42,   3, 0x2Cu }, { 42,   4, 0x2Cu },
-		{ 42,   5, 0x2Cu }, { 43,   0, 0x1Eu }, { 43,   2, 0x1Eu }, { 43,   3, 0x1Eu }, { 43,   4, 0x1Eu },
-		{ 43,   5, 0x1Eu }, { 43,   6, 0x1Eu }, { 44,   0, 0x5Fu }, { 44,   1, 0x5Fu }, { 44,   2, 0x5Fu },
-		{ 44,   3, 0x5Fu }, { 45,   0, 0x60u }, { 45,   1, 0x60u }, { 45,   2, 0x60u }, { 45,   3, 0x60u },
-		{ 46,   0, 0x5Eu }, { 46,   1, 0x5Eu }, { 46,   2, 0x5Eu }, { 46,   3, 0x5Eu }, { 47,   0, 0x61u },
-		{ 47,   2, 0x61u }, { 47,   3, 0x61u }, { 48,   0, 0x61u }, { 49,   0, 0x2Fu }, { 49,   1, 0x2Fu },
-		{ 49,   2, 0x2Fu }, { 49,   4, 0x2Fu }, { 49,   5, 0x2Fu }, { 49,   6, 0x2Fu }, { 49,   8, 0x2Fu },
-		{ 49,  11, 0x2Fu }, { 49,  13, 0x2Fu }, { 49,  15, 0x2Fu }, { 49,  18, 0x2Fu }, { 50,   0, 0x15u },
-		{ 50,   2, 0x15u }, { 50,   3, 0x24u }, { 50,   4, 0x24u }, { 50,   5, 0x15u }, { 50,   6, 0x24u },
-		{ 50,   7, 0x15u }, { 51,   0, 0x64u }, { 51,   1, 0x16u }, { 51,   2, 0x64u }, { 51,   3, 0x64u },
-		{ 51,   4, 0x64u }, { 51,   5, 0x64u }, { 52,   1, 0x2Fu }, { 52,   2, 0x2Fu }, { 52,   3, 0x2Fu },
-		{ 52,   4, 0x16u }, { 52,   5, 0x16u }, { 52,   6, 0x16u }, { 52,   8, 0x16u }, { 52,   9, 0x16u },
-		{ 52,  10, 0x16u }, { 53,   0, 0x2Fu }, { 54,   0, 0x5Fu }, { 55,   0, 0x60u }, { 56,   0, 0x5Eu },
-		{ 57,   0, 0x3Eu }, { 57,   1, 0x3Eu }, { 58,   1, 0x2Fu }, { 59,   0, 0x2Fu }, { 60,   0, 0x3Fu },
-		{ 60,   1, 0x3Fu }, { 60,   2, 0x3Fu }, { 60,   3, 0x3Fu }, { 60,   4, 0x3Fu }, { 61,   0, 0x3Fu },
-		{ 61,   1, 0x3Fu }, { 61,   2, 0x3Fu }, { 61,   3, 0x3Fu }, { 61,   4, 0x3Fu }, { 61,   5, 0x3Fu },
-		{ 61,   6, 0x42u }, { 61,   7, 0x41u }, { 61,   8, 0x3Fu }, { 61,   9, 0x3Fu }, { 62,   0, 0x3Fu },
-		{ 62,   2, 0x3Fu }, { 62,   3, 0x3Fu }, { 62,   4, 0x3Fu }, { 62,   5, 0x3Fu }, { 62,   6, 0x3Fu },
-		{ 62,   7, 0x3Fu }, { 62,   8, 0x3Fu }, { 62,   9, 0x3Fu }, { 62,  10, 0x3Fu }, { 62,  11, 0x3Fu },
-		{ 62,  12, 0x3Fu }, { 63,   0, 0x42u }, { 63,   4, 0x42u }, { 63,   5, 0x42u }, { 63,   6, 0x42u },
-		{ 63,   8, 0x42u }, { 63,  11, 0x42u }, { 63,  13, 0x42u }, { 63,  15, 0x42u }, { 63,  18, 0x42u },
-		{ 64,   0, 0x41u }, { 64,   2, 0x41u }, { 64,   3, 0x41u }, { 64,   4, 0x41u }, { 65,   0, 0x3Fu },
-		{ 65,   1, 0x3Fu }, { 65,   2, 0x3Fu }, { 65,   3, 0x3Fu }, { 65,   5, 0x3Fu }, { 65,   6, 0x3Fu },
-		{ 65,   7, 0x3Fu }, { 65,   8, 0x3Fu }, { 65,   9, 0x3Fu }, { 65,  10, 0x3Fu }, { 65,  11, 0x3Fu },
-		{ 65,  12, 0x3Fu }, { 65,  13, 0x3Fu }, { 65,  14, 0x3Fu }, { 65,  15, 0x3Fu }, { 66,   0, 0x3Fu },
-		{ 66,   1, 0x3Fu }, { 66,   2, 0x3Fu }, { 66,   3, 0x3Fu }, { 66,   5, 0x3Fu }, { 66,   6, 0x3Fu },
-		{ 66,   7, 0x3Fu }, { 66,   8, 0x3Fu }, { 66,   9, 0x3Fu }, { 66,  10, 0x3Fu }, { 66,  11, 0x3Fu },
-		{ 66,  12, 0x3Fu }, { 66,  14, 0x3Fu }, { 67,   0, 0x26u }, { 67,   1, 0x26u }, { 67,   2, 0x02u },
-		{ 67,   3, 0x02u }, { 67,   4, 0x26u }, { 67,   6, 0x02u }, { 68,   0, 0x25u }, { 68,   1, 0x24u },
-		{ 68,   2, 0x06u }, { 68,   3, 0x06u }, { 68,   4, 0x24u }, { 68,   6, 0x06u }, { 69,   0, 0x5Fu },
-		{ 69,   1, 0x04u }, { 69,   2, 0x04u }, { 69,   3, 0x04u }, { 69,   4, 0x04u }, { 70,   0, 0x60u },
-		{ 70,   1, 0x04u }, { 70,   2, 0x04u }, { 70,   3, 0x04u }, { 70,   4, 0x04u }, { 71,   0, 0x5Eu },
-		{ 71,   1, 0x04u }, { 71,   2, 0x04u }, { 71,   3, 0x04u }, { 71,   4, 0x04u }, { 72,   0, 0x61u },
-		{ 72,   1, 0x2Fu }, { 72,   2, 0x2Fu }, { 72,   3, 0x2Fu }, { 72,   4, 0x2Fu }, { 72,   5, 0x04u },
-		{ 72,   6, 0x04u }, { 72,   7, 0x04u }, { 72,   8, 0x04u }, { 72,   9, 0x2Fu }, { 72,  10, 0x2Fu },
-		{ 72,  11, 0x2Fu }, { 72,  12, 0x04u }, { 73,   0, 0x47u }, { 73,   1, 0x47u }, { 73,   2, 0x47u },
-		{ 73,   3, 0x47u }, { 73,   4, 0x47u }, { 73,   5, 0x47u }, { 73,   6, 0x47u }, { 73,   7, 0x47u },
-		{ 73,   8, 0x47u }, { 74,   0, 0x42u }, { 74,   1, 0x41u }, { 74,   2, 0x41u }, { 74,   3, 0x42u },
-		{ 74,   4, 0x41u }, { 74,   5, 0x42u }, { 74,   6, 0x41u }, { 74,   7, 0x42u }, { 75,   8, speakerMuAndRa },
-		{ 75,   9, 0x41u }, { 75,  10, 0x41u }, { 75,  11, 0x42u }, { 75,  12, 0x42u }, { 75,  13, speakerMuAndRa },
-		{ 76,   0, 0x41u }, { 76,   2, 0x41u }, { 77,   0, 0x42u }, { 77,   2, 0x42u }, { 77,   4, 0x42u },
-		{ 77,   7, 0x42u }, { 77,   9, 0x42u }, { 77,  11, 0x42u }, { 77,  12, 0x42u }, { 77,  14, 0x42u },
-	}};
 
 	const auto& offsetF{ m_game->offset().file };
 
@@ -276,137 +135,28 @@ void Randomizer::miscNPCsVoice(bool anyCharacter) const
 		{ m_game->file(File::SCENE_OTHER_CLEAR_SCE04_SBH), offsetF.scene_other_clear_sce04_sbh.tableOfVoices, 14 }
 	}};		
 
-	static constexpr auto entrySize{ sizeof(Voice) + sizeof(VoiceBehavior) };
-
-	struct Slot
-	{
-		std::size_t fileIndex;
-		u32 index;
-	};
-
-	std::vector<Slot> slots;
-	std::map<u32, std::vector<std::size_t>> groups;
-
-	for (std::size_t i{}; i < filesInfo.size(); ++i)
-	{
-		const auto& [file, offset, nbVoices] = filesInfo[i];
-
-		for (u32 j{}; j < nbVoices; ++j)
-		{
-			const auto dialogue{ file->read<u8>(offset + j * entrySize) };
-			const auto speaker{ std::find_if(sceneSpeakers.begin(), sceneSpeakers.end(),
-				[&](const auto& entry) { return entry.file == i && entry.dialogue == dialogue; }) };
-
-			if (speaker == sceneSpeakers.end())
-			{
-				throw JcrException{ "No known speaker for dialogue {} of scene {}",
-					static_cast<u32>(dialogue), i };
-			}
-
-			groups[anyCharacter ? 0u : speaker->speaker].emplace_back(slots.size());
-			slots.emplace_back(i, j);
-		}
-	}
-
+	const auto totalVoices{ std::accumulate(filesInfo.begin(), filesInfo.end(), 0u,
+		[](auto sum, const auto& fvi) { return sum + fvi.nbVoices; }) };
+		
 	std::vector<Voice> voices;
-	voices.reserve(slots.size());
+	voices.reserve(totalVoices);
 
-	for (const auto& [fileIndex, index] : slots)
+	for (const auto& [file, offset, nbVoices] : filesInfo)
 	{
-		const auto& [file, offset, nbVoices] = filesInfo[fileIndex];
-		voices.emplace_back(file->read<Voice>(offset + index * entrySize + sizeof(VoiceBehavior)));
-	}
-
-	const auto slotsAreAdjacent = [&slots](std::size_t left, std::size_t right) -> bool
-	{
-		return right == left + 1 && slots[left].fileIndex == slots[right].fileIndex;
-	};
-
-	std::vector<std::size_t> source(slots.size());
-
-	for (const auto& [group, members] : groups)
-	{
-		auto order{ members };
-
-		for (auto i{ order.size() }; i > 1; --i)
+		for (u32 i{}; i < nbVoices; ++i)
 		{
-			std::swap(order[i - 1], order[m_game->random()->generate(i - 1)]);
-		}
-
-		for (u32 pass{}; pass < 4; ++pass)
-		{
-			for (std::size_t i{}; i < order.size(); ++i)
-			{
-				if (slots[order[i]].fileIndex != slots[members[i]].fileIndex)
-				{
-					continue;
-				}
-
-				for (std::size_t step{ 1 }; step < order.size(); ++step)
-				{
-					const auto other{ (i + step) % order.size() };
-
-					if (slots[order[other]].fileIndex != slots[members[i]].fileIndex && slots[order[i]].fileIndex != slots[members[other]].fileIndex)
-					{
-						std::swap(order[i], order[other]);
-						break;
-					}
-				}
-			}
-		}
-
-		for (u32 pass{}; pass < 2; ++pass)
-		{
-			for (std::size_t i{}; i < order.size() && order.size() > 1; ++i)
-			{
-				if (order[i] == members[i])
-				{
-					std::swap(order[i], order[(i + 1) % order.size()]);
-				}
-			}
-		}
-
-		for (u32 pass{}; pass < 4; ++pass)
-		{
-			for (std::size_t i{ 1 }; i < order.size(); ++i)
-			{
-				if (!slotsAreAdjacent(members[i - 1], members[i]) || !(voices[order[i]] == voices[order[i - 1]]))
-				{
-					continue;
-				}
-
-				for (std::size_t step{ 1 }; step < order.size(); ++step)
-				{
-					const auto other{ (i + step) % order.size() };
-
-					if (voices[order[other]] == voices[order[i - 1]] || order[other] == members[i] || order[i] == members[other])
-					{
-						continue;
-					}
-
-					if (other && slotsAreAdjacent(members[other - 1], members[other]) && voices[order[i]] == voices[order[other - 1]])
-					{
-						continue;
-					}
-
-					std::swap(order[i], order[other]);
-					break;
-				}
-			}
-		}
-
-		for (std::size_t i{}; i < members.size(); ++i)
-		{
-			source[members[i]] = order[i];
+			voices.emplace_back(file->read<Voice>(offset + i * (sizeof(Voice) + sizeof(VoiceBehavior)) + sizeof(VoiceBehavior)));
 		}
 	}
 
-	for (std::size_t i{}; i < slots.size(); ++i)
+	for (const auto& [file, offset, nbVoices] : filesInfo)
 	{
-		const auto& [fileIndex, index] = slots[i];
-		const auto& [file, offset, nbVoices] = filesInfo[fileIndex];
-
-		file->write(offset + index * entrySize + sizeof(VoiceBehavior), voices[source[i]]);
+		for (u32 i{}; i < nbVoices; ++i)
+		{
+			const auto rngVoice{ m_game->random()->generate(voices.size() - 1) };
+			file->write(offset + i * (sizeof(Voice) + sizeof(VoiceBehavior)) + sizeof(VoiceBehavior), voices[rngVoice]);
+			voices.erase(voices.begin() + rngVoice);
+		}
 	}
 }
 
