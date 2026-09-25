@@ -142,7 +142,7 @@
      <item>
       <widget class="QLabel" name="messageLabel">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;This application patches a Jade Cocoon (PlayStation) image with the randomizer options you choose.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Open the .bin file, configure the tabs, then use &lt;span style=&quot; font-weight:700;&quot;&gt;File → Save As&lt;/span&gt; to build your randomized image.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Several quality-of-life features are &lt;span style=&quot; font-weight:700;&quot;&gt;enabled by default&lt;/span&gt;. You can turn them off in &lt;span style=&quot; font-weight:700;&quot;&gt;Settings → Default&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;This application patches a Jade Cocoon (PlayStation) image with the randomizer options you choose.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Open the .bin file, configure the tabs, then use &lt;span style=&quot; font-weight:700;&quot;&gt;File → Save As&lt;/span&gt; to build a new randomized image.&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;Several quality-of-life features are &lt;span style=&quot; font-weight:700;&quot;&gt;enabled by default&lt;/span&gt;. You can turn them off in &lt;span style=&quot; font-weight:700;&quot;&gt;Settings → Default&lt;/span&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
