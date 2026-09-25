@@ -24,7 +24,7 @@ AboutDialog::AboutDialog(QWidget* parent)
 	m_ui.linkLabel->setText
 	(
 		"<a href=\"https://github.com/Meos4/Jade-Cocoon-Randomizer\">GitHub</a> | "
-		"<a href=\"https://discord.com/invite/ErwKG2v\">Discord</a> | "
+		"<a href=\"https://discord.gg/RA7hmWSCWd\">Discord</a> | "
 		"<a href=\"https://thejadecocoonproject.fandom.com/wiki/Jade_Cocoon_Wiki\">Wiki</a>"
 	);
 }

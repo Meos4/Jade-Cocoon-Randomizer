@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget* parent)
 		[]() { QDesktopServices::openUrl(QUrl{ "https://github.com/Meos4/Jade-Cocoon-Randomizer" }); });
 
 	connect(m_ui.actionHelpDiscord, &QAction::triggered, this,
-		[]() { QDesktopServices::openUrl(QUrl{ "https://discord.com/invite/ErwKG2v" }); });
+		[]() { QDesktopServices::openUrl(QUrl{ "https://discord.gg/RA7hmWSCWd" }); });
 
 	connect(m_ui.actionHelpJadeCocoonWiki, &QAction::triggered, this,
 		[]() { QDesktopServices::openUrl(QUrl{ "https://thejadecocoonproject.fandom.com/wiki/Jade_Cocoon_Wiki" }); });
