@@ -1,3 +1,56 @@
+## [2.5.0]
+- Added a welcome message on first launch
+- Added a new Settings → Default menu to choose the quality of life features and bug fixes enabled by default
+- Removed the Addons and Fixes tabs, their features moved to the Misc tab, the new Challenge tab and the Default menu
+- Added a Retry button when the iso build fails
+- Clearer error messages when the iso build fails
+- Errors are reported when saving a json preset fails
+- Opening or dropping an invalid file no longer unloads the current game
+- Read-only iso files are no longer rejected
+- The same seed now gives the same result on every build
+- Updated Discord link
+
+### Default
+- x2 Framerate, Show Hidden Stats and the bug fixes are now enabled by default
+- New feature Can Pause The Game
+- New feature Skip Opening Logos
+- New feature Auto Heal In Safe Area
+- New feature Turbo Mode In Dialogues
+- New feature Analog Mode
+- Hp Mp Bars size slider replaced by an automatic fix
+- Renamed Autumn Moon Effect to Autumn Moon Visual Attack Effect
+
+### Levant
+- New feature Keep The Village Outfit
+- New animation Beta Summon
+- New animation Beta Capture
+
+### Minion
+- New Craziness slider for Random New Appearance
+- Renamed +Include Compatible to +Include EC Skins
+- The Minion (Dark Arpatron) texture is always included in Texture Random
+- Fixed Maltis never given by the Special / Magic randomization
+
+### Boss
+- New Craziness slider for Eternal Corridor Random New Appearance
+- Removed Random Texture for the Eternal Corridor bosses
+
+### Equipment
+- New feature Armors Random Colors
+
+### Treasure
+- Renamed Battle to Battle Drops
+- Equipments are now displayed first
+
+### Misc
+- New feature Beta Battle Theme
+- Renamed Skip Tutorial to Skip Prologue, it now also skips the chapter 2 cinematic and starts at the gate / beetle forest
+- Use the Beta Loading icon
+
+### Challenge
+- New tab containing Nuzlocke and Difficulty
+- Fixed 1 Capture Per Area treating some boss fights as regular fights
+
 ## [2.4.0]
 - Generate loading animation when saving iso
 - Use a console to get help on features instead of tooltips
